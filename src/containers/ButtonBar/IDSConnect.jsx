@@ -5,9 +5,14 @@ import loadScript from './load-script.js';
 import { connect } from "react-redux";
 import { withStyles } from '@material-ui/core/styles';
 import {PropTypes} from 'prop-types';
+//import {setQuizMetaData } from "../../store/actions/dbActions.jsx";
 import {setCatSelection } from "../../store/actions/appStateActions.jsx";
-import {setGoogleApi, setGoogleSignOutState} from "../../store/actions/googleActions.jsx";
-import {setLoginDetailsVisible } from "../../store/actions/uxActions.jsx";
+
+import {setGoogleApi, setGoogleSignOutState,setAuth2} from "../../store/actions/googleActions.jsx";
+import {setUserInfo,login,logout,loginRedirect} from "../../store/actions/idsActions.jsx";
+
+import {setLoginDetailsVisible, setIdsLoginDetailsVisible} from "../../store/actions/uxActions.jsx";
+
 
 import ImageButton from "./ImageButton.jsx";
 import GooglePopup from "./GooglePopup.jsx";
@@ -41,7 +46,7 @@ const styles = theme => ({
 
 });
 
-class GoogleConnect extends Component {
+class IDSConnect extends Component {
 
   constructor(props) {
     super(props);
@@ -49,54 +54,56 @@ class GoogleConnect extends Component {
   }
 
   componentDidMount() {
-    if (window.gapi) return;
+    const {setUserInfo} = this.props;
 
-    loadScript(document, 'script', 'google-login', this.props.jsSrc, () => this.props.setGoogleApi(window.gapi));
+    //setUserInfo();
 
-  }
+    this.props.loginRedirect();
 
-
-
-  renderLogoutOptions(){
-
-    const {setGoogleSignOutState, handleClick} = this.props;
-
-    return(
-        <div>
-            <GoogleButton label ="Logout" mode = "logout" onClick ={()=>{
-                  setGoogleSignOutState();
-                  handleClick();
-          }}/>
-        <GoogleButton label ="Cancel" mode = "cancel" onClick ={()=>handleClick()}/>
-        </div>);
+    //this.props.setAuth2();
   }
 
   renderLogin() {
 
 
-    const { classes, isImageButton, isFabButton, imageUrl,profileObjName, ProfileObj, LogInDetailsVisible, setLoginDetailsVisible, setGoogleApiSignIn} = this.props;
+    const { classes,login,IdsLogInDetailsVisible,ProfileObj,imageUrl,isImageButton,
+            isFabButton,profileObjName,setIdsLoginDetailsVisible,Connected,logout} = this.props;
 
+  //  console.log('imageUrl: ' + imageUrl);
 
-    let buttons = (
-        <GoogleButton label ="Login" mode = "login" onClick ={e=>{
-            if (e) e.preventDefault();
-            setGoogleApiSignIn();
-      }}/>);
+    let buttons ;
 
-//    console.log(imageUrl);
+    if(Connected){
+        if(isImageButton)
+          buttons = <ImageButton url = {imageUrl}
+            onClick={()=>setIdsLoginDetailsVisible(true)}/>
 
-    if(isImageButton)
-      buttons = <ImageButton url = {imageUrl}  onClick={()=>setLoginDetailsVisible(true)}/>
-
-    if(isFabButton)
-      buttons = <Fab color="primary" aria-label="Add" className={classes.fab}  onClick={()=>setLoginDetailsVisible(true)}>{profileObjName}</Fab>
+        if(isFabButton)
+          buttons = <Fab color="primary" aria-label="Add" className={classes.fab}
+            onClick={()=>setIdsLoginDetailsVisible(true)}>{profileObjName}</Fab>
+    }
+    else{
+        buttons = (
+            <GoogleButton label ="Login" mode = "login" onClick ={e=>{
+                if (e) e.preventDefault();
+                login();
+          }}/>);
+    }
 
      return (
          <div>
              {buttons}
-             <GooglePopup open={LogInDetailsVisible} ProfileObj ={ProfileObj} >
-               <GoogleConnect mode = 'logout' handleClick = {()=>setLoginDetailsVisible(false)}/>
-             </GooglePopup>
+              <GooglePopup open={IdsLogInDetailsVisible} ProfileObj ={ProfileObj} >
+                  <div>
+                      <GoogleButton label ="Logout" mode = "logout" onClick ={()=>{
+                          // console.log('Logout: ');
+
+                            logout();
+                            setIdsLoginDetailsVisible(false);
+                          }}/>
+                      <GoogleButton label ="Cancel" mode = "cancel" onClick ={()=>setIdsLoginDetailsVisible(false)}/>
+                  </div>
+              </GooglePopup>
          </div>
      )
 
@@ -104,11 +111,11 @@ class GoogleConnect extends Component {
 
   render() {
 
+    const { classes,login,Connected} = this.props;
+
+
     let buttons = this.renderLogin();
 
-    if(this.props.mode == 'logout'){
-      buttons = this.renderLogoutOptions();
-    }
 
     return(
         <div>
@@ -120,9 +127,8 @@ class GoogleConnect extends Component {
 
 }
 
-
-GoogleConnect.propTypes = {
-//  classes: PropTypes.object.isRequired,
+IDSConnect.propTypes = {
+  //classes: PropTypes.object.isRequired,
   setGoogleApi : PropTypes.func,
   setGoogleSignOutState : PropTypes.func,
   handleClick : PropTypes.func,
@@ -142,6 +148,7 @@ GoogleConnect.propTypes = {
   type: PropTypes.string,
   tag: PropTypes.string,
   icon: PropTypes.bool,
+  Connected : PropTypes.bool
 };
 
 const mapStateToProps = state => {
@@ -165,11 +172,11 @@ const mapStateToProps = state => {
   let isFabButton =false;
 
 
-  if(state.google.googleApiLoggedIn && state.google.profileObj){
-    if(state.google.profileObj.imageUrl!= '')
+  if(state.ids.connected && state.ids.profileObj){
+    if(state.ids.profileObj.imageUrl!= '')
       isImageButton = true;
     else{
-      if(state.google.profileObj.name!= '')
+      if(state.ids.profileObj.name!= '')
         isFabButton = true;
     }
   }
@@ -179,11 +186,11 @@ const mapStateToProps = state => {
 
 
 
-  if(state.google.profileObj && state.google.profileObj.name)
-    profileObjName = state.google.profileObj.name.charAt();
+  if(state.ids.profileObj && state.ids.profileObj.name)
+    profileObjName = state.ids.profileObj.name.charAt();
 
-  if(state.google.profileObj)
-    imageUrl = state.google.profileObj.imageUrl;
+  if(state.ids.profileObj)
+    imageUrl = state.ids.profileObj.imageUrl;
 
   return {
     profileObjName,
@@ -193,6 +200,7 @@ const mapStateToProps = state => {
     GoogleConnectParam : params,
     SideDrawerLoaderVisible : state.uxState.SideDrawerLoaderVisible,
     LogInDetailsVisible : state.uxState.LogInDetailsVisible,
+    IdsLogInDetailsVisible : state.uxState.IdsLogInDetailsVisible,
     ClientId : state.google.GoogleApiParams.clientId,
     ScriptId : state.google.GoogleApiParams.scriptId,
     Scope : state.google.GoogleApiParams.scopes,
@@ -210,37 +218,38 @@ const mapStateToProps = state => {
     theme: state.google.GoogleApiParams.theme,
     jsSrc: state.google.GoogleApiParams.jsSrc,
 
-    QuizMetaData : state.db.quizMetaData,
     DisplayName : state.displayName,
     GoogleApiLoggedIn : state.google.googleApiLoggedIn,
-    ProfileObj : state.google.profileObj
+    ProfileObj : state.ids.profileObj,
+    Connected : state.ids.connected
   };
 };
 
 const mapDispatchToProps = dispatch => {
 
   return {
-    setGoogleApi : loginResponse =>{
-      dispatch(setGoogleApi(loginResponse))
-    },
 
-    setGoogleSignOutState :() =>{
-      dispatch(setGoogleSignOutState())
+    logout :() =>{
+      dispatch(logout())
     },
-
-    setQuizMetaData :data =>{
-      dispatch(setQuizMetaData(data))
+    login :() =>{
+      dispatch(login())
     },
-
-    setCatSelection :data =>{
-      dispatch(setCatSelection(data))
+    setUserInfo :() =>{
+      dispatch(setUserInfo())
     },
-
-    setLoginDetailsVisible :isVisible =>{
-      dispatch(setLoginDetailsVisible(isVisible))
+    setIdsLoginDetailsVisible :isVisible =>{
+      dispatch(setIdsLoginDetailsVisible(isVisible))
+    },
+    loginRedirect : () =>{
+      dispatch(loginRedirect())
+    },
+    setAuth2 : ()=>{
+      dispatch(setAuth2())
     }
+
 
   };
 };
 
-export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(GoogleConnect));
+export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(IDSConnect));

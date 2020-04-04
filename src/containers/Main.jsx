@@ -5,13 +5,12 @@ import {setSideDrawerLoaderVisible } from "../store/actions/uxActions.jsx";
 import { withStyles } from '@material-ui/core/styles';
 import SideDrawer from './SideDrawer/SideDrawer.jsx';
 import TopButtons from './ButtonBar/TopButtons.jsx';
-import TestHistory from './TestHistory.jsx';
 
 const styles = () => ({
 
 });
 
-class QuizEntrance extends Component {
+class Main extends Component {
   constructor(props) {
      super(props);
    }
@@ -23,11 +22,8 @@ class QuizEntrance extends Component {
   render() {
       return (
         <div >
-          <TestHistory></TestHistory>
           <TopButtons  isData = {true} modeChanged = { this.handleInput }/>
           <SideDrawer onOpenClick = {click => this.dataClick = click} />
-
-
         </div>
       );
     }
@@ -36,12 +32,6 @@ class QuizEntrance extends Component {
 const mapStateToProps = state => {
   return {
     SideDrawerLoaderVisible : state.uxState.SideDrawerLoaderVisible,
-    selectQuizCat : state.applicationState.selectQuizCat,
-    selectedQuiz : state.applicationState.selectedQuiz,
-    currentTest : state.db.currentTest,
-    testList : state.db.testList,
-    testActive :state.db.testActive,
-    userAnswersMapQuizInstance: state.db.userAnswersMapQuizInstance
   };
 };
 
@@ -55,4 +45,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(QuizEntrance));
+export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(Main));

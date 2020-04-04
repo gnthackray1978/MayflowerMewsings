@@ -2,12 +2,20 @@
 export default (state = {
   SideDrawerLoaderVisible : true,
   LogInDetailsVisible : false,
+  IdsLogInDetailsVisible :false,
   quizAddMode :false,
   quizDeleteMode :false,
   quizEditMode :false,
   quizEditNameMode :false
 }, action) => {
   switch (action.type) {
+
+
+    case "SET_IDSLOGINLOADVISIBLE":
+      return {
+        ...state,
+        IdsLogInDetailsVisible : action.visible,
+      };
 
     case "SET_LOGINLOADVISIBLE":
       return {

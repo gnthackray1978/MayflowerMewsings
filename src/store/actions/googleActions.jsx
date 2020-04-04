@@ -1,6 +1,6 @@
 import {GoogleLib} from "../../scripts/GoogleLib.js"
 
-import {setQuizMetaData } from "./dbActions.jsx";
+//import {setQuizMetaData } from "./dbActions.jsx";
 
 import {setCatSelection } from "./appStateActions.jsx";
 
@@ -42,6 +42,7 @@ export const setGoogleToken= (googleId,tokenObj,tokenId,accessToken) =>{
     });
   };
 }
+
 export const setGoogleApi = gapi =>{
   return async (dispatch, getState)  => {
 
@@ -168,7 +169,6 @@ export const setGoogleApiSignIn = () =>{
   };
 }
 
-
 export const setGoogleApiActive = isActive =>{
   return async dispatch  => {
     console.log('setGoogleApiActive');
@@ -186,6 +186,23 @@ export const setGoogleSignOutState = () =>{
         type: "SET_GOOGLESIGNOUT",
         googleApiLoggedIn :false
       });
+    });
+  };
+}
+
+
+export const setAuth2 = () =>{
+  return async dispatch  => {
+    dispatch({
+      type: "LOAD_AUTH2"
+    });
+  };
+}
+
+export const setGoogleProfile= () =>{
+  return async dispatch  => {
+    dispatch({
+      type: "LOAD_PROFILE"
     });
   };
 }

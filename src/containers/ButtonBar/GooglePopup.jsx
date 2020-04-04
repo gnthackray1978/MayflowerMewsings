@@ -37,7 +37,6 @@ import {PropTypes,func} from 'prop-types';
 
 
 import ImageButton from "./ImageButton.jsx";
-import GoogleConnect from "./GoogleConnect.jsx";
 
 
 const styles = theme => ({
@@ -83,7 +82,7 @@ class GooglePopup extends React.Component {
 
   render() {
 
-    const {className, theme, ProfileObj,classes, onClose, selectedValue, open } = this.props;
+    const {className, theme, ProfileObj,classes, onClose, selectedValue, open,children } = this.props;
 
     if(this.props.ProfileObj == undefined){
       return (
@@ -111,12 +110,7 @@ class GooglePopup extends React.Component {
               <ListItemText primary= "Surname" secondary={this.props.ProfileObj.familyName}/>
             </ListItem>
             <ListItem>
-              <GoogleConnect mode = 'logout' handleClick = {()=>{
-                  this.handleClose();
-                }
-
-                    }/>
-
+                {children}
             </ListItem>
 
 

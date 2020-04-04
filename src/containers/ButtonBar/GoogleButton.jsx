@@ -105,7 +105,7 @@ class GoogleButton extends React.Component{
       onClick: ()=> onClick(false),
       style :{},
       type,
-      disabled,
+      disabled :false,
       className:defaultStyle()
     };
 

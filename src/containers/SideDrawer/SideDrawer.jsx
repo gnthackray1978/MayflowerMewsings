@@ -9,15 +9,11 @@ import Button from '@material-ui/core/Button';
 import List from '@material-ui/core/List';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import QuizItem from "./QuizItem.jsx";
-import QuizItemCats from "./QuizItemCats.jsx";
 import SelectionToolBar from "./SelectionToolBar.jsx";
 
 import './SideDrawer.css';
 
 import { connect } from "react-redux";
-import {setCatSelection,setQuizName,setQuizCat} from "../../store/actions/appStateActions.jsx";
-import { setQuizMetaData} from "../../store/actions/appStateActions.jsx";
 
 import {setSideDrawerLoaderVisible} from "../../store/actions/uxActions.jsx";
 
@@ -66,7 +62,6 @@ class SideDrawer extends Component {
       super(props);
        this.state = {
          modalShow: this.props.show ,
-         answerInput : ''
        };
 
    }
@@ -94,40 +89,7 @@ class SideDrawer extends Component {
 
   //   console.log("quiz data length: "+this.props.quizData.length);
 
-    const { classes ,SideDrawerLoaderVisible, catSelection} = this.props;
-
-    const setCatSelection = this.props.setCatSelection;
-    const setQuizName = this.props.setQuizName;
-    const setQuizCat = this.props.setQuizCat;
-
-
-    const quizClick = (key => {
-        console.log('selected quiz :' + key.quiz + ' ' + key.key);
-        setQuizName(key);
-        catSelection.forEach((selection)=>{
-         if(selection.key == key.key){
-           selection.open = !selection.open;
-           setCatSelection(catSelection);
-         }
-       });
-
-
-     });
-
-     const catClick = (key => {
-      //   console.log('selected cat :' + key);
-         setQuizCat(key);
-
-      });
-
-    const isVisible = (key)=>{
-    //  console.log('isVisible');
-      let currentQuiz = catSelection.filter(a=>a.key == key);
-
-      if (currentQuiz.length == 0) return false;
-
-      return currentQuiz[0].open;
-    };
+    const { classes ,SideDrawerLoaderVisible} = this.props;
 
     return (
       <div>
@@ -141,19 +103,14 @@ class SideDrawer extends Component {
 
                    <Button color="inherit" className ={classes.tolowerBtn}>
                      <Typography variant="h6" color="inherit" >
-                       Select Quiz
+                       Select Item
                      </Typography>
                    </Button>
 
                </Toolbar>
              </AppBar>
              <List>
-               {this.props.quizMetaData.map(function(item, index){
-                    return <div key= {index}>
-                      <QuizItem label ={item.quiz}  id = {item.key} onClick = {quizClick}></QuizItem>
-                       <QuizItemCats names = {item.cats}  id = {index} onClick = {catClick}  isVisible ={isVisible(item.key)}></QuizItemCats>
-                       </div>;
-               })}
+
              </List>
 
              <SelectionToolBar/>
@@ -180,13 +137,6 @@ SideDrawer.propTypes = {
 const mapStateToProps = state => {
   return {
     SideDrawerLoaderVisible : state.uxState.SideDrawerLoaderVisible,
-    quizMetaData : state.db.quizMetaData,
-    catSelection : state.applicationState.catSelection,
-    selectQuizCat : state.applicationState.selectQuizCat,
-    selectedQuiz : state.applicationState.selectedQuiz,
-//    quizAddMode :state.uxState.quizAddMode,
-  //  quizDeleteMode :state.uxState.quizDeleteMode,
-    ScriptId : state.google.GoogleApiParams.scriptId
   };
 };
 
@@ -195,20 +145,7 @@ const mapDispatchToProps = dispatch => {
   return {
     setSideDrawerLoaderVisible :visible =>{
       dispatch(setSideDrawerLoaderVisible(visible))
-    },
-    setQuizMetaData :data =>{
-      dispatch(setQuizMetaData(data))
-    },
-    setCatSelection :data =>{
-      dispatch(setCatSelection(data))
-    },
-    setQuizName :selectedQuiz =>{
-      dispatch(setQuizName(selectedQuiz))
-    },
-    setQuizCat :selectQuizCat =>{
-      dispatch(setQuizCat(selectQuizCat))
     }
-
   };
 };
 

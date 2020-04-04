@@ -83,6 +83,15 @@ export const setSideDrawerLoaderVisible = visible =>{
   };
 }
 
+export const setIdsLoginDetailsVisible = visible =>{
+  return async dispatch  => {
+    dispatch({
+      type: "SET_IDSLOGINLOADVISIBLE",
+      visible :visible
+    });
+  };
+}
+
 export const setLoginDetailsVisible = visible =>{
   return async dispatch  => {
     dispatch({

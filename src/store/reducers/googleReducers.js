@@ -28,18 +28,43 @@ export default (state = {
     tokenId :undefined,
     accessToken :undefined,
   },
-  profileObj : '',
+  profileObj : {},
   googleApiLoggedIn : false,
-  responseType : ''
+  responseType : '',
+  googleRawToken :undefined,
+  googleTokenExpired : false,
+  auth2loaded:false,
+  profileUrl : 'https://people.googleapis.com/v1/people/me?requestMask.includeField=person.names',
+  setProfileErrorMessage : '',
+  loadProfileByDefault : true
 }, action) => {
 
   switch (action.type) {
 
+      case "SET_GOOGLE_TOKEN":
+        console.log('SET_GOOGLE_TOKEN google reducers');
+        return {
+          ...state,
+          googleRawToken : action.token,
+          googleTokenExpired : action.google_token_expired,
 
+        };
+
+      case "GAPIAUTH_LOADED":
+        return {
+          ...state,
+          auth2loaded : true
+        };
       case "SET_PROFILE":
         return {
           ...state,
           profileObj : action.profileObj,
+        };
+        //SET_PROFILE_ERROR
+      case "SET_PROFILE_ERROR":
+        return {
+          ...state,
+          setProfileErrorMessage : action.errorMessage,
         };
 
       case "SET_GOOGLETOKEN":
@@ -53,7 +78,7 @@ export default (state = {
           ...state,
           googleApiLoggedIn : action.googleApiLoggedIn,
         };
-     
+
       case "SET_GOOGLEBATCH_PROFILE_ISACTIVE_TOKEN":
           return {
             ...state,
