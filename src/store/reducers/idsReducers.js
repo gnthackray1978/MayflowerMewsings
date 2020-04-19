@@ -4,7 +4,7 @@ export default (state = {
   profileObj : {},
 
   IdServParams :{
-    authority: "http://localhost:5000",
+    authority: "https://msgauth01.azurewebsites.net",
     client_id: "js",
     redirect_uri: "http://localhost:1234",
     response_type: "code",
@@ -14,9 +14,24 @@ export default (state = {
     IsExternalLoginOnly :true,
     silent_redirect_uri: 'http://localhost:1234/redirect',
     automaticSilentRenew: true,
-    google_token_uri :'http://localhost:5000/token'
-  //  AllowOfflineAccess : true,
+    google_token_uri :'https://msgauth01.azurewebsites.net/token'
+
   },
+
+  // IdServParams :{
+  //   authority: "http://localhost:5000",
+  //   client_id: "js",
+  //   redirect_uri: "http://localhost:1234",
+  //   response_type: "code",
+  //   scope:"openid profile api1",
+  //   post_logout_redirect_uri: "http://localhost:1234",
+  //   loadUserInfo: true,
+  //   IsExternalLoginOnly :true,
+  //   silent_redirect_uri: 'http://localhost:1234/redirect',
+  //   automaticSilentRenew: true,
+  //   google_token_uri :'http://localhost:5000/token'
+  //
+  // },
   connected :false,
   infoloaded :false,
   googleToken :undefined,

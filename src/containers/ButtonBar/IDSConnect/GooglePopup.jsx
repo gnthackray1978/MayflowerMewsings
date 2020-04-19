@@ -32,7 +32,7 @@ import blue from '@material-ui/core/colors/blue';
 
 import { withStyles } from '@material-ui/core/styles';
 
-import {GoogleLib} from "../../scripts/GoogleLib.js";
+import {GoogleLib} from "../../../scripts/GoogleLib.js";
 import {PropTypes,func} from 'prop-types';
 
 

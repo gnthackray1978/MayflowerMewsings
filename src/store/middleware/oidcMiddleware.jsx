@@ -166,7 +166,13 @@ const googleTokenExpired = (token)=>{
 };
 
 const requestGoogleToken = (dispatcher, google_token_uri,access_token,callback)=>{
+
+  console.log('requestGoogleToken');
+
   var xhr = new XMLHttpRequest();
+
+//  var url = 'https://msgauth01.azurewebsites.net/token/test';
+//
   xhr.open("GET", google_token_uri);
   xhr.onload =  () => {
       var resp = JSON.parse(xhr.response);
@@ -175,6 +181,10 @@ const requestGoogleToken = (dispatcher, google_token_uri,access_token,callback)=
   }
   xhr.setRequestHeader("Authorization", "Bearer " + access_token);
   xhr.send();
+
+
+
+
 };
 
 const makeSignInConfig = (storeAPI)=>{

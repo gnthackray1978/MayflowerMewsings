@@ -5,18 +5,14 @@ import loadScript from './load-script.js';
 import { connect } from "react-redux";
 import { withStyles } from '@material-ui/core/styles';
 import {PropTypes} from 'prop-types';
-//import {setQuizMetaData } from "../../store/actions/dbActions.jsx";
-import {setCatSelection } from "../../store/actions/appStateActions.jsx";
-
-import {setGoogleApi, setGoogleSignOutState,setAuth2} from "../../store/actions/googleActions.jsx";
-import {setUserInfo,login,logout,loginRedirect} from "../../store/actions/idsActions.jsx";
-
-import {setLoginDetailsVisible, setIdsLoginDetailsVisible} from "../../store/actions/uxActions.jsx";
-
-
 import ImageButton from "./ImageButton.jsx";
 import GooglePopup from "./GooglePopup.jsx";
 import GoogleButton from "./GoogleButton.jsx";
+
+
+import {setUserInfo,login,logout,loginRedirect} from "../../../store/actions/idsActions.jsx";
+import {setIdsLoginDetailsVisible} from "../../../store/actions/uxActions.jsx";
+
 
 const styles = theme => ({
   fab: {
@@ -62,6 +58,8 @@ class IDSConnect extends Component {
 
     //this.props.setAuth2();
   }
+
+
 
   renderLogin() {
 
@@ -128,9 +126,6 @@ class IDSConnect extends Component {
 }
 
 IDSConnect.propTypes = {
-  //classes: PropTypes.object.isRequired,
-  setGoogleApi : PropTypes.func,
-  setGoogleSignOutState : PropTypes.func,
   handleClick : PropTypes.func,
   jsSrc: PropTypes.string,
   isImageButton: PropTypes.bool,
@@ -139,8 +134,6 @@ IDSConnect.propTypes = {
   profileObjName: PropTypes.string,
   ProfileObj : PropTypes.object,
   LogInDetailsVisible: PropTypes.bool,
-  setLoginDetailsVisible : PropTypes.func,
-  setGoogleApiSignIn : PropTypes.func,
   onClick : PropTypes.func,
   mode: PropTypes.string,
   disabled : PropTypes.bool,
@@ -244,11 +237,6 @@ const mapDispatchToProps = dispatch => {
     loginRedirect : () =>{
       dispatch(loginRedirect())
     },
-    setAuth2 : ()=>{
-      dispatch(setAuth2())
-    }
-
-
   };
 };
 
