@@ -10,7 +10,7 @@ import ImageButton from "../../LoginShared/ImageButton.jsx";
 import GooglePopup from "../../LoginShared/GooglePopup.jsx";
 import GoogleButton from "../../LoginShared/GoogleButton.jsx";
 
-import {setUserInfo,login,logout,loginRedirect,setIdsLoginScreenVisible} from "../idsActions.jsx";
+import {login,logout,loginRedirect,setIdsLoginScreenVisible} from "../idsActions.jsx";
 
 
 
@@ -50,13 +50,9 @@ class IDSConnect extends Component {
   }
 
   componentDidMount() {
-    const {setUserInfo} = this.props;
+    const {loginRedirect} = this.props;
 
-    //setUserInfo();
-
-    this.props.loginRedirect();
-
-    //this.props.setAuth2();
+    loginRedirect();
   }
 
 
@@ -226,9 +222,6 @@ const mapDispatchToProps = dispatch => {
     },
     login :() =>{
       dispatch(login())
-    },
-    setUserInfo :() =>{
-      dispatch(setUserInfo())
     },
     setIdsLoginScreenVisible :isVisible =>{
       dispatch(setIdsLoginScreenVisible(isVisible))

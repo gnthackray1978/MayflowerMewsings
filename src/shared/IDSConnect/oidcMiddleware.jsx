@@ -248,6 +248,56 @@ const userExpired = (user)=>{
   return true;
 };
 
+const connectRedirect = (connected,mgr,storeAPI)=>{
+
+  if(!connected)
+  {
+      mgr = ensureValidUserManage(mgr,storeAPI,{ response_mode: "query" });
+
+      //try getting user from manager
+      //dispatch action to redux that user loaded if found
+      fetchUser(storeAPI,mgr, (dispatcher)=>{
+        console.log('CONNECT_REDIRECT user not found');
+        console.log('CONNECT_REDIRECT calling signinRedirectCallback');
+        mgr.signinRedirectCallback().then( ()=> {
+            console.log('CONNECT_REDIRECT in signinRedirectCallback');
+
+            //try getting user from manager
+            //dispatch action to redux that user loaded if found
+            fetchUser(dispatcher,mgr, (dispatcher)=>{
+              userInfoFail(dispatcher);
+            });
+
+            dispatcher.dispatch(push("/"));
+       }).catch( (e)=> {
+           console.log('CONNECT_REDIRECT ERROR signinRedirectCallback' + e);
+           dispatcher.dispatch(push("/"));
+       });
+      });
+
+
+   }
+   else{
+     console.log('CONNECT_REDIRECT already connected');
+   }
+
+};
+
+const loadUser =(mgr,storeAPI)=>{
+  console.log('LOAD_USER reached');
+
+  const ids = storeAPI.getState().ids;
+  //if we are not logged in i.e. if we dont have a valid user already
+  if(!ids.loggedIn){
+    mgr = ensureValidUserManage(mgr,storeAPI);
+
+    fetchUser(storeAPI,mgr,(dispatcher)=>{
+        console.log('unhandled fetchUser failure');
+    });
+  }
+
+}
+
 const oidcMiddleware = (url) => {
     let mgr;
 
@@ -340,13 +390,7 @@ const oidcMiddleware = (url) => {
             }
 
             case "LOAD_USER" : {
-              console.log('LOAD_USER reached');
-
-              mgr = ensureValidUserManage(mgr,storeAPI);
-
-              fetchUser(storeAPI,mgr,(dispatcher)=>{
-                  console.log('unhandled fetchUser failure');
-              });
+              loadUser(mgr,storeAPI);
               break;
             }
 
@@ -364,11 +408,40 @@ const oidcMiddleware = (url) => {
             case "IDS_ATTEMPT_CONNECT": {
                 console.log('ATTEMPT_CONNECT starting connection attempt');
 
-                mgr = ensureValidUserManage(mgr,storeAPI);
+                const ids = storeAPI.getState().ids;
+                // we aren't already logged in and
+                // in the middle of an existing auto login
+                if(!ids.loggedIn && !ids.inautoconnect){
+                  mgr = ensureValidUserManage(mgr,storeAPI);
+                  mgr.signinRedirect();
+                }
 
-                mgr.signinRedirect();
                 return;
             }
+
+            case "RELOAD": {
+
+               const query = action.payload;
+
+               if(query.code){
+                 connectRedirect(connected,mgr,storeAPI);
+               }
+               else{
+                 if(query.state){
+                   dispatch({
+                             type: "SET_USER_LOGOUT"
+                           });
+                   dispatch(push("/"));
+                 }else{
+                   console.log('loginRedirect Nothing in query string assumed page has been reloaded somehow');
+                   loadUser(mgr,storeAPI);
+                 }
+
+
+               }
+
+            }
+
 
             case "DISCONNECT": {
                 console.log('DISCONNECT reached');
@@ -399,37 +472,8 @@ const oidcMiddleware = (url) => {
 
             case "CONNECT_REDIRECT": {
                   console.log('CONNECT_REDIRECT reached');
+                  connectRedirect(connected,mgr,storeAPI);
 
-                  if(!connected)
-                  {
-                      mgr = ensureValidUserManage(mgr,storeAPI,{ response_mode: "query" });
-
-                      //try getting user from manager
-                      //dispatch action to redux that user loaded if found
-                      fetchUser(storeAPI,mgr, (dispatcher)=>{
-                        console.log('CONNECT_REDIRECT user not found');
-                        console.log('CONNECT_REDIRECT calling signinRedirectCallback');
-                        mgr.signinRedirectCallback().then( ()=> {
-                            console.log('CONNECT_REDIRECT in signinRedirectCallback');
-
-                            //try getting user from manager
-                            //dispatch action to redux that user loaded if found
-                            fetchUser(dispatcher,mgr, (dispatcher)=>{
-                              userInfoFail(dispatcher);
-                            });
-
-                            dispatcher.dispatch(push("/"));
-                       }).catch( (e)=> {
-                           console.log('CONNECT_REDIRECT ERROR signinRedirectCallback' + e);
-                           dispatcher.dispatch(push("/"));
-                       });
-                      });
-
-
-                   }
-                   else{
-                     console.log('CONNECT_REDIRECT already connected');
-                   }
                 return;
             }
 
