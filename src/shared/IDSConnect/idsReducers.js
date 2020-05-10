@@ -41,10 +41,17 @@ export default (state = {
   access_token : undefined,
   expiresAt : undefined,
   expiresAtDesc : undefined,
-  googleFetchInGoing : false
+  googleFetchInGoing : false,
+  IdsLogInDetailsVisible :false,
 }, action) => {
 
   switch (action.type) {
+
+    case "SET_IDSLOGINLOADVISIBLE":
+      return {
+        ...state,
+        IdsLogInDetailsVisible : action.visible,
+      };
 
     case "SET_USER_FOUND":
       return {

@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from "react-redux";
-import { loginRedirect} from "../store/actions/idsActions.jsx";
-import { setPath} from "../store/actions/pathActions.jsx";
+import { loginRedirect, setPath} from "../idsActions.jsx";
 import { withStyles } from '@material-ui/core/styles';
 
 const styles = theme => ({

@@ -3,6 +3,13 @@ const queryString = require('query-string');
 import { push } from 'react-router-redux';
 
 
+export const setPath = () =>{
+  return async (dispatch, getState)  => {
+      dispatch(push("/"));
+    }
+};
+
+
 export const setUserInfo = () =>{
   return async (dispatch, getState)  => {
 

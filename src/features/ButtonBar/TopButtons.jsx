@@ -7,7 +7,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import Typography from '@material-ui/core/Typography';
 import { connect } from "react-redux";
-import IDSConnect   from "./IDSConnect/IDSConnect.jsx";
+import IDSConnect   from "../../shared/IDSConnect/Components/IDSConnect.jsx";
 import AppsIcon from '@material-ui/icons/Apps';
 
 const styles = theme => ({
@@ -50,8 +50,7 @@ class TopButtons extends Component {
 
     };
 
-
-     return (
+    return (
          <Toolbar>
              <IconButton className={classes.menuButton} color="inherit" aria-label="Menu" onClick={()=>{ modeChanged('data'); }}>
                  <MenuIcon />
@@ -88,9 +87,7 @@ TopButtons.defaultProps  = {
 
 
 const mapStateToProps = state => {
-  return {
-    SideDrawerLoaderVisible : state.uxState.SideDrawerLoaderVisible,
-  };
+  return {};
 };
 
 const mapDispatchToProps = dispatch => {

@@ -36,10 +36,17 @@ export default (state = {
   auth2loaded:false,
   profileUrl : 'https://people.googleapis.com/v1/people/me?requestMask.includeField=person.names',
   setProfileErrorMessage : '',
-  loadProfileByDefault : true
+  loadProfileByDefault : true,
+  LogInDetailsVisible : false,
 }, action) => {
 
   switch (action.type) {
+
+    case "SET_LOGINLOADVISIBLE":
+      return {
+        ...state,
+        LogInDetailsVisible : action.visible,
+      };
 
       case "SET_GOOGLE_TOKEN":
         console.log('SET_GOOGLE_TOKEN google reducers');

@@ -18,8 +18,8 @@ import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
 
 import Main from './Main.jsx';
 
-import IDSRedirect from './IDSRedirect.jsx';
-import store from '../store/store.js';
+import IDSRedirect from './shared/IDSConnect/Components/IDSRedirect.jsx';
+import store from './store.js';
 
 
 const styles = theme => ({
@@ -36,6 +36,8 @@ class App extends Component {
    componentDidMount() {
 
    }
+
+
 
    render() {
 
@@ -62,7 +64,7 @@ class App extends Component {
 }
 
 const mapStateToProps = state => {
-  return {    
+  return {
    };
 };
 

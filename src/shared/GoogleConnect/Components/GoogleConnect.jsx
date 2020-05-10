@@ -1,17 +1,18 @@
 import Fab from '@material-ui/core/Fab';
 import React, { Component } from 'react';
 import blue from '@material-ui/core/colors/blue';
-import loadScript from './load-script.js';
+
 import { connect } from "react-redux";
 import { withStyles } from '@material-ui/core/styles';
 import {PropTypes} from 'prop-types';
-import {setCatSelection } from "../../store/actions/appStateActions.jsx";
-import {setGoogleApi, setGoogleSignOutState} from "../../store/actions/googleActions.jsx";
-import {setLoginDetailsVisible } from "../../store/actions/uxActions.jsx";
 
-import ImageButton from "./ImageButton.jsx";
-import GooglePopup from "./GooglePopup.jsx";
-import GoogleButton from "./GoogleButton.jsx";
+import {setGoogleApi, setGoogleSignOutState, setLoginScreenVisible} from "../googleActions.jsx";
+
+import loadScript from "../../LoginShared/load-script.js";
+import ImageButton from "../../LoginShared/ImageButton.jsx";
+import GooglePopup from "../../LoginShared/GooglePopup.jsx";
+import GoogleButton from "../../LoginShared/GoogleButton.jsx";
+
 
 const styles = theme => ({
   fab: {
@@ -74,7 +75,8 @@ class GoogleConnect extends Component {
   renderLogin() {
 
 
-    const { classes, isImageButton, isFabButton, imageUrl,profileObjName, ProfileObj, LogInDetailsVisible, setLoginDetailsVisible, setGoogleApiSignIn} = this.props;
+    const { classes, isImageButton, isFabButton, imageUrl,profileObjName,
+      ProfileObj, LogInDetailsVisible, setLoginScreenVisible, setGoogleApiSignIn} = this.props;
 
 
     let buttons = (
@@ -86,16 +88,16 @@ class GoogleConnect extends Component {
 //    console.log(imageUrl);
 
     if(isImageButton)
-      buttons = <ImageButton url = {imageUrl}  onClick={()=>setLoginDetailsVisible(true)}/>
+      buttons = <ImageButton url = {imageUrl}  onClick={()=>setLoginScreenVisible(true)}/>
 
     if(isFabButton)
-      buttons = <Fab color="primary" aria-label="Add" className={classes.fab}  onClick={()=>setLoginDetailsVisible(true)}>{profileObjName}</Fab>
+      buttons = <Fab color="primary" aria-label="Add" className={classes.fab}  onClick={()=>setLoginScreenVisible(true)}>{profileObjName}</Fab>
 
      return (
          <div>
              {buttons}
              <GooglePopup open={LogInDetailsVisible} ProfileObj ={ProfileObj} >
-               <GoogleConnect mode = 'logout' handleClick = {()=>setLoginDetailsVisible(false)}/>
+               <GoogleConnect mode = 'logout' handleClick = {()=>setLoginScreenVisible(false)}/>
              </GooglePopup>
          </div>
      )
@@ -133,7 +135,7 @@ GoogleConnect.propTypes = {
   profileObjName: PropTypes.string,
   ProfileObj : PropTypes.object,
   LogInDetailsVisible: PropTypes.bool,
-  setLoginDetailsVisible : PropTypes.func,
+  setLoginScreenVisible : PropTypes.func,
   setGoogleApiSignIn : PropTypes.func,
   onClick : PropTypes.func,
   mode: PropTypes.string,
@@ -191,8 +193,8 @@ const mapStateToProps = state => {
     isImageButton : isImageButton,
     isFabButton : isFabButton,
     GoogleConnectParam : params,
-    SideDrawerLoaderVisible : state.uxState.SideDrawerLoaderVisible,
-    LogInDetailsVisible : state.uxState.LogInDetailsVisible,
+
+    LogInDetailsVisible : state.google.LogInDetailsVisible,
     ClientId : state.google.GoogleApiParams.clientId,
     ScriptId : state.google.GoogleApiParams.scriptId,
     Scope : state.google.GoogleApiParams.scopes,
@@ -232,12 +234,8 @@ const mapDispatchToProps = dispatch => {
       dispatch(setQuizMetaData(data))
     },
 
-    setCatSelection :data =>{
-      dispatch(setCatSelection(data))
-    },
-
-    setLoginDetailsVisible :isVisible =>{
-      dispatch(setLoginDetailsVisible(isVisible))
+    setLoginScreenVisible :isVisible =>{
+      dispatch(setLoginScreenVisible(isVisible))
     }
 
   };

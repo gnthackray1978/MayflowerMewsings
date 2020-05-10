@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
-import {setSideDrawerLoaderVisible } from "../store/actions/uxActions.jsx";
 
 import { withStyles } from '@material-ui/core/styles';
-import SideDrawer from './SideDrawer/SideDrawer.jsx';
-import TopButtons from './ButtonBar/TopButtons.jsx';
+import SideDrawer from './features/SideDrawer/SideDrawer.jsx';
+import TopButtons from './features/ButtonBar/TopButtons.jsx';
 
 const styles = () => ({
 
@@ -23,26 +22,19 @@ class Main extends Component {
       return (
         <div >
           <TopButtons  isData = {true} modeChanged = { this.handleInput }/>
-          <SideDrawer onOpenClick = {click => this.dataClick = click} />
+          <SideDrawer onOpenClick = {click => this.dataClick = click}/>
         </div>
       );
     }
 }
 
 const mapStateToProps = state => {
-  return {
-    SideDrawerLoaderVisible : state.uxState.SideDrawerLoaderVisible,
-  };
+  return {};
 };
 
 const mapDispatchToProps = dispatch => {
 
-  return {
-    setSideDrawerLoaderVisible :visible =>{
-      dispatch(setSideDrawerLoaderVisible(visible))
-    }
-
-  };
+  return { };
 };
 
 export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(Main));

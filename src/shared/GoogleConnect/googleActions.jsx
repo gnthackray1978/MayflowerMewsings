@@ -1,4 +1,4 @@
-import {GoogleLib} from "../../scripts/GoogleLib.js"
+import {GoogleLib} from "./GoogleLib.js";
 
 //import {setQuizMetaData } from "./dbActions.jsx";
 

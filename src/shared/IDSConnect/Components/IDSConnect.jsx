@@ -1,17 +1,17 @@
 import Fab from '@material-ui/core/Fab';
 import React, { Component } from 'react';
 import blue from '@material-ui/core/colors/blue';
-import loadScript from './load-script.js';
 import { connect } from "react-redux";
 import { withStyles } from '@material-ui/core/styles';
 import {PropTypes} from 'prop-types';
-import ImageButton from "./ImageButton.jsx";
-import GooglePopup from "./GooglePopup.jsx";
-import GoogleButton from "./GoogleButton.jsx";
 
+import loadScript from "../../LoginShared/load-script.js";
+import ImageButton from "../../LoginShared/ImageButton.jsx";
+import GooglePopup from "../../LoginShared/GooglePopup.jsx";
+import GoogleButton from "../../LoginShared/GoogleButton.jsx";
 
-import {setUserInfo,login,logout,loginRedirect} from "../../../store/actions/idsActions.jsx";
-import {setIdsLoginDetailsVisible} from "../../../store/actions/uxActions.jsx";
+import {setUserInfo,login,logout,loginRedirect,setIdsLoginScreenVisible} from "../idsActions.jsx";
+
 
 
 const styles = theme => ({
@@ -65,7 +65,7 @@ class IDSConnect extends Component {
 
 
     const { classes,login,IdsLogInDetailsVisible,ProfileObj,imageUrl,isImageButton,
-            isFabButton,profileObjName,setIdsLoginDetailsVisible,Connected,logout} = this.props;
+            isFabButton,profileObjName,setIdsLoginScreenVisible,Connected,logout} = this.props;
 
   //  console.log('imageUrl: ' + imageUrl);
 
@@ -74,11 +74,11 @@ class IDSConnect extends Component {
     if(Connected){
         if(isImageButton)
           buttons = <ImageButton url = {imageUrl}
-            onClick={()=>setIdsLoginDetailsVisible(true)}/>
+            onClick={()=>setIdsLoginScreenVisible(true)}/>
 
         if(isFabButton)
           buttons = <Fab color="primary" aria-label="Add" className={classes.fab}
-            onClick={()=>setIdsLoginDetailsVisible(true)}>{profileObjName}</Fab>
+            onClick={()=>setIdsLoginScreenVisible(true)}>{profileObjName}</Fab>
     }
     else{
         buttons = (
@@ -97,9 +97,9 @@ class IDSConnect extends Component {
                           // console.log('Logout: ');
 
                             logout();
-                            setIdsLoginDetailsVisible(false);
+                            setIdsLoginScreenVisible(false);
                           }}/>
-                      <GoogleButton label ="Cancel" mode = "cancel" onClick ={()=>setIdsLoginDetailsVisible(false)}/>
+                      <GoogleButton label ="Cancel" mode = "cancel" onClick ={()=>setIdsLoginScreenVisible(false)}/>
                   </div>
               </GooglePopup>
          </div>
@@ -191,9 +191,8 @@ const mapStateToProps = state => {
     isImageButton : isImageButton,
     isFabButton : isFabButton,
     GoogleConnectParam : params,
-    SideDrawerLoaderVisible : state.uxState.SideDrawerLoaderVisible,
-    LogInDetailsVisible : state.uxState.LogInDetailsVisible,
-    IdsLogInDetailsVisible : state.uxState.IdsLogInDetailsVisible,
+    LogInDetailsVisible : state.google.LogInDetailsVisible,
+    IdsLogInDetailsVisible : state.ids.IdsLogInDetailsVisible,
     ClientId : state.google.GoogleApiParams.clientId,
     ScriptId : state.google.GoogleApiParams.scriptId,
     Scope : state.google.GoogleApiParams.scopes,
@@ -231,8 +230,8 @@ const mapDispatchToProps = dispatch => {
     setUserInfo :() =>{
       dispatch(setUserInfo())
     },
-    setIdsLoginDetailsVisible :isVisible =>{
-      dispatch(setIdsLoginDetailsVisible(isVisible))
+    setIdsLoginScreenVisible :isVisible =>{
+      dispatch(setIdsLoginScreenVisible(isVisible))
     },
     loginRedirect : () =>{
       dispatch(loginRedirect())

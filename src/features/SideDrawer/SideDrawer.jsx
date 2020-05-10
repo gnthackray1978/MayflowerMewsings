@@ -15,8 +15,6 @@ import './SideDrawer.css';
 
 import { connect } from "react-redux";
 
-import {setSideDrawerLoaderVisible} from "../../store/actions/uxActions.jsx";
-
 const styles = theme => ({
 
   root: {
@@ -89,7 +87,7 @@ class SideDrawer extends Component {
 
   //   console.log("quiz data length: "+this.props.quizData.length);
 
-    const { classes ,SideDrawerLoaderVisible} = this.props;
+    const { classes } = this.props;
 
     return (
       <div>
@@ -124,29 +122,18 @@ class SideDrawer extends Component {
 
 SideDrawer.defaultProps = {
   show: false,
-
 };
 
 SideDrawer.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired
 };
 
-
-
-
 const mapStateToProps = state => {
-  return {
-    SideDrawerLoaderVisible : state.uxState.SideDrawerLoaderVisible,
-  };
+  return {};
 };
 
 const mapDispatchToProps = dispatch => {
-
-  return {
-    setSideDrawerLoaderVisible :visible =>{
-      dispatch(setSideDrawerLoaderVisible(visible))
-    }
-  };
+  return {};
 };
 
 
