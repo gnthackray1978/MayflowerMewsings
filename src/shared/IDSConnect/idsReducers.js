@@ -50,7 +50,7 @@ export default (state = {
     case "SET_IDSLOGINLOADVISIBLE":
       return {
         ...state,
-        IdsLogInDetailsVisible : action.visible,
+        IdsLogInDetailsVisible : action.payload,
       };
 
     case "SET_USER_FOUND":

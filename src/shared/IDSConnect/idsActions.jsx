@@ -18,6 +18,17 @@ export const login = () =>{
 
     }
 };
+//
+export const setIdsLoginScreenVisible = (isVisible) =>{
+  return async (dispatch, getState)  => {
+
+    dispatch({
+      type: "SET_IDSLOGINLOADVISIBLE",
+      payload : isVisible
+    });
+
+    }
+};
 
 export const logout = () =>{
   return async (dispatch, getState)  => {
@@ -32,15 +43,10 @@ export const loginRedirect = () =>{
   var query = queryString.parse(window.location.search);
 
   return async (dispatch, getState)  => {
-
-    return async (dispatch, getState)  => {
-         dispatch({
-           type: "RELOAD",
-           payload : query
-         });
-      }
-
-
-
+       dispatch({
+         type: "RELOAD",
+         payload : query
+       });
     }
+
 };

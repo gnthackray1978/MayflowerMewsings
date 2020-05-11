@@ -423,11 +423,15 @@ const oidcMiddleware = (url) => {
 
                const query = action.payload;
 
+
+
                if(query.code){
+                 console.log('reload with: ' + query.code);
                  connectRedirect(connected,mgr,storeAPI);
                }
                else{
                  if(query.state){
+                   console.log('reload with: ' + query.state);
                    dispatch({
                              type: "SET_USER_LOGOUT"
                            });
