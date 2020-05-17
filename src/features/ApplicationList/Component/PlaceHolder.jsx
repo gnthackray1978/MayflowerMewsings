@@ -5,7 +5,7 @@ import Button from '@material-ui/core/Button';
 import InputBase from '@material-ui/core/InputBase';
 import { connect } from "react-redux";
 
-import './SideDrawer.css';
+import './ApplicationList.css';
 
 const styles = theme => ({
 

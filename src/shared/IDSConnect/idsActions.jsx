@@ -31,6 +31,7 @@ export const setIdsLoginScreenVisible = (isVisible) =>{
 };
 
 export const logout = () =>{
+  console.log('logout action');
   return async (dispatch, getState)  => {
        dispatch({
          type: "DISCONNECT",

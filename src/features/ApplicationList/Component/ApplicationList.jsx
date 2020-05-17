@@ -9,7 +9,9 @@ import Button from '@material-ui/core/Button';
 import List from '@material-ui/core/List';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import ApplicationList from "../ApplicationList/Component/ApplicationList.jsx";
+import SelectionToolBar from "./SelectionToolBar.jsx";
+
+import './ApplicationList.css';
 
 import { connect } from "react-redux";
 
@@ -52,52 +54,48 @@ const styles = theme => ({
    },
 });
 
-class SideDrawer extends Component {
+class ApplicationList extends Component {
 
    constructor(props) {
       super(props);
-       this.state = {
-         modalShow: this.props.show ,
-       };
-
    }
 
-   componentDidMount() {
-
-     this.props.onOpenClick(()=>{
-       this.setState({ modalShow: true });
-     });
-
-   }
-
-   clearLayout(event){
-    this.props.activateLayout(false);
-   }
 
    render() {
 
   //   console.log("quiz data length: "+this.props.quizData.length);
 
-    const { classes } = this.props;
+    const { classes, closeDrawer} = this.props;
+
     return (
-      <div>
-        <Drawer open = {this.state.modalShow} >
-            <ApplicationList closeDrawer = {()=>{
-              if(this.state.modalShow)
-                this.setState({ modalShow: false });
-              }}/>
-        </Drawer>
-      </div>
+        <div className = "inner">
+           <AppBar position="static">
+             <Toolbar>
+                 <IconButton className={classes.menuButton} color="inherit"
+                   aria-label="Menu" onClick={closeDrawer} >
+                   <MenuIcon/>
+                 </IconButton>
+
+                 <Button color="inherit" className ={classes.tolowerBtn}>
+                   <Typography variant="h6" color="inherit" >
+                     Select Item
+                   </Typography>
+                 </Button>
+
+             </Toolbar>
+           </AppBar>
+           <List>
+
+           </List>
+           <SelectionToolBar/>
+        </div>
     );
   }
 }
 
-SideDrawer.defaultProps = {
-  show: false,
-};
-
-SideDrawer.propTypes = {
-  classes: PropTypes.object.isRequired
+ApplicationList.propTypes = {
+  classes: PropTypes.object.isRequired,
+  toggleDrawer : PropTypes.func
 };
 
 const mapStateToProps = state => {
@@ -109,4 +107,4 @@ const mapDispatchToProps = dispatch => {
 };
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(SideDrawer));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(ApplicationList));

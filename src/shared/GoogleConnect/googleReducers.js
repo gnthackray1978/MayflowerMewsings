@@ -31,8 +31,8 @@ export default (state = {
   profileObj : {},
   googleApiLoggedIn : false,
   responseType : '',
-  googleRawToken :undefined,
-  googleTokenExpired : false,
+  //googleRawToken :undefined,
+  //googleTokenExpired : false,
   auth2loaded:false,
   profileUrl : 'https://people.googleapis.com/v1/people/me?requestMask.includeField=person.names',
   setProfileErrorMessage : '',
@@ -48,14 +48,15 @@ export default (state = {
         LogInDetailsVisible : action.visible,
       };
 
-      case "SET_GOOGLE_TOKEN":
-        console.log('SET_GOOGLE_TOKEN google reducers');
-        return {
-          ...state,
-          googleRawToken : action.token,
-          googleTokenExpired : action.google_token_expired,
-
-        };
+//moved to ids reducers
+      // case "SET_GOOGLE_TOKEN":
+      //   console.log('SET_GOOGLE_TOKEN google reducers');
+      //   return {
+      //     ...state,
+      //     googleRawToken : action.token,
+      //     googleTokenExpired : action.google_token_expired,
+      //
+      //   };
 
       case "GAPIAUTH_LOADED":
         return {

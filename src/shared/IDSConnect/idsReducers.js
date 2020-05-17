@@ -35,17 +35,39 @@ export default (state = {
   connected :false,
   infoloaded :false,
   googleToken :undefined,
+  googleRawToken :undefined,
+  googleTokenExpired : false,
+  googleFetchOnGoing : false,
   expiring :false,
   expired :false,
   silentRenewError : '',
   access_token : undefined,
   expiresAt : undefined,
   expiresAtDesc : undefined,
-  googleFetchInGoing : false,
-  IdsLogInDetailsVisible :false,
+
+  IdsLogInDetailsVisible :false
+
 }, action) => {
 
   switch (action.type) {
+
+    case "GOOGLE_TOKEN_EXPIRED":
+      console.log('GOOGLE_TOKEN_EXPIRED');
+      return {
+        ...state,
+        googleRawToken : action.token,
+        googleTokenExpired : true,
+        googleFetchOnGoing : false
+      };
+
+    case "SET_GOOGLE_TOKEN":
+      console.log('SET_GOOGLE_TOKEN');
+      return {
+        ...state,
+        googleRawToken : action.token,
+        googleTokenExpired : false,
+        googleFetchOnGoing : false
+      };
 
     case "SET_IDSLOGINLOADVISIBLE":
       return {
@@ -119,11 +141,18 @@ export default (state = {
           connected : true,
           profileObj : action.profileObj,
           access_token : action.access_token,
+          
           expiring :false,
           expired :false,
           expiresAt :action.expires_at,
-          expiresAtDesc : expires.toString()
+          expiresAtDesc : expires.toString(),
+
+          googleRawToken : action.token,
+          googleTokenExpired : false,
+          googleFetchOnGoing : false
         };
+
+
 
       case "AUTH_FAILED":
         return {
@@ -143,13 +172,13 @@ export default (state = {
         case "RETRIEVE_GOOGLE_TOKEN":
           return {
             ...state,
-             googleFetchInGoing :true
+             googleFetchOnGoing :true
           };
 
-        case "FINISHED_GOOGLE_TOKEN_CALL":
+        case "FINISHED_GOOGLE_FETCH":
           return {
             ...state,
-             googleFetchInGoing :false
+             googleFetchOnGoing :false
           };
 
 
