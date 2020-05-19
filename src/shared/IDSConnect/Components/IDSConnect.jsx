@@ -51,7 +51,7 @@ class IDSConnect extends Component {
 
   componentDidMount() {
     const {loginRedirect} = this.props;
-    console.log('IDSConnect componentDidMount');
+//    console.log('IDSConnect componentDidMount');
     loginRedirect();
   }
 

@@ -87,13 +87,13 @@ export default (state = {
       };
 
 //silentRenewError
-    case "SET_ACCESS_TOKEN_EXPIRED":
-      return {
-        ...state,
-        connected :false,
-        expiring :false,
-        expired :true
-      };
+    // case "SET_ACCESS_TOKEN_EXPIRED":
+    //   return {
+    //     ...state,
+    //     connected :false,
+    //     expiring :false,
+    //     expired :true
+    //   };
 
     case "SET_USER_LOADED":
       return {
@@ -117,11 +117,7 @@ export default (state = {
         googleToken :undefined
       };
 
-      case "CONNECT_REDIRECT":
-        return {
-          ...state,
-        //  connected : action.connected,
-        };
+     
 
         case "SET_CONNECTED":
           return {
@@ -141,7 +137,7 @@ export default (state = {
           connected : true,
           profileObj : action.profileObj,
           access_token : action.access_token,
-          
+
           expiring :false,
           expired :false,
           expiresAt :action.expires_at,
