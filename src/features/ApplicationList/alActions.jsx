@@ -1,8 +1,8 @@
 import { createAction } from 'redux-api-middleware';
 
-import { FETCHAPPLIST_START, FETCHAPPLIST_SUCCESS, FETCHAPPLIST_FAIL } from '../actionTypes.jsx';
+import { FETCHAPPLIST_START, FETCHAPPLIST_SUCCESS, FETCHAPPLIST_FAIL } from './actionTypes.jsx';
 
-import { appListURI } from '../constants.js';
+import { appListURI } from './constants.js';
 
 export const fetchApplicationList = (access_token) => createAction({
   endpoint: appListURI,

@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { withStyles } from '@material-ui/core/styles';
 import SideDrawer from './features/SideDrawer/SideDrawer.jsx';
 import TopButtons from './features/ButtonBar/TopButtons.jsx';
+import {AuthProvider} from './shared/IDSConnect/AuthProvider.jsx'
 
 const styles = () => ({
 
@@ -20,10 +21,12 @@ class Main extends Component {
 
   render() {
       return (
-        <div >
-          <TopButtons isData = {true} modeChanged = { this.handleInput }/>
-          <SideDrawer onOpenClick = {click => this.dataClick = click}/>
-        </div>
+        <AuthProvider>
+          <div >
+            <TopButtons isData = {true} modeChanged = { this.handleInput }/>
+            <SideDrawer onOpenClick = {click => this.dataClick = click}/>
+          </div>
+        </AuthProvider>
       );
     }
 }
