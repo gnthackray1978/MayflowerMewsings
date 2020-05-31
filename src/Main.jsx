@@ -21,7 +21,7 @@ class Main extends Component {
   render() {
       return (
         <div >
-          <TopButtons  isData = {true} modeChanged = { this.handleInput }/>
+          <TopButtons isData = {true} modeChanged = { this.handleInput }/>
           <SideDrawer onOpenClick = {click => this.dataClick = click}/>
         </div>
       );
@@ -29,7 +29,9 @@ class Main extends Component {
 }
 
 const mapStateToProps = state => {
-  return {};
+  return {
+    access_token : state.ids.access_token,
+  };
 };
 
 const mapDispatchToProps = dispatch => {

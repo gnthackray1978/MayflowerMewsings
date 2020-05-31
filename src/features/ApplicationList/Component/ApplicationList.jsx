@@ -10,6 +10,7 @@ import List from '@material-ui/core/List';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import SelectionToolBar from "./SelectionToolBar.jsx";
+import {fetchApplicationList} from "../alActions.jsx";
 
 import './ApplicationList.css';
 
@@ -58,8 +59,14 @@ class ApplicationList extends Component {
 
    constructor(props) {
       super(props);
+
    }
 
+   componentDidMount(){
+    const { access_token} = this.props;
+
+    fetchApplicationList(access_token);
+   }
 
    render() {
 
@@ -99,7 +106,9 @@ ApplicationList.propTypes = {
 };
 
 const mapStateToProps = state => {
-  return {};
+  return {
+
+  };
 };
 
 const mapDispatchToProps = dispatch => {
