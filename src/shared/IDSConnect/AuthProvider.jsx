@@ -6,9 +6,8 @@ const AuthContext = React.createContext()
 
 function _AuthProvider(props) {
 
-  //const [state, dispatch] = React.useReducer(countReducer, {count: 0})
   const {Connected} = props;
-  //let Connected =1;
+
   return (
     <AuthContext.Provider value={Connected}>
         {props.children}
