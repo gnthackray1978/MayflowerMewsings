@@ -4,13 +4,14 @@ import { connect } from "react-redux";
 const AuthContext = React.createContext()
 
 
-function _AuthProvider({children}) {
+function _AuthProvider(props) {
+
   //const [state, dispatch] = React.useReducer(countReducer, {count: 0})
- //const {Connected} = this.props;
- let connected =1;
+  const {Connected} = props;
+  //let Connected =1;
   return (
-    <AuthContext.Provider value={connected}>
-        {children}
+    <AuthContext.Provider value={Connected}>
+        {props.children}
     </AuthContext.Provider>
   )
 }
