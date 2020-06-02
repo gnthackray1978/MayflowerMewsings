@@ -83,9 +83,8 @@ class GooglePopup extends React.Component {
     const {className, theme, ProfileObj,classes, onClose, selectedValue, open,children } = this.props;
 
     if(this.props.ProfileObj == undefined){
-      return (
-        <Dialog onClose={this.handleClose} aria-labelledby="simple-dialog-title" open = {open}></Dialog>
-      );
+     
+      return null;
     }
 
     return (

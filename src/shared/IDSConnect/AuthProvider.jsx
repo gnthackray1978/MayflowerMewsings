@@ -4,11 +4,12 @@ import { connect } from "react-redux";
 const AuthContext = React.createContext()
 
 
-function _AuthProvider({children}, {Connected}) {
+function _AuthProvider({children}) {
   //const [state, dispatch] = React.useReducer(countReducer, {count: 0})
  //const {Connected} = this.props;
+ let connected =1;
   return (
-    <AuthContext.Provider value={Connected}>
+    <AuthContext.Provider value={connected}>
         {children}
     </AuthContext.Provider>
   )
@@ -19,7 +20,7 @@ function useAuthProvider() {
   if (context === undefined) {
     throw new Error('useCountState must be used within a CountProvider')
   }
-  return context
+  return context;
 }
 
 

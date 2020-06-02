@@ -11,6 +11,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import SelectionToolBar from "./SelectionToolBar.jsx";
 import {fetchApplicationList} from "../alActions.jsx";
+import {useAuthProvider} from "../../../shared/IDSConnect/AuthProvider.jsx";
 
 import './ApplicationList.css';
 
@@ -55,50 +56,44 @@ const styles = theme => ({
    },
 });
 
-class ApplicationList extends Component {
+function ApplicationList(props) {
+  console.log('ApplicationList');
+  //const { access_token} = props;
 
-   constructor(props) {
-      super(props);
+  let tp = useAuthProvider();
 
-   }
+//  fetchApplicationList(access_token);
 
-   componentDidMount(){
-    const { access_token} = this.props;
+console.log(tp);
 
-    fetchApplicationList(access_token);
-   }
+  const { classes, closeDrawer} = props;
 
-   render() {
+  return (
+      <div className = "inner">
+         <AppBar position="static">
+           <Toolbar>
+               <IconButton className={classes.menuButton} color="inherit"
+                 aria-label="Menu" onClick={closeDrawer} >
+                 <MenuIcon/>
+               </IconButton>
 
-  //   console.log("quiz data length: "+this.props.quizData.length);
+               <Button color="inherit" className ={classes.tolowerBtn}>
+                 <Typography variant="h6" color="inherit" >
+                   Select Item
+                 </Typography>
+               </Button>
 
-    const { classes, closeDrawer} = this.props;
+           </Toolbar>
+         </AppBar>
+         <List>
 
-    return (
-        <div className = "inner">
-           <AppBar position="static">
-             <Toolbar>
-                 <IconButton className={classes.menuButton} color="inherit"
-                   aria-label="Menu" onClick={closeDrawer} >
-                   <MenuIcon/>
-                 </IconButton>
+         </List>
+         <SelectionToolBar/>
+      </div>
+  );
 
-                 <Button color="inherit" className ={classes.tolowerBtn}>
-                   <Typography variant="h6" color="inherit" >
-                     Select Item
-                   </Typography>
-                 </Button>
-
-             </Toolbar>
-           </AppBar>
-           <List>
-
-           </List>
-           <SelectionToolBar/>
-        </div>
-    );
-  }
 }
+
 
 ApplicationList.propTypes = {
   classes: PropTypes.object.isRequired,
@@ -112,7 +107,9 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return {};
+  return {
+
+  };
 };
 
 
