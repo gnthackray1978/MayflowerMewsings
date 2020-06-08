@@ -58,13 +58,13 @@ const styles = theme => ({
 
 function ApplicationList(props) {
   console.log('ApplicationList');
-  //const { access_token} = props;
+  const { fetchApplicationListInternal} = props;
 
-  let tp = useAuthProvider();
+//  let tp = useAuthProvider();
 
-//  fetchApplicationList(access_token);
+  fetchApplicationListInternal();
 
-console.log(tp);
+//console.log(tp);
 
   const { classes, closeDrawer} = props;
 
@@ -108,7 +108,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-
+    fetchApplicationListInternal: () => dispatch(fetchApplicationList()),
   };
 };
 

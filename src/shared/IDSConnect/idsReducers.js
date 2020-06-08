@@ -42,7 +42,7 @@ export default (state = {
   expiring :false,
   expired :false,
   silentRenewError : '',
-  access_token : undefined,
+  access_token : '',
   expiresAt : undefined,
   expiresAtDesc : undefined,
   expirationHandled :false,

@@ -1,15 +1,18 @@
 import React from 'react'
 import { connect } from "react-redux";
 
+console.log('context created');
 const AuthContext = React.createContext()
 
 
 function _AuthProvider(props) {
 
-  const {Connected} = props;
+  const {access_token} = props;
+
+//  var access_token =1;
 
   return (
-    <AuthContext.Provider value={Connected}>
+    <AuthContext.Provider value={access_token}>
         {props.children}
     </AuthContext.Provider>
   )
@@ -18,7 +21,7 @@ function _AuthProvider(props) {
 function useAuthProvider() {
   const context = React.useContext(AuthContext);
   if (context === undefined) {
-    throw new Error('useCountState must be used within a CountProvider')
+    throw new Error('useAuthProvider must be used within a AuthProvider')
   }
   return context;
 }
@@ -26,7 +29,7 @@ function useAuthProvider() {
 
 const mapStateToProps = state => {
   return {
-    Connected : state.ids.connected
+    access_token : state.ids.access_token
   };
 };
 

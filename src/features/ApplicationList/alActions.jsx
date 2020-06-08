@@ -4,7 +4,7 @@ import { FETCHAPPLIST_START, FETCHAPPLIST_SUCCESS, FETCHAPPLIST_FAIL } from './a
 
 import { appListURI } from './constants.js';
 
-export const fetchApplicationList = (access_token) => createAction({
+export const fetchApplicationList = () => createAction({
   endpoint: appListURI,
   method: 'GET',
   headers: { 'Content-Type': 'application/json' },

@@ -1,1 +1,1 @@
-export const appListURI = 'https://msgauth01.azurewebsites.net/home/Index';
+export const appListURI = 'https://msgapigen01.azurewebsites.net/api/identity';

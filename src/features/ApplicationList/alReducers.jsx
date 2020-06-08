@@ -1,4 +1,4 @@
-import { FETCHAPPLIST_START, FETCHAPPLIST_SUCCESS, FETCHAPPLIST_FAIL } from '../actionTypes.jsx';
+import { FETCHAPPLIST_START, FETCHAPPLIST_SUCCESS, FETCHAPPLIST_FAIL } from './actionTypes.jsx';
 
 export default (state = {
   appList :undefined,
@@ -10,12 +10,14 @@ export default (state = {
   switch (action.type) {
 
       case "FETCHAPPLIST_START":
+          console.log('FETCHAPPLIST_START');
           return {
             ...state,
              isFetchingList :true,
              error: undefined
           };
       case "FETCHAPPLIST_SUCCESS":
+          console.log('FETCHAPPLIST_SUCCESS');
           return {
             ...state,
              appList : action.payload,
@@ -23,6 +25,7 @@ export default (state = {
              error: ''
           };
       case "FETCHAPPLIST_FAIL":
+          console.log('FETCHAPPLIST_FAIL');
           return {
             ...state,
             error : action.payload,
