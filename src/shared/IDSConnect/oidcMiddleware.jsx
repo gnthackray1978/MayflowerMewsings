@@ -25,7 +25,7 @@ const makeLoginDetailAction = (user, googleToken)=>{
             type: "SET_USERINFO_SUCCESS",
             profileObj :{
               name : user.profile.name,
-              email :'not retrieved',
+              email :user.profile.email,
               givenName : user.profile.given_name,
               familyName : user.profile.family_name,
               userName : 'not retrieved',
