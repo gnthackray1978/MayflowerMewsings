@@ -9,8 +9,7 @@ import Button from '@material-ui/core/Button';
 import List from '@material-ui/core/List';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import ApplicationList from "../ApplicationList/Component/ApplicationList.jsx";
-
+import ApplicationList from "../ApplicationList/ApplicationList.jsx";
 import { connect } from "react-redux";
 
 const styles = theme => ({
@@ -63,8 +62,10 @@ class SideDrawer extends Component {
    }
 
    componentDidMount() {
+     const { onOpenClick, fetchDogs } = this.props;
 
-     this.props.onOpenClick(()=>{
+     onOpenClick(()=>{
+
        this.setState({ modalShow: true });
      });
 
@@ -74,9 +75,9 @@ class SideDrawer extends Component {
     this.props.activateLayout(false);
    }
 
-   render() {
 
-  //   console.log("quiz data length: "+this.props.quizData.length);
+
+   render() {
 
     const { classes } = this.props;
     return (
@@ -105,7 +106,10 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return {};
+  return {
+    fetchDogs : () =>{
+      dispatch(fetchDogs())
+    }};
 };
 
 

@@ -9,9 +9,11 @@ import Button from '@material-ui/core/Button';
 import List from '@material-ui/core/List';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
+import { ApolloClient, InMemoryCache, ApolloProvider, gql, useQuery } from '@apollo/client';
+
 import SelectionToolBar from "./SelectionToolBar.jsx";
-import {fetchApplicationList} from "../alActions.jsx";
-import {useAuthProvider} from "../../../shared/IDSConnect/AuthProvider.jsx";
+import {applicationListLoaded} from "../uxActions.jsx";
+import {useAuthProvider} from "../../shared/IDSConnect/AuthProvider.jsx";
 
 import './ApplicationList.css';
 
@@ -56,24 +58,45 @@ const styles = theme => ({
    },
 });
 
+const GET_DOGS = gql`
+  query GetDogs {
+    dogs {
+      id
+      breed
+    }
+  }
+`;
+// function Dogs({ onDogSelected }) {
+//   const { loading, error, data } = useQuery(GET_DOGS);
+//
+//   if (loading) return 'Loading...';
+//   if (error) return `Error! ${error.message}`;
+//
+//   return (
+//     <select name="dog" onChange={onDogSelected}>
+//       {data.dogs.map(dog => (
+//         <option key={dog.id} value={dog.breed}>
+//           {dog.breed}
+//         </option>
+//       ))}
+//     </select>
+//   );
+// }
+
 function ApplicationList(props) {
-  console.log('ApplicationList');
-  const { fetchApplicationListInternal} = props;
 
-//  let tp = useAuthProvider();
 
-  fetchApplicationListInternal();
+  const { loading, error, data } = useQuery(GET_DOGS);
+  
+  console.log('ApplicationList ' + data);
 
-//console.log(tp);
-
-  const { classes, closeDrawer} = props;
+  const { classes, closeDrawer, applicationListLoadedInternal} = props;
 
   return (
       <div className = "inner">
          <AppBar position="static">
            <Toolbar>
-               <IconButton className={classes.menuButton} color="inherit"
-                 aria-label="Menu" onClick={closeDrawer} >
+               <IconButton className={classes.menuButton} color="inherit" aria-label="Menu" onClick={closeDrawer} >
                  <MenuIcon/>
                </IconButton>
 
@@ -108,7 +131,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    fetchApplicationListInternal: () => dispatch(fetchApplicationList()),
+    applicationListLoadedInternal: () => dispatch(applicationListLoaded()),
   };
 };
 
