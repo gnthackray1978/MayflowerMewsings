@@ -13,7 +13,7 @@ class IDSRedirect extends Component {
    }
 
    componentDidMount() {
-     console.log('IDSRedirect loginRedirect');
+     //console.log('IDSRedirect loginRedirect');
      this.props.loginRedirect();
      //this.props.setPath();
 

@@ -65,42 +65,42 @@ export default (state = {
 
 
     case "SET_IDSLOGINLOADVISIBLE":
-      console.log('reducer SET_IDSLOGINLOADVISIBLE');
+      //console.log('reducer SET_IDSLOGINLOADVISIBLE');
       return {
         ...state,
         IdsLogInDetailsVisible : action.payload,
       };
 
     case "OnSilentRenewError":
-      console.log('reducer OnUserSignedOut');
+      //console.log('reducer OnUserSignedOut');
       return {
         ...state,
         silentRenewError : action.error
       };
 
    case "OnUserLoaded":
-     console.log('reducer OnUserLoaded');
+     //console.log('reducer OnUserLoaded');
      return {
        ...state,
        userSignedIn : true
      };
 
     case "OnUserSignedOut":
-      console.log('reducer OnUserSignedOut');
+      //console.log('reducer OnUserSignedOut');
       return {
         ...state,
         userSignedIn : false
       };
 
     case "AccessTokenExpired":
-      console.log('reducer AccessTokenExpired');
+      //console.log('reducer AccessTokenExpired');
       return {
         ...state,
         expired : true
       };
 
     case "AccessTokenExpiring":
-    console.log('reducer AccessTokenExpiring');
+    //console.log('reducer AccessTokenExpiring');
       return {
         ...state,
         expiring : true
@@ -117,7 +117,7 @@ export default (state = {
     //   };
 
       case "SET_USERINFO_SUCCESS":
-        console.log('reducer SET_USERINFO_SUCCESS');
+        //console.log('reducer SET_USERINFO_SUCCESS');
         let expires = new Date('1970-01-01T00:00:00Z');
 
         expires.setSeconds( expires.getSeconds() + action.expires_at);
@@ -142,7 +142,7 @@ export default (state = {
 
       case "SET_USER_LOGOUT":
       case "AUTH_FAILED":
-        console.log('reducer SET_USER_LOGOUT AUTH_FAILED');
+        //console.log('reducer SET_USER_LOGOUT AUTH_FAILED');
         return {
           ...state,
           infoloaded : false,

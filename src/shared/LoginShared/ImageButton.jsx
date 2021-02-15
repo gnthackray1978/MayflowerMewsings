@@ -123,7 +123,7 @@ const styles = theme => ({
 // };
 
 function ImageButton(props) {
-  //console.log('ImageButton');
+  ////console.log('ImageButton');
 
   const { classes } = props;
 

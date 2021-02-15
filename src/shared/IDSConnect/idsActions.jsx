@@ -4,7 +4,7 @@ import { push } from 'react-router-redux';
 
 
 export const evtAccessTokenExpired = () =>{
-  console.log('evtAccessTokenExpired');
+  //console.log('evtAccessTokenExpired');
   return async (dispatch, getState)  => {
        dispatch({
          type: "AccessTokenExpired",
@@ -13,7 +13,7 @@ export const evtAccessTokenExpired = () =>{
 };
 
 export const evtAccessTokenExpiring = () =>{
-  console.log('evtAccessTokenExpiring action');
+  //console.log('evtAccessTokenExpiring action');
   return async (dispatch, getState)  => {
        dispatch({
          type: "AccessTokenExpiring",
@@ -22,7 +22,7 @@ export const evtAccessTokenExpiring = () =>{
 };
 
 export const evtOnUserSignedOut = () =>{
-  console.log('evtOnUserSignedOut action');
+  //console.log('evtOnUserSignedOut action');
   return async (dispatch, getState)  => {
        dispatch({
          type: "OnUserSignedOut",
@@ -31,7 +31,7 @@ export const evtOnUserSignedOut = () =>{
 };
 
 export const evtOnUserUnloaded = () =>{
-  console.log('evtOnUserUnloaded action');
+  //console.log('evtOnUserUnloaded action');
   return async (dispatch, getState)  => {
        dispatch({
          type: "OnUserUnloaded",
@@ -40,7 +40,7 @@ export const evtOnUserUnloaded = () =>{
 };
 
 export const evtOnSilentRenewError = (error) =>{
-  console.log('evtOnSilentRenewError action');
+  //console.log('evtOnSilentRenewError action');
   return async (dispatch, getState)  => {
        dispatch({
          type: "OnSilentRenewError",
@@ -50,7 +50,7 @@ export const evtOnSilentRenewError = (error) =>{
 };
 
 export const evtOnUserLoaded = (user) =>{
-  console.log('evtOnUserLoaded action');
+  //console.log('evtOnUserLoaded action');
   return async (dispatch, getState)  => {
        dispatch({
          type: "OnUserLoaded",
@@ -90,7 +90,7 @@ export const setIdsLoginScreenVisible = (isVisible) =>{
 };
 
 export const logout = () =>{
-  console.log('logout action');
+  //console.log('logout action');
   return async (dispatch, getState)  => {
        dispatch({
          type: "DISCONNECT",

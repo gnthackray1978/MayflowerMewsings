@@ -12,12 +12,12 @@ const googleMiddleware = (params) => {
 
         switch(action.type) {
             case "SAMPLE": {
-                console.log('CONNECT reached');
+                //console.log('CONNECT reached');
                 return;
             }
             case "LOAD_PROFILE":
             {
-                console.log('LOAD_PROFILE reached');
+                //console.log('LOAD_PROFILE reached');
 
                 if(google.auth2loaded){
 
@@ -28,7 +28,7 @@ const googleMiddleware = (params) => {
                   op.execute(function (resp) {
                     //  log(200, resp);
 
-                    console.log('got profile response');
+                    //console.log('got profile response');
 
                     storeAPI.dispatch({
                               type: "SET_PROFILE",
@@ -42,7 +42,7 @@ const googleMiddleware = (params) => {
                                 errorMessage : resp.error.message
                               });
 
-                      console.log('resp'+resp.error.message);
+                      //console.log('resp'+resp.error.message);
                     }
                   });
                 }
@@ -50,7 +50,7 @@ const googleMiddleware = (params) => {
             }
 
             case "LOAD_AUTH2":
-                console.log('LOAD_AUTH2 googleMiddleware reached');
+                //console.log('LOAD_AUTH2 googleMiddleware reached');
 
                 let contents =action.token;
                 let expiresIn = new Date(contents.expires);

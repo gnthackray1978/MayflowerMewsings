@@ -51,7 +51,7 @@ class IDSConnect extends Component {
 
   componentDidMount() {
     const {loginRedirect} = this.props;
-    console.log('IDSConnect loginRedirect');
+    //console.log('IDSConnect loginRedirect');
     loginRedirect();
   }
 
@@ -63,7 +63,7 @@ class IDSConnect extends Component {
     const { classes,login,IdsLogInDetailsVisible,ProfileObj,imageUrl,isImageButton,
             isFabButton,profileObjName,setIdsLoginScreenVisible,Connected,logout} = this.props;
 
-  //  console.log('imageUrl: ' + imageUrl);
+  //  //console.log('imageUrl: ' + imageUrl);
 
     let buttons ;
 
@@ -90,7 +90,7 @@ class IDSConnect extends Component {
               <GooglePopup open={IdsLogInDetailsVisible} ProfileObj ={ProfileObj} >
                   <div>
                       <GoogleButton label ="Logout" mode = "logout" onClick ={()=>{
-                          // console.log('Logout: ');
+                          // //console.log('Logout: ');
 
                             logout();
                             setIdsLoginScreenVisible(false);
@@ -141,7 +141,7 @@ IDSConnect.propTypes = {
 };
 
 const mapStateToProps = state => {
-//  console.log('mapStateToProps');
+//  //console.log('mapStateToProps');
 
   const params = {
     client_id: state.google.GoogleApiParams.clientId,

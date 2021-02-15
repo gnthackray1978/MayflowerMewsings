@@ -18,7 +18,7 @@ export default (state = {
   switch (action.type) {
 
       case APPLICATIONLISTLOADED:
-          console.log('APPLICATIONLISTLOADED');
+          //console.log('APPLICATIONLISTLOADED');
           return {
             ...state,
              appList: action.payload,
@@ -27,21 +27,21 @@ export default (state = {
           };
 
       case APPLICATIONSELECTED:
-          console.log('APPLICATIONSELECTED');
+          //console.log('APPLICATIONSELECTED');
           return {
             ...state,
              appName : action.payload
           };
 
         case APPDIALOGOPEN:
-            console.log('APPDIALOGOPEN');
+            //console.log('APPDIALOGOPEN');
             return {
               ...state,
                showAppListDialog : true
             };
 
         case APPDIALOGCLOSED:
-            console.log('APPDIALOGCLOSED');
+            //console.log('APPDIALOGCLOSED');
             return {
               ...state,
                showAppListDialog : false

@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from "react-redux";
 
-console.log('context created');
+//console.log('context created');
 const AuthContext = React.createContext()
 
 

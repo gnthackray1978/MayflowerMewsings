@@ -79,7 +79,7 @@ export const setGoogleApi = gapi =>{
             familyName: basicProfile.getFamilyName()
           };
 
-      console.log('setGoogleApi');
+      //console.log('setGoogleApi');
 
 
 
@@ -87,7 +87,7 @@ export const setGoogleApi = gapi =>{
 
       GoogleLib.SearchForQuizFiles(gapi, scriptId, (arg)=>{
 
-        console.log('SearchForQuizFiles returned');
+        //console.log('SearchForQuizFiles returned');
 
         dispatch({
           type: "SET_GOOGLEBATCH_PROFILE_ISACTIVE_TOKEN",
@@ -147,7 +147,7 @@ export const setGoogleApiSignIn = () =>{
             familyName: basicProfile.getFamilyName()
           };
 
-      console.log('setGoogleApiSignIn');
+      //console.log('setGoogleApiSignIn');
 
       dispatch({
         type: "SET_GOOGLEBATCH_PROFILE_ISACTIVE_TOKEN",
@@ -171,7 +171,7 @@ export const setGoogleApiSignIn = () =>{
 
 export const setGoogleApiActive = isActive =>{
   return async dispatch  => {
-    console.log('setGoogleApiActive');
+    //console.log('setGoogleApiActive');
     dispatch({
       type: "SET_GOOGLEAPIACTIVE",
       googleApiLoggedIn :isActive

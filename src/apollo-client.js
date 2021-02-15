@@ -11,7 +11,7 @@ const authLink = setContext((_, { headers }) => {
 var token ;
 
 try {
-  console.log('getting token');
+  //console.log('getting token');
 
   var key = Object.keys(sessionStorage)[0];
 
@@ -29,7 +29,7 @@ try {
 
 
 } catch (e) {
-  console.log('couldnt get token from storage: ' + e);
+  //console.log('couldnt get token from storage: ' + e);
 } finally {
 
 }

@@ -85,7 +85,7 @@ function GetSiteList(data, applicationListLoad, applicationSelected){
 
   if(data){
     var results = data.site.search.results;
-    console.log(results.length);
+    //console.log(results.length);
     applicationListLoad(results);
     var retVal = results.map(site => {
            return(<ListItem key={site.id}
@@ -94,7 +94,7 @@ function GetSiteList(data, applicationListLoad, applicationSelected){
                             button
                             onClick ={(ev)=>{
                                 applicationSelected(ev.currentTarget.dataset.id);
-                                console.log(`Button ${ev.currentTarget.dataset.name} clicked`);
+                                //console.log(`Button ${ev.currentTarget.dataset.name} clicked`);
                             }}>
              <ListItemText primary={site.name} />
            </ListItem>);

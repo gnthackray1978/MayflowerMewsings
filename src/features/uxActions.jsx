@@ -3,7 +3,7 @@ import { APPLICATIONLISTLOADED, APPLICATIONSELECTED, APPDIALOGOPEN ,APPDIALOGCLO
 
 
 export const applicationListLoad = (state) =>{
-  console.log('applicationListLoaded action');
+  //console.log('applicationListLoaded action');
 
 
   return async (dispatch, getState)  => {
@@ -17,7 +17,7 @@ export const applicationListLoad = (state) =>{
 };
 
 export const applicationSelected = (state) =>{
-  console.log('applicationSelected action');
+  //console.log('applicationSelected action');
 
 
   return async (dispatch, getState)  => {
@@ -31,7 +31,7 @@ export const applicationSelected = (state) =>{
 };
 
 export const siteDialogOpen = (state) =>{
-  console.log('siteDialogOpen action');
+  //console.log('siteDialogOpen action');
 
   return async (dispatch, getState)  => {
        dispatch({
@@ -42,7 +42,7 @@ export const siteDialogOpen = (state) =>{
 };
 
 export const siteDialogClose = (state) =>{
-  console.log('siteDialogClose action');
+  //console.log('siteDialogClose action');
 
   return async (dispatch, getState)  => {
        dispatch({

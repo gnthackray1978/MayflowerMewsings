@@ -85,7 +85,7 @@ class GoogleConnect extends Component {
             setGoogleApiSignIn();
       }}/>);
 
-//    console.log(imageUrl);
+//    //console.log(imageUrl);
 
     if(isImageButton)
       buttons = <ImageButton url = {imageUrl}  onClick={()=>setLoginScreenVisible(true)}/>
@@ -147,7 +147,7 @@ GoogleConnect.propTypes = {
 };
 
 const mapStateToProps = state => {
-//  console.log('mapStateToProps');
+//  //console.log('mapStateToProps');
 
   const params = {
     client_id: state.google.GoogleApiParams.clientId,

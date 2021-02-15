@@ -58,7 +58,7 @@ class PlaceHolder extends Component {
     const {classes} = this.props;
 
     const startClick = ()=>{
-      console.log('place holder clicked');
+      //console.log('place holder clicked');
     };
 
     startClick.bind(this);

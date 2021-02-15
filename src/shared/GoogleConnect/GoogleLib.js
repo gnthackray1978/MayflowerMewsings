@@ -20,7 +20,7 @@ export class GoogleLib {
           'userId': 'me'
         });
         request.execute(function(resp) {
-        //    console.log('loadPlus finished');
+        //    //console.log('loadPlus finished');
 
         });
       });
@@ -44,7 +44,7 @@ export class GoogleLib {
 
         // Listen for sign-in state changes.
         auth2.isSignedIn.listen((res)=>{
-      //    console.log('Listen for sign-in state changes.');
+      //    //console.log('Listen for sign-in state changes.');
           //  loadPlus();
         });
 
@@ -143,8 +143,8 @@ export class GoogleLib {
             if (resp.error && resp.error.status) {
               // The API encountered a problem before the script
               // started executing.
-              console.log('Error calling API:');
-              console.log(JSON.stringify(resp, null, 2));
+              //console.log('Error calling API:');
+              //console.log(JSON.stringify(resp, null, 2));
             } else if (resp.error) {
               // The API executed, but the script returned an error.
 
@@ -159,11 +159,11 @@ export class GoogleLib {
 
                 for (var i = 0; i < error.scriptStackTraceElements.length; i++) {
                   var trace = error.scriptStackTraceElements[i];
-                  console.log(trace);
+                  //console.log(trace);
                 }
               }
 
-              console.log(error);
+              //console.log(error);
 
             } else {
               callback(resp.response.result);
@@ -210,7 +210,7 @@ export class GoogleLib {
 
 
   static DeleteFile(name,callback){
-     console.log(name);
+     //console.log(name);
      callback();
 
   //     var that =this;
@@ -228,7 +228,7 @@ export class GoogleLib {
   }
 
    static CreateFile(gapi, scriptId, name,callback){
-      console.log('CreateFile: ' +name);
+      //console.log('CreateFile: ' +name);
   //    callback();
 
       var that =this;
@@ -275,7 +275,7 @@ export class GoogleLib {
 //
 //
 // GoogleLib.prototype.LogInGoogle= function(){
-//     console.log('Login Google');
+//     //console.log('Login Google');
 //     var that = this;
 //
 //     gapi.auth.authorize(
@@ -289,7 +289,7 @@ export class GoogleLib {
 // };
 //
 // GoogleLib.prototype.CheckLogin= function(){
-//     console.log('Login Google');
+//     //console.log('Login Google');
 //     var that = this;
 //
 //     gapi.auth.authorize(
@@ -305,7 +305,7 @@ export class GoogleLib {
 //
 //
 // GoogleLib.prototype.LogOutGoogle= function(){
-//     console.log('Logout Google');
+//     //console.log('Logout Google');
 //     window.open("https://accounts.google.com/logout");
 // };
 //
@@ -390,7 +390,7 @@ export class GoogleLib {
 
 //
 // GoogleLib.prototype.OpenFile = function(name){
-//     console.log(name);
+//     //console.log(name);
 //     var that =this;
 //
 //     var request = {
@@ -401,11 +401,11 @@ export class GoogleLib {
 //     that.RunScript(request, function(resp){
 //
 //         if(resp!= ""){
-//             console.log(resp);
+//             //console.log(resp);
 //             window.open(resp);
 //         }
 //         else
-//             console.log("Couldn't get URL");
+//             //console.log("Couldn't get URL");
 //
 //     })
 // }
@@ -425,8 +425,8 @@ export class GoogleLib {
 //           if (resp.error && resp.error.status) {
 //             // The API encountered a problem before the script
 //             // started executing.
-//             console.log('Error calling API:');
-//             console.log(JSON.stringify(resp, null, 2));
+//             //console.log('Error calling API:');
+//             //console.log(JSON.stringify(resp, null, 2));
 //           } else if (resp.error) {
 //             // The API executed, but the script returned an error.
 //
@@ -441,11 +441,11 @@ export class GoogleLib {
 //
 //               for (var i = 0; i < error.scriptStackTraceElements.length; i++) {
 //                 var trace = error.scriptStackTraceElements[i];
-//                 console.log(trace);
+//                 //console.log(trace);
 //               }
 //             }
 //
-//             console.log(error);
+//             //console.log(error);
 //
 //           } else {
 //             callback(resp.response.result);
@@ -459,7 +459,7 @@ export class GoogleLib {
 //
 //
 // function writeStatement(statement){
-//    console.log(statement);
+//    //console.log(statement);
 //      var d = new Date();
 //      var n = d.toLocaleTimeString();
 //
