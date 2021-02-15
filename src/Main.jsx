@@ -25,6 +25,7 @@ class Main extends Component {
           <div >
             <TopButtons isData = {true} modeChanged = { this.handleInput }/>
             <SideDrawer onOpenClick = {click => this.dataClick = click}/>
+            <div>hello</div>
           </div>
         </AuthProvider>
       );

@@ -44,7 +44,7 @@ class TopButtons extends Component {
 
   render() {
 
-    const { classes,modeChanged} = this.props;
+    const { classes,modeChanged, SelectedApp, appDialogOpen} = this.props;
 
     let createNewTest = ()=>{
 
@@ -52,7 +52,8 @@ class TopButtons extends Component {
 
     return (
          <Toolbar>
-             <IconButton className={classes.menuButton} color="inherit" aria-label="Menu" onClick={()=>{ modeChanged('data'); }}>
+             <IconButton className={classes.menuButton} color="inherit"
+                aria-label="Menu" onClick={()=>{ modeChanged('data'); }}>
                  <MenuIcon />
              </IconButton>
              <Button color="inherit"  onClick={()=>createNewTest()}>
@@ -62,10 +63,11 @@ class TopButtons extends Component {
              </Button>
              <Button color="inherit"  className={classes.grow}>
                  <Typography variant="h6" color="inherit"  className ={classes.tolowerBtn}>
-                     PlaceHolder
+                     {SelectedApp}
                  </Typography>
              </Button>
-             <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
+             <IconButton className={classes.menuButton} color="inherit"
+               aria-label="Menu"  onClick={()=>{ appDialogOpen('data'); }}>
                  <AppsIcon />
              </IconButton>
              <IDSConnect mode = "login"/>
@@ -87,7 +89,25 @@ TopButtons.defaultProps  = {
 
 
 const mapStateToProps = state => {
-  return {};
+  let appName =  state.ux.appName;
+  let appList =  state.ux.appList;
+  let selectedApp ='Unknown';
+
+  if(appList && appList.length >0){
+    let idx=0;
+
+    while(idx < appList.length){
+      if(appList[idx].id == appName){
+        selectedApp = appList[idx].name;
+      }
+
+      idx++;
+    }
+  }
+
+  return {
+    SelectedApp: selectedApp
+  };
 };
 
 const mapDispatchToProps = dispatch => {

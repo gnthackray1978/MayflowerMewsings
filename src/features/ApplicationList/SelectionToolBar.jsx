@@ -74,7 +74,7 @@ class SelectionToolBar extends Component {
     return(
       <AppBar position="fixed" color="default" className={classes.appBar}>
         <Toolbar>
-        {bottomToolbar}
+    
         </Toolbar>
       </AppBar>);
   }

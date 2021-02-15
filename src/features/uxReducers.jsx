@@ -1,38 +1,29 @@
-import { FETCHAPPLIST_START, FETCHAPPLIST_SUCCESS, FETCHAPPLIST_FAIL } from './actionTypes.jsx';
+import { APPLICATIONLISTLOADED, APPLICATIONSELECTED} from './actionTypes.jsx';
 
 export default (state = {
-  appList :undefined,
-  isFetchingList :false,
+  appName :undefined,
+  appList : [],
+  loadedAppList :false,
   error: undefined
 }, action) => {
 
 
   switch (action.type) {
 
-      case "FETCHAPPLIST_START":
-          console.log('FETCHAPPLIST_START');
+      case APPLICATIONLISTLOADED:
+          console.log('APPLICATIONLISTLOADED');
           return {
             ...state,
-             isFetchingList :true,
-             error: undefined
-          };
-      case "FETCHAPPLIST_SUCCESS":
-          console.log('FETCHAPPLIST_SUCCESS');
-          return {
-            ...state,
-             appList : action.payload,
-             isFetchingList :false,
+             appList: action.payload,
+             loadedAppList :true,
              error: ''
           };
-      case "FETCHAPPLIST_FAIL":
-          console.log('FETCHAPPLIST_FAIL');
+      case APPLICATIONSELECTED:
+          console.log('APPLICATIONSELECTED');
           return {
             ...state,
-            error : action.payload,
-            isFetchingList :false
+             appName : action.payload
           };
-
-
 
       default:
           return state;
