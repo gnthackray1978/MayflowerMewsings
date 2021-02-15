@@ -8,6 +8,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Typography from '@material-ui/core/Typography';
 import { connect } from "react-redux";
 import IDSConnect   from "../../shared/IDSConnect/Components/IDSConnect.jsx";
+import {siteDialogOpen, siteDialogClose} from "../uxActions.jsx";
 import AppsIcon from '@material-ui/icons/Apps';
 
 const styles = theme => ({
@@ -44,7 +45,7 @@ class TopButtons extends Component {
 
   render() {
 
-    const { classes,modeChanged, SelectedApp, appDialogOpen} = this.props;
+    const { classes,modeChanged, SelectedApp, siteDialogOpen, siteDialogClose, showAppListDialog} = this.props;
 
     let createNewTest = ()=>{
 
@@ -67,7 +68,12 @@ class TopButtons extends Component {
                  </Typography>
              </Button>
              <IconButton className={classes.menuButton} color="inherit"
-               aria-label="Menu"  onClick={()=>{ appDialogOpen('data'); }}>
+               aria-label="Menu"  onClick={()=>{
+                  if(showAppListDialog)
+                    siteDialogClose();
+                  else
+                    siteDialogOpen();
+                  }}>
                  <AppsIcon />
              </IconButton>
              <IDSConnect mode = "login"/>
@@ -91,6 +97,7 @@ TopButtons.defaultProps  = {
 const mapStateToProps = state => {
   let appName =  state.ux.appName;
   let appList =  state.ux.appList;
+  let showAppListDialog =  state.ux.showAppListDialog;
   let selectedApp ='Unknown';
 
   if(appList && appList.length >0){
@@ -106,12 +113,17 @@ const mapStateToProps = state => {
   }
 
   return {
-    SelectedApp: selectedApp
+    SelectedApp: selectedApp,
+    ShowAppListDialog :showAppListDialog
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
+    applicationListLoad: (list) => dispatch(applicationListLoad(list)),
+    siteDialogOpen: () => dispatch(siteDialogOpen()),
+    siteDialogClose: () => dispatch(siteDialogClose()),
+    //
   };
 };
 

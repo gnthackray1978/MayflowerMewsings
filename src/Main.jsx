@@ -5,6 +5,7 @@ import { withStyles } from '@material-ui/core/styles';
 import SideDrawer from './features/SideDrawer/SideDrawer.jsx';
 import TopButtons from './features/ButtonBar/TopButtons.jsx';
 import {AuthProvider} from './shared/IDSConnect/AuthProvider.jsx'
+import SiteDialog from './features/SiteDialog/SiteDialog.jsx';
 
 const styles = () => ({
 
@@ -18,14 +19,20 @@ class Main extends Component {
   handleInput = (e) => {
     this.dataClick();
   }
+  handleDialogInput = (e) => {
+    this.dialogClick();
+  }
 
   render() {
       return (
         <AuthProvider>
-          <div >
-            <TopButtons isData = {true} modeChanged = { this.handleInput }/>
+          <div>
+            <TopButtons isData = {true} modeChanged = { this.handleInput } />
+
             <SideDrawer onOpenClick = {click => this.dataClick = click}/>
-            <div>hello</div>
+
+            <SiteDialog/>
+
           </div>
         </AuthProvider>
       );

@@ -3,7 +3,7 @@ import AddIcon from '@material-ui/icons/Add';
 import AppBar from '@material-ui/core/AppBar';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
-import ButtonContent from './button-content'
+
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
 import ControlIcon from '@material-ui/icons/OpenWith';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -31,9 +31,9 @@ import Typography from '@material-ui/core/Typography';
 import blue from '@material-ui/core/colors/blue';
 import { withStyles } from '@material-ui/core/styles';
 import {PropTypes,func} from 'prop-types';
-import ImageButton from "./ImageButton.jsx";
 import { ApolloClient, InMemoryCache, ApolloProvider, gql, useQuery } from '@apollo/client';
-import {applicationListLoad, applicationSelected} from "../uxActions.jsx";
+import {applicationListLoad, applicationSelected, siteDialogOpen, siteDialogClose} from "../uxActions.jsx";
+import { connect } from "react-redux";
 
 const styles = theme => ({
   // fab: {
@@ -64,21 +64,64 @@ const styles = theme => ({
 });
 
 
+const GET_DOGS = gql`
+query {
+  site {
+    search(query: "Star Wars") {
+      page
+      results {
+        id,
+        name
+      }
+    }
+  }
+}
+`;
+
+
+function GetSiteList(data, applicationListLoad, applicationSelected){
+//site.search.results[0].name
+
+
+  if(data){
+    var results = data.site.search.results;
+    console.log(results.length);
+    applicationListLoad(results);
+    var retVal = results.map(site => {
+           return(<ListItem key={site.id}
+                            data-id={site.id}
+                            data-name={site.name}
+                            button
+                            onClick ={(ev)=>{
+                                applicationSelected(ev.currentTarget.dataset.id);
+                                console.log(`Button ${ev.currentTarget.dataset.name} clicked`);
+                            }}>
+             <ListItemText primary={site.name} />
+           </ListItem>);
+         });
+
+    return <List>{retVal}</List>;
+  }
+  else{
+    return <List></List>;
+  }
+}
+
+
 function SiteDialog(props) {
 
-    const {className, theme,classes, onClose, selectedValue, open,children } = props;
+    const {className, theme,classes,ShowAppListDialog ,siteDialogClose, applicationListLoad, applicationSelected} = props;
+
+    const { loading, error, data } = useQuery(GET_DOGS, {
+      fetchPolicy: "no-cache"
+    });
+
+    var items = GetSiteList(data,applicationListLoad,applicationSelected);
 
     return (
-      <Dialog onClose={this.handleClose} aria-labelledby="simple-dialog-title" open = {open}>
+      <Dialog onClose={siteDialogClose} aria-labelledby="simple-dialog-title" open = {ShowAppListDialog}>
         <div>
-          <List>
-            <ListItem>
-              <ListItemText primary= "App 1" />
-            </ListItem>
-            <ListItem>
-              <ListItemText primary= "App 2"/>
-            </ListItem>
-          </List>
+         {items}
         </div>
       </Dialog>
     );
@@ -93,8 +136,10 @@ SiteDialog.propTypes = {
 
 
 const mapStateToProps = state => {
-  return {
 
+
+  return {
+    ShowAppListDialog: state.ux.showAppListDialog
   };
 };
 
@@ -102,6 +147,8 @@ const mapDispatchToProps = dispatch => {
   return {
     applicationListLoad: (list) => dispatch(applicationListLoad(list)),
     applicationSelected: (selectedApp) => dispatch(applicationSelected(selectedApp)),
+    siteDialogOpen: () => dispatch(siteDialogOpen()),
+    siteDialogClose: () => dispatch(siteDialogClose()),
   };
 };
 

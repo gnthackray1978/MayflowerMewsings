@@ -158,6 +158,7 @@ const mapStateToProps = state => {
 
   };
 };
+
 //applicationListLoad
 //applicationSelected
 

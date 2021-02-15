@@ -1,5 +1,5 @@
 
-import { APPLICATIONLISTLOADED, APPLICATIONSELECTED} from './actionTypes.jsx';
+import { APPLICATIONLISTLOADED, APPLICATIONSELECTED, APPDIALOGOPEN ,APPDIALOGCLOSED} from './actionTypes.jsx';
 
 
 export const applicationListLoad = (state) =>{
@@ -16,7 +16,6 @@ export const applicationListLoad = (state) =>{
 
 };
 
-
 export const applicationSelected = (state) =>{
   console.log('applicationSelected action');
 
@@ -29,4 +28,26 @@ export const applicationSelected = (state) =>{
     }
 
 
+};
+
+export const siteDialogOpen = (state) =>{
+  console.log('siteDialogOpen action');
+
+  return async (dispatch, getState)  => {
+       dispatch({
+         type: APPDIALOGOPEN,
+         showAppListDialog : true
+       });
+    }
+};
+
+export const siteDialogClose = (state) =>{
+  console.log('siteDialogClose action');
+
+  return async (dispatch, getState)  => {
+       dispatch({
+         type: APPDIALOGCLOSED,
+         showAppListDialog : false
+       });
+    }
 };
