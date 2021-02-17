@@ -20,7 +20,7 @@ export default (state = {
 
   loadedAppList :false,
   loadedFuncList :false,
-  showAppListDialog :true,
+  showAppListDialog :false,
   showFuncListDialog :false,
 
   error: undefined

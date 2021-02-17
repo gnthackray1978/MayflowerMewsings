@@ -114,7 +114,7 @@ function GetFunctionList(data, funcListLoad, funcSelected, closeFuncListDialog){
 }
 
 function ApplicationList(props) {
-
+console.log('ApplicationList loaded ');
   const { classes, closeDrawer, funcListLoad, funcSelected,
      appName, ShowFuncListDialog, funcDialogOpen, funcDialogClose} = props;
 
@@ -123,7 +123,7 @@ function ApplicationList(props) {
     fetchPolicy: "no-cache"
   });
 
-  //console.log('ApplicationList ' + data);
+
 
 
 

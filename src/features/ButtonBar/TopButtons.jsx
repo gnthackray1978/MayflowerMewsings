@@ -64,11 +64,7 @@ class TopButtons extends Component {
                   }>
                  <MenuIcon />
              </IconButton>
-             <Button color="inherit" >
-                 <Typography variant="h6" color="inherit"  className ={classes.tolowerBtn}>
-                  Start
-                 </Typography>
-             </Button>
+
              <Button color="inherit"  className={classes.grow}>
                  <Typography variant="h6" color="inherit"  className ={classes.tolowerBtn}>
                      {pageTitle}
@@ -154,6 +150,8 @@ const mapDispatchToProps = dispatch => {
     applicationListLoad: (list) => dispatch(applicationListLoad(list)),
     funcDialogOpen: () => dispatch(funcDialogOpen()),
     funcDialogClose: () => dispatch(funcDialogClose()),
+    siteDialogOpen: () => dispatch(siteDialogOpen()),
+    siteDialogClose: () => dispatch(siteDialogClose())
     //
   };
 };
