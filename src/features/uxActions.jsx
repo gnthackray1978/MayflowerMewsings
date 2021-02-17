@@ -1,33 +1,45 @@
 
-import { APPLICATIONLISTLOADED, APPLICATIONSELECTED, APPDIALOGOPEN ,APPDIALOGCLOSED} from './actionTypes.jsx';
+import { APPLICATIONLISTLOADED, APPLICATIONSELECTED, FUNCTIONLISTLOADED,
+  FUNCTIONSELECTED, APPDIALOGOPEN ,APPDIALOGCLOSED} from './actionTypes.jsx';
 
+export const funcListLoad = (state) =>{
+  //console.log('applicationListLoaded action');
+  return async (dispatch, getState)  => {
+       dispatch({
+         type: FUNCTIONLISTLOADED,
+         payload : state
+       });
+    }
+};
+
+export const funcSelected = (state) =>{
+  //console.log('applicationSelected action');
+  return async (dispatch, getState)  => {
+       dispatch({
+         type: FUNCTIONSELECTED,
+         payload : state
+       });
+    }
+};
 
 export const applicationListLoad = (state) =>{
   //console.log('applicationListLoaded action');
-
-
   return async (dispatch, getState)  => {
        dispatch({
          type: APPLICATIONLISTLOADED,
          payload : state
        });
     }
-
-
 };
 
 export const applicationSelected = (state) =>{
   //console.log('applicationSelected action');
-
-
   return async (dispatch, getState)  => {
        dispatch({
          type: APPLICATIONSELECTED,
          payload : state
        });
     }
-
-
 };
 
 export const siteDialogOpen = (state) =>{

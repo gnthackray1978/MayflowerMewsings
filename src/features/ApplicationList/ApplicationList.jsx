@@ -13,7 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import { ApolloClient, InMemoryCache, ApolloProvider, gql, useQuery } from '@apollo/client';
 
 import SelectionToolBar from "./SelectionToolBar.jsx";
-import {applicationListLoad, applicationSelected} from "../uxActions.jsx";
+import {funcListLoad, funcSelected} from "../uxActions.jsx";
 import {useAuthProvider} from "../../shared/IDSConnect/AuthProvider.jsx";
 
 import './ApplicationList.css';
@@ -61,13 +61,14 @@ const styles = theme => ({
 
 
 
-const GET_DOGS = gql`
-query {
-  site {
-    search(query: "Star Wars") {
+const GET_FUNCTIONS = gql`
+query Function($appName: Int!) {
+  function
+  {
+    search(appid: $appName) {
       page
       results {
-        id,
+        id
         name
       }
     }
@@ -83,21 +84,21 @@ query {
 //   if (loading) return 'Loading...';
 //   if (error) return `Error! ${error.message}`;
 
-function GetSiteList(data, applicationListLoad, applicationSelected){
+function GetFunctionList(data, funcListLoad, funcSelected){
 //site.search.results[0].name
 
 
   if(data){
-    var results = data.site.search.results;
+    var results = data.function.search.results;
     //console.log(results.length);
-    applicationListLoad(results);
+    funcListLoad(results);
     var retVal = results.map(site => {
            return(<ListItem key={site.id}
                             data-id={site.id}
                             data-name={site.name}
                             button
                             onClick ={(ev)=>{
-                                applicationSelected(ev.currentTarget.dataset.id);
+                                funcSelected(ev.currentTarget.dataset.id);
                                 //console.log(`Button ${ev.currentTarget.dataset.name} clicked`);
                             }}>
              <ListItemText primary={site.name} />
@@ -113,16 +114,18 @@ function GetSiteList(data, applicationListLoad, applicationSelected){
 
 function ApplicationList(props) {
 
+  const { classes, closeDrawer, funcListLoad, funcSelected, appName} = props;
 
-  const { loading, error, data } = useQuery(GET_DOGS, {
-  fetchPolicy: "no-cache"
-});
+  const { loading, error, data } = useQuery(GET_FUNCTIONS, {
+    variables: { appName: Number(appName) },
+    fetchPolicy: "no-cache"
+  });
 
   //console.log('ApplicationList ' + data);
 
-  const { classes, closeDrawer, applicationListLoad, applicationSelected} = props;
 
-  var items = GetSiteList(data,applicationListLoad,applicationSelected);
+
+  var items = GetFunctionList(data,funcListLoad,funcSelected);
 
   return (
       <div className = "inner">
@@ -155,7 +158,7 @@ ApplicationList.propTypes = {
 
 const mapStateToProps = state => {
   return {
-
+    appName: state.ux.appName
   };
 };
 
@@ -164,8 +167,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    applicationListLoad: (list) => dispatch(applicationListLoad(list)),
-    applicationSelected: (selectedApp) => dispatch(applicationSelected(selectedApp)),
+    funcListLoad: (list) => dispatch(funcListLoad(list)),
+    funcSelected: (selectedApp) => dispatch(funcSelected(selectedApp)),
 
   };
 };

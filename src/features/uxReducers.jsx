@@ -1,4 +1,5 @@
-import { APPLICATIONLISTLOADED, APPLICATIONSELECTED,APPDIALOGOPEN,APPDIALOGCLOSED} from './actionTypes.jsx';
+import { APPLICATIONLISTLOADED, APPLICATIONSELECTED, FUNCTIONLISTLOADED,
+  FUNCTIONSELECTED,APPDIALOGOPEN,APPDIALOGCLOSED} from './actionTypes.jsx';
 
 export default (state = {
   appName :1,
@@ -8,7 +9,17 @@ export default (state = {
         name: 'Front Page',
         __typename: 'SiteType'
       }],
+
+  funcName :1,
+  funcList : [
+      {
+        id: 1,
+        name: 'Front Page',
+        __typename: 'Function'
+      }],
+
   loadedAppList :false,
+  loadedFuncList :false,
   showAppListDialog :true,
 
   error: undefined
@@ -16,6 +27,24 @@ export default (state = {
 
 
   switch (action.type) {
+
+
+    case FUNCTIONLISTLOADED:
+        //console.log('APPLICATIONLISTLOADED');
+        return {
+          ...state,
+           funcList: action.payload,
+           loadedFuncList :true,
+           error: ''
+        };
+
+    case FUNCTIONSELECTED:
+        //console.log('APPLICATIONSELECTED');
+        return {
+          ...state,
+           funcName : action.payload
+        };
+
 
       case APPLICATIONLISTLOADED:
           //console.log('APPLICATIONLISTLOADED');
