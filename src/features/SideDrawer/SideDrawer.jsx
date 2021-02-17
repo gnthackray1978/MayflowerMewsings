@@ -55,61 +55,35 @@ class SideDrawer extends Component {
 
    constructor(props) {
       super(props);
-       this.state = {
-         modalShow: this.props.show ,
-       };
-
    }
-
-   componentDidMount() {
-     const { onOpenClick, fetchDogs } = this.props;
-
-     onOpenClick(()=>{
-
-       this.setState({ modalShow: true });
-     });
-
-   }
-
-   clearLayout(event){
-    this.props.activateLayout(false);
-   }
-
-
 
    render() {
+    const { classes ,ShowFuncListDialog} = this.props;
 
-    const { classes } = this.props;
     return (
       <div>
-        <Drawer open = {this.state.modalShow} >
-            <ApplicationList closeDrawer = {()=>{
-              if(this.state.modalShow)
-                this.setState({ modalShow: false });
-              }}/>
+        <Drawer open = {ShowFuncListDialog} >
+            <ApplicationList />
         </Drawer>
       </div>
     );
   }
 }
 
-SideDrawer.defaultProps = {
-  show: false,
-};
+
 
 SideDrawer.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => {
-  return {};
+  return {
+    ShowFuncListDialog: state.ux.showFuncListDialog
+  };
 };
 
 const mapDispatchToProps = dispatch => {
-  return {
-    fetchDogs : () =>{
-      dispatch(fetchDogs())
-    }};
+  return { };
 };
 
 

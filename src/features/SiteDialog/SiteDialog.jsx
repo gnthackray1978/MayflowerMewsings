@@ -79,13 +79,13 @@ query {
 `;
 
 
-function GetSiteList(data, applicationListLoad, applicationSelected){
+function GetSiteList(data, applicationListLoad, applicationSelected, siteDialogClose){
 //site.search.results[0].name
 
 
   if(data){
     var results = data.site.search.results;
-    //console.log(results.length);
+    console.log(results.length);
     applicationListLoad(results);
     var retVal = results.map(site => {
            return(<ListItem key={site.id}
@@ -94,7 +94,8 @@ function GetSiteList(data, applicationListLoad, applicationSelected){
                             button
                             onClick ={(ev)=>{
                                 applicationSelected(ev.currentTarget.dataset.id);
-                                //console.log(`Button ${ev.currentTarget.dataset.name} clicked`);
+                                siteDialogClose();
+                                console.log(`Button ${ev.currentTarget.dataset.name} clicked`);
                             }}>
              <ListItemText primary={site.name} />
            </ListItem>);
@@ -110,13 +111,13 @@ function GetSiteList(data, applicationListLoad, applicationSelected){
 
 function SiteDialog(props) {
 
-    const {className, theme,classes,ShowAppListDialog ,siteDialogClose, applicationListLoad, applicationSelected} = props;
+    const {className, theme,classes,ShowAppListDialog, applicationListLoad, applicationSelected, siteDialogClose} = props;
 
     const { loading, error, data } = useQuery(GET_DOGS, {
       fetchPolicy: "no-cache"
     });
 
-    var items = GetSiteList(data,applicationListLoad,applicationSelected);
+    var items = GetSiteList(data,applicationListLoad,applicationSelected, siteDialogClose);
 
     return (
       <Dialog onClose={siteDialogClose} aria-labelledby="simple-dialog-title" open = {ShowAppListDialog}>

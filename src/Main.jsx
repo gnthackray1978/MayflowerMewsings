@@ -15,21 +15,14 @@ class Main extends Component {
   constructor(props) {
      super(props);
    }
-
-  handleInput = (e) => {
-    this.dataClick();
-  }
-  handleDialogInput = (e) => {
-    this.dialogClick();
-  }
-
+  
   render() {
       return (
         <AuthProvider>
           <div>
-            <TopButtons isData = {true} modeChanged = { this.handleInput } />
+            <TopButtons isData = {true} />
 
-            <SideDrawer onOpenClick = {click => this.dataClick = click}/>
+            <SideDrawer/>
 
             <SiteDialog/>
 

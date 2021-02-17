@@ -13,7 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import { ApolloClient, InMemoryCache, ApolloProvider, gql, useQuery } from '@apollo/client';
 
 import SelectionToolBar from "./SelectionToolBar.jsx";
-import {funcListLoad, funcSelected} from "../uxActions.jsx";
+import {funcListLoad, funcSelected, funcDialogOpen , funcDialogClose} from "../uxActions.jsx";
 import {useAuthProvider} from "../../shared/IDSConnect/AuthProvider.jsx";
 
 import './ApplicationList.css';
@@ -84,7 +84,7 @@ query Function($appName: Int!) {
 //   if (loading) return 'Loading...';
 //   if (error) return `Error! ${error.message}`;
 
-function GetFunctionList(data, funcListLoad, funcSelected){
+function GetFunctionList(data, funcListLoad, funcSelected, closeFuncListDialog){
 //site.search.results[0].name
 
 
@@ -99,6 +99,7 @@ function GetFunctionList(data, funcListLoad, funcSelected){
                             button
                             onClick ={(ev)=>{
                                 funcSelected(ev.currentTarget.dataset.id);
+                                closeFuncListDialog();
                                 //console.log(`Button ${ev.currentTarget.dataset.name} clicked`);
                             }}>
              <ListItemText primary={site.name} />
@@ -114,7 +115,8 @@ function GetFunctionList(data, funcListLoad, funcSelected){
 
 function ApplicationList(props) {
 
-  const { classes, closeDrawer, funcListLoad, funcSelected, appName} = props;
+  const { classes, closeDrawer, funcListLoad, funcSelected,
+     appName, ShowFuncListDialog, funcDialogOpen, funcDialogClose} = props;
 
   const { loading, error, data } = useQuery(GET_FUNCTIONS, {
     variables: { appName: Number(appName) },
@@ -125,13 +127,18 @@ function ApplicationList(props) {
 
 
 
-  var items = GetFunctionList(data,funcListLoad,funcSelected);
+  var items = GetFunctionList(data,funcListLoad,funcSelected,funcDialogClose);
 
   return (
       <div className = "inner">
          <AppBar position="static">
            <Toolbar>
-               <IconButton className={classes.menuButton} color="inherit" aria-label="Menu" onClick={closeDrawer} >
+               <IconButton className={classes.menuButton} color="inherit" aria-label="Menu" onClick={()=>{
+                  //if(ShowFuncListDialog)
+                    funcDialogClose(); //hopefully this is open when it's being cliucked on
+                  // else
+                  //   funcDialogOpen();
+                 }} >
                  <MenuIcon/>
                </IconButton>
 
@@ -158,7 +165,8 @@ ApplicationList.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    appName: state.ux.appName
+    appName: state.ux.appName,
+    ShowFuncListDialog: state.ux.showFuncListDialog
   };
 };
 
@@ -169,7 +177,8 @@ const mapDispatchToProps = dispatch => {
   return {
     funcListLoad: (list) => dispatch(funcListLoad(list)),
     funcSelected: (selectedApp) => dispatch(funcSelected(selectedApp)),
-
+    funcDialogOpen: () => dispatch(funcDialogOpen()),
+    funcDialogClose: () => dispatch(funcDialogClose()),
   };
 };
 

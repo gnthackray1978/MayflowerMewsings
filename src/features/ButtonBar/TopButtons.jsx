@@ -8,7 +8,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Typography from '@material-ui/core/Typography';
 import { connect } from "react-redux";
 import IDSConnect   from "../../shared/IDSConnect/Components/IDSConnect.jsx";
-import {siteDialogOpen, siteDialogClose} from "../uxActions.jsx";
+import {siteDialogOpen, siteDialogClose,funcDialogOpen,funcDialogClose} from "../uxActions.jsx";
 import AppsIcon from '@material-ui/icons/Apps';
 
 const styles = theme => ({
@@ -45,26 +45,33 @@ class TopButtons extends Component {
 
   render() {
 
-    const { classes,modeChanged, SelectedApp, siteDialogOpen, siteDialogClose, showAppListDialog} = this.props;
+    const { classes,modeChanged, SelectedApp, siteDialogOpen, siteDialogClose,
+       showAppListDialog, SelectedFunc, ShowFuncListDialog, funcDialogOpen , funcDialogClose} = this.props;
 
-    let createNewTest = ()=>{
+    var pageTitle = SelectedApp + '/' + SelectedFunc;
 
-    };
 
     return (
          <Toolbar>
              <IconButton className={classes.menuButton} color="inherit"
-                aria-label="Menu" onClick={()=>{ modeChanged('data'); }}>
+                aria-label="Menu" onClick= { ()=>
+                    {
+                      if(ShowFuncListDialog)
+                        funcDialogClose();
+                      else
+                        funcDialogOpen();
+                    }
+                  }>
                  <MenuIcon />
              </IconButton>
-             <Button color="inherit"  onClick={()=>createNewTest()}>
+             <Button color="inherit" >
                  <Typography variant="h6" color="inherit"  className ={classes.tolowerBtn}>
                   Start
                  </Typography>
              </Button>
              <Button color="inherit"  className={classes.grow}>
                  <Typography variant="h6" color="inherit"  className ={classes.tolowerBtn}>
-                     {SelectedApp}
+                     {pageTitle}
                  </Typography>
              </Button>
              <IconButton className={classes.menuButton} color="inherit"
@@ -97,11 +104,20 @@ TopButtons.defaultProps  = {
 const mapStateToProps = state => {
   let appName =  state.ux.appName;
   let appList =  state.ux.appList;
+
+  let funcName =  state.ux.funcName;
+  let funcList =  state.ux.funcList;
+
   let showAppListDialog =  state.ux.showAppListDialog;
+  let showFuncListDialog = state.ux.showFuncListDialog;
+
   let selectedApp ='Unknown';
+  let selectedFunc = 'Unknown';
+
+  let idx=0;
 
   if(appList && appList.length >0){
-    let idx=0;
+    idx=0;
 
     while(idx < appList.length){
       if(appList[idx].id == appName){
@@ -112,17 +128,32 @@ const mapStateToProps = state => {
     }
   }
 
+  if(funcList && funcList.length >0){
+    idx=0;
+
+    while(idx < funcList.length){
+      if(funcList[idx].id == funcName){
+        selectedFunc = funcList[idx].name;
+      }
+
+      idx++;
+    }
+  }
+
+
   return {
+    SelectedFunc : selectedFunc,
     SelectedApp: selectedApp,
-    ShowAppListDialog :showAppListDialog
+    ShowAppListDialog :showAppListDialog,
+    ShowFuncListDialog :showFuncListDialog
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     applicationListLoad: (list) => dispatch(applicationListLoad(list)),
-    siteDialogOpen: () => dispatch(siteDialogOpen()),
-    siteDialogClose: () => dispatch(siteDialogClose()),
+    funcDialogOpen: () => dispatch(funcDialogOpen()),
+    funcDialogClose: () => dispatch(funcDialogClose()),
     //
   };
 };

@@ -1,6 +1,6 @@
 
 import { APPLICATIONLISTLOADED, APPLICATIONSELECTED, FUNCTIONLISTLOADED,
-  FUNCTIONSELECTED, APPDIALOGOPEN ,APPDIALOGCLOSED} from './actionTypes.jsx';
+  FUNCTIONSELECTED, APPDIALOGOPEN ,APPDIALOGCLOSED,FUNCDIALOGOPEN,FUNCDIALOGCLOSED} from './actionTypes.jsx';
 
 export const funcListLoad = (state) =>{
   //console.log('applicationListLoaded action');
@@ -42,24 +42,43 @@ export const applicationSelected = (state) =>{
     }
 };
 
-export const siteDialogOpen = (state) =>{
+export const siteDialogOpen = () =>{
   //console.log('siteDialogOpen action');
 
   return async (dispatch, getState)  => {
        dispatch({
-         type: APPDIALOGOPEN,
-         showAppListDialog : true
+         type: APPDIALOGOPEN
        });
     }
 };
 
-export const siteDialogClose = (state) =>{
+export const siteDialogClose = () =>{
   //console.log('siteDialogClose action');
 
   return async (dispatch, getState)  => {
        dispatch({
-         type: APPDIALOGCLOSED,
-         showAppListDialog : false
+         type: APPDIALOGCLOSED
+       });
+    }
+};
+
+
+export const funcDialogOpen = () =>{
+  //console.log('siteDialogOpen action');
+
+  return async (dispatch, getState)  => {
+       dispatch({
+         type: FUNCDIALOGOPEN
+       });
+    }
+};
+
+export const funcDialogClose = () =>{
+  //console.log('siteDialogClose action');
+
+  return async (dispatch, getState)  => {
+       dispatch({
+         type: FUNCDIALOGCLOSED
        });
     }
 };

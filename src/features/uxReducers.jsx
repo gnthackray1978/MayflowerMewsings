@@ -1,5 +1,5 @@
 import { APPLICATIONLISTLOADED, APPLICATIONSELECTED, FUNCTIONLISTLOADED,
-  FUNCTIONSELECTED,APPDIALOGOPEN,APPDIALOGCLOSED} from './actionTypes.jsx';
+  FUNCTIONSELECTED,APPDIALOGOPEN,APPDIALOGCLOSED,FUNCDIALOGOPEN,FUNCDIALOGCLOSED} from './actionTypes.jsx';
 
 export default (state = {
   appName :1,
@@ -21,6 +21,7 @@ export default (state = {
   loadedAppList :false,
   loadedFuncList :false,
   showAppListDialog :true,
+  showFuncListDialog :false,
 
   error: undefined
 }, action) => {
@@ -74,6 +75,20 @@ export default (state = {
             return {
               ...state,
                showAppListDialog : false
+            };
+
+        case FUNCDIALOGOPEN:
+            //console.log('APPDIALOGOPEN');
+            return {
+              ...state,
+               showFuncListDialog : true
+            };
+
+        case FUNCDIALOGCLOSED:
+            //console.log('APPDIALOGCLOSED');
+            return {
+              ...state,
+               showFuncListDialog : false
             };
 
 
