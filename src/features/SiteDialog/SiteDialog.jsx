@@ -25,7 +25,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavigationIcon from '@material-ui/icons/Navigation';
 import PersonIcon from '@material-ui/icons/Person';
 
-import React, { Component } from 'react';
+import React, { Component , useEffect} from 'react';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import blue from '@material-ui/core/colors/blue';
@@ -84,9 +84,9 @@ function GetSiteList(data, applicationListLoad, applicationSelected, siteDialogC
 
 
   if(data){
+
     var results = data.site.search.results;
-    console.log(results.length);
-    applicationListLoad(results);
+
     var retVal = results.map(site => {
            return(<ListItem key={site.id}
                             data-id={site.id}
@@ -104,6 +104,7 @@ function GetSiteList(data, applicationListLoad, applicationSelected, siteDialogC
     return <List>{retVal}</List>;
   }
   else{
+
     return <List></List>;
   }
 }
@@ -114,7 +115,11 @@ function SiteDialog(props) {
     const {className, theme,classes,ShowAppListDialog, applicationListLoad, applicationSelected, siteDialogClose} = props;
 
     const { loading, error, data } = useQuery(GET_DOGS, {
-      fetchPolicy: "no-cache"
+      fetchPolicy: "no-cache",
+      onCompleted : (data)=>{
+        console.log(data);
+        applicationListLoad(data.site.search.results);
+      }
     });
 
     var items = GetSiteList(data,applicationListLoad,applicationSelected, siteDialogClose);

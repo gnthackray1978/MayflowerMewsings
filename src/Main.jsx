@@ -6,6 +6,7 @@ import SideDrawer from './features/SideDrawer/SideDrawer.jsx';
 import TopButtons from './features/ButtonBar/TopButtons.jsx';
 import {AuthProvider} from './shared/IDSConnect/AuthProvider.jsx'
 import SiteDialog from './features/SiteDialog/SiteDialog.jsx';
+import Default from './pages/Default.jsx';
 
 const styles = () => ({
 
@@ -15,7 +16,7 @@ class Main extends Component {
   constructor(props) {
      super(props);
    }
-  
+
   render() {
       return (
         <AuthProvider>
@@ -26,6 +27,7 @@ class Main extends Component {
 
             <SiteDialog/>
 
+            <Default visible = {true}/>
           </div>
         </AuthProvider>
       );

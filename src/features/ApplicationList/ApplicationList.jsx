@@ -70,6 +70,7 @@ query Function($appName: Int!) {
       results {
         id
         name
+        pageName
       }
     }
   }
@@ -84,14 +85,12 @@ query Function($appName: Int!) {
 //   if (loading) return 'Loading...';
 //   if (error) return `Error! ${error.message}`;
 
-function GetFunctionList(data, funcListLoad, funcSelected, closeFuncListDialog){
-//site.search.results[0].name
+function GetFunctionList(data, funcSelected, closeFuncListDialog){
 
 
   if(data){
     var results = data.function.search.results;
-    //console.log(results.length);
-    funcListLoad(results);
+
     var retVal = results.map(site => {
            return(<ListItem key={site.id}
                             data-id={site.id}
@@ -120,14 +119,14 @@ console.log('ApplicationList loaded ');
 
   const { loading, error, data } = useQuery(GET_FUNCTIONS, {
     variables: { appName: Number(appName) },
-    fetchPolicy: "no-cache"
+    fetchPolicy: "no-cache",
+    onCompleted : (data)=>{
+      console.log(data);
+      funcListLoad(data.function.search.results);
+    }
   });
 
-
-
-
-
-  var items = GetFunctionList(data,funcListLoad,funcSelected,funcDialogClose);
+  var items = GetFunctionList(data,funcSelected,funcDialogClose);
 
   return (
       <div className = "inner">
