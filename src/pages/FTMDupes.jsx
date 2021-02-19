@@ -6,17 +6,17 @@ const styles = theme => ({
 
 });
 
-function Default(props) {
+function FTMDupes(props) {
 
     const {className, theme, classes} = props;
 
     return (
         <div>
-          Default page
+          FTMDupes
         </div>
     );
 
 }
 
 
-export default withStyles(styles)(Default);
+export default withStyles(styles)(FTMDupes);

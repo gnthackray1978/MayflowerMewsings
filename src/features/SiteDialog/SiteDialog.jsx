@@ -71,7 +71,9 @@ query {
       page
       results {
         id,
-        name
+        name,
+        defaultPageName,
+        defaultPageTitle
       }
     }
   }

@@ -6,17 +6,17 @@ const styles = theme => ({
 
 });
 
-function Default(props) {
+function TSources(props) {
 
     const {className, theme, classes} = props;
 
     return (
         <div>
-          Default page
+          TSources
         </div>
     );
 
 }
 
 
-export default withStyles(styles)(Default);
+export default withStyles(styles)(TSources);

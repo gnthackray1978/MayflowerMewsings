@@ -71,6 +71,7 @@ query Function($appName: Int!) {
         id
         name
         pageName
+        pageTitle
       }
     }
   }

@@ -6,17 +6,17 @@ const styles = theme => ({
 
 });
 
-function Default(props) {
+function TBirths(props) {
 
     const {className, theme, classes} = props;
 
     return (
         <div>
-          Default page
+          TBirths
         </div>
     );
 
 }
 
 
-export default withStyles(styles)(Default);
+export default withStyles(styles)(TBirths);

@@ -6,17 +6,17 @@ const styles = theme => ({
 
 });
 
-function Default(props) {
+function FTMPersons(props) {
 
     const {className, theme, classes} = props;
 
     return (
         <div>
-          Default page
+          FTM Persons
         </div>
     );
 
 }
 
 
-export default withStyles(styles)(Default);
+export default withStyles(styles)(FTMPersons);

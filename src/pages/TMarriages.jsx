@@ -6,17 +6,17 @@ const styles = theme => ({
 
 });
 
-function Default(props) {
+function TMarriages(props) {
 
     const {className, theme, classes} = props;
 
     return (
         <div>
-          Default page
+          TMarriages
         </div>
     );
 
 }
 
 
-export default withStyles(styles)(Default);
+export default withStyles(styles)(TMarriages);

@@ -6,17 +6,13 @@ const styles = theme => ({
 
 });
 
-function Default(props) {
+function WNorfolk(props) {
 
     const {className, theme, classes} = props;
 
-    return (
-        <div>
-          Default page
-        </div>
-    );
+    return ( <div> Norfolk Wills </div>);
 
 }
 
 
-export default withStyles(styles)(Default);
+export default withStyles(styles)(WNorfolk);

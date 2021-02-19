@@ -46,9 +46,9 @@ class TopButtons extends Component {
   render() {
 
     const { classes,modeChanged, SelectedApp, siteDialogOpen, siteDialogClose,
-       showAppListDialog, SelectedFunc, ShowFuncListDialog, funcDialogOpen , funcDialogClose} = this.props;
+       showAppListDialog, SelectedFunc, ShowFuncListDialog, funcDialogOpen , funcDialogClose, Title} = this.props;
 
-    var pageTitle = SelectedApp + '/' + SelectedFunc;
+  //  var pageTitle = SelectedApp + '/' + SelectedFunc;
 
 
     return (
@@ -67,7 +67,7 @@ class TopButtons extends Component {
 
              <Button color="inherit"  className={classes.grow}>
                  <Typography variant="h6" color="inherit"  className ={classes.tolowerBtn}>
-                     {pageTitle}
+                     {Title}
                  </Typography>
              </Button>
              <IconButton className={classes.menuButton} color="inherit"
@@ -98,6 +98,7 @@ TopButtons.defaultProps  = {
 
 
 const mapStateToProps = state => {
+  console.log('top buttons ' );
   let appName =  state.ux.appName;
   let appList =  state.ux.appList;
 
@@ -109,7 +110,7 @@ const mapStateToProps = state => {
 
   let selectedApp ='Unknown';
   let selectedFunc = 'Unknown';
-
+  let title ='';
   let idx=0;
 
   if(appList && appList.length >0){
@@ -117,7 +118,8 @@ const mapStateToProps = state => {
 
     while(idx < appList.length){
       if(appList[idx].id == appName){
-        selectedApp = appList[idx].name;
+        selectedApp = appList[idx].defaultPageTitle;
+        title =  appList[idx].defaultPageTitle;
       }
 
       idx++;
@@ -129,7 +131,8 @@ const mapStateToProps = state => {
 
     while(idx < funcList.length){
       if(funcList[idx].id == funcName){
-        selectedFunc = funcList[idx].name;
+        selectedFunc = funcList[idx].pageTitle;
+        title =  funcList[idx].pageTitle;
       }
 
       idx++;
@@ -138,6 +141,7 @@ const mapStateToProps = state => {
 
 
   return {
+    Title : title,
     SelectedFunc : selectedFunc,
     SelectedApp: selectedApp,
     ShowAppListDialog :showAppListDialog,

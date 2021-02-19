@@ -7,16 +7,13 @@ export default (state = {
       {
         id: 1,
         name: 'Front Page',
+        defaultPageName : 'default',
+        defaultPageTitle :'Default',
         __typename: 'SiteType'
       }],
 
-  funcName :1,
-  funcList : [
-      {
-        id: 1,
-        name: 'Front Page',
-        __typename: 'Function'
-      }],
+  funcName :0,
+  funcList : [],
 
   loadedAppList :false,
   loadedFuncList :false,
@@ -57,11 +54,18 @@ export default (state = {
           };
 
       case APPLICATIONSELECTED:
-          //console.log('APPLICATIONSELECTED');
-          return {
-            ...state,
-             appName : action.payload
-          };
+          // if we have a new app selected
+          // then invalidate the func list & selected Function
+          // if same app nothing will change
+          if(state.appName != action.payload){
+            return {
+               ...state,
+               funcList: [],
+               loadedFuncList :false,
+               funcName : 0,
+               appName : action.payload
+            };
+          }
 
         case APPDIALOGOPEN:
             //console.log('APPDIALOGOPEN');

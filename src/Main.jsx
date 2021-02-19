@@ -6,7 +6,7 @@ import SideDrawer from './features/SideDrawer/SideDrawer.jsx';
 import TopButtons from './features/ButtonBar/TopButtons.jsx';
 import {AuthProvider} from './shared/IDSConnect/AuthProvider.jsx'
 import SiteDialog from './features/SiteDialog/SiteDialog.jsx';
-import Default from './pages/Default.jsx';
+import PageContainer from './pages/PageContainer.jsx';
 
 const styles = () => ({
 
@@ -27,13 +27,14 @@ class Main extends Component {
 
             <SiteDialog/>
 
-            <Default visible = {true}/>
+            <PageContainer/>
           </div>
         </AuthProvider>
       );
     }
 }
 
+//something like current page
 const mapStateToProps = state => {
   return {
     access_token : state.ids.access_token,

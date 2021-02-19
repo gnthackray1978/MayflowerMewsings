@@ -6,17 +6,17 @@ const styles = theme => ({
 
 });
 
-function Default(props) {
+function WLincolnshire(props) {
 
     const {className, theme, classes} = props;
 
     return (
         <div>
-          Default page
+          Lincolnshire Wills
         </div>
     );
 
 }
 
 
-export default withStyles(styles)(Default);
+export default withStyles(styles)(WLincolnshire);

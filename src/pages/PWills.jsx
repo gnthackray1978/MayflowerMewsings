@@ -6,17 +6,17 @@ const styles = theme => ({
 
 });
 
-function Default(props) {
+function PWills(props) {
 
     const {className, theme, classes} = props;
 
     return (
         <div>
-          Default page
+          PWills
         </div>
     );
 
 }
 
 
-export default withStyles(styles)(Default);
+export default withStyles(styles)(PWills);

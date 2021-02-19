@@ -6,17 +6,17 @@ const styles = theme => ({
 
 });
 
-function Default(props) {
+function PTombstones(props) {
 
     const {className, theme, classes} = props;
 
     return (
         <div>
-          Default page
+          Tombstone pictures
         </div>
     );
 
 }
 
 
-export default withStyles(styles)(Default);
+export default withStyles(styles)(PTombstones);
