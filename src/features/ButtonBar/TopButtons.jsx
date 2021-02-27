@@ -98,7 +98,7 @@ TopButtons.defaultProps  = {
 
 
 const mapStateToProps = state => {
-  console.log('top buttons ' );
+//  console.log('top buttons ' );
   let appName =  state.ux.appName;
   let appList =  state.ux.appList;
 

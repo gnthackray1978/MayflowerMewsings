@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import EnhancedTable from './table/EnhancedTable.jsx'
 import { withStyles } from '@material-ui/core/styles';
 import { connect } from "react-redux";
 
@@ -11,8 +12,8 @@ function WLincolnshire(props) {
     const {className, theme, classes} = props;
 
     return (
-        <div>
-          Lincolnshire Wills
+        <div>        
+          <EnhancedTable></EnhancedTable>
         </div>
     );
 
