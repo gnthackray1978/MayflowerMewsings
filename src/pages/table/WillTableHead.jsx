@@ -25,8 +25,20 @@ import { withStyles } from '@material-ui/core/styles';
 import { connect } from "react-redux";
 
 
- export default function EnhancedTableHead(props) {
-  const { classes, onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort , headCells} = props;
+ export default function WillTableHead(props) {
+  const { classes, onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props;
+
+  const headCells = [
+  //  { id: 'Id', numeric: true, disablePadding: true, label: 'ID' },
+    { id: 'Year', numeric: false, disablePadding: true, label: 'Year' },
+    { id: 'Reference', numeric: false, disablePadding: true, label: 'Reference' },
+    { id: 'Description', numeric: false, disablePadding: true, label: 'Description' },
+    { id: 'Place', numeric: false, disablePadding: true, label: 'Place' },
+    { id: 'FirstName', numeric: false, disablePadding: true, label: 'FirstName' },
+    { id: 'Surname', numeric: false, disablePadding: true, label: 'Surname' },
+    { id: 'Typ', numeric: false, disablePadding: true, label: 'Type' },
+  ];
+
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
@@ -34,7 +46,7 @@ import { connect } from "react-redux";
   return (
     <TableHead>
       <TableRow>
-  
+
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
@@ -61,7 +73,7 @@ import { connect } from "react-redux";
   );
 }
 
-EnhancedTableHead.propTypes = {
+WillTableHead.propTypes = {
   classes: PropTypes.object.isRequired,
   numSelected: PropTypes.number.isRequired,
   onRequestSort: PropTypes.func.isRequired,

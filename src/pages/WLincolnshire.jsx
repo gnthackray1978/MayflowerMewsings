@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import EnhancedTable from './table/EnhancedTable.jsx'
+import WillTable from './table/WillTable.jsx'
 import { withStyles } from '@material-ui/core/styles';
 import { connect } from "react-redux";
 
@@ -12,8 +12,8 @@ function WLincolnshire(props) {
     const {className, theme, classes} = props;
 
     return (
-        <div>        
-          <EnhancedTable></EnhancedTable>
+        <div>
+          <WillTable></WillTable>
         </div>
     );
 

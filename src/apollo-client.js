@@ -48,7 +48,22 @@ try {
 
 const client = new ApolloClient({
   link: authLink.concat(httpLink),
-  cache: new InMemoryCache()
+  cache: new InMemoryCache({
+    typePolicies: {
+    Will: {
+      fields: {
+        search: {
+
+            keyArgs: false,
+            merge(existing =[], incoming) {
+              return incoming;
+            }
+
+       }
+      }
+    }
+  }
+  })
 });
 
 export default client;

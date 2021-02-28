@@ -22,97 +22,12 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 
 import { withStyles } from '@material-ui/core/styles';
-import { ApolloClient, InMemoryCache, ApolloProvider, gql, useQuery } from '@apollo/client';
+import { ApolloClient, InMemoryCache, ApolloProvider, gql, useQuery ,useLazyQuery} from '@apollo/client';
 
-import EnhancedTableHead from './EnhancedTableHead.jsx';
-import EnhancedTableToolbar from './EnhancedTableToolbar.jsx';
+import WillTableHead from './WillTableHead.jsx';
+import WillTableToolbar from './WillTableToolbar.jsx';
 import { connect } from "react-redux";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
-
-
-const GET_WILLS = gql`
-query Will($first: Int!, $offset : Int!){
-  will{
-    search(first : $first, offset : $offset ) {
-     page
-     totalResults
-     results {
-          id
-         description
-         collection
-         reference
-         place
-         year
-         typ
-         firstName
-         surname
-         occupation
-         aliases
-     }
-   }
-  }
-}
-`;
-
-const headCells = [
-//  { id: 'Id', numeric: true, disablePadding: true, label: 'ID' },
-  { id: 'Year', numeric: false, disablePadding: true, label: 'Year' },
-  { id: 'Reference', numeric: false, disablePadding: true, label: 'Reference' },
-  { id: 'Description', numeric: false, disablePadding: true, label: 'Description' },
-  { id: 'Place', numeric: false, disablePadding: true, label: 'Place' },
-  { id: 'FirstName', numeric: false, disablePadding: true, label: 'FirstName' },
-  { id: 'Surname', numeric: false, disablePadding: true, label: 'Surname' },
-  { id: 'Typ', numeric: false, disablePadding: true, label: 'Type' },
-];
-
-function makeData(data){
-
-
-
-  let rows = [];
-
-  let idx =0;
-
-  while(idx < data.will.search.results.length){
-    let tp = data.will.search.results[idx];
-
-    rows.push(tp);
-
-    idx++;
-  }
-
-  return rows;
-
-}
-
-// function descendingComparator(a, b, orderBy) {
-//   if (b[orderBy] < a[orderBy]) {
-//     return -1;
-//   }
-//   if (b[orderBy] > a[orderBy]) {
-//     return 1;
-//   }
-//   return 0;
-// }
-
-// function getComparator(order, orderBy) {
-//   return order === 'desc'
-//     ? (a, b) => descendingComparator(a, b, orderBy)
-//     : (a, b) => -descendingComparator(a, b, orderBy);
-// }
-//
-// function stableSort(array, comparator) {
-//   const stabilizedThis = array.map((el, index) => [el, index]);
-//   stabilizedThis.sort((a, b) => {
-//     const order = comparator(a[0], b[0]);
-//     if (order !== 0) return order;
-//     return a[1] - b[1];
-//   });
-//   return stabilizedThis.map((el) => el[0]);
-// }
-
-
-
 
 const theme = createMuiTheme({
   overrides: {
@@ -150,8 +65,6 @@ const theme = createMuiTheme({
   }
 
 });
-
-
 
 const useStyles = makeStyles((theme) => ({
 
@@ -196,36 +109,103 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
+const GET_WILLS = gql`
+query Will(
+   $limit: Int!,
+   $offset : Int!,
+   $sortColumn: String!,
+   $sortOrder : String!,
+   $yearStart: Int!,
+   $yearEnd : Int!,
+   $ref: String!,
+   $desc : String!,
+   $place: String!,
+   $surname : String!
+ ){
+  will{
+    lincssearch(limit : $limit,
+           offset : $offset,
+           sortColumn: $sortColumn,
+           sortOrder : $sortOrder,
+           yearStart: $yearStart,
+           yearEnd : $yearEnd,
+           ref: $ref,
+           desc : $desc,
+           place: $place,
+           surname : $surname
+         ) {
+     page
+     totalResults
+     results {
+          id
+         description
+         collection
+         reference
+         place
+         year
+         typ
+         firstName
+         surname
+         occupation
+         aliases
+     }
+   }
+  }
+}
+`;
 
-export default function EnhancedTable() {
+
+
+function makeData(data){
+
+
+
+  let rows = [];
+
+  if(!data) return rows;
+
+  let idx =0;
+
+  while(idx < data.will.lincssearch.results.length){
+    let tp = data.will.lincssearch.results[idx];
+
+    rows.push(tp);
+
+    idx++;
+  }
+
+  return rows;
+
+}
+
+
+
+
+export default function WillTable() {
+
+
   const classes = useStyles();
+  const [initialLoad, setInitialLoad] = React.useState(false);
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('year');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(50);
 
   const [totalRecords, setTotalRecords] = React.useState(0);
 
   const [filterParams, setFilterParams] = React.useState({
      sortColumn : '',
      sortOrder : '',
-     first : 0,
+     limit : 0,
      offset :0,
-     yearStart : 0,
+     yearStart : 1500,
      yearEnd : 2000,
      ref : '',
      desc : '',
      place : '',
      surname : ''
   });
-  // const [yearTo, setYearTo] = React.useState(2000);
-  // const [ref, setRef] = React.useState('');
-  // const [desc, setDesc] = React.useState('');
-  // const [place, setPlace] = React.useState('');
-  // const [surname, setSurname] = React.useState('');
-
-
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -262,15 +242,7 @@ export default function EnhancedTable() {
     setSelected(newSelected);
   };
 
-  const handleChangePage = (event, newPage) => {
 
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
 
 
 
@@ -278,23 +250,39 @@ export default function EnhancedTable() {
 
 
 //rowsPerPage
-  console.log('EnhancedTable : ' + page + ' ' + order + ' ' + orderBy );
+  console.log('WillTable : ' + page + ' ' + order + ' ' + orderBy );
 
-  filterParams.first = (page* rowsPerPage);
-  filterParams.offset = rowsPerPage;
+  filterParams.limit =rowsPerPage;
+  filterParams.offset = (page* rowsPerPage) ;
   filterParams.sortColumn = order;
   filterParams.sortOrder = orderBy;
 
-  const { loading, error, data } = useQuery(GET_WILLS, {
+  const  { loading, error, data, fetchMore } = useQuery(GET_WILLS, {
      errorPolicy: 'all' ,
     variables: filterParams,
-    fetchPolicy: "no-cache",
     onCompleted : (data)=>{
-  //    console.log(data.will.search.results[0].id);
+      console.log('finished fetching');
 
     }
 
   });
+
+  const handleChangePage = (event, newPage) => {
+
+    setPage(newPage);
+    fetchMore(
+      {
+        variables: {offset : (newPage* rowsPerPage)}
+
+      }
+    );
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+    fetchMore({variables: filterParams});
+  };
 
 
   if (loading) return <span>loading...</span>
@@ -313,32 +301,40 @@ export default function EnhancedTable() {
 
   var rows = makeData(data);
 
+  var totalRecordCount = 0;
 
-
-const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+ if(data && data.will)
+  totalRecordCount =  data.will.lincssearch.totalResults;
 
   return (
     <MuiThemeProvider theme={theme}>
       <div className={classes.root}>
 
 
-          <EnhancedTableToolbar numSelected={selected.length} title = 'Wills'
+          <WillTableToolbar numSelected={selected.length} filterParams ={filterParams} title = 'Wills'
             filterFieldChanged = {(filterObj)=>
               {
+                filterObj.limit =rowsPerPage;
+                filterObj.offset = (page* rowsPerPage);
+                filterObj.sortColumn = order;
+                filterObj.sortOrder = orderBy;
+
                 setFilterParams(filterObj);
                 console.log('filter clicked' + filterObj);
+
+                fetchMore({variables: filterObj});
                }}>
-          </EnhancedTableToolbar>
+          </WillTableToolbar>
           <TableContainer>
             <Table
               className={classes.table}
               aria-labelledby="tableTitle"
               size='small'
-              aria-label="enhanced table"
+              aria-label="will table"
             >
-              <EnhancedTableHead
+              <WillTableHead
                 classes={classes}
-                headCells ={headCells}
+
                 numSelected={selected.length}
                 order={order}
                 orderBy={orderBy}
@@ -348,11 +344,11 @@ const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsP
               />
               <TableBody>
                 {
-                  //stableSort(rows, getComparator(order, orderBy))
-              //    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+
                   rows.map((row, index) => {
+                    console.log(row.reference);
                     const isItemSelected = isSelected(row.reference);
-                    const labelId = `enhanced-table-checkbox-${index}`;
+                    const labelId = `will-table-checkbox-${index}`;
 
                     return (
                       <TableRow
@@ -361,7 +357,7 @@ const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsP
                         role="checkbox"
                         aria-checked={isItemSelected}
                         tabIndex={-1}
-                        key={row.reference}
+                        key={row.id}
                         selected={isItemSelected}
                       >
 
@@ -374,20 +370,20 @@ const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsP
 
                         <TableCell  padding="none">{row.description}</TableCell>
                         <TableCell  padding="none">{row.place}</TableCell>
-                        <TableCell  padding="none">{row.firstname}</TableCell>
+                        <TableCell  padding="none">{row.firstName}</TableCell>
                         <TableCell  padding="none">{row.surname}</TableCell>
                         <TableCell  padding="none">{row.typ}</TableCell>
                       </TableRow>
                     );
                   })}
-             
+
               </TableBody>
             </Table>
           </TableContainer>
           <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
+            rowsPerPageOptions={[5, 10, 25,50]}
             component="div"
-            count={data.will.search.totalResults}
+            count={totalRecordCount}
             rowsPerPage={rowsPerPage}
             page={page}
             onChangePage={handleChangePage}

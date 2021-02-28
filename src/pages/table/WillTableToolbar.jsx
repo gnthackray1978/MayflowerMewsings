@@ -26,7 +26,7 @@ import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
 import SaveIcon from '@material-ui/icons/Save';
 import { withStyles } from '@material-ui/core/styles';
-import EnhancedTableHead from './EnhancedTableHead.jsx';
+import WillTableHead from './WillTableHead.jsx';
 import Box from '@material-ui/core/Box';
 import { connect } from "react-redux";
 
@@ -53,11 +53,11 @@ const useToolbarStyles = makeStyles((theme) => ({
 
 }));
 
-const EnhancedTableToolbar = (props) => {
-//  console.log('rendered: EnhancedTableToolbar' );
+const WillTableToolbar = (props) => {
+//  console.log('rendered: WillTableToolbar' );
 
   const classes = useToolbarStyles();
-  const { numSelected, title, filterFieldChanged } = props;
+  const { numSelected, title, filterFieldChanged, filterParams } = props;
 
 
 
@@ -68,27 +68,49 @@ const EnhancedTableToolbar = (props) => {
   let place ='';
   let surname ='';
 
+
+  // yearStart : 1500,
+  // yearEnd : 2000,
+  // ref : '',
+  // desc : '',
+  // place : '',
+  // surname : ''
+
+
   return (
     <Toolbar
       className={clsx(classes.root, {
+
         [classes.highlight]: numSelected > 0,
       })}
     >
 
-    <TextField className={classes.filter} id="yearFrom" label="Year From" variant="standard"  size="small"
+    <TextField className={classes.filter} id="yearFrom" label="Year From"
+      defaultValue={String(filterParams.yearStart)}
+      variant="standard"  size="small"
       onChange = {(e)=>{  yearFrom = e.currentTarget.value; }}/>
-    <TextField className={classes.filter} id="yearTo" label="Year To" variant="standard"  size="small"
+    <TextField className={classes.filter} id="yearTo" label="Year To"
+      defaultValue={String(filterParams.yearEnd)}
+      variant="standard"  size="small"
       onChange = {(e)=>{  yearTo = e.currentTarget.value; }}/>
-    <TextField className={classes.filter} id="reference" label="Ref." variant="standard"  size="small"
+    <TextField className={classes.filter} id="reference" label="Ref."
+      defaultValue={filterParams.ref}
+      variant="standard"  size="small"
       onChange = {(e)=>{  ref = e.currentTarget.value; }}/>
-    <TextField className={classes.filter} id="description" label="Desc." variant="standard"  size="small"
+    <TextField className={classes.filter} id="description" label="Desc."
+      defaultValue={filterParams.desc}
+      variant="standard"  size="small"
       onChange = {(e)=>{  desc = e.currentTarget.value; }}/>
-    <TextField className={classes.filter} id="place" label="Place" variant="standard"  size="small"
+    <TextField className={classes.filter} id="place" label="Place"
+      defaultValue={filterParams.place}
+      variant="standard"  size="small"
       onChange = {(e)=>{  place = e.currentTarget.value; }}/>
-    <TextField className={classes.filter} id="surname" label="Surname" variant="standard"  size="small"
+    <TextField className={classes.filter} id="surname" label="Surname"
+      defaultValue={filterParams.surname}
+       variant="standard"  size="small"
       onChange = {(e)=>{  surname = e.currentTarget.value; }}/>
 
- 
+
 
         <Box
                boxShadow={3}
@@ -101,7 +123,7 @@ const EnhancedTableToolbar = (props) => {
                      var returnObj ={
                        sortColumn : '',
                        sortOrder : '',
-                       first : 0,
+                       limit : 0,
                        offset :0,
                         yearStart : yearFrom,
                         yearEnd : yearTo,
@@ -118,9 +140,9 @@ const EnhancedTableToolbar = (props) => {
   );
 };
 
-EnhancedTableToolbar.propTypes = {
+WillTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
   filterFieldChanged : PropTypes.func
 };
 
-export default EnhancedTableToolbar;
+export default WillTableToolbar;
