@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import NorfolkWills from './table/NorfolkWills.jsx'
+import NorfolkWills from './table/wills/NorfolkWills.jsx'
 import { withStyles } from '@material-ui/core/styles';
 import { connect } from "react-redux";
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import LincsWills from './table/LincsWills.jsx'
+import LincsWills from './table/wills/LincsWills.jsx'
 import { withStyles } from '@material-ui/core/styles';
 import { connect } from "react-redux";
 
