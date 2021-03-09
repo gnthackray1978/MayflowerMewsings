@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import WillTable from './table/WillTable.jsx'
+import LincsWills from './table/LincsWills.jsx'
 import { withStyles } from '@material-ui/core/styles';
 import { connect } from "react-redux";
 
@@ -13,7 +13,7 @@ function WLincolnshire(props) {
 
     return (
         <div>
-          <WillTable></WillTable>
+          <LincsWills></LincsWills>
         </div>
     );
 
