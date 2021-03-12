@@ -28,7 +28,6 @@ function Dupes() {
            surname
            yearFrom
            yearTo
-           ident
            location
            origin
        }
@@ -66,7 +65,7 @@ function Dupes() {
 
     return (
         <div>
-          <DupeTable GET_DUPES = {GET_DUPES} makeData = {makeData}></DupeTable>
+          <DupeTable ReturnData = {GET_DUPES} makeData = {makeData}></DupeTable>
         </div>
     );
 

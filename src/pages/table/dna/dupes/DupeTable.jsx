@@ -279,14 +279,13 @@ export default function DupeTable(props) {
                       >
                         <TableCell  padding="none">{row.yearFrom}</TableCell>
                         <TableCell  padding="none">{row.yearTo}</TableCell>
+                        <TableCell  padding="none">{row.origin}</TableCell>
+                        <TableCell  padding="none">{row.location}</TableCell>
                         <TableCell  padding="none">{row.firstName}</TableCell>
                         <TableCell component="th" id={labelId} scope="row" padding="none">
                           {row.surname}
                         </TableCell>
 
-                        <TableCell  padding="none">{row.origin}</TableCell>
-                        <TableCell  padding="none">{row.ident}</TableCell>
-                        <TableCell  padding="none">{row.location}</TableCell>
                       </TableRow>
                     );
                   })}

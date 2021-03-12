@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Dupes from './table/dna/dupes/Dupes.jsx'
 import { withStyles } from '@material-ui/core/styles';
 import { connect } from "react-redux";
 
@@ -12,7 +13,7 @@ function FTMDupes(props) {
 
     return (
         <div>
-          FTMDupes
+          <Dupes></Dupes>
         </div>
     );
 

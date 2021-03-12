@@ -71,12 +71,17 @@ const client = new ApolloClient({
               return incoming;
             }
 
-       }
+       }  ,
+        dupesearch: {
+           keyArgs: false,
+           merge(existing =[], incoming) {
+             return incoming;
+           }
+        }
       }
     }
 
-
-  }
+   }
   })
 });
 

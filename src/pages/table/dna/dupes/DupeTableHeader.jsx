@@ -33,7 +33,6 @@ import { connect } from "react-redux";
     { id: 'YearFrom', numeric: false, disablePadding: true, label: 'Year From' },
     { id: 'YearTo', numeric: false, disablePadding: true, label: 'Year To' },
     { id: 'Origin', numeric: false, disablePadding: true, label: 'Origin' },
-    { id: 'Ident', numeric: false, disablePadding: true, label: 'Ident' },
     { id: 'Location', numeric: false, disablePadding: true, label: 'Location' },
     { id: 'FirstName', numeric: false, disablePadding: true, label: 'FirstName' },
     { id: 'Surname', numeric: false, disablePadding: true, label: 'Surname' }
