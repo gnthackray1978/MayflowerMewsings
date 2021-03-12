@@ -61,7 +61,21 @@ const client = new ApolloClient({
 
        }
       }
+    },
+    Dna: {
+      fields: {
+        treerecsearch: {
+
+            keyArgs: false,
+            merge(existing =[], incoming) {
+              return incoming;
+            }
+
+       }
+      }
     }
+
+
   }
   })
 });

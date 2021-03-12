@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import TrsTable from './TrsTable.jsx'
 import { gql} from '@apollo/client';
 
-function Poi() {
+function Trs() {
 
 
   const GET_Trs = gql`
@@ -64,11 +64,11 @@ function Poi() {
 
     return (
         <div>
-          <TrsTable GET_Poi = {GET_Trs} makeData = {makeData}></TrsTable>
+          <TrsTable ReturnData = {GET_Trs} makeData = {makeData}></TrsTable>
         </div>
     );
 
 }
 
 
-export default TrsTable ;
+export default Trs ;

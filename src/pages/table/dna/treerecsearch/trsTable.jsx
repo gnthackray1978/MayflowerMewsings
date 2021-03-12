@@ -188,6 +188,8 @@ export default function TrsTable(props) {
   const handleChangePage = (event, newPage) => {
 
     setPage(newPage);
+    console.log('called fetchmore');
+    
     fetchMore(
       {
         variables: {offset : (newPage* rowsPerPage)}

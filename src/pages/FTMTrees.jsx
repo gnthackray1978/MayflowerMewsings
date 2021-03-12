@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Trs from './table/dna/treerecsearch/trs.jsx'
 import { withStyles } from '@material-ui/core/styles';
 import { connect } from "react-redux";
 
@@ -12,7 +13,7 @@ function FTMTrees(props) {
 
     return (
         <div>
-          FTMTrees
+          <Trs></Trs>
         </div>
     );
 
