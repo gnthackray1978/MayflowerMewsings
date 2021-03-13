@@ -65,19 +65,31 @@ const client = new ApolloClient({
     Dna: {
       fields: {
         treerecsearch: {
-
             keyArgs: false,
             merge(existing =[], incoming) {
               return incoming;
             }
-
-       }  ,
+        },
         dupesearch: {
            keyArgs: false,
            merge(existing =[], incoming) {
              return incoming;
            }
-        }
+        },
+
+        ftmviewsearch: {
+           keyArgs: false,
+           merge(existing =[], incoming) {
+             return incoming;
+           }
+        },
+
+        poisearch: {
+           keyArgs: false,
+           merge(existing =[], incoming) {
+             return incoming;
+           }
+        },
       }
     }
 
