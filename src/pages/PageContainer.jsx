@@ -133,6 +133,8 @@ function PageContainer(props) {
       return (<FTMPersons></FTMPersons>);
     if(page == 'ftmtrees')
       return (<FTMTrees></FTMTrees>);
+    if(page == 'ancestrymatches')
+      return (<Ancestrymatches></Ancestrymatches>);
     if(page == 'maps')
       return (<Maps></Maps>);
     if(page == 'ptombstones')
