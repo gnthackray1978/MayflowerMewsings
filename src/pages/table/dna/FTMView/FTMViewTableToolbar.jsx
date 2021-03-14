@@ -26,7 +26,7 @@ import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
 import SaveIcon from '@material-ui/icons/Save';
 import { withStyles } from '@material-ui/core/styles';
-import WillTableHead from './WillTableHead.jsx';
+import WillTableHead from './FTMViewTableHeader.jsx';
 import Box from '@material-ui/core/Box';
 import { connect } from "react-redux";
 
@@ -60,14 +60,10 @@ const FTMViewTableToolbar = (props) => {
   const { numSelected, title, filterFieldChanged, filterParams } = props;
 
 
-
-  let yearFrom =0;
-  let yearTo = 0;
-
-  let location ='';
-  let surname ='';
-
-
+  const [surname, setSurname] = React.useState(filterParams.surname);
+  const [yearStart, setyearStart] = React.useState(String(filterParams.yearStart));
+  const [yearEnd, setyearEnd] = React.useState(String(filterParams.yearEnd));
+  const [location, setLocation] = React.useState(filterParams.location);
 
   return (
     <Toolbar
@@ -78,21 +74,29 @@ const FTMViewTableToolbar = (props) => {
     >
 
     <TextField className={classes.filter} id="yearStart" label="Year From"
-      defaultValue={String(filterParams.yearStart)}
+      value={yearStart}
       variant="standard"  size="small"
-      onChange = {(e)=>{  yearFrom = e.currentTarget.value; }}/>
+      onChange = {(e)=>{
+          setyearStart(e.currentTarget.value);
+      }}/>
     <TextField className={classes.filter} id="yearEnd" label="Year To"
-      defaultValue={String(filterParams.yearEnd)}
+      value={yearEnd}
       variant="standard"  size="small"
-      onChange = {(e)=>{  yearTo = e.currentTarget.value; }}/>
+      onChange = {(e)=>{
+         setyearEnd(e.currentTarget.value);
+      }}/>
     <TextField className={classes.filter} id="location" label="Location"
-      defaultValue={filterParams.ref}
+      value={location}
       variant="standard"  size="small"
-      onChange = {(e)=>{  location = e.currentTarget.value; }}/>
+      onChange = {(e)=>{
+        setLocation(e.currentTarget.value);
+      }}/>
     <TextField className={classes.filter} id="surname" label="Surname"
-      defaultValue={filterParams.desc}
+      value={surname}
       variant="standard"  size="small"
-      onChange = {(e)=>{  surname = e.currentTarget.value; }}/>
+      onChange = {(e)=>{
+        setSurname(e.currentTarget.value);
+      }}/>
 
 
 
@@ -105,13 +109,14 @@ const FTMViewTableToolbar = (props) => {
                style={{ width: '6rem', height: '2rem' }}
              >
                  <Button style={{ lineHeight: '0.5'}} onClick = {()=>{
+                     console.log('on click');
                      var returnObj ={
                             sortColumn : '',
                             sortOrder : '',
                             limit : 0,
                             offset :0,
-                            yearFrom : yearFrom,
-                            yearTo : yearTo,
+                            yearStart : Number(yearStart),
+                            yearEnd : Number(yearEnd),
                             location : location,
                             surname : surname
                      };
