@@ -28,6 +28,8 @@ import PoiTableHeader from './PoiTableHeader.jsx';
 import PoiTableToolbar from './PoiTableToolbar.jsx';
 import { connect } from "react-redux";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
+import {useTableState} from '../../useTable';
+
 
 const theme = createMuiTheme({
   overrides: {
@@ -108,113 +110,34 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
+
 export default function PoiTable(props) {
 
 
   const {ReturnData, makeData} = props;
 
   const classes = useStyles();
-  const [initialLoad, setInitialLoad] = React.useState(false);
-  const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('surname');
-  const [selected, setSelected] = React.useState([]);
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(50);
 
-  const [totalRecords, setTotalRecords] = React.useState(0);
-
-  const [filterParams, setFilterParams] = React.useState({
-     sortColumn : '',
-     sortOrder : '',
-     limit : 0,
-     offset :0,
-      yearStart :'',
-      yearEnd :'',
-      mincm :'',
-      surname :'',
-      location :'',
-      country : ''
-  });
-
-  const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
-    setOrderBy(property);
-  };
-
-  const handleSelectAllClick = (event) => {
-    if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.name);
-      setSelected(newSelecteds);
-      return;
-    }
-    setSelected([]);
-  };
-
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
-      );
-    }
-
-    setSelected(newSelected);
-  };
-
-  const isSelected = (name) => selected.indexOf(name) !== -1;
-
-//rowsPerPage
-  console.log('POITable : ' + page + ' ' + order + ' ' + orderBy );
-
-  filterParams.limit =rowsPerPage;
-  filterParams.offset = (page* rowsPerPage) ;
-  filterParams.sortColumn = order;
-  filterParams.sortOrder = orderBy;
-
-  const  { loading, error, data, fetchMore } = useQuery(ReturnData, {
-     errorPolicy: 'all' ,
-    variables: filterParams,
-    onCompleted : (data)=>{
-      console.log('finished fetching');
-
-    }
-
-  });
-
-  const handleChangePage = (event, newPage) => {
-
-    setPage(newPage);
-    fetchMore(
-      {
-        variables: {offset : (newPage* rowsPerPage)}
-
-      }
-    );
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-    fetchMore({variables: filterParams});
-  };
-
+  var state = useTableState(ReturnData,{
+    sortColumn : '',
+    sortOrder : '',
+    limit : 0,
+    offset :0,
+     yearStart :1700,
+     yearEnd :1840,
+     mincm :9,
+     surname :'',
+     location :'',
+     country : 'England'
+  },'yearStart');
 
   if (loading) return <span>loading...</span>
 
-  if(error && error.graphQLErrors && error.graphQLErrors.length >0){
+  if(state.error && state.error.graphQLErrors && state.error.graphQLErrors.length >0){
     return (
       <div>
-        <pre>Bad: {error.graphQLErrors.map(({ message }, i) => (
+        <pre>Bad: {state.error.graphQLErrors.map(({ message }, i) => (
           <span key={i}>{message}</span>
         ))}
         </pre>
@@ -233,19 +156,9 @@ export default function PoiTable(props) {
       <div className={classes.root}>
 
 
-          <PoiTableToolbar numSelected={selected.length} filterParams ={filterParams} title = 'POI'
-            filterFieldChanged = {(filterObj)=>
-              {
-                filterObj.limit =rowsPerPage;
-                filterObj.offset = (page* rowsPerPage);
-                filterObj.sortColumn = order;
-                filterObj.sortOrder = orderBy;
-
-                setFilterParams(filterObj);
-                console.log('filter clicked' + filterObj);
-
-                fetchMore({variables: filterObj});
-               }}>
+          <PoiTableToolbar numSelected={state.selected.length}
+            filterParams ={filterParams} title = 'POI'
+            filterFieldChanged = {state.filterFieldChanged}>
           </PoiTableToolbar>
           <TableContainer>
             <Table
@@ -257,11 +170,11 @@ export default function PoiTable(props) {
               <PoiTableHeader
                 classes={classes}
 
-                numSelected={selected.length}
-                order={order}
-                orderBy={orderBy}
-                onSelectAllClick={handleSelectAllClick}
-                onRequestSort={handleRequestSort}
+                numSelected={state.selected.length}
+                order={state.order}
+                orderBy={state.orderBy}
+                onSelectAllClick={state.handleSelectAllClick}
+                onRequestSort={state.handleRequestSort}
                 rowCount={rows.length}
               />
               <TableBody>
@@ -269,13 +182,13 @@ export default function PoiTable(props) {
 
                   rows.map((row, index) => {
                     //console.log(row.reference);
-                    const isItemSelected = isSelected(row.id);
+                    const isItemSelected = state.isSelected(row.id);
                     const labelId = `poi-table-checkbox-${index}`;
 
                     return (
                       <TableRow
                         hover
-                        onClick={(event) => handleClick(event, row.id)}
+                        onClick={(event) => state.handleClick(event, row.id)}
                         role="checkbox"
                         aria-checked={isItemSelected}
                         tabIndex={-1}
@@ -311,10 +224,10 @@ export default function PoiTable(props) {
             rowsPerPageOptions={[5, 10, 25,50]}
             component="div"
             count={totalRecordCount}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onChangePage={handleChangePage}
-            onChangeRowsPerPage={handleChangeRowsPerPage}
+            rowsPerPage={state.rowsPerPage}
+            page={state.page}
+            onChangePage={state.handleChangePage}
+            onChangeRowsPerPage={state.handleChangeRowsPerPage}
           />
 
       </div>

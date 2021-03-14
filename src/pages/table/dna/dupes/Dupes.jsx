@@ -38,8 +38,12 @@ function Dupes() {
     const makeData = function(data){
 
       let rows = [];
+      let totalRecordCount =0;
 
-      if(!data) return rows;
+      if(!data) return {
+          rows,
+          totalRecordCount
+        };
 
       let idx =0;
 
@@ -51,7 +55,7 @@ function Dupes() {
         idx++;
       }
 
-      let totalRecordCount =0;
+
 
       if(data && data.dna)
        totalRecordCount =  data.dna.dupesearch.totalResults;

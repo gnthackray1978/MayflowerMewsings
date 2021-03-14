@@ -17,17 +17,17 @@ function FTMView() {
      $surname : String!,
      $yearStart : Int!,
      $yearEnd : Int!,
-     $location : String!,
+     $location : String!
    ){
     dna{
-      dupesearch(limit : $limit,
+      ftmviewsearch(limit : $limit,
                  offset : $offset,
                  sortColumn: $sortColumn,
                  sortOrder : $sortOrder,
-                 surname : $surname.
-                 yearStart : yearStart,
-                 yearEnd : yearEnd,
-                 location : location
+                 surname : $surname,
+                 yearStart : $yearStart,
+                 yearEnd : $yearEnd,
+                 location : $location
            ) {
        page
        totalResults
@@ -36,8 +36,8 @@ function FTMView() {
            firstName
            surname
            location
-           yearStart
-           yearEnd
+           yearFrom
+           yearTo
            origin
        }
      }
@@ -74,7 +74,7 @@ function FTMView() {
 
     return (
         <div>
-          <FTMViewTable GET_DUPES = {GET_DUPES} makeData = {makeData}></FTMViewTable>
+          <FTMViewTable ReturnData = {GET_FTMView} makeData = {makeData}></FTMViewTable>
         </div>
     );
 

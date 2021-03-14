@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import FTMView from './table/dna/FTMView/FTMView.jsx'
 import { withStyles } from '@material-ui/core/styles';
 import { connect } from "react-redux";
 
@@ -12,7 +13,7 @@ function FTMPersons(props) {
 
     return (
         <div>
-          FTM Persons
+          <FTMView></FTMView>
         </div>
     );
 

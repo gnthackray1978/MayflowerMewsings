@@ -83,7 +83,7 @@ function Poi() {
 
     return (
         <div>
-          <PoiTable GET_Poi = {GET_Poi} makeData = {makeData}></PoiTable>
+          <PoiTable ReturnData = {GET_Poi} makeData = {makeData}></PoiTable>
         </div>
     );
 
