@@ -59,12 +59,17 @@ const PoiTableToolbar = (props) => {
   const classes = useToolbarStyles();
   const { numSelected, title, filterFieldChanged, filterParams } = props;
 
-  let yearStart ='';
-  let yearEnd ='';
-  let mincm ='';
-  let surname ='';
-  let location ='';
-  let country ='';
+ 
+
+  const [yearStart, setyearStart] = React.useState(String(filterParams.yearStart));
+  const [yearEnd, setyearEnd] = React.useState(String(filterParams.yearEnd));
+  const [mincm, setmincm] = React.useState(String(filterParams.mincm));
+
+  const [surname, setSurname] = React.useState(filterParams.surname);
+  const [location, setLocation] = React.useState(filterParams.location);
+  const [country, setCountry] = React.useState(filterParams.country);
+
+  //const [name, setName] = React.useState(filterParams.name);
 
 
   return (
@@ -75,29 +80,41 @@ const PoiTableToolbar = (props) => {
       })}
     >
 
-    <TextField className={classes.filter} id="yearStart" label="Year Start"
-      defaultValue={filterParams.yearStart} variant="standard"  size="small"
-       onChange = {(e)=>{  yearStart = e.currentTarget.value; }}/>
+    <TextField className={classes.filter} id="yearStart" label="Year From"
+      value={yearStart}
+      variant="standard"  size="small"
+      onChange = {(e)=>{
+          setyearStart(e.currentTarget.value);
+      }}/>
 
-     <TextField className={classes.filter} id="yearEnd" label="Year End"
-      defaultValue={filterParams.yearEnd} variant="standard"  size="small"
-       onChange = {(e)=>{  yearEnd = e.currentTarget.value; }}/>
-
-    <TextField className={classes.filter} id="mincm" label="Min CM"
-      defaultValue={filterParams.mincm} variant="standard"  size="small"
-       onChange = {(e)=>{  mincm = e.currentTarget.value; }}/>
+    <TextField className={classes.filter} id="yearEnd" label="Year To"
+      value={yearEnd}
+      variant="standard"  size="small"
+      onChange = {(e)=>{
+         setyearEnd(e.currentTarget.value);
+      }}/>
 
     <TextField className={classes.filter} id="location" label="Location"
-      defaultValue={filterParams.location} variant="standard"  size="small"
-       onChange = {(e)=>{  location = e.currentTarget.value; }}/>
+      value={location}
+      variant="standard"  size="small"
+      onChange = {(e)=>{
+        setLocation(e.currentTarget.value);
+      }}/>
 
     <TextField className={classes.filter} id="surname" label="Surname"
-      defaultValue={filterParams.surname} variant="standard"  size="small"
-       onChange = {(e)=>{  surname = e.currentTarget.value; }}/>
+      value={surname}
+      variant="standard"  size="small"
+      onChange = {(e)=>{
+        setSurname(e.currentTarget.value);
+      }}/>
 
-     <TextField className={classes.filter} id="country" label="Country"
-         defaultValue={filterParams.country} variant="standard"  size="small"
-          onChange = {(e)=>{  country = e.currentTarget.value; }}/>
+    <TextField className={classes.filter} id="mincm" label="Min CM"
+      value={country}
+      variant="standard"  size="small"
+      onChange = {(e)=>{
+         setCountry(e.currentTarget.value);
+      }}/>
+
 
         <Box
                boxShadow={3}
@@ -115,9 +132,9 @@ const PoiTableToolbar = (props) => {
                        offset :0,
                        surname : surname,
                        location : location,
-                       mincm : mincm,
-                       yearStart : yearStart,
-                       yearEnd : yearEnd,
+                       mincm : Number(mincm),
+                       yearStart : Number(yearStart),
+                       yearEnd : Number(yearEnd),
                        country :country
                      };
                      filterFieldChanged(returnObj);

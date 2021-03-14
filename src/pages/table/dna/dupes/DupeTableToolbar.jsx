@@ -59,8 +59,8 @@ const DupeTableToolbar = (props) => {
   const classes = useToolbarStyles();
   const { numSelected, title, filterFieldChanged, filterParams } = props;
 
-  let surname ='';
-
+  const [surname, setSurname] = React.useState(filterParams.surname);
+ 
   return (
     <Toolbar
       className={clsx(classes.root, {
@@ -70,8 +70,11 @@ const DupeTableToolbar = (props) => {
     >
 
     <TextField className={classes.filter} id="surname" label="Surname"
-      defaultValue={filterParams.surname} variant="standard"  size="small"
-       onChange = {(e)=>{  surname = e.currentTarget.value; }}/>
+      value={surname}
+      variant="standard"  size="small"
+      onChange = {(e)=>{
+        setSurname(e.currentTarget.value);
+      }}/>
 
         <Box
                boxShadow={3}
