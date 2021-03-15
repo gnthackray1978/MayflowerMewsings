@@ -10,7 +10,7 @@ export  function useTableState(ReturnData,defaultParams, defaultOrder) {
 
   const [initialLoad, setInitialLoad] = React.useState(false);
   const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState(defaultOrder);
+  const [sortColumn, setSortColumn] = React.useState(defaultOrder);
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(50);
@@ -20,9 +20,9 @@ export  function useTableState(ReturnData,defaultParams, defaultOrder) {
   const [filterParams, setFilterParams] = React.useState(defaultParams);
 
   const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === 'asc';
+    const isAsc = sortColumn === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
-    setOrderBy(property);
+    setSortColumn(property);
   };
 
   const handleSelectAllClick = (event) => {
@@ -77,8 +77,8 @@ export  function useTableState(ReturnData,defaultParams, defaultOrder) {
   const filterFieldChanged = (filterObj) => {
     filterObj.limit =rowsPerPage;
     filterObj.offset = (page* rowsPerPage);
-    filterObj.sortColumn = order;
-    filterObj.sortOrder = orderBy;
+    filterObj.sortColumn = sortColumn;
+    filterObj.sortOrder = order;
 
     setFilterParams(filterObj);
 
@@ -88,8 +88,8 @@ export  function useTableState(ReturnData,defaultParams, defaultOrder) {
 
   filterParams.limit =rowsPerPage;
   filterParams.offset = (page* rowsPerPage) ;
-  filterParams.sortColumn = order;
-  filterParams.sortOrder = orderBy;
+  filterParams.sortColumn = sortColumn;
+  filterParams.sortOrder = order;
 
   const  { loading, error, data, fetchMore } = useQuery(ReturnData, {
      errorPolicy: 'all' ,
@@ -102,7 +102,7 @@ export  function useTableState(ReturnData,defaultParams, defaultOrder) {
   return {
   //  initialLoad,setInitialLoad,
     order,
-    orderBy,
+    sortColumn,
     selected,
     page,
     rowsPerPage,

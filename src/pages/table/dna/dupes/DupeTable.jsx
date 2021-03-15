@@ -150,7 +150,7 @@ export default function DupeTable(props) {
 
                 numSelected={state.selected.length}
                 order={state.order}
-                orderBy={state.orderBy}
+                orderBy={state.sortColumn}
                 onSelectAllClick={state.handleSelectAllClick}
                 onRequestSort={state.handleRequestSort}
                 rowCount={rows.length}

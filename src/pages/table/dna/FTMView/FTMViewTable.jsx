@@ -129,7 +129,7 @@ export default function FTMViewTable(props) {
     yearEnd : 2000,
     location : '',
     surname : ''
-  },'yearStart');
+  },'surname');
 
   if (state.loading) return <span>loading...</span>
 
@@ -171,7 +171,7 @@ export default function FTMViewTable(props) {
 
                 numSelected={state.selected.length}
                 order={state.order}
-                orderBy={state.orderBy}
+                orderBy={state.sortColumn}
                 onSelectAllClick={state.handleSelectAllClick}
                 onRequestSort={state.handleRequestSort}
                 rowCount={rows.length}
