@@ -16,7 +16,8 @@ function Poi() {
       $mincm : Int!,
       $location : String!,
       $yearStart : Int!,
-      $yearEnd : Int!
+      $yearEnd : Int!,
+      $name: String!
    ){
     dna{
       poisearch(limit : $limit,
@@ -28,7 +29,8 @@ function Poi() {
               mincm : $mincm,
               location : $location,
               yearStart : $yearStart,
-              yearEnd : $yearEnd
+              yearEnd : $yearEnd,
+              name : $name
            ) {
        page
        totalResults

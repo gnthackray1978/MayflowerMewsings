@@ -26,7 +26,7 @@ import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
 import SaveIcon from '@material-ui/icons/Save';
 import { withStyles } from '@material-ui/core/styles';
-import DupeTableHeader from './DupeTableHeader.jsx';
+import PoiTableHeader from './PoiTableHeader.jsx';
 import Box from '@material-ui/core/Box';
 import { connect } from "react-redux";
 
@@ -51,6 +51,10 @@ const useToolbarStyles = makeStyles((theme) => ({
     paddingTop: '11px'
   },
 
+  smallFilter: {
+    maxWidth: '100px'
+
+  }
 }));
 
 const PoiTableToolbar = (props) => {
@@ -59,7 +63,7 @@ const PoiTableToolbar = (props) => {
   const classes = useToolbarStyles();
   const { numSelected, title, filterFieldChanged, filterParams } = props;
 
- 
+
 
   const [yearStart, setyearStart] = React.useState(String(filterParams.yearStart));
   const [yearEnd, setyearEnd] = React.useState(String(filterParams.yearEnd));
@@ -69,7 +73,7 @@ const PoiTableToolbar = (props) => {
   const [location, setLocation] = React.useState(filterParams.location);
   const [country, setCountry] = React.useState(filterParams.country);
 
-  //const [name, setName] = React.useState(filterParams.name);
+  const [name, setName] = React.useState(filterParams.name);
 
 
   return (
@@ -80,18 +84,25 @@ const PoiTableToolbar = (props) => {
       })}
     >
 
-    <TextField className={classes.filter} id="yearStart" label="Year From"
+    <TextField className={classes.smallFilter} id="yearStart" label="Year From"
       value={yearStart}
       variant="standard"  size="small"
       onChange = {(e)=>{
           setyearStart(e.currentTarget.value);
       }}/>
 
-    <TextField className={classes.filter} id="yearEnd" label="Year To"
+    <TextField className={classes.smallFilter} id="yearEnd" label="Year To"
       value={yearEnd}
       variant="standard"  size="small"
       onChange = {(e)=>{
          setyearEnd(e.currentTarget.value);
+      }}/>
+
+    <TextField className={classes.smallFilter} id="mincm" label="Min CM"
+      value={mincm}
+      variant="standard"  size="small"
+      onChange = {(e)=>{
+         setmincm(e.currentTarget.value);
       }}/>
 
     <TextField className={classes.filter} id="location" label="Location"
@@ -108,15 +119,21 @@ const PoiTableToolbar = (props) => {
         setSurname(e.currentTarget.value);
       }}/>
 
-    <TextField className={classes.filter} id="mincm" label="Min CM"
-      value={country}
-      variant="standard"  size="small"
-      onChange = {(e)=>{
-         setCountry(e.currentTarget.value);
+    <TextField className={classes.filter} id="name" label="Name"
+        value={name}
+        variant="standard"  size="small"
+        onChange = {(e)=>{
+          setName(e.currentTarget.value);
       }}/>
 
+    <TextField className={classes.filter} id="country" label="Country"
+        value={country}
+        variant="standard"  size="small"
+        onChange = {(e)=>{
+          setCountry(e.currentTarget.value);
+      }}/>
 
-        <Box
+    <Box
                boxShadow={3}
                bgcolor="background.paper"
                m={1}
@@ -135,7 +152,8 @@ const PoiTableToolbar = (props) => {
                        mincm : Number(mincm),
                        yearStart : Number(yearStart),
                        yearEnd : Number(yearEnd),
-                       country :country
+                       country :country, 
+                       name : name
                      };
                      filterFieldChanged(returnObj);
                    } }>Search</Button>

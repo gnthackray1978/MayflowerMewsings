@@ -129,10 +129,11 @@ export default function PoiTable(props) {
      mincm :9,
      surname :'',
      location :'',
-     country : 'England'
+     country : 'England',
+     name :'GNT GRT ATH'
   },'yearStart');
 
-  if (loading) return <span>loading...</span>
+  if (state.loading) return <span>loading...</span>
 
   if(state.error && state.error.graphQLErrors && state.error.graphQLErrors.length >0){
     return (
@@ -145,7 +146,7 @@ export default function PoiTable(props) {
     );
   }
 
-  var parsedData = makeData(data);
+  var parsedData = makeData(state.data);
 
   var rows = parsedData.rows;
 
@@ -157,7 +158,7 @@ export default function PoiTable(props) {
 
 
           <PoiTableToolbar numSelected={state.selected.length}
-            filterParams ={filterParams} title = 'POI'
+            filterParams ={state.filterParams} title = 'POI'
             filterFieldChanged = {state.filterFieldChanged}>
           </PoiTableToolbar>
           <TableContainer>
@@ -211,8 +212,7 @@ export default function PoiTable(props) {
                         <TableCell  padding="none">{row.testAdminDisplayName}</TableCell>
                         <TableCell  padding="none">{row.treeUrl}</TableCell>
                         <TableCell  padding="none">{row.sharedCentimorgans}</TableCell>
-                        <TableCell  padding="none">{row.memory}</TableCell>
-                        <TableCell  padding="none">{row.name}</TableCell>
+                      
                       </TableRow>
                     );
                   })}

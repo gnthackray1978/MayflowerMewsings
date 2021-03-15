@@ -42,11 +42,8 @@ import { connect } from "react-redux";
     { id: 'TestAdminDisplayName', numeric: false, disablePadding: true, label: 'Admin Name' },
     { id: 'TreeUrl', numeric: false, disablePadding: true, label: 'URL' },
 
-
-    { id: 'Confidence', numeric: false, disablePadding: true, label: 'Confidence' },
     { id: 'SharedCentimorgans', numeric: false, disablePadding: true, label: 'cMs' },
-    { id: 'Memory', numeric: false, disablePadding: true, label: 'Memory' },
-    { id: 'Name', numeric: false, disablePadding: true, label: 'Name' },
+
   ];
 
   const createSortHandler = (property) => (event) => {
