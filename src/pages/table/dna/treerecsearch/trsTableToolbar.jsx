@@ -59,14 +59,26 @@ const TrsTableToolbar = (props) => {
   const classes = useToolbarStyles();
   const { numSelected, title, filterFieldChanged, filterParams } = props;
 
+  const [origin, setorigin] = React.useState(filterParams.origin);
 
   return (
     <Toolbar className={clsx(classes.root, {
                           [classes.highlight]: numSelected > 0,
                        })}>
+
+         <TextField className={classes.filter} id="origin" label="Origin"
+           value={origin}
+           variant="standard"  size="small"
+           onChange = {(e)=>{
+             setorigin(e.currentTarget.value);
+           }}/>
+
         <Box boxShadow={3} bgcolor="background.paper" m={1} p={1} style={{ width: '6rem', height: '2rem' }} >
            <Button style={{ lineHeight: '0.5'}} onClick = {()=>{
-               filterFieldChanged();
+
+             filterFieldChanged({
+               origin : origin
+             });
              } }>Search</Button>
         </Box>
     </Toolbar>

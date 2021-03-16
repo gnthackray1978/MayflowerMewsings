@@ -10,13 +10,15 @@ function Trs() {
      $limit: Int!,
      $offset : Int!,
      $sortColumn: String!,
-     $sortOrder : String!
+     $sortOrder : String!,
+     $origin : String!
    ){
     dna{
       treerecsearch(limit : $limit,
              offset : $offset,
              sortColumn: $sortColumn,
-             sortOrder : $sortOrder
+             sortOrder : $sortOrder,
+             origin : $origin
            ) {
        page
        totalResults

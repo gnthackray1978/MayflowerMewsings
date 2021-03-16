@@ -31,10 +31,10 @@ import { connect } from "react-redux";
 
   const headCells = [
       { id: 'Name', numeric: false, disablePadding: true, label: 'Name' },
-      { id: 'Origin', numeric: false, disablePadding: true, label: 'Origin' },
       { id: 'PersonCount', numeric: false, disablePadding: true, label: 'Person Count' },
       { id: 'CM', numeric: false, disablePadding: true, label: 'CM' },
       { id: 'Located', numeric: false, disablePadding: true, label: 'Located' },
+      { id: 'Origin', numeric: false, disablePadding: true, label: 'Origin' }
   ];
 
   const createSortHandler = (property) => (event) => {

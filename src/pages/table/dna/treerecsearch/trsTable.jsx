@@ -120,8 +120,9 @@ export default function TrsTable(props) {
      sortColumn : '',
      sortOrder : '',
      limit : 0,
-     offset :0
-  },'surname');
+     offset :0,
+     origin : ''
+  },'cM');
 
   if (state.loading) return <span>loading...</span>
 
@@ -187,12 +188,12 @@ export default function TrsTable(props) {
                         selected={state.isItemSelected}
                       >
                         <TableCell  padding="none">{row.name}</TableCell>
-                        <TableCell component="th" id={labelId} scope="row" padding="none">
-                          {row.origin}
-                        </TableCell>
                         <TableCell  padding="none">{row.personCount}</TableCell>
                         <TableCell  padding="none">{row.cM}</TableCell>
                         <TableCell  padding="none">{row.located}</TableCell>
+                        <TableCell component="th" id={labelId} scope="row" padding="none">
+                          {row.origin}
+                        </TableCell>
                       </TableRow>
                     );
                   })}
