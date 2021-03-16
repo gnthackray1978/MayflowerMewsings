@@ -143,16 +143,13 @@ const PoiTableToolbar = (props) => {
 
                  <Button style={{ lineHeight: '0.5'}} onClick = {()=>{
                      var returnObj = {
-                       sortColumn : '',
-                       sortOrder : '',
-                       limit : 0,
-                       offset :0,
+                     
                        surname : surname,
                        location : location,
                        mincm : Number(mincm),
                        yearStart : Number(yearStart),
                        yearEnd : Number(yearEnd),
-                       country :country, 
+                       country :country,
                        name : name
                      };
                      filterFieldChanged(returnObj);

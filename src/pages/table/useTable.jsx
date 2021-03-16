@@ -6,11 +6,11 @@ import { connect } from "react-redux";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 
 
-export  function useTableState(ReturnData,defaultParams, defaultOrder) {
+export  function useTableState(ReturnData,defaultParams) {
 
   const [initialLoad, setInitialLoad] = React.useState(false);
-  const [order, setOrder] = React.useState('asc');
-  const [sortColumn, setSortColumn] = React.useState(defaultOrder);
+  const [order, setOrder] = React.useState(defaultParams.sortOrder);
+  const [sortColumn, setSortColumn] = React.useState(defaultParams.sortColumn);
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(50);

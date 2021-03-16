@@ -128,8 +128,8 @@ export default function WillTable(props) {
   const classes = useStyles();
 
   var state = useTableState(GET_WILLS,{
-    sortColumn : '',
-    sortOrder : '',
+    sortColumn : 'surname',
+    sortOrder : 'asc',
     limit : 0,
     offset :0,
     yearStart : 1500,
@@ -138,7 +138,7 @@ export default function WillTable(props) {
     desc : '',
     place : '',
     surname : ''
-  },'surname');
+  });
 
   if (state.loading) return <span>loading...</span>
 

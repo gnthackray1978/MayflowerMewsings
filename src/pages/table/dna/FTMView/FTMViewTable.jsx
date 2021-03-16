@@ -121,15 +121,15 @@ export default function FTMViewTable(props) {
 
 
   var state = useTableState(ReturnData,{
-    sortColumn : '',
-    sortOrder : '',
+    sortColumn : 'surname',
+    sortOrder : 'asc',
     limit : 0,
     offset :0,
     yearStart : 1500,
     yearEnd : 2000,
     location : '',
     surname : ''
-  },'surname');
+  });
 
   if (state.loading) return <span>loading...</span>
 

@@ -60,7 +60,7 @@ const DupeTableToolbar = (props) => {
   const { numSelected, title, filterFieldChanged, filterParams } = props;
 
   const [surname, setSurname] = React.useState(filterParams.surname);
- 
+
   return (
     <Toolbar
       className={clsx(classes.root, {
@@ -84,11 +84,7 @@ const DupeTableToolbar = (props) => {
                style={{ width: '6rem', height: '2rem' }}
              >
                  <Button style={{ lineHeight: '0.5'}} onClick = {()=>{
-                     var returnObj = {
-                       sortColumn : '',
-                       sortOrder : '',
-                       limit : 0,
-                       offset :0,
+                     var returnObj = {                    
                        surname : surname
                      };
                      filterFieldChanged(returnObj);

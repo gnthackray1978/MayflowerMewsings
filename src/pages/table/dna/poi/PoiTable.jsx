@@ -120,8 +120,8 @@ export default function PoiTable(props) {
   const classes = useStyles();
 
   var state = useTableState(ReturnData,{
-    sortColumn : '',
-    sortOrder : '',
+    sortColumn : 'yearStart',
+    sortOrder : 'asc',
     limit : 0,
     offset :0,
      yearStart :1700,
@@ -131,7 +131,7 @@ export default function PoiTable(props) {
      location :'',
      country : 'England',
      name :'GNT GRT ATH'
-  },'yearStart');
+  });
 
   if (state.loading) return <span>loading...</span>
 
@@ -212,7 +212,7 @@ export default function PoiTable(props) {
                         <TableCell  padding="none">{row.testAdminDisplayName}</TableCell>
                         <TableCell  padding="none">{row.treeUrl}</TableCell>
                         <TableCell  padding="none">{row.sharedCentimorgans}</TableCell>
-                      
+
                       </TableRow>
                     );
                   })}

@@ -121,10 +121,7 @@ const WillTableToolbar = (props) => {
              >
                  <Button style={{ lineHeight: '0.5'}} onClick = {()=>{
                      var returnObj ={
-                       sortColumn : '',
-                       sortOrder : '',
-                       limit : 0,
-                       offset :0,
+                 
                         yearStart : yearFrom,
                         yearEnd : yearTo,
                         ref : ref,

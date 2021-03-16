@@ -117,8 +117,8 @@ export default function TrsTable(props) {
   const classes = useStyles();
 
   var state = useTableState(ReturnData,{
-     sortColumn : '',
-     sortOrder : '',
+     sortColumn : 'cM',
+     sortOrder : 'desc',
      limit : 0,
      offset :0,
      origin : ''

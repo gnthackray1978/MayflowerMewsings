@@ -117,12 +117,12 @@ export default function DupeTable(props) {
   const classes = useStyles();
 
   var state = useTableState(ReturnData,{
-     sortColumn : '',
-     sortOrder : '',
+     sortColumn : 'surname',
+     sortOrder : 'asc',
      limit : 0,
      offset :0,
      surname : ''
-  }, 'surname');
+  });
 
   var parsedData = makeData(state.data);
 
