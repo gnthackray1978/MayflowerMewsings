@@ -132,7 +132,7 @@ export default function WillTable(props) {
     sortOrder : 'asc',
     limit : 0,
     offset :0,
-    yearStart : 1500,
+    yearStart : 1700,
     yearEnd : 2000,
     ref : '',
     desc : '',
@@ -228,7 +228,7 @@ export default function WillTable(props) {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25,50]}
             component="div"
-            count={state.totalRecordCount}
+            count={totalRecordCount}
             rowsPerPage={state.rowsPerPage}
             page={state.page}
             onChangePage={state.handleChangePage}

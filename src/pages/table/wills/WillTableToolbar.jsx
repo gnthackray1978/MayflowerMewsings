@@ -60,22 +60,12 @@ const WillTableToolbar = (props) => {
   const { numSelected, title, filterFieldChanged, filterParams } = props;
 
 
-
-  let yearFrom =0;
-  let yearTo = 0;
-  let ref = '';
-  let desc ='';
-  let place ='';
-  let surname ='';
-
-
-  // yearStart : 1500,
-  // yearEnd : 2000,
-  // ref : '',
-  // desc : '',
-  // place : '',
-  // surname : ''
-
+  const [yearStart, setYearStart] = React.useState(filterParams.yearStart);
+const [yearEnd, setYearEnd] = React.useState(filterParams.yearEnd);
+const [ref, setRef] = React.useState(filterParams.ref);
+const [desc, setDesc] = React.useState(filterParams.desc);
+const [place, setPlace] = React.useState(filterParams.place);
+const [surname, setSurname] = React.useState(filterParams.surname);
 
   return (
     <Toolbar
@@ -85,30 +75,53 @@ const WillTableToolbar = (props) => {
       })}
     >
 
-    <TextField className={classes.filter} id="yearFrom" label="Year From"
-      defaultValue={String(filterParams.yearStart)}
+    <TextField className={classes.smallFilter}
+      id="yearStart" label="Year From"
+      value={yearStart}
       variant="standard"  size="small"
-      onChange = {(e)=>{  yearFrom = e.currentTarget.value; }}/>
-    <TextField className={classes.filter} id="yearTo" label="Year To"
-      defaultValue={String(filterParams.yearEnd)}
+      onChange = {(e)=>{
+          setYearStart(e.currentTarget.value);
+      }}/>
+
+    <TextField className={classes.smallFilter}
+      id="yearEnd" label="Year To"
+      value={yearEnd}
       variant="standard"  size="small"
-      onChange = {(e)=>{  yearTo = e.currentTarget.value; }}/>
-    <TextField className={classes.filter} id="reference" label="Ref."
-      defaultValue={filterParams.ref}
+      onChange = {(e)=>{
+          setYearEnd(e.currentTarget.value);
+      }}/>
+
+    <TextField className={classes.smallFilter}
+      id="ref" label="Ref"
+      value={ref}
       variant="standard"  size="small"
-      onChange = {(e)=>{  ref = e.currentTarget.value; }}/>
-    <TextField className={classes.filter} id="description" label="Desc."
-      defaultValue={filterParams.desc}
-      variant="standard"  size="small"
-      onChange = {(e)=>{  desc = e.currentTarget.value; }}/>
-    <TextField className={classes.filter} id="place" label="Place"
-      defaultValue={filterParams.place}
-      variant="standard"  size="small"
-      onChange = {(e)=>{  place = e.currentTarget.value; }}/>
-    <TextField className={classes.filter} id="surname" label="Surname"
-      defaultValue={filterParams.surname}
-       variant="standard"  size="small"
-      onChange = {(e)=>{  surname = e.currentTarget.value; }}/>
+      onChange = {(e)=>{
+          setRef(e.currentTarget.value);
+      }}/>
+
+      <TextField className={classes.smallFilter}
+        id="desc" label="Desc"
+        value={desc}
+        variant="standard"  size="small"
+        onChange = {(e)=>{
+            setDesc(e.currentTarget.value);
+        }}/>
+
+        <TextField className={classes.smallFilter}
+          id="place" label="Place"
+          value={place}
+          variant="standard"  size="small"
+          onChange = {(e)=>{
+              setPlace(e.currentTarget.value);
+          }}/>
+
+          <TextField className={classes.smallFilter}
+            id="surname" label="Surname"
+            value={surname}
+            variant="standard"  size="small"
+            onChange = {(e)=>{
+                setSurname(e.currentTarget.value);
+            }}/>
 
 
 
@@ -121,14 +134,14 @@ const WillTableToolbar = (props) => {
              >
                  <Button style={{ lineHeight: '0.5'}} onClick = {()=>{
                      var returnObj ={
-                 
-                        yearStart : yearFrom,
-                        yearEnd : yearTo,
+                        yearStart : yearStart,
+                        yearEnd : yearEnd,
                         ref : ref,
                         desc : desc,
                         place : place,
                         surname : surname
                      };
+
                      filterFieldChanged(returnObj);
                    } }>Search</Button>
              </Box>
