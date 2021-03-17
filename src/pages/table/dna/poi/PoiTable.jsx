@@ -19,6 +19,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
+import Link from '@material-ui/core/Link';
 import FilterListIcon from '@material-ui/icons/FilterList';
 
 import { withStyles } from '@material-ui/core/styles';
@@ -185,7 +186,6 @@ export default function PoiTable(props) {
                     //console.log(row.reference);
                     const isItemSelected = state.isSelected(row.id);
                     const labelId = `poi-table-checkbox-${index}`;
-
                     return (
                       <TableRow
                         hover
@@ -208,9 +208,15 @@ export default function PoiTable(props) {
 
                         <TableCell  padding="none">{row.birthCounty}</TableCell>
 
-                        <TableCell  padding="none">{row.testDisplayName}</TableCell>
+                        <TableCell  padding="none">
+                          <Link href={row.treeUrl} onClick={(event) => event.preventDefault()} color="inherit">
+                            {row.testDisplayName}
+                          </Link>
+
+
+                        </TableCell>
                         <TableCell  padding="none">{row.testAdminDisplayName}</TableCell>
-                        <TableCell  padding="none">{row.treeUrl}</TableCell>
+                      
                         <TableCell  padding="none">{row.sharedCentimorgans}</TableCell>
 
                       </TableRow>

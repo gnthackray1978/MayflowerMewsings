@@ -40,7 +40,6 @@ import { connect } from "react-redux";
 
     { id: 'TestDisplayName', numeric: false, disablePadding: true, label: 'Testee' },
     { id: 'TestAdminDisplayName', numeric: false, disablePadding: true, label: 'Admin Name' },
-    { id: 'TreeUrl', numeric: false, disablePadding: true, label: 'URL' },
 
     { id: 'SharedCentimorgans', numeric: false, disablePadding: true, label: 'cMs' },
 
