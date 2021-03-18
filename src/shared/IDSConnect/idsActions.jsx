@@ -64,6 +64,7 @@ export const evtOnUserLoaded = (user) =>{
 
 export const setPath = () =>{
   return async (dispatch, getState)  => {
+      console.log('push path');
       dispatch(push("/"));
     }
 };

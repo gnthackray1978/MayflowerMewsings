@@ -1,6 +1,7 @@
 
 import { UserManager, WebStorageStateStore, Log } from "oidc-client";
-import {evtAccessTokenExpired, evtAccessTokenExpiring,evtOnUserSignedOut,evtOnUserUnloaded,evtOnSilentRenewError,evtOnUserLoaded} from './idsActions.jsx';
+import {evtAccessTokenExpired, evtAccessTokenExpiring,evtOnUserSignedOut,
+  evtOnUserUnloaded,evtOnSilentRenewError,evtOnUserLoaded} from './idsActions.jsx';
 import { push } from 'react-router-redux';
 
 var retryCount =0;
@@ -552,7 +553,7 @@ const oidcMiddleware =  (url) => {
                 return;
 
             case "PAGE_LOAD":
-               //console.log('reload');
+               console.log('reload');
                const query = action.payload;
 
                //if we're connected already we shouldn't
@@ -563,6 +564,11 @@ const oidcMiddleware =  (url) => {
                }
 
                if(query.code){
+                 storeAPI.dispatch({
+                          type: "PATH_CONTAINS_AUTH",
+                          payload: true
+                        });
+
                  //console.log('reload with: ' + query.code);
                  if(googleFetchOnGoing)
                    break;
@@ -587,13 +593,18 @@ const oidcMiddleware =  (url) => {
                }
                else{
                  if(query.state){
+                   storeAPI.dispatch({
+                            type: "PATH_CONTAINS_AUTH",
+                            payload: true
+                          });
+
                    //console.log('reload with: ' + query.state + ' ' + query.error);
                     storeAPI.dispatch({
                              type: "SET_USER_LOGOUT"
                            });
                    storeAPI.dispatch(push("/"));
                  }else{
-                   //console.log('loginRedirect Nothing in query string assumed page has been reloaded somehow');
+                   //console.log('PAGE_LOAD Nothing in query string assumed page has been reloaded somehow');
                    localStorage.setItem("loginAttemptCounter",0);
                    loadUser(mgr,storeAPI);
                  }

@@ -18,20 +18,7 @@ export default (state = {
 
   },
 
-  // IdServParams :{
-  //   authority: "http://localhost:5000",
-  //   client_id: "js",
-  //   redirect_uri: "http://localhost:1234",
-  //   response_type: "code",
-  //   scope:"openid profile api1",
-  //   post_logout_redirect_uri: "http://localhost:1234",
-  //   loadUserInfo: true,
-  //   IsExternalLoginOnly :true,
-  //   silent_redirect_uri: 'http://localhost:1234/redirect',
-  //   automaticSilentRenew: true,
-  //   google_token_uri :'http://localhost:5000/token'
-  //
-  // },
+
   connected :false,
   infoloaded :false,
 
@@ -46,8 +33,8 @@ export default (state = {
   expiresAt : undefined,
   expiresAtDesc : undefined,
   expirationHandled :false,
-  IdsLogInDetailsVisible :false
-
+  IdsLogInDetailsVisible :false,
+  pathContainsAuth :false
 }, action) => {
 
 
@@ -163,6 +150,12 @@ export default (state = {
           return {
             ...state,
              googleFetchOnGoing :false
+          };
+
+      case "PATH_CONTAINS_AUTH":
+          return {
+            ...state,
+             pathContainsAuth : action.payload
           };
 
       case "expirationHandled":

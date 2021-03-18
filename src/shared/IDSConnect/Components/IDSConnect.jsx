@@ -63,7 +63,9 @@ class IDSConnect extends Component {
     const { classes,login,IdsLogInDetailsVisible,ProfileObj,imageUrl,isImageButton,
             isFabButton,profileObjName,setIdsLoginScreenVisible,Connected,logout} = this.props;
 
-  //  //console.log('imageUrl: ' + imageUrl);
+
+
+
 
     let buttons ;
 
@@ -105,8 +107,9 @@ class IDSConnect extends Component {
 
   render() {
 
-    const { classes,login,Connected} = this.props;
+    const { classes,login,Connected, pathContainsAuth} = this.props;
 
+  console.log('pathContainsAuth: ' + pathContainsAuth);
 
     let buttons = this.renderLogin();
 
@@ -123,7 +126,7 @@ class IDSConnect extends Component {
 
 IDSConnect.propTypes = {
   handleClick : PropTypes.func,
-  jsSrc: PropTypes.string,
+  //jsSrc: PropTypes.string,
   isImageButton: PropTypes.bool,
   isFabButton: PropTypes.bool,
   imageUrl: PropTypes.string,
@@ -135,27 +138,27 @@ IDSConnect.propTypes = {
   disabled : PropTypes.bool,
   render : PropTypes.func,
   type: PropTypes.string,
-  tag: PropTypes.string,
-  icon: PropTypes.bool,
+  //tag: PropTypes.string,
+  //icon: PropTypes.bool,
   Connected : PropTypes.bool
 };
 
 const mapStateToProps = state => {
 //  //console.log('mapStateToProps');
 
-  const params = {
-    client_id: state.google.GoogleApiParams.clientId,
-    cookie_policy: state.google.GoogleApiParams.cookie_policy,
-    login_hint: state.google.GoogleApiParams.login_hint,
-    hosted_domain: undefined,
-    fetch_basic_profile: state.google.GoogleApiParams.fetch_basic_profile,
-    discoveryDocs : undefined,
-    ux_mode: state.google.GoogleApiParams.uxMode,
-    redirect_uri: undefined,
-    scope: state.google.GoogleApiParams.scopes,
-    access_type: state.google.GoogleApiParams.accessType,
-    responseType: state.google.responseType
-  };
+  // const params = {
+  //   client_id: state.google.GoogleApiParams.clientId,
+  //   cookie_policy: state.google.GoogleApiParams.cookie_policy,
+  //   login_hint: state.google.GoogleApiParams.login_hint,
+  //   hosted_domain: undefined,
+  //   fetch_basic_profile: state.google.GoogleApiParams.fetch_basic_profile,
+  //   discoveryDocs : undefined,
+  //   //ux_mode: state.google.GoogleApiParams.uxMode,
+  //   redirect_uri: undefined,
+  //   scope: state.google.GoogleApiParams.scopes,
+  //   //access_type: state.google.GoogleApiParams.accessType,
+  //   responseType: state.google.responseType
+  // };
 
   let isImageButton = false;
   let isFabButton =false;
@@ -182,29 +185,30 @@ const mapStateToProps = state => {
     imageUrl = state.ids.profileObj.imageUrl;
 
   return {
+    pathContainsAuth : state.ids.pathContainsAuth,
     profileObjName,
     imageUrl,
     isImageButton : isImageButton,
     isFabButton : isFabButton,
-    GoogleConnectParam : params,
+  //  GoogleConnectParam : params,
     LogInDetailsVisible : state.google.LogInDetailsVisible,
     IdsLogInDetailsVisible : state.ids.IdsLogInDetailsVisible,
-    ClientId : state.google.GoogleApiParams.clientId,
-    ScriptId : state.google.GoogleApiParams.scriptId,
-    Scope : state.google.GoogleApiParams.scopes,
-    cookiePolicy: state.google.GoogleApiParams.cookie_policy,
-    LoginHint: state.google.GoogleApiParams.login_hint,
-    FetchBasicProfile : state.google.GoogleApiParams.fetch_basic_profile,
-    UxMode: state.google.GoogleApiParams.uxMode,
-    AccessType: state.google.GoogleApiParams.accessType,
+//    ClientId : state.google.GoogleApiParams.clientId,
+    //ScriptId : state.google.GoogleApiParams.scriptId,
+    //Scope : state.google.GoogleApiParams.scopes,
+    //cookiePolicy: state.google.GoogleApiParams.cookie_policy,
+    //LoginHint: state.google.GoogleApiParams.login_hint,
+    //FetchBasicProfile : state.google.GoogleApiParams.fetch_basic_profile,
+    //UxMode: state.google.GoogleApiParams.uxMode,
+    //AccessType: state.google.GoogleApiParams.accessType,
     type: state.google.GoogleApiParams.type,
-    tag: state.google.GoogleApiParams.tag,
+    //tag: state.google.GoogleApiParams.tag,
     buttonText: state.google.GoogleApiParams.buttonText,
-    prompt: state.google.GoogleApiParams.prompt,
-    disabledStyle: state.google.GoogleApiParams.disabledStyle,
-    icon: state.google.GoogleApiParams.icon,
-    theme: state.google.GoogleApiParams.theme,
-    jsSrc: state.google.GoogleApiParams.jsSrc,
+  //  prompt: state.google.GoogleApiParams.prompt,
+    //disabledStyle: state.google.GoogleApiParams.disabledStyle,
+  //  icon: state.google.GoogleApiParams.icon,
+  //  theme: state.google.GoogleApiParams.theme,
+    //jsSrc: state.google.GoogleApiParams.jsSrc,
 
     DisplayName : state.displayName,
     GoogleApiLoggedIn : state.google.googleApiLoggedIn,
