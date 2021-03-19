@@ -180,7 +180,7 @@ export default function FTMViewTable(props) {
                 {
 
                   rows.map((row, index) => {
-                    console.log(row.id);
+                //    console.log(row.id);
                     const isItemSelected = state.isSelected(row.id);
                     const labelId = `ftmview-table-checkbox-${index}`;
 
