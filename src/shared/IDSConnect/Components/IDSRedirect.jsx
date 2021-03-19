@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from "react-redux";
 import { loginRedirect, setPath} from "../idsActions.jsx";
 import { withStyles } from '@material-ui/core/styles';
+const queryString = require('query-string');
 
 const styles = theme => ({
 
@@ -13,11 +14,13 @@ class IDSRedirect extends Component {
    }
 
    componentDidMount() {
-     //console.log('IDSRedirect loginRedirect');
-     this.props.loginRedirect();
-     //this.props.setPath();
+     console.log('IDSRedirect loginRedirect');
 
+     const {loginRedirect} = this.props;
 
+     var query = queryString.parse(window.location.search);
+     
+     loginRedirect(query);
    }
 
    render() { return (<div>redirect</div> ); }
@@ -32,8 +35,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
 
   return {
-    loginRedirect :() =>{
-      dispatch(loginRedirect())
+    loginRedirect : query =>{
+      dispatch(loginRedirect(query))
     },
     setPath : () =>{
       dispatch(setPath())

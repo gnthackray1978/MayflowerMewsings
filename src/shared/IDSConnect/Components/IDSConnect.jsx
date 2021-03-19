@@ -11,7 +11,7 @@ import GooglePopup from "../../LoginShared/GooglePopup.jsx";
 import GoogleButton from "../../LoginShared/GoogleButton.jsx";
 
 import {login,logout,loginRedirect,setIdsLoginScreenVisible} from "../idsActions.jsx";
-
+const queryString = require('query-string');
 
 
 const styles = theme => ({
@@ -52,7 +52,11 @@ class IDSConnect extends Component {
   componentDidMount() {
     const {loginRedirect} = this.props;
     //console.log('IDSConnect loginRedirect');
-    loginRedirect();
+    var query = queryString.parse(window.location.search);
+
+    loginRedirect(query);
+
+    
   }
 
 
@@ -230,8 +234,8 @@ const mapDispatchToProps = dispatch => {
     setIdsLoginScreenVisible :isVisible =>{
       dispatch(setIdsLoginScreenVisible(isVisible))
     },
-    loginRedirect : () =>{
-      dispatch(loginRedirect())
+    loginRedirect : query =>{
+      dispatch(loginRedirect(query))
     },
   };
 };
