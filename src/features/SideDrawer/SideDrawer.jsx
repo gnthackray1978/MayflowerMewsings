@@ -59,11 +59,11 @@ class SideDrawer extends Component {
 
    render() {
     const { classes ,ShowFuncListDialog} = this.props;
-
+// functions = {functions}
     return (
       <div>
         <Drawer open = {ShowFuncListDialog} >
-            <ApplicationList />
+            <ApplicationList/>
         </Drawer>
       </div>
     );
