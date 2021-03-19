@@ -2,7 +2,7 @@
 import { UserManager, WebStorageStateStore, Log } from "oidc-client";
 import {evtAccessTokenExpired, evtAccessTokenExpiring,evtOnUserSignedOut,
   evtOnUserUnloaded,evtOnSilentRenewError,evtOnUserLoaded} from './idsActions.jsx';
-import { push } from 'react-router-redux';
+//import { push } from 'react-router-redux';
 
 var retryCount =0;
 
@@ -552,6 +552,8 @@ const oidcMiddleware =  (url) => {
 
                 return;
 
+            //called by IDSConnect     componentdidmount
+            //called by loginRedirect in IDSRedirect componentdidmount
             case "PAGE_LOAD":
                console.log('reload');
                const query = action.payload;
@@ -564,10 +566,10 @@ const oidcMiddleware =  (url) => {
                }
 
                if(query.code){
-                 storeAPI.dispatch({
-                          type: "PATH_CONTAINS_AUTH",
-                          payload: true
-                        });
+                 // storeAPI.dispatch({
+                 //          type: "PATH_CONTAINS_AUTH",
+                 //          payload: true
+                 //        });
 
                  //console.log('reload with: ' + query.code);
                  if(googleFetchOnGoing)
@@ -587,22 +589,22 @@ const oidcMiddleware =  (url) => {
                  }
                  else{
                     storeAPI.dispatch({type: "AUTH_FAILED"});
-                    storeAPI.dispatch(push("/"));
+                //    storeAPI.dispatch(push("/"));
                  }
 
                }
                else{
                  if(query.state){
-                   storeAPI.dispatch({
-                            type: "PATH_CONTAINS_AUTH",
-                            payload: true
-                          });
+                   // storeAPI.dispatch({
+                   //          type: "PATH_CONTAINS_AUTH",
+                   //          payload: true
+                   //        });
 
                    //console.log('reload with: ' + query.state + ' ' + query.error);
                     storeAPI.dispatch({
                              type: "SET_USER_LOGOUT"
                            });
-                   storeAPI.dispatch(push("/"));
+              //     storeAPI.dispatch(push("/"));
                  }else{
                    //console.log('PAGE_LOAD Nothing in query string assumed page has been reloaded somehow');
                    localStorage.setItem("loginAttemptCounter",0);

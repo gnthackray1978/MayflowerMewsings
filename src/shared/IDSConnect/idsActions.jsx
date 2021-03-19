@@ -1,6 +1,6 @@
 
-const queryString = require('query-string');
-import { push } from 'react-router-redux';
+//const queryString = require('query-string');
+//import { push } from 'react-router-redux';
 
 
 export const evtAccessTokenExpired = () =>{
@@ -59,16 +59,6 @@ export const evtOnUserLoaded = (user) =>{
     }
 };
 
-
-
-
-export const setPath = () =>{
-  return async (dispatch, getState)  => {
-      console.log('push path');
-      dispatch(push("/"));
-    }
-};
-
 export const login = () =>{
   return async (dispatch, getState)  => {
 
@@ -99,8 +89,8 @@ export const logout = () =>{
     }
 };
 
-export const loginRedirect = () =>{
-  var query = queryString.parse(window.location.search);
+export const loginRedirect = (query) =>{
+
 
   return async (dispatch, getState)  => {
        dispatch({

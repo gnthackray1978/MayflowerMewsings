@@ -9,11 +9,12 @@ import { withStyles } from '@material-ui/core/styles';
 //   Switch,
 //   Route
 // } from "react-router-dom";
-import { createBrowserHistory } from 'history';
 
-import { Router,  IndexRoute, browserHistory,   BrowserRouter,   Switch,   Route } from 'react-router'
-
-import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
+import {
+  Switch,
+  Route,
+    BrowserRouter as Router
+} from "react-router-dom";
 
 
 import Main from './Main.jsx';
@@ -26,7 +27,7 @@ const styles = theme => ({
 
 });
 
-const history = syncHistoryWithStore(createBrowserHistory(), store);
+//const history = syncHistoryWithStore(createBrowserHistory(), store);
 
 class App extends Component {
   constructor(props) {
@@ -48,17 +49,9 @@ class App extends Component {
     let test = <IDSRedirect/>;
 
     return (
-      <div>
-        <Router history={history}>
-          <div>
-            <Route exact path="/" component={()=>result}/>
-            <Route exact path="/redirect" component={()=>test}/>
-          </div>
-        </Router>
-
-      </div>
-
-
+     <Router>
+          <Main/>
+      </Router>
     );
   }
 }
