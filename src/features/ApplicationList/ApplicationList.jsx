@@ -15,7 +15,13 @@ import { ApolloClient, InMemoryCache, ApolloProvider, gql, useQuery } from '@apo
 import SelectionToolBar from "./SelectionToolBar.jsx";
 import {funcListLoad, funcSelected, funcDialogOpen , funcDialogClose} from "../uxActions.jsx";
 import {useAuthProvider} from "../../shared/IDSConnect/AuthProvider.jsx";
-
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  useHistory
+} from "react-router-dom";
 import './ApplicationList.css';
 
 import { connect } from "react-redux";
@@ -96,11 +102,12 @@ function GetFunctionList(data, funcSelected, closeFuncListDialog){
            return(<ListItem key={site.id}
                             data-id={site.id}
                             data-name={site.name}
+                            data-page = {site.pageName}
                             button
                             onClick ={(ev)=>{
                                 funcSelected(ev.currentTarget.dataset.id);
                                 closeFuncListDialog();
-                                //console.log(`Button ${ev.currentTarget.dataset.name} clicked`);
+                                history.push('/'+ev.currentTarget.dataset.page); 
                             }}>
              <ListItemText primary={site.name} />
            </ListItem>);

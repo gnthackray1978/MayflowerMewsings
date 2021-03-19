@@ -48,7 +48,11 @@ import WLincolnshire from './WLincolnshire.jsx';
 import WNorfolk from './WNorfolk.jsx';
 import Ancestrymatches from './Ancestrymatches.jsx';
 
-
+import {
+  Switch,
+  Route,
+    BrowserRouter as Router
+} from "react-router-dom";
 
 
 
@@ -154,7 +158,12 @@ function PageContainer(props) {
 
 
 
-    return ( <div></div>);
+    return (
+      <Switch>
+          <Route exact path="/ftmpersons" component= {()=><FTMPersons/>}/>
+
+        </Switch>
+      );
 
 
 }

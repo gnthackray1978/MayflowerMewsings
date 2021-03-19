@@ -33,6 +33,16 @@ import { withStyles } from '@material-ui/core/styles';
 import {PropTypes,func} from 'prop-types';
 import { ApolloClient, InMemoryCache, ApolloProvider, gql, useQuery } from '@apollo/client';
 import {applicationListLoad, applicationSelected, siteDialogOpen, siteDialogClose} from "../uxActions.jsx";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  useHistory
+} from "react-router-dom";
+
+
+
 import { connect } from "react-redux";
 
 const styles = theme => ({
@@ -81,8 +91,9 @@ query {
 `;
 
 
-function GetSiteList(data, applicationListLoad, applicationSelected, siteDialogClose){
+function GetSiteList(data, applicationListLoad, applicationSelected, siteDialogClose,history){
 //site.search.results[0].name
+
 
 
   if(data){
@@ -93,11 +104,13 @@ function GetSiteList(data, applicationListLoad, applicationSelected, siteDialogC
            return(<ListItem key={site.id}
                             data-id={site.id}
                             data-name={site.name}
+                            data-default={site.defaultPageName}
                             button
                             onClick ={(ev)=>{
                                 applicationSelected(ev.currentTarget.dataset.id);
                                 siteDialogClose();
-                                console.log(`Button ${ev.currentTarget.dataset.name} clicked`);
+                                history.push('/'+ev.currentTarget.dataset.default);
+                                console.log(`Button ${ev.currentTarget.dataset.default} clicked`);
                             }}>
              <ListItemText primary={site.name} />
            </ListItem>);
@@ -116,6 +129,8 @@ function SiteDialog(props) {
 
     const {className, theme,classes,ShowAppListDialog, applicationListLoad, applicationSelected, siteDialogClose} = props;
 
+    let history = useHistory();
+
     const { loading, error, data } = useQuery(GET_DOGS, {
       fetchPolicy: "no-cache",
       onCompleted : (data)=>{
@@ -124,7 +139,7 @@ function SiteDialog(props) {
       }
     });
 
-    var items = GetSiteList(data,applicationListLoad,applicationSelected, siteDialogClose);
+    var items = GetSiteList(data,applicationListLoad,applicationSelected, siteDialogClose,history);
 
     return (
       <Dialog onClose={siteDialogClose} aria-labelledby="simple-dialog-title" open = {ShowAppListDialog}>
