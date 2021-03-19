@@ -51,116 +51,47 @@ import Ancestrymatches from './Ancestrymatches.jsx';
 import {
   Switch,
   Route,
-    BrowserRouter as Router
+    BrowserRouter as Router,
+
 } from "react-router-dom";
 
-
-
-// appName :1,
-// appList : [
-//     {
-//       id: 1,
-//       name: 'Front Page',
-//       defaultPageName : '',
-//       __typename: 'SiteType'
-//     }],
-//
-// funcName :1,
-// funcList : [
-//     {
-//       id: 1,
-//       name: 'Front Page',
-//       pageName: '',
-//       __typename: 'Function'
-//     }],
-
-function getPageName(appName, funcName, appList , funcList){
-
-   console.log('get page name');
-   let idx =0;
-   let pageName = '';
-
-   let appListPageName ='';
-   let funcListName ='';
-
-   while(idx < appList.length){
-     if(appList[idx].id == appName){
-       appListPageName = appList[idx].defaultPageName;
-
-     }
-     idx++;
-   }
-
-   //if we are the front page just return the default page
-   if(appName == 1 || funcList.length == 0)
-    return appListPageName;
-
-
-
-   idx=0;
-
-   while(idx < funcList.length){
-     if(funcList[idx].id == funcName){
-       funcListName = funcList[idx].pageName;
-     }
-     idx++;
-   }
-
-
-
-   return funcListName;
-}
 
 function PageContainer(props) {
 
 
-    var tp = (state)=>{
-      return {
-        appName: state.ux.appName,
-        funcName: state.ux.funcName,
-        appList: state.ux.appList,
-        funcList: state.ux.funcList
-      }
-    };
+    // var tp = (state)=>{
+    //   return {
+    //     funcList: state.ux.funcList
+    //   }
+    // };
+    //
+    // const { funcList} = useSelector(tp,shallowEqual);
 
-    const { appName, funcName, appList , funcList} = useSelector(tp,shallowEqual);
-
-    var page = getPageName(appName, funcName, appList , funcList);
-
-    if(page == 'default')
-      return (<Default></Default>);
-    if(page == 'diagrams')
-      return (<Diagrams></Diagrams>);
-    if(page == 'ftmdupes')
-      return (<FTMDupes></FTMDupes>);
-    if(page == 'ftmpersons')
-      return (<FTMPersons></FTMPersons>);
-    if(page == 'ftmtrees')
-      return (<FTMTrees></FTMTrees>);
-    if(page == 'ancestrymatches')
-      return (<Ancestrymatches></Ancestrymatches>);
-    if(page == 'maps')
-      return (<Maps></Maps>);
-    if(page == 'ptombstones')
-      return (<PTombstones></PTombstones>);
-    if(page == 'pwills')
-      return (<PWills></PWills>);
-    if(page == 'tbirths')
-      return (<TBirths></TBirths>);
-    if(page == 'tmarriages')
-      return (<TMarriages></TMarriages>);
-    if(page == 'tsources')
-      return (<TSources></TSources>);
-    if(page == 'wlincolnshire')
-      return (<WLincolnshire></WLincolnshire>);
-    if(page == 'wnorfolk')
-      return (<WNorfolk></WNorfolk>);
-
+  //  var page = getPageName(location.pathname, funcList);
 
 
     return (
       <Switch>
-          <Route exact path="/ftmpersons" component= {()=><FTMPersons/>}/>
+          <Route exact path="/ftmpersons" render = {()=><FTMPersons/>}/>
+          <Route exact path="/ancestrymatches" component= {()=><Ancestrymatches/>}/>
+          <Route exact path="/ftmtrees" component= {()=><FTMTrees/>}/>
+          <Route exact path="/ftmdupes" component= {()=><FTMDupes/>}/>
+
+          <Route exact path="/diagrams" component= {()=><Diagrams/>}/>
+
+          <Route exact path="/wnorfolk" component= {()=><WNorfolk/>}/>
+          <Route exact path="/wlincolnshire" component= {()=><WLincolnshire/>}/>
+
+          <Route exact path="/tsources" component= {()=><TSources/>}/>
+          <Route exact path="/tmarriages" component= {()=><TMarriages/>}/>
+          <Route exact path="/tbirths" component= {()=><TBirths/>}/>
+
+          <Route exact path="/pwills" component= {()=><PWills/>}/>
+          <Route exact path="/ptombstones" component= {()=><PTombstones/>}/>
+
+          <Route exact path="/maps" component= {()=><Maps/>}/>
+
+          <Route path="/" component= {()=><Default/>}/>
 
         </Switch>
       );

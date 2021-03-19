@@ -74,31 +74,31 @@ const styles = theme => ({
 });
 
 
-const GET_DOGS = gql`
-query {
-  site {
-    search(query: "Star Wars") {
-      page
-      results {
-        id,
-        name,
-        defaultPageName,
-        defaultPageTitle
-      }
-    }
-  }
-}
-`;
+// const GET_DOGS = gql`
+// query {
+//   site {
+//     search(query: "Star Wars") {
+//       page
+//       results {
+//         id,
+//         name,
+//         defaultPageName,
+//         defaultPageTitle
+//       }
+//     }
+//   }
+// }
+// `;
 
 
-function GetSiteList(data, applicationListLoad, applicationSelected, siteDialogClose,history){
+function GetSiteList(results, applicationSelected, siteDialogClose,history){
 //site.search.results[0].name
 
 
 
-  if(data){
+  if(results){
 
-    var results = data.site.search.results;
+
 
     var retVal = results.map(site => {
            return(<ListItem key={site.id}
@@ -127,19 +127,11 @@ function GetSiteList(data, applicationListLoad, applicationSelected, siteDialogC
 
 function SiteDialog(props) {
 
-    const {className, theme,classes,ShowAppListDialog, applicationListLoad, applicationSelected, siteDialogClose} = props;
+    const {className, theme,classes,ShowAppListDialog, applicationSelected, siteDialogClose, AppList} = props;
 
     let history = useHistory();
 
-    const { loading, error, data } = useQuery(GET_DOGS, {
-      fetchPolicy: "no-cache",
-      onCompleted : (data)=>{
-        console.log(data);
-        applicationListLoad(data.site.search.results);
-      }
-    });
-
-    var items = GetSiteList(data,applicationListLoad,applicationSelected, siteDialogClose,history);
+    var items = GetSiteList(AppList, applicationSelected, siteDialogClose,history);
 
     return (
       <Dialog onClose={siteDialogClose} aria-labelledby="simple-dialog-title" open = {ShowAppListDialog}>
@@ -162,13 +154,13 @@ const mapStateToProps = state => {
 
 
   return {
-    ShowAppListDialog: state.ux.showAppListDialog
+    ShowAppListDialog: state.ux.showAppListDialog,
+    AppList: state.ux.appList
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    applicationListLoad: (list) => dispatch(applicationListLoad(list)),
     applicationSelected: (selectedApp) => dispatch(applicationSelected(selectedApp)),
     siteDialogOpen: () => dispatch(siteDialogOpen()),
     siteDialogClose: () => dispatch(siteDialogClose()),

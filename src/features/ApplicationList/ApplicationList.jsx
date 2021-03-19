@@ -13,7 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import { ApolloClient, InMemoryCache, ApolloProvider, gql, useQuery } from '@apollo/client';
 
 import SelectionToolBar from "./SelectionToolBar.jsx";
-import {funcListLoad, funcSelected, funcDialogOpen , funcDialogClose} from "../uxActions.jsx";
+import {funcSelected, funcDialogOpen , funcDialogClose} from "../uxActions.jsx";
 import {useAuthProvider} from "../../shared/IDSConnect/AuthProvider.jsx";
 import {
   BrowserRouter as Router,
@@ -67,47 +67,24 @@ const styles = theme => ({
 
 
 
-const GET_FUNCTIONS = gql`
-query Function($appName: Int!) {
-  function
-  {
-    search(appid: $appName) {
-      page
-      results {
-        id
-        name
-        pageName
-        pageTitle
-      }
-    }
-  }
-}
-`;
 
 
-
-// function Dogs({ onDogSelected }) {
-//   const { loading, error, data } = useQuery(GET_DOGS);
-//
-//   if (loading) return 'Loading...';
-//   if (error) return `Error! ${error.message}`;
-
-function GetFunctionList(data, funcSelected, closeFuncListDialog){
+function GetFunctionList(appName, functions, funcSelected, closeFuncListDialog,history, funcName){
 
 
-  if(data){
-    var results = data.function.search.results;
+  if(functions){
 
-    var retVal = results.map(site => {
+    var retVal = functions.filter(f => f.applicationId == appName).map(site => {
            return(<ListItem key={site.id}
                             data-id={site.id}
                             data-name={site.name}
                             data-page = {site.pageName}
                             button
                             onClick ={(ev)=>{
+
                                 funcSelected(ev.currentTarget.dataset.id);
                                 closeFuncListDialog();
-                                history.push('/'+ev.currentTarget.dataset.page); 
+                                history.push('/'+ev.currentTarget.dataset.page);
                             }}>
              <ListItemText primary={site.name} />
            </ListItem>);
@@ -123,18 +100,12 @@ function GetFunctionList(data, funcSelected, closeFuncListDialog){
 function ApplicationList(props) {
 console.log('ApplicationList loaded ');
   const { classes, closeDrawer, funcListLoad, funcSelected,
-     appName, ShowFuncListDialog, funcDialogOpen, funcDialogClose} = props;
+    ShowFuncListDialog, funcDialogOpen, funcDialogClose, funcList, appName} = props;
 
-  const { loading, error, data } = useQuery(GET_FUNCTIONS, {
-    variables: { appName: Number(appName) },
-    fetchPolicy: "no-cache",
-    onCompleted : (data)=>{
-      console.log(data);
-      funcListLoad(data.function.search.results);
-    }
-  });
 
-  var items = GetFunctionList(data,funcSelected,funcDialogClose);
+  let history = useHistory();
+
+  var items = GetFunctionList(appName,funcList,funcSelected,funcDialogClose,history);
 
   return (
       <div className = "inner">
@@ -172,17 +143,14 @@ ApplicationList.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    appName: state.ux.appName,
+    appName : state.ux.appName,
+    funcList: state.ux.funcList,
     ShowFuncListDialog: state.ux.showFuncListDialog
   };
 };
 
-//applicationListLoad
-//applicationSelected
-
 const mapDispatchToProps = dispatch => {
   return {
-    funcListLoad: (list) => dispatch(funcListLoad(list)),
     funcSelected: (selectedApp) => dispatch(funcSelected(selectedApp)),
     funcDialogOpen: () => dispatch(funcDialogOpen()),
     funcDialogClose: () => dispatch(funcDialogClose()),
