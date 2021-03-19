@@ -8,6 +8,10 @@ import {AuthProvider} from './shared/IDSConnect/AuthProvider.jsx'
 import SiteDialog from './features/SiteDialog/SiteDialog.jsx';
 import PageContainer from './pages/PageContainer.jsx';
 
+import {
+  BrowserRouter as Router,
+} from "react-router-dom";
+
 const styles = () => ({
 
 });
@@ -20,15 +24,17 @@ class Main extends Component {
   render() {
       return (
         <AuthProvider>
-          <div>
-            <TopButtons isData = {true} />
 
-            <SideDrawer/>
+            <div>
+              <TopButtons isData = {true} />
 
-            <SiteDialog/>
+              <SideDrawer/>
 
-            <PageContainer/>
-          </div>
+              <SiteDialog/>
+
+              <PageContainer/>
+            </div>
+        
         </AuthProvider>
       );
     }
