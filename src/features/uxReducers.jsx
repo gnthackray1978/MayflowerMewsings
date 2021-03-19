@@ -1,4 +1,4 @@
-import { APPLICATIONLISTLOADED, APPLICATIONSELECTED, FUNCTIONLISTLOADED,
+import { APPLICATIONLISTLOADED, APPLICATIONSELECTED, FUNCTIONLISTLOADED,METADATALOADED,
   FUNCTIONSELECTED,APPDIALOGOPEN,APPDIALOGCLOSED,FUNCDIALOGOPEN,FUNCDIALOGCLOSED} from './actionTypes.jsx';
 
 export default (state = {
@@ -26,14 +26,14 @@ export default (state = {
 
   switch (action.type) {
 
-
-    case FUNCTIONLISTLOADED:
+    case METADATALOADED:
         //console.log('APPLICATIONLISTLOADED');
         return {
           ...state,
-           funcList: action.payload,
-           loadedFuncList :true,
-           error: ''
+           appList: action.payload.apps,
+           funcList: action.payload.funcs,
+           appName : action.payload.appId,
+           funcName :action.payload.pageId
         };
 
     case FUNCTIONSELECTED:
@@ -42,16 +42,6 @@ export default (state = {
           ...state,
            funcName : action.payload
         };
-
-
-      case APPLICATIONLISTLOADED:
-          //console.log('APPLICATIONLISTLOADED');
-          return {
-            ...state,
-             appList: action.payload,
-             loadedAppList :true,
-             error: ''
-          };
 
       case APPLICATIONSELECTED:
           // if we have a new app selected

@@ -1,16 +1,6 @@
 
-import { APPLICATIONLISTLOADED, APPLICATIONSELECTED, FUNCTIONLISTLOADED,
+import { METADATALOADED, APPLICATIONSELECTED,
   FUNCTIONSELECTED, APPDIALOGOPEN ,APPDIALOGCLOSED,FUNCDIALOGOPEN,FUNCDIALOGCLOSED} from './actionTypes.jsx';
-
-export const funcListLoad = (state) =>{
-  //console.log('applicationListLoaded action');
-  return async (dispatch, getState)  => {
-       dispatch({
-         type: FUNCTIONLISTLOADED,
-         payload : state
-       });
-    }
-};
 
 export const funcSelected = (state) =>{
   //console.log('applicationSelected action');
@@ -22,11 +12,11 @@ export const funcSelected = (state) =>{
     }
 };
 
-export const applicationListLoad = (state) =>{
+export const metaDataLoaded = (state) =>{
   //console.log('applicationListLoaded action');
   return async (dispatch, getState)  => {
        dispatch({
-         type: APPLICATIONLISTLOADED,
+         type: METADATALOADED,
          payload : state
        });
     }
