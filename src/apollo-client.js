@@ -24,7 +24,7 @@ try {
 
 
 
-  console.log(token ? `{ "authorization": "Bearer ${token}" }` : "");
+//  console.log(token ? `{ "authorization": "Bearer ${token}" }` : "");
 
 
 
