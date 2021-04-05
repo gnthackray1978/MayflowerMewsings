@@ -91,7 +91,7 @@ function Main(props) {
       fetchPolicy: "no-cache",
       onCompleted : (data)=>{
 
-        console.log('Got app meta data');
+        //console.log('Got app meta data');
 
         var selection = getPageName(location.pathname, data.function.search.results);
 

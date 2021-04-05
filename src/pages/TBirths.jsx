@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
+import Persons from './table/adb/persons/Person.jsx'
 import { connect } from "react-redux";
 
 const styles = theme => ({
@@ -12,7 +13,7 @@ function TBirths(props) {
 
     return (
         <div>
-          TBirths
+          <Persons/>
         </div>
     );
 

@@ -95,7 +95,7 @@ function GetSiteList(results, applicationSelected, siteDialogClose,history){
 //site.search.results[0].name
 
 
-
+  console.log('SiteDialog');
   if(results){
 
 
@@ -129,7 +129,9 @@ function SiteDialog(props) {
 
     const {className, theme,classes,ShowAppListDialog, applicationSelected, siteDialogClose, AppList} = props;
 
+
     let history = useHistory();
+
 
     var items = GetSiteList(AppList, applicationSelected, siteDialogClose,history);
 

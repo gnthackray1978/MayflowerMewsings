@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Marriages from './table/adb/marriages/Marriage.jsx'
 import { withStyles } from '@material-ui/core/styles';
 import { connect } from "react-redux";
 
@@ -12,7 +13,7 @@ function TMarriages(props) {
 
     return (
         <div>
-          TMarriages
+          <Marriages/>
         </div>
     );
 

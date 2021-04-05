@@ -30,7 +30,7 @@ export default (state = {
         //console.log('APPLICATIONLISTLOADED');
         return {
           ...state,
-           appList: action.payload.apps,
+           appList: action.payload.sites,
            funcList: action.payload.funcs,
            appName : action.payload.appId,
            funcName :action.payload.pageId
