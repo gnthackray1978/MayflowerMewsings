@@ -72,9 +72,19 @@ function FTMView() {
 
     }
 
+    const headCells = [
+
+      { id: 'YearFrom', numeric: false, disablePadding: true, label: 'YearFrom' },
+      { id: 'YearTo', numeric: false, disablePadding: true, label: 'YearTo' },
+      { id: 'FirstName', numeric: false, disablePadding: true, label: 'FirstName' },
+      { id: 'Surname', numeric: false, disablePadding: true, label: 'Surname' },
+      { id: 'BirthLocation', numeric: false, disablePadding: true, label: 'BirthLocation' },
+      { id: 'Origin', numeric: false, disablePadding: true, label: 'Origin' }
+    ];
+
     return (
         <div>
-          <FTMViewTable ReturnData = {GET_FTMView} makeData = {makeData}></FTMViewTable>
+          <FTMViewTable ReturnData = {GET_FTMView} makeData = {makeData} headCells ={headCells}></FTMViewTable>
         </div>
     );
 

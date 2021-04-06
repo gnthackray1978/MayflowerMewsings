@@ -23,17 +23,18 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 
 import { withStyles } from '@material-ui/core/styles';
 import { ApolloClient, InMemoryCache, ApolloProvider, gql, useQuery ,useLazyQuery} from '@apollo/client';
-import TrsTableHeader from './TrsTableHeader.jsx';
+
 import TrsTableToolbar from './TrsTableToolbar.jsx';
 import { connect } from "react-redux";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 
 import {useTableState} from '../../useTable';
 import {theme,useStyles} from '../../styleFuncs.jsx';
+import GenericTableHeader  from '../../genericTableHeader.jsx';
 
 export default function TrsTable(props) {
 
-  const {ReturnData, makeData} = props;
+  const {ReturnData, makeData, headCells} = props;
 
   const classes = useStyles();
 
@@ -80,7 +81,7 @@ export default function TrsTable(props) {
               size='small'
               aria-label="trs table"
             >
-              <TrsTableHeader
+              <GenericTableHeader
                 classes={classes}
 
                 numSelected={state.selected.length}
@@ -89,6 +90,7 @@ export default function TrsTable(props) {
                 onSelectAllClick={state.handleSelectAllClick}
                 onRequestSort={state.handleRequestSort}
                 rowCount={rows.length}
+                headCells={headCells}
               />
               <TableBody>
                 {

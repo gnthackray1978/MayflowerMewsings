@@ -92,10 +92,31 @@ function Persons() {
       };
 
     }
+    const headCells = [
+          { id: 'estBirthYearInt', numeric: false, disablePadding: true, label: 'Birth Year' },
+          { id: 'deathInt', numeric: false, disablePadding: true, label: 'Death Year' },
+        { id: 'christianName', numeric: false, disablePadding: true, label: 'Name' },
+
+
+      { id: 'surname', numeric: false, disablePadding: true, label: 'Surname' },
+      { id: 'birthLocation', numeric: false, disablePadding: true, label: 'Birth Loc.' },
+      { id: 'birthCounty', numeric: false, disablePadding: true, label: 'Birth County' },
+      { id: 'deathLocation', numeric: false, disablePadding: true, label: 'Death Loc.' },
+      { id: 'deathCounty', numeric: false, disablePadding: true, label: 'Death County' },
+      { id: 'fatherChristianName', numeric: false, disablePadding: true, label: 'Father Name' },
+
+      { id: 'motherChristianName', numeric: false, disablePadding: true, label: 'Mother Name' },
+        { id: 'motherSurname', numeric: false, disablePadding: true, label: 'Mother Surname' },
+
+      { id: 'occupation', numeric: false, disablePadding: true, label: 'Occ' },
+      { id: 'spouseName', numeric: false, disablePadding: true, label: 'Spouse Name' },
+      { id: 'spouseSurname', numeric: false, disablePadding: true, label: 'Surname' },
+      { id: 'totalEvents', numeric: false, disablePadding: true, label: 'Events' }
+    ];
 
     return (
         <div>
-          <PersonTable ReturnData = {GET_PersonS} makeData = {makeData}></PersonTable>
+          <PersonTable ReturnData = {GET_PersonS} makeData = {makeData} headCells ={headCells}></PersonTable>
         </div>
     );
 

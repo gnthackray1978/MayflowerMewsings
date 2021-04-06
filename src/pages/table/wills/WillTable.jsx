@@ -24,17 +24,17 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 import { withStyles } from '@material-ui/core/styles';
 import { ApolloClient, InMemoryCache, ApolloProvider, gql, useQuery ,useLazyQuery} from '@apollo/client';
 
-import WillTableHead from './WillTableHead.jsx';
 import WillTableToolbar from './WillTableToolbar.jsx';
 import { connect } from "react-redux";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import {useTableState} from '../useTable';
 import {theme,useStyles} from '../styleFuncs.jsx';
+import GenericTableHeader  from '../genericTableHeader.jsx';
 
 export default function WillTable(props) {
 
 
-  const {GET_WILLS, makeData} = props;
+  const {GET_WILLS, makeData, headCells} = props;
 
   const classes = useStyles();
 
@@ -88,7 +88,7 @@ export default function WillTable(props) {
               size='small'
               aria-label="will table"
             >
-              <WillTableHead
+              <GenericTableHeader
                 classes={classes}
 
                 numSelected={state.selected.length}
@@ -97,6 +97,7 @@ export default function WillTable(props) {
                 onSelectAllClick={state.handleSelectAllClick}
                 onRequestSort={state.handleRequestSort}
                 rowCount={rows.length}
+                headCells={headCells}
               />
               <TableBody>
                 {

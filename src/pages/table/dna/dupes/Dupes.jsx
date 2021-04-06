@@ -67,9 +67,20 @@ function Dupes() {
 
     }
 
+
+    const headCells = [
+      { id: 'YearFrom', numeric: false, disablePadding: true, label: 'Year From' },
+      { id: 'YearTo', numeric: false, disablePadding: true, label: 'Year To' },
+      { id: 'Origin', numeric: false, disablePadding: true, label: 'Origin' },
+      { id: 'Location', numeric: false, disablePadding: true, label: 'Location' },
+      { id: 'FirstName', numeric: false, disablePadding: true, label: 'FirstName' },
+      { id: 'Surname', numeric: false, disablePadding: true, label: 'Surname' }
+    ];
+
+
     return (
         <div>
-          <DupeTable ReturnData = {GET_DUPES} makeData = {makeData}></DupeTable>
+          <DupeTable ReturnData = {GET_DUPES} makeData = {makeData} headCells = {headCells}></DupeTable>
         </div>
     );
 

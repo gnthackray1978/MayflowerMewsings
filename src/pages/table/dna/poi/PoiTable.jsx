@@ -25,17 +25,18 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 import { withStyles } from '@material-ui/core/styles';
 import { ApolloClient, InMemoryCache, ApolloProvider, gql, useQuery ,useLazyQuery} from '@apollo/client';
 
-import PoiTableHeader from './PoiTableHeader.jsx';
+
 import PoiTableToolbar from './PoiTableToolbar.jsx';
 import { connect } from "react-redux";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import {useTableState} from '../../useTable';
 import {theme,useStyles} from '../../styleFuncs.jsx';
+import GenericTableHeader  from '../../genericTableHeader.jsx';
 
 export default function PoiTable(props) {
 
 
-  const {ReturnData, makeData} = props;
+  const {ReturnData, makeData, headCells} = props;
 
   const classes = useStyles();
 
@@ -88,7 +89,7 @@ export default function PoiTable(props) {
               size='small'
               aria-label="poi table"
             >
-              <PoiTableHeader
+              <GenericTableHeader
                 classes={classes}
 
                 numSelected={state.selected.length}
@@ -97,6 +98,7 @@ export default function PoiTable(props) {
                 onSelectAllClick={state.handleSelectAllClick}
                 onRequestSort={state.handleRequestSort}
                 rowCount={rows.length}
+                headCells={headCells}
               />
               <TableBody>
                 {

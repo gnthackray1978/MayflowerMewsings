@@ -24,17 +24,17 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 import { withStyles } from '@material-ui/core/styles';
 import { ApolloClient, InMemoryCache, ApolloProvider, gql, useQuery ,useLazyQuery} from '@apollo/client';
 
-import MarriageTableHeader from './MarriageTableHeader.jsx';
 import MarriageTableToolbar from './MarriageTableToolbar.jsx';
 import { connect } from "react-redux";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import {useTableState} from '../../useTable.jsx';
 import {theme,useStyles} from '../../styleFuncs.jsx';
+import GenericTableHeader  from '../../genericTableHeader.jsx';
 
 export default function MarriageTable(props) {
 
 
-  const {ReturnData, makeData} = props;
+  const {ReturnData, makeData, headCells} = props;
 
   const classes = useStyles();
 
@@ -74,7 +74,7 @@ export default function MarriageTable(props) {
               size='small'
               aria-label="marriage table"
             >
-              <MarriageTableHeader
+              <GenericTableHeader
                 classes={classes}
 
                 numSelected={state.selected.length}
@@ -83,6 +83,7 @@ export default function MarriageTable(props) {
                 onSelectAllClick={state.handleSelectAllClick}
                 onRequestSort={state.handleRequestSort}
                 rowCount={rows.length}
+                headCells = {headCells}
               />
               <TableBody>
                 {

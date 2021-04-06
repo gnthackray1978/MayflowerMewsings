@@ -24,20 +24,10 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 import { withStyles } from '@material-ui/core/styles';
 import { connect } from "react-redux";
 
- 
 
- export default function WillTableHead(props) {
-  const { classes, onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props;
 
-  const headCells = [
-
-    { id: 'YearFrom', numeric: false, disablePadding: true, label: 'YearFrom' },
-    { id: 'YearTo', numeric: false, disablePadding: true, label: 'YearTo' },
-    { id: 'FirstName', numeric: false, disablePadding: true, label: 'FirstName' },
-    { id: 'Surname', numeric: false, disablePadding: true, label: 'Surname' },
-    { id: 'BirthLocation', numeric: false, disablePadding: true, label: 'BirthLocation' },
-    { id: 'Origin', numeric: false, disablePadding: true, label: 'Origin' }
-  ];
+ export default function GenericTableHeader(props) {
+  const { classes, onSelectAllClick, order,  orderBy, numSelected, rowCount, onRequestSort, headCells } = props;
 
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
@@ -73,7 +63,7 @@ import { connect } from "react-redux";
   );
 }
 
-WillTableHead.propTypes = {
+GenericTableHeader.propTypes = {
   classes: PropTypes.object.isRequired,
   numSelected: PropTypes.number.isRequired,
   onRequestSort: PropTypes.func.isRequired,

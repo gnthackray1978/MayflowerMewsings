@@ -83,9 +83,25 @@ function Marriages() {
 
     }
 
+    const headCells = [
+      { id: 'maleCname', numeric: false, disablePadding: true, label: 'Groom Name' },
+      { id: 'maleSname', numeric: false, disablePadding: true, label: 'Groom Surname' },
+      { id: 'femaleCname', numeric: false, disablePadding: true, label: 'Bride Name' },
+      { id: 'femaleSname', numeric: false, disablePadding: true, label: 'Bride Surname' },
+      { id: 'marriageLocation', numeric: false, disablePadding: true, label: 'Loc.' },
+      { id: 'yearIntVal', numeric: false, disablePadding: true, label: 'Year' },
+      { id: 'marriageCounty', numeric: false, disablePadding: true, label: 'County' },
+      { id: 'source', numeric: false, disablePadding: true, label: 'Src' },
+      { id: 'witness1', numeric: false, disablePadding: true, label: 'Wit' },
+      { id: 'femaleIsKnownWidow', numeric: false, disablePadding: true, label: 'Wid' },
+      { id: 'maleIsKnownWidower', numeric: false, disablePadding: true, label: 'Widower' },
+      { id: 'isLicence', numeric: false, disablePadding: true, label: 'Lic.' },
+      { id: 'totalEvents', numeric: false, disablePadding: true, label: 'Dupes' }
+    ];
+
     return (
         <div>
-          <MarriageTable ReturnData = {GET_MARRIAGES} makeData = {makeData}></MarriageTable>
+          <MarriageTable ReturnData = {GET_MARRIAGES} makeData = {makeData} headCells= {headCells}></MarriageTable>
         </div>
     );
 

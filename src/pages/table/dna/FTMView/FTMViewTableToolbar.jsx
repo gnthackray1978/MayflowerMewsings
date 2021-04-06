@@ -26,32 +26,10 @@ import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
 import SaveIcon from '@material-ui/icons/Save';
 import { withStyles } from '@material-ui/core/styles';
-import WillTableHead from './FTMViewTableHeader.jsx';
+//import WillTableHead from './FTMViewTableHeader.jsx';
 import Box from '@material-ui/core/Box';
 import { connect } from "react-redux";
-
-
-const useToolbarStyles = makeStyles((theme) => ({
-  root: {
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(1),
-  },
-  highlight:
-    theme.palette.type === 'light'
-      ? {
-          color: theme.palette.secondary.main,
-          backgroundColor: lighten(theme.palette.secondary.light, 0.85),
-        }
-      : {
-          color: theme.palette.text.primary,
-          backgroundColor: theme.palette.secondary.dark,
-        },
-  title: {
-    flex: '1 1 100%',
-    paddingTop: '11px'
-  },
-
-}));
+import {useToolbarStyles} from '../../styleFuncs.jsx';
 
 const FTMViewTableToolbar = (props) => {
 //  console.log('rendered: FTMViewTableToolbar' );

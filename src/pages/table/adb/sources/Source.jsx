@@ -40,7 +40,7 @@ function Sources() {
                   originalLocation
                   isCopyHeld
                   isViewed
-                  isThackrayFound  
+                  isThackrayFound
        }
      }
     }
@@ -77,10 +77,21 @@ function Sources() {
       };
 
     }
+    const headCells = [
+      { id: 'sourceRef', numeric: false, disablePadding: true, label: 'Ref' },
+      { id: 'sourceDate', numeric: false, disablePadding: true, label: 'Year From' },
+      { id: 'sourceDateTo', numeric: false, disablePadding: true, label: 'Date To' },
+      { id: 'originalLocation', numeric: false, disablePadding: true, label: 'OriginalLocation' },
+      { id: 'isCopyHeld', numeric: false, disablePadding: true, label: 'CopyHeld' },
+      { id: 'isViewed', numeric: false, disablePadding: true, label: 'Viewed' },
+      { id: 'isThackrayFound', numeric: false, disablePadding: true, label: 'Thackray' }
+
+    ];
+
 
     return (
         <div>
-          <SourceTable ReturnData = {GET_SOURCES} makeData = {makeData}></SourceTable>
+          <SourceTable ReturnData = {GET_SOURCES} makeData = {makeData} headCells= {headCells}></SourceTable>
         </div>
     );
 

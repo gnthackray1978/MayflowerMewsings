@@ -78,9 +78,21 @@ function NorfolkWills() {
 
     }
 
+    const headCells = [
+    //  { id: 'Id', numeric: true, disablePadding: true, label: 'ID' },
+      { id: 'Year', numeric: false, disablePadding: true, label: 'Year' },
+      { id: 'Reference', numeric: false, disablePadding: true, label: 'Reference' },
+      { id: 'Description', numeric: false, disablePadding: true, label: 'Description' },
+      { id: 'Place', numeric: false, disablePadding: true, label: 'Place' },
+      { id: 'FirstName', numeric: false, disablePadding: true, label: 'FirstName' },
+      { id: 'Surname', numeric: false, disablePadding: true, label: 'Surname' },
+      { id: 'Typ', numeric: false, disablePadding: true, label: 'Type' },
+    ];
+
+
     return (
         <div>
-          <WillTable GET_WILLS = {GET_WILLS}  makeData = {makeData}></WillTable>
+          <WillTable GET_WILLS = {GET_WILLS}  makeData = {makeData} headCells ={headCells}></WillTable>
         </div>
     );
 

@@ -83,9 +83,25 @@ function Poi() {
 
     }
 
+    const headCells = [
+    //  { id: 'Id', numeric: true, disablePadding: true, label: 'ID' },
+    { id: 'ChristianName', numeric: false, disablePadding: true, label: 'Name' },
+    { id: 'Surname', numeric: false, disablePadding: true, label: 'Surname' },
+    { id: 'BirthYear', numeric: false, disablePadding: true, label: 'Birth Year' },
+
+    { id: 'BirthPlace', numeric: false, disablePadding: true, label: 'Location' },
+    { id: 'BirthCounty', numeric: false, disablePadding: true, label: 'County' },
+
+      { id: 'TestDisplayName', numeric: false, disablePadding: true, label: 'Testee' },
+      { id: 'TestAdminDisplayName', numeric: false, disablePadding: true, label: 'Admin Name' },
+
+      { id: 'SharedCentimorgans', numeric: false, disablePadding: true, label: 'cMs' },
+
+    ];
+
     return (
         <div>
-          <PoiTable ReturnData = {GET_Poi} makeData = {makeData}></PoiTable>
+          <PoiTable ReturnData = {GET_Poi} makeData = {makeData} headCells= {headCells}></PoiTable>
         </div>
     );
 

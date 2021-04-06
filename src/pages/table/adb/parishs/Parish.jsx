@@ -72,10 +72,22 @@ function Parishs() {
       };
 
     }
+    const headCells = [
+      { id: 'parishName', numeric: false, disablePadding: true, label: 'Name' },
+      { id: 'parishRegistersDeposited', numeric: false, disablePadding: true, label: 'Deposited' },
+      { id: 'parishNotes', numeric: false, disablePadding: true, label: 'Notes' },
+      { id: 'parentParish', numeric: false, disablePadding: true, label: 'Parent' },
+      { id: 'parishStartYear', numeric: false, disablePadding: true, label: 'Starts' },
+      { id: 'parishEndYear', numeric: false, disablePadding: true, label: 'Ends' },
+      { id: 'parishCounty', numeric: false, disablePadding: true, label: 'County' },
+      { id: 'parishX', numeric: false, disablePadding: true, label: 'Long' },
+      { id: 'parishY', numeric: false, disablePadding: true, label: 'Lat' }
+    ];
+
 
     return (
         <div>
-          <ParishTable ReturnData = {GET_Parishs} makeData = {makeData}></ParishTable>
+          <ParishTable ReturnData = {GET_Parishs} makeData = {makeData} headCells = {headCells}></ParishTable>
         </div>
     );
 

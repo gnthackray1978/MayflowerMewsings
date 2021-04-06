@@ -24,17 +24,18 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 import { withStyles } from '@material-ui/core/styles';
 import { ApolloClient, InMemoryCache, ApolloProvider, gql, useQuery ,useLazyQuery} from '@apollo/client';
 
-import ParishTableHeader from './ParishTableHeader.jsx';
+
 import ParishTableToolbar from './ParishTableToolbar.jsx';
 import { connect } from "react-redux";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import {useTableState} from '../../useTable.jsx';
 import {theme,useStyles} from '../../styleFuncs.jsx';
+import GenericTableHeader  from '../../genericTableHeader.jsx';
 
 export default function ParishTable(props) {
 
 
-  const {ReturnData, makeData} = props;
+  const {ReturnData, makeData, headCells} = props;
 
   const classes = useStyles();
 
@@ -70,7 +71,7 @@ export default function ParishTable(props) {
               size='small'
               aria-label="Parish table"
             >
-              <ParishTableHeader
+              <GenericTableHeader
                 classes={classes}
 
                 numSelected={state.selected.length}
@@ -79,6 +80,7 @@ export default function ParishTable(props) {
                 onSelectAllClick={state.handleSelectAllClick}
                 onRequestSort={state.handleRequestSort}
                 rowCount={rows.length}
+                headCells={headCells}
               />
               <TableBody>
                 {

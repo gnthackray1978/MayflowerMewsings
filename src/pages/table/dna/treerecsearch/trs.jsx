@@ -64,9 +64,17 @@ function Trs() {
 
     }
 
+    const headCells = [
+        { id: 'Name', numeric: false, disablePadding: true, label: 'Name' },
+        { id: 'PersonCount', numeric: false, disablePadding: true, label: 'Person Count' },
+        { id: 'CM', numeric: false, disablePadding: true, label: 'CM' },
+        { id: 'Located', numeric: false, disablePadding: true, label: 'Located' },
+        { id: 'Origin', numeric: false, disablePadding: true, label: 'Origin' }
+    ];
+
     return (
         <div>
-          <TrsTable ReturnData = {GET_Trs} makeData = {makeData}></TrsTable>
+          <TrsTable ReturnData = {GET_Trs} makeData = {makeData} headCells={headCells}></TrsTable>
         </div>
     );
 

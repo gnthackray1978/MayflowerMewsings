@@ -25,33 +25,12 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
 import SaveIcon from '@material-ui/icons/Save';
-import { withStyles } from '@material-ui/core/styles';
-import DupeTableHeader from './DupeTableHeader.jsx';
+import { withStyles } from '@material-ui/core/styles'; 
+import {useToolbarStyles} from '../../styleFuncs.jsx';
+import TableBox from '../../tableBox.jsx';
 import Box from '@material-ui/core/Box';
 import { connect } from "react-redux";
 
-
-const useToolbarStyles = makeStyles((theme) => ({
-  root: {
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(1),
-  },
-  highlight:
-    theme.palette.type === 'light'
-      ? {
-          color: theme.palette.secondary.main,
-          backgroundColor: lighten(theme.palette.secondary.light, 0.85),
-        }
-      : {
-          color: theme.palette.text.primary,
-          backgroundColor: theme.palette.secondary.dark,
-        },
-  title: {
-    flex: '1 1 100%',
-    paddingTop: '11px'
-  },
-
-}));
 
 const DupeTableToolbar = (props) => {
 //  console.log('rendered: DupeTableToolbar' );
@@ -60,6 +39,13 @@ const DupeTableToolbar = (props) => {
   const { numSelected, title, filterFieldChanged, filterParams } = props;
 
   const [surname, setSurname] = React.useState(filterParams.surname);
+
+  const boxClick = ()=>{
+    filterFieldChanged({
+      surname : surname
+    });
+  };
+
 
   return (
     <Toolbar
@@ -76,20 +62,9 @@ const DupeTableToolbar = (props) => {
         setSurname(e.currentTarget.value);
       }}/>
 
-        <Box
-               boxShadow={3}
-               bgcolor="background.paper"
-               m={1}
-               p={1}
-               style={{ width: '6rem', height: '2rem' }}
-             >
-                 <Button style={{ lineHeight: '0.5'}} onClick = {()=>{
-                     var returnObj = {                    
-                       surname : surname
-                     };
-                     filterFieldChanged(returnObj);
-                   } }>Search</Button>
-             </Box>
+
+    <TableBox boxClick ={boxClick}/>
+
 
     </Toolbar>
   );

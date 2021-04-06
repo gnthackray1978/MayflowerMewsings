@@ -23,18 +23,18 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 
 import { withStyles } from '@material-ui/core/styles';
 import { ApolloClient, InMemoryCache, ApolloProvider, gql, useQuery ,useLazyQuery} from '@apollo/client';
-
-import DupeTableHeader from './DupeTableHeader.jsx';
+ 
 import DupeTableToolbar from './DupeTableToolbar.jsx';
 import { connect } from "react-redux";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import {useTableState} from '../../useTable.jsx';
 import {theme,useStyles} from '../../styleFuncs.jsx';
+import GenericTableHeader  from '../../genericTableHeader.jsx';
 
 export default function DupeTable(props) {
 
 
-  const {ReturnData, makeData} = props;
+  const {ReturnData, makeData, headCells} = props;
 
   const classes = useStyles();
 
@@ -52,6 +52,7 @@ export default function DupeTable(props) {
 
   var totalRecordCount = parsedData.totalRecordCount;
 
+
   return (
     <MuiThemeProvider theme={theme}>
       <div className={classes.root}>
@@ -67,7 +68,7 @@ export default function DupeTable(props) {
               size='small'
               aria-label="dupe table"
             >
-              <DupeTableHeader
+              <GenericTableHeader
                 classes={classes}
 
                 numSelected={state.selected.length}
@@ -76,6 +77,7 @@ export default function DupeTable(props) {
                 onSelectAllClick={state.handleSelectAllClick}
                 onRequestSort={state.handleRequestSort}
                 rowCount={rows.length}
+                headCells ={headCells}
               />
               <TableBody>
                 {
