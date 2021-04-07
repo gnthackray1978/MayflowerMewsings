@@ -30,6 +30,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import { connect } from "react-redux";
 import {useToolbarStyles} from '../../styleFuncs.jsx';
+import TableBox from '../../tableBox.jsx';
 
 const TrsTableToolbar = (props) => {
 //  console.log('rendered: TrsTableToolbar' );
@@ -38,6 +39,14 @@ const TrsTableToolbar = (props) => {
   const { numSelected, title, filterFieldChanged, filterParams } = props;
 
   const [origin, setorigin] = React.useState(filterParams.origin);
+
+
+  const boxClick = ()=>{
+    filterFieldChanged({
+      origin : origin
+    });
+  };
+
 
   return (
     <Toolbar className={clsx(classes.root, {
@@ -51,14 +60,7 @@ const TrsTableToolbar = (props) => {
              setorigin(e.currentTarget.value);
            }}/>
 
-        <Box boxShadow={3} bgcolor="background.paper" m={1} p={1} style={{ width: '6rem', height: '2rem' }} >
-           <Button style={{ lineHeight: '0.5'}} onClick = {()=>{
-
-             filterFieldChanged({
-               origin : origin
-             });
-             } }>Search</Button>
-        </Box>
+        <TableBox boxClick ={boxClick}/>
     </Toolbar>
   );
 };

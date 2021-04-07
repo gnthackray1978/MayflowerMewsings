@@ -30,7 +30,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import { connect } from "react-redux";
 import {useToolbarStyles} from '../styleFuncs.jsx';
-
+import TableBox from '../tableBox.jsx';
 
 const WillTableToolbar = (props) => {
 //  console.log('rendered: WillTableToolbar' );
@@ -45,6 +45,17 @@ const [ref, setRef] = React.useState(filterParams.ref);
 const [desc, setDesc] = React.useState(filterParams.desc);
 const [place, setPlace] = React.useState(filterParams.place);
 const [surname, setSurname] = React.useState(filterParams.surname);
+
+const boxClick = ()=>{
+  filterFieldChanged({
+    yearStart : yearStart,
+    yearEnd : yearEnd,
+    ref : ref,
+    desc : desc,
+    place : place,
+    surname : surname
+  });
+};
 
   return (
     <Toolbar
@@ -78,52 +89,32 @@ const [surname, setSurname] = React.useState(filterParams.surname);
           setRef(e.currentTarget.value);
       }}/>
 
-      <TextField className={classes.smallFilter}
-        id="desc" label="Desc"
-        value={desc}
-        variant="standard"  size="small"
-        onChange = {(e)=>{
-            setDesc(e.currentTarget.value);
-        }}/>
+    <TextField className={classes.smallFilter}
+      id="desc" label="Desc"
+      value={desc}
+      variant="standard"  size="small"
+      onChange = {(e)=>{
+          setDesc(e.currentTarget.value);
+      }}/>
 
-        <TextField className={classes.smallFilter}
-          id="place" label="Place"
-          value={place}
-          variant="standard"  size="small"
-          onChange = {(e)=>{
-              setPlace(e.currentTarget.value);
-          }}/>
+    <TextField className={classes.smallFilter}
+      id="place" label="Place"
+      value={place}
+      variant="standard"  size="small"
+      onChange = {(e)=>{
+          setPlace(e.currentTarget.value);
+      }}/>
 
-          <TextField className={classes.smallFilter}
-            id="surname" label="Surname"
-            value={surname}
-            variant="standard"  size="small"
-            onChange = {(e)=>{
-                setSurname(e.currentTarget.value);
-            }}/>
+    <TextField className={classes.smallFilter}
+      id="surname" label="Surname"
+      value={surname}
+      variant="standard"  size="small"
+      onChange = {(e)=>{
+          setSurname(e.currentTarget.value);
+      }}/>
 
 
-
-        <Box
-               boxShadow={3}
-               bgcolor="background.paper"
-               m={1}
-               p={1}
-               style={{ width: '6rem', height: '2rem' }}
-             >
-                 <Button style={{ lineHeight: '0.5'}} onClick = {()=>{
-                     var returnObj ={
-                        yearStart : yearStart,
-                        yearEnd : yearEnd,
-                        ref : ref,
-                        desc : desc,
-                        place : place,
-                        surname : surname
-                     };
-
-                     filterFieldChanged(returnObj);
-                   } }>Search</Button>
-             </Box>
+      <TableBox boxClick ={boxClick}/>
 
     </Toolbar>
   );

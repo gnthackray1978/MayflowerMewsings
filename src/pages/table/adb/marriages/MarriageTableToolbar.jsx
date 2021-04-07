@@ -30,7 +30,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import { connect } from "react-redux";
 import {useToolbarStyles} from '../../styleFuncs.jsx';
-
+import TableBox from '../../tableBox.jsx';
 
 const MarriageTableToolbar = (props) => {
 //  console.log('rendered: DupeTableToolbar' );
@@ -43,6 +43,16 @@ const MarriageTableToolbar = (props) => {
   const [maleSurname, setMaleSurname] = React.useState(filterParams.maleSurname);
   const [femaleSurname, setFemaleSurname] = React.useState(filterParams.femaleSurname);
   const [location, setLocation] = React.useState(filterParams.location);
+
+  const boxClick = ()=>{
+    filterFieldChanged({
+      yearStart : yearStart,
+      yearEnd : yearEnd,
+      maleSurname : maleSurname,
+      femaleSurname : femaleSurname,
+      location : location
+    });
+  };
 
   return (
     <Toolbar
@@ -83,26 +93,7 @@ const MarriageTableToolbar = (props) => {
           setFemaleSurname(e.currentTarget.value);
         }}/>
 
-    <Box
-               boxShadow={3}
-               bgcolor="background.paper"
-               m={1}
-               p={1}
-               style={{ width: '6rem', height: '2rem' }}
-             >
-
-                 <Button style={{ lineHeight: '0.5'}} onClick = {()=>{
-                     var returnObj = {
-                       yearStart : yearStart,
-                        yearEnd : yearEnd,
-                         maleSurname : maleSurname,
-                          femaleSurname : femaleSurname,
-                           location : location
-                     };
-                     filterFieldChanged(returnObj);
-                   } }>Search</Button>
-             </Box>
-
+    <TableBox boxClick ={boxClick}/>
     </Toolbar>
   );
 };

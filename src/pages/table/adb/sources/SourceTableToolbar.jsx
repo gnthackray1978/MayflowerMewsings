@@ -30,7 +30,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import { connect } from "react-redux";
 import {useToolbarStyles} from '../../styleFuncs.jsx';
-
+import TableBox from '../../tableBox.jsx';
 
 const SourceTableToolbar = (props) => {
 //  console.log('rendered: DupeTableToolbar' );
@@ -42,6 +42,15 @@ const SourceTableToolbar = (props) => {
   const [sourceRef, setSourceRef] = React.useState(filterParams.yearEnd);
   const [yearStart, setYearStart] = React.useState(filterParams.maleSurname);
   const [yearEnd, setYearEnd] = React.useState(filterParams.femaleSurname);
+
+  const boxClick = ()=>{
+    filterFieldChanged({
+      yearStart : yearStart,
+      yearEnd : yearEnd,
+      location : location,
+      sourceRef : sourceRef
+    });
+  };
 
   return (
     <Toolbar
@@ -78,24 +87,7 @@ const SourceTableToolbar = (props) => {
           setSourceRef(e.currentTarget.value);
         }}/>
 
-    <Box
-               boxShadow={3}
-               bgcolor="background.paper"
-               m={1}
-               p={1}
-               style={{ width: '6rem', height: '2rem' }}
-             >
-
-                 <Button style={{ lineHeight: '0.5'}} onClick = {()=>{
-                     var returnObj = {
-                                yearStart : yearStart,
-                                yearEnd : yearEnd,
-                                location : location,
-                                sourceRef : sourceRef
-                     };
-                     filterFieldChanged(returnObj);
-                   } }>Search</Button>
-             </Box>
+    <TableBox boxClick ={boxClick}/>
 
     </Toolbar>
   );

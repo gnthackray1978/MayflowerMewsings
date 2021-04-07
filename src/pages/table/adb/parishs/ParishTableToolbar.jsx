@@ -30,6 +30,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import { connect } from "react-redux";
 import {useToolbarStyles} from '../../styleFuncs.jsx';
+import TableBox from '../../tableBox.jsx';
 
 const ParishTableToolbar = (props) => {
 
@@ -40,6 +41,12 @@ const ParishTableToolbar = (props) => {
   const [county, setcounty] = React.useState(filterParams.county);
   const [parishName, setparishName] = React.useState(filterParams.parishName);
 
+  const boxClick = ()=>{
+    filterFieldChanged({
+      county : county,
+      parishName : parishName
+    });
+  };
 
   return (
     <Toolbar
@@ -61,21 +68,7 @@ const ParishTableToolbar = (props) => {
          setparishName(e.currentTarget.value);
       }}/>
 
-    <Box
-         boxShadow={3}
-         bgcolor="background.paper"
-         m={1}
-         p={1}
-         style={{ width: '6rem', height: '2rem' }}
-       >
-                 <Button style={{ lineHeight: '0.5'}} onClick = {()=>{
-                     var returnObj = {
-                       county : county,
-                       parishName : parishName
-                     };
-                     filterFieldChanged(returnObj);
-                   } }>Search</Button>
-             </Box>
+      <TableBox boxClick ={boxClick}/>
 
     </Toolbar>
   );

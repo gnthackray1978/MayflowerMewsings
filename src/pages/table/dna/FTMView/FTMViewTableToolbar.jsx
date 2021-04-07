@@ -30,6 +30,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import { connect } from "react-redux";
 import {useToolbarStyles} from '../../styleFuncs.jsx';
+import TableBox from '../../tableBox.jsx';
 
 const FTMViewTableToolbar = (props) => {
 //  console.log('rendered: FTMViewTableToolbar' );
@@ -43,6 +44,15 @@ const FTMViewTableToolbar = (props) => {
   const [yearEnd, setyearEnd] = React.useState(String(filterParams.yearEnd));
   const [location, setLocation] = React.useState(filterParams.location);
 
+  const boxClick = ()=>{
+    filterFieldChanged({
+      yearStart : Number(yearStart),
+      yearEnd : Number(yearEnd),
+      location : location,
+      surname : surname
+    });
+  };
+
   return (
     <Toolbar
       className={clsx(classes.root, {
@@ -51,56 +61,33 @@ const FTMViewTableToolbar = (props) => {
       })}
     >
 
-    <TextField className={classes.filter} id="yearStart" label="Year From"
-      value={yearStart}
-      variant="standard"  size="small"
-      onChange = {(e)=>{
-          setyearStart(e.currentTarget.value);
-      }}/>
-    <TextField className={classes.filter} id="yearEnd" label="Year To"
-      value={yearEnd}
-      variant="standard"  size="small"
-      onChange = {(e)=>{
-         setyearEnd(e.currentTarget.value);
-      }}/>
-    <TextField className={classes.filter} id="location" label="Location"
-      value={location}
-      variant="standard"  size="small"
-      onChange = {(e)=>{
-        setLocation(e.currentTarget.value);
-      }}/>
-    <TextField className={classes.filter} id="surname" label="Surname"
-      value={surname}
-      variant="standard"  size="small"
-      onChange = {(e)=>{
-        setSurname(e.currentTarget.value);
-      }}/>
+      <TextField className={classes.filter} id="yearStart" label="Year From"
+        value={yearStart}
+        variant="standard"  size="small"
+        onChange = {(e)=>{
+            setyearStart(e.currentTarget.value);
+        }}/>
+        
+      <TextField className={classes.filter} id="yearEnd" label="Year To"
+        value={yearEnd}
+        variant="standard"  size="small"
+        onChange = {(e)=>{
+           setyearEnd(e.currentTarget.value);
+        }}/>
+      <TextField className={classes.filter} id="location" label="Location"
+        value={location}
+        variant="standard"  size="small"
+        onChange = {(e)=>{
+          setLocation(e.currentTarget.value);
+        }}/>
+      <TextField className={classes.filter} id="surname" label="Surname"
+        value={surname}
+        variant="standard"  size="small"
+        onChange = {(e)=>{
+          setSurname(e.currentTarget.value);
+        }}/>
 
-
-
-
-        <Box
-               boxShadow={3}
-               bgcolor="background.paper"
-               m={1}
-               p={1}
-               style={{ width: '6rem', height: '2rem' }}
-             >
-                 <Button style={{ lineHeight: '0.5'}} onClick = {()=>{
-                     console.log('on click');
-                     var returnObj ={
-                            sortColumn : '',
-                            sortOrder : '',
-                            limit : 0,
-                            offset :0,
-                            yearStart : Number(yearStart),
-                            yearEnd : Number(yearEnd),
-                            location : location,
-                            surname : surname
-                     };
-                     filterFieldChanged(returnObj);
-                   } }>Search</Button>
-             </Box>
+      <TableBox boxClick ={boxClick}/>
 
     </Toolbar>
   );
