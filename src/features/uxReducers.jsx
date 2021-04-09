@@ -50,8 +50,8 @@ export default (state = {
           if(state.appName != action.payload){
             return {
                ...state,
-               funcList: [],
-               loadedFuncList :false,
+            //   funcList: [],
+              // loadedFuncList :false,
                funcName : 0,
                appName : action.payload
             };

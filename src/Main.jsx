@@ -61,7 +61,7 @@ function getPageName(pagePath, funcList){
 
    let idx =0;
 
-   let appId =0;
+   let appId =1;
    let pageId =0;
 
    while(idx < funcList.length){
