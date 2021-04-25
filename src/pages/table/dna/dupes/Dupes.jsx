@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import DupeTable from './DupeTable.jsx'
-import { gql} from '@apollo/client';
+import DupeTableToolbar from './DupeTableToolbar.jsx'
+import TableWrapper from '../../TableWrapper.jsx'
+import {gql} from '@apollo/client';
+import {useTableState} from '../../useTable';
 
 function Dupes() {
 
@@ -35,37 +38,6 @@ function Dupes() {
     }
   }
   `;
-    const makeData = function(data){
-
-      let rows = [];
-      let totalRecordCount =0;
-
-      if(!data) return {
-          rows,
-          totalRecordCount
-        };
-
-      let idx =0;
-
-      while(idx < data.dna.dupesearch.results.length){
-        let tp = data.dna.dupesearch.results[idx];
-
-        rows.push(tp);
-
-        idx++;
-      }
-
-
-
-      if(data && data.dna)
-       totalRecordCount =  data.dna.dupesearch.totalResults;
-
-      return {
-        rows,
-        totalRecordCount
-      };
-
-    }
 
 
     const headCells = [
@@ -77,10 +49,26 @@ function Dupes() {
       { id: 'Surname', numeric: false, disablePadding: true, label: 'Surname' }
     ];
 
+    var state = useTableState(GET_DUPES,{
+      sortColumn : 'surname',
+      sortOrder : 'asc',
+      limit : 0,
+      offset :0,
+      surname : ''
+    },'dna','dupesearch');
+
+    state.headCells = headCells;
+    state.title = 'Dupes';
+
+
+
 
     return (
         <div>
-          <DupeTable ReturnData = {GET_DUPES} makeData = {makeData} headCells = {headCells}></DupeTable>
+          <TableWrapper state = {state} >
+            <DupeTableToolbar state ={state}/>
+            <DupeTable state ={state}/>
+          </TableWrapper>
         </div>
     );
 

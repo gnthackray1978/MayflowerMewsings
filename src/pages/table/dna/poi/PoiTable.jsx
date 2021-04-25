@@ -21,143 +21,75 @@ import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Link from '@material-ui/core/Link';
 import FilterListIcon from '@material-ui/icons/FilterList';
-
 import { withStyles } from '@material-ui/core/styles';
-import { ApolloClient, InMemoryCache, ApolloProvider, gql, useQuery ,useLazyQuery} from '@apollo/client';
-
-
 import PoiTableToolbar from './PoiTableToolbar.jsx';
 import { connect } from "react-redux";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
-import {useTableState} from '../../useTable';
 import {theme,useStyles} from '../../styleFuncs.jsx';
-import GenericTableHeader  from '../../genericTableHeader.jsx';
+import TableHeaderFromState  from '../../TableHeaderFromState.jsx';
 
 export default function PoiTable(props) {
 
-
-  const {ReturnData, makeData, headCells} = props;
+  const {state} = props;
 
   const classes = useStyles();
 
-  var state = useTableState(ReturnData,{
-    sortColumn : 'yearStart',
-    sortOrder : 'asc',
-    limit : 0,
-    offset :0,
-     yearStart :1700,
-     yearEnd :1840,
-     mincm :9,
-     surname :'',
-     location :'',
-     country : 'England',
-     name :'GNT GRT ATH'
-  });
-
-  if (state.loading) return <span>loading...</span>
-
-  if(state.error && state.error.graphQLErrors && state.error.graphQLErrors.length >0){
-    return (
-      <div>
-        <pre>Bad: {state.error.graphQLErrors.map(({ message }, i) => (
-          <span key={i}>{message}</span>
-        ))}
-        </pre>
-      </div>
-    );
-  }
-
-  var parsedData = makeData(state.data);
-
-  var rows = parsedData.rows;
-
-  var totalRecordCount = parsedData.totalRecordCount;
-
   return (
-    <MuiThemeProvider theme={theme}>
-      <div className={classes.root}>
+        <TableContainer>
+          <Table
+            className={classes.table}
+            aria-labelledby="tableTitle"
+            size='small'
+            aria-label="poi table"
+          >
+            <TableHeaderFromState state= {state}/>
+
+            <TableBody>
+              {
+
+                state.rows.map((row, index) => {
+                  //console.log(row.reference);
+                  const isItemSelected = state.isSelected(row.id);
+                  const labelId = `poi-table-checkbox-${index}`;
+                  return (
+                    <TableRow
+                      hover
+                      onClick={(event) => state.handleClick(event, row.id)}
+                      role="checkbox"
+                      aria-checked={isItemSelected}
+                      tabIndex={-1}
+                      key={row.id}
+                      selected={isItemSelected}
+                    >
+
+                       <TableCell  padding="none">{row.christianName}</TableCell>
+
+                    <TableCell component="th" id={labelId} scope="row" padding="none">
+                      {row.surname}
+                    </TableCell>
+
+                    <TableCell  padding="none">{row.birthYear}</TableCell>
+                    <TableCell  padding="none">{row.birthPlace}</TableCell>
+
+                      <TableCell  padding="none">{row.birthCounty}</TableCell>
+
+                      <TableCell  padding="none">
+                        <Link href={row.treeUrl} onClick={(event) => event.preventDefault()} color="inherit">
+                          {row.testDisplayName}
+                        </Link>
 
 
-          <PoiTableToolbar numSelected={state.selected.length}
-            filterParams ={state.filterParams} title = 'POI'
-            filterFieldChanged = {state.filterFieldChanged}>
-          </PoiTableToolbar>
-          <TableContainer>
-            <Table
-              className={classes.table}
-              aria-labelledby="tableTitle"
-              size='small'
-              aria-label="poi table"
-            >
-              <GenericTableHeader
-                classes={classes}
-
-                numSelected={state.selected.length}
-                order={state.order}
-                orderBy={state.sortColumn}
-                onSelectAllClick={state.handleSelectAllClick}
-                onRequestSort={state.handleRequestSort}
-                rowCount={rows.length}
-                headCells={headCells}
-              />
-              <TableBody>
-                {
-
-                  rows.map((row, index) => {
-                    //console.log(row.reference);
-                    const isItemSelected = state.isSelected(row.id);
-                    const labelId = `poi-table-checkbox-${index}`;
-                    return (
-                      <TableRow
-                        hover
-                        onClick={(event) => state.handleClick(event, row.id)}
-                        role="checkbox"
-                        aria-checked={isItemSelected}
-                        tabIndex={-1}
-                        key={row.id}
-                        selected={isItemSelected}
-                      >
-
-                         <TableCell  padding="none">{row.christianName}</TableCell>
-
-                      <TableCell component="th" id={labelId} scope="row" padding="none">
-                        {row.surname}
                       </TableCell>
+                      <TableCell  padding="none">{row.testAdminDisplayName}</TableCell>
 
-                      <TableCell  padding="none">{row.birthYear}</TableCell>
-                      <TableCell  padding="none">{row.birthPlace}</TableCell>
+                      <TableCell  padding="none">{row.sharedCentimorgans}</TableCell>
 
-                        <TableCell  padding="none">{row.birthCounty}</TableCell>
+                    </TableRow>
+                  );
+                })}
 
-                        <TableCell  padding="none">
-                          <Link href={row.treeUrl} onClick={(event) => event.preventDefault()} color="inherit">
-                            {row.testDisplayName}
-                          </Link>
-
-
-                        </TableCell>
-                        <TableCell  padding="none">{row.testAdminDisplayName}</TableCell>
-
-                        <TableCell  padding="none">{row.sharedCentimorgans}</TableCell>
-
-                      </TableRow>
-                    );
-                  })}
-
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 25,50]}
-            component="div"
-            count={totalRecordCount}
-            rowsPerPage={state.rowsPerPage}
-            page={state.page}
-            onChangePage={state.handleChangePage}
-            onChangeRowsPerPage={state.handleChangeRowsPerPage}
-          />
-
-      </div>
-    </MuiThemeProvider>
+            </TableBody>
+          </Table>
+        </TableContainer>
   );
 }

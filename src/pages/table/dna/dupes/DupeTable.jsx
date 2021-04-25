@@ -22,108 +22,63 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 
 import { withStyles } from '@material-ui/core/styles';
-import { ApolloClient, InMemoryCache, ApolloProvider, gql, useQuery ,useLazyQuery} from '@apollo/client';
- 
+
 import DupeTableToolbar from './DupeTableToolbar.jsx';
 import { connect } from "react-redux";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import {useTableState} from '../../useTable.jsx';
 import {theme,useStyles} from '../../styleFuncs.jsx';
-import GenericTableHeader  from '../../genericTableHeader.jsx';
+import TableHeaderFromState  from '../../TableHeaderFromState.jsx';
 
 export default function DupeTable(props) {
 
-
-  const {ReturnData, makeData, headCells} = props;
+  const {state} = props;
 
   const classes = useStyles();
 
-  var state = useTableState(ReturnData,{
-     sortColumn : 'surname',
-     sortOrder : 'asc',
-     limit : 0,
-     offset :0,
-     surname : ''
-  });
-
-  var parsedData = makeData(state.data);
-
-  var rows = parsedData.rows;
-
-  var totalRecordCount = parsedData.totalRecordCount;
-
-
   return (
-    <MuiThemeProvider theme={theme}>
-      <div className={classes.root}>
+      <TableContainer>
+        <Table
+          className={classes.table}
+          aria-labelledby="tableTitle"
+          size='small'
+          aria-label="dupe table"
+        >
+          <TableHeaderFromState state= {state}/>
 
+          <TableBody>
+            {
 
-          <DupeTableToolbar numSelected={state.selected.length} filterParams ={state.filterParams} title = 'Dupes'
-            filterFieldChanged = {state.filterFieldChanged}>
-          </DupeTableToolbar>
-          <TableContainer>
-            <Table
-              className={classes.table}
-              aria-labelledby="tableTitle"
-              size='small'
-              aria-label="dupe table"
-            >
-              <GenericTableHeader
-                classes={classes}
+              state.rows.map((row, index) => {
+                //console.log(row.reference);
+                const isItemSelected = state.isSelected(row.id);
+                const labelId = `dupe-table-checkbox-${index}`;
 
-                numSelected={state.selected.length}
-                order={state.order}
-                orderBy={state.sortColumn}
-                onSelectAllClick={state.handleSelectAllClick}
-                onRequestSort={state.handleRequestSort}
-                rowCount={rows.length}
-                headCells ={headCells}
-              />
-              <TableBody>
-                {
+                return (
+                  <TableRow
+                    hover
+                    onClick={(event) => state.handleClick(event, row.id)}
+                    role="checkbox"
+                    aria-checked={isItemSelected}
+                    tabIndex={-1}
+                    key={row.id}
+                    selected={isItemSelected}
+                  >
+                    <TableCell  padding="none">{row.yearFrom}</TableCell>
+                    <TableCell  padding="none">{row.yearTo}</TableCell>
+                    <TableCell  padding="none">{row.origin}</TableCell>
+                    <TableCell  padding="none">{row.location}</TableCell>
+                    <TableCell  padding="none">{row.firstName}</TableCell>
+                    <TableCell component="th" id={labelId} scope="row" padding="none">
+                      {row.surname}
+                    </TableCell>
 
-                  rows.map((row, index) => {
-                    //console.log(row.reference);
-                    const isItemSelected = state.isSelected(row.id);
-                    const labelId = `dupe-table-checkbox-${index}`;
+                  </TableRow>
+                );
+              })}
 
-                    return (
-                      <TableRow
-                        hover
-                        onClick={(event) => state.handleClick(event, row.id)}
-                        role="checkbox"
-                        aria-checked={isItemSelected}
-                        tabIndex={-1}
-                        key={row.id}
-                        selected={isItemSelected}
-                      >
-                        <TableCell  padding="none">{row.yearFrom}</TableCell>
-                        <TableCell  padding="none">{row.yearTo}</TableCell>
-                        <TableCell  padding="none">{row.origin}</TableCell>
-                        <TableCell  padding="none">{row.location}</TableCell>
-                        <TableCell  padding="none">{row.firstName}</TableCell>
-                        <TableCell component="th" id={labelId} scope="row" padding="none">
-                          {row.surname}
-                        </TableCell>
-
-                      </TableRow>
-                    );
-                  })}
-
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 25,50]}
-            component="div"
-            count={totalRecordCount}
-            rowsPerPage={state.rowsPerPage}
-            page={state.page}
-            onChangePage={state.handleChangePage}
-            onChangeRowsPerPage={state.handleChangeRowsPerPage}
-          />
-
-      </div>
-    </MuiThemeProvider>
+          </TableBody>
+        </Table>
+      </TableContainer>
   );
 }

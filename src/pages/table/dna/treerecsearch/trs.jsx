@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import TrsTable from './TrsTable.jsx'
-import { gql} from '@apollo/client';
+import TrsTableToolbar from './TrsTableToolbar.jsx'
+import TableWrapper from '../../TableWrapper.jsx'
+import {gql} from '@apollo/client';
+import {useTableState} from '../../useTable';
 
 function Trs() {
 
@@ -35,35 +38,6 @@ function Trs() {
   }
   `;
 
-
-    const makeData = function(data){
-
-      let rows = [];
-
-      if(!data) return rows;
-
-      let idx =0;
-
-      while(idx < data.dna.treerecsearch.results.length){
-        let tp = data.dna.treerecsearch.results[idx];
-
-        rows.push(tp);
-
-        idx++;
-      }
-
-      let totalRecordCount =0;
-
-      if(data && data.dna)
-       totalRecordCount =  data.dna.treerecsearch.totalResults;
-
-      return {
-        rows,
-        totalRecordCount
-      };
-
-    }
-
     const headCells = [
         { id: 'Name', numeric: false, disablePadding: true, label: 'Name' },
         { id: 'PersonCount', numeric: false, disablePadding: true, label: 'Person Count' },
@@ -72,9 +46,23 @@ function Trs() {
         { id: 'Origin', numeric: false, disablePadding: true, label: 'Origin' }
     ];
 
+    var state = useTableState(GET_Trs,{
+         sortColumn : 'cM',
+         sortOrder : 'desc',
+         limit : 0,
+         offset :0,
+         origin : ''
+    },'dna','treerecsearch');
+
+    state.headCells = headCells;
+    state.title = 'Trees Over View';
+
     return (
         <div>
-          <TrsTable ReturnData = {GET_Trs} makeData = {makeData} headCells={headCells}></TrsTable>
+          <TableWrapper state = {state} >
+            <TrsTableToolbar state ={state}/>
+            <TrsTable state ={state}/>
+          </TableWrapper>
         </div>
     );
 

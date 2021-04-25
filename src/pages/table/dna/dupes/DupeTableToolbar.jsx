@@ -25,7 +25,7 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
 import SaveIcon from '@material-ui/icons/Save';
-import { withStyles } from '@material-ui/core/styles'; 
+import { withStyles } from '@material-ui/core/styles';
 import {useToolbarStyles} from '../../styleFuncs.jsx';
 import TableBox from '../../tableBox.jsx';
 import Box from '@material-ui/core/Box';
@@ -36,7 +36,7 @@ const DupeTableToolbar = (props) => {
 //  console.log('rendered: DupeTableToolbar' );
 
   const classes = useToolbarStyles();
-  const { numSelected, title, filterFieldChanged, filterParams } = props;
+  const { numSelected, title, filterFieldChanged, filterParams } = props.state;
 
   const [surname, setSurname] = React.useState(filterParams.surname);
 
@@ -71,8 +71,7 @@ const DupeTableToolbar = (props) => {
 };
 
 DupeTableToolbar.propTypes = {
-  numSelected: PropTypes.number.isRequired,
-  filterFieldChanged : PropTypes.func
+  state: PropTypes.object.isRequired 
 };
 
 export default DupeTableToolbar;

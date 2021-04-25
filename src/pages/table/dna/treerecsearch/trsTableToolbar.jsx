@@ -36,7 +36,7 @@ const TrsTableToolbar = (props) => {
 //  console.log('rendered: TrsTableToolbar' );
 
   const classes = useToolbarStyles();
-  const { numSelected, title, filterFieldChanged, filterParams } = props;
+  const { numSelected, title, filterFieldChanged, filterParams } = props.state;
 
   const [origin, setorigin] = React.useState(filterParams.origin);
 
@@ -66,8 +66,7 @@ const TrsTableToolbar = (props) => {
 };
 
 TrsTableToolbar.propTypes = {
-  numSelected: PropTypes.number.isRequired,
-  filterFieldChanged : PropTypes.func
+  state: PropTypes.object.isRequired 
 };
 
 export default TrsTableToolbar;

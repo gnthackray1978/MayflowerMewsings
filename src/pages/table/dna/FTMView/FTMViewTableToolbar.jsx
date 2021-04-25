@@ -36,7 +36,11 @@ const FTMViewTableToolbar = (props) => {
 //  console.log('rendered: FTMViewTableToolbar' );
 
   const classes = useToolbarStyles();
-  const { numSelected, title, filterFieldChanged, filterParams } = props;
+  const { numSelected, title, filterFieldChanged, filterParams } = props.state;
+
+  // numSelected={state.selected.length}
+  //   filterParams ={state.filterParams} title = {state.title}
+  //   filterFieldChanged = {state.filterFieldChanged}
 
 
   const [surname, setSurname] = React.useState(filterParams.surname);
@@ -67,7 +71,7 @@ const FTMViewTableToolbar = (props) => {
         onChange = {(e)=>{
             setyearStart(e.currentTarget.value);
         }}/>
-        
+
       <TextField className={classes.filter} id="yearEnd" label="Year To"
         value={yearEnd}
         variant="standard"  size="small"
@@ -94,8 +98,7 @@ const FTMViewTableToolbar = (props) => {
 };
 
 FTMViewTableToolbar.propTypes = {
-  numSelected: PropTypes.number.isRequired,
-  filterFieldChanged : PropTypes.func
+  state: PropTypes.object.isRequired 
 };
 
 export default FTMViewTableToolbar;

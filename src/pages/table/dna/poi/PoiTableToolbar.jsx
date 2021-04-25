@@ -36,7 +36,7 @@ const PoiTableToolbar = (props) => {
 //  console.log('rendered: PoiTableToolbar' );
 
   const classes = useToolbarStyles();
-  const { numSelected, title, filterFieldChanged, filterParams } = props;
+  const { numSelected, title, filterFieldChanged, filterParams } = props.state;
 
 
 
@@ -126,8 +126,7 @@ const PoiTableToolbar = (props) => {
 };
 
 PoiTableToolbar.propTypes = {
-  numSelected: PropTypes.number.isRequired,
-  filterFieldChanged : PropTypes.func
+  state: PropTypes.object.isRequired 
 };
 
 export default PoiTableToolbar;

@@ -29,121 +29,57 @@ import { connect } from "react-redux";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import {useTableState} from '../../useTable';
 import {theme,useStyles} from '../../styleFuncs.jsx';
-import GenericTableHeader  from '../../genericTableHeader.jsx';
+import TableHeaderFromState  from '../../TableHeaderFromState.jsx';
 
-export default function FTMViewTable(props) {
+export default function FTMViewTable(props){
 
-
-  const {ReturnData, makeData, headCells} = props;
+  const {state} = props;
 
   const classes = useStyles();
 
+  return(
+    <TableContainer>
+      <Table
+        className={classes.table}
+        aria-labelledby="tableTitle"
+        size='small'
+        aria-label="ftmview table"
+      >
+        <TableHeaderFromState state= {state}/>
 
-  var state = useTableState(ReturnData,{
-    sortColumn : 'surname',
-    sortOrder : 'asc',
-    limit : 0,
-    offset :0,
-    yearStart : 1500,
-    yearEnd : 2000,
-    location : '',
-    surname : ''
-  });
+        <TableBody>
+          {
 
-  if (state.loading) return <span>loading...</span>
+            state.rows.map((row, index) => {
+          //    console.log(row.id);
+              const isItemSelected = state.isSelected(row.id);
+              const labelId = `ftmview-table-checkbox-${index}`;
 
-  if(state.error && state.error.graphQLErrors && state.error.graphQLErrors.length >0){
-    return (
-      <div>
-        <pre>Bad: {state.error.graphQLErrors.map(({ message }, i) => (
-          <span key={i}>{message}</span>
-        ))}
-        </pre>
-      </div>
-    );
-  }
+              return (
+                <TableRow
+                  hover
+                  onClick={(event) => state.handleClick(event, row.id)}
+                  role="checkbox"
+                  aria-checked={isItemSelected}
+                  tabIndex={-1}
+                  key={row.id}
+                  selected={isItemSelected}
+                >
 
-  var parsedData = makeData(state.data);
+                  <TableCell padding="none">{row.yearFrom}</TableCell>
+                  <TableCell padding="none">{row.yearTo}</TableCell>
+                  <TableCell padding="none">{row.firstName}</TableCell>
+                  <TableCell component="th" id={labelId} scope="row" padding="none">
+                    {row.surname}
+                  </TableCell>
+                  <TableCell  padding="none">{row.location}</TableCell>
+                  <TableCell  padding="none">{row.origin}</TableCell>
+                </TableRow>
+              );
+            })}
 
-  var rows = parsedData.rows;
-
-  var totalRecordCount = parsedData.totalRecordCount;
-
-  return (
-    <MuiThemeProvider theme={theme}>
-      <div className={classes.root}>
-
-
-          <FTMViewTableToolbar numSelected={state.selected.length}
-            filterParams ={state.filterParams} title = 'FTMView'
-            filterFieldChanged = {state.filterFieldChanged}>
-          </FTMViewTableToolbar>
-          <TableContainer>
-            <Table
-              className={classes.table}
-              aria-labelledby="tableTitle"
-              size='small'
-              aria-label="ftmview table"
-            >
-              <GenericTableHeader
-                classes={classes}
-
-                numSelected={state.selected.length}
-                order={state.order}
-                orderBy={state.sortColumn}
-                onSelectAllClick={state.handleSelectAllClick}
-                onRequestSort={state.handleRequestSort}
-                rowCount={rows.length}
-                headCells= {headCells}
-              />
-              <TableBody>
-                {
-
-                  rows.map((row, index) => {
-                //    console.log(row.id);
-                    const isItemSelected = state.isSelected(row.id);
-                    const labelId = `ftmview-table-checkbox-${index}`;
-
-                    return (
-                      <TableRow
-                        hover
-                        onClick={(event) => state.handleClick(event, row.id)}
-                        role="checkbox"
-                        aria-checked={isItemSelected}
-                        tabIndex={-1}
-                        key={row.id}
-                        selected={isItemSelected}
-                      >
-
-                        <TableCell padding="none">{row.yearFrom}</TableCell>
-                        <TableCell padding="none">{row.yearTo}</TableCell>
-                        <TableCell padding="none">{row.firstName}</TableCell>
-                        <TableCell component="th" id={labelId} scope="row" padding="none">
-                          {row.surname}
-                        </TableCell>
-
-
-                        <TableCell  padding="none">{row.location}</TableCell>
-
-                        <TableCell  padding="none">{row.origin}</TableCell>
-                      </TableRow>
-                    );
-                  })}
-
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 25,50]}
-            component="div"
-            count={totalRecordCount}
-            rowsPerPage={state.rowsPerPage}
-            page={state.page}
-            onChangePage={state.handleChangePage}
-            onChangeRowsPerPage={state.handleChangeRowsPerPage}
-          />
-
-      </div>
-    </MuiThemeProvider>
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 }

@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 
 
-export  function useTableState(ReturnData,defaultParams) {
+export  function useTableState(ReturnData,defaultParams, schema, subSchema) {
 
   const [initialLoad, setInitialLoad] = React.useState(false);
   const [order, setOrder] = React.useState(defaultParams.sortOrder);
@@ -59,9 +59,9 @@ export  function useTableState(ReturnData,defaultParams) {
   const handleChangePage = (event, newPage) => {
 
     setPage(newPage);
-    console.log('called fetchmore');
+    console.log('called handleChangePage');
 
-    fetchMore(
+    refetch(
       {
         variables: {offset : (newPage* rowsPerPage)}
       }
@@ -69,12 +69,17 @@ export  function useTableState(ReturnData,defaultParams) {
   };
 
   const handleChangeRowsPerPage = (event) => {
+    console.log('called handleChangeRowsPerPage');
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
-    fetchMore({variables: filterParams});
+    refetch({
+        variables: filterParams
+    });
   };
 
   const filterFieldChanged = (filterObj) => {
+    console.log('called filterFieldChanged');
+
     filterObj.limit =rowsPerPage;
     filterObj.offset = (page* rowsPerPage);
     filterObj.sortColumn = sortColumn;
@@ -83,21 +88,80 @@ export  function useTableState(ReturnData,defaultParams) {
     setFilterParams(filterObj);
 
 
-    fetchMore({variables: filterObj});
+    //let tp =
+    refetch(
+      {
+        variables: filterObj
+      }
+    );
+
+    // tp.then(
+    //   function(value) {
+    //
+    //     console.log('prom val: ' + value);
+    //   },
+    //   function(error) {
+    //
+    //     console.log('prom error: ' + error);
+    //   }
+    // );
+
+
   };
+
+
+  const makeData = function(data, schema, subSchema){
+
+    let rows = [];
+
+    if(!data) return rows;
+
+    let idx =0;
+
+    while(idx < data[schema][subSchema].results.length){
+      let tp = data[schema][subSchema].results[idx];
+
+      rows.push(tp);
+
+      idx++;
+    }
+
+    let totalRecordCount =0;
+
+    if(data && data[schema])
+     totalRecordCount =  data[schema][subSchema].totalResults;
+
+    return {
+      rows,
+      totalRecordCount
+    };
+
+  }
 
   filterParams.limit =rowsPerPage;
   filterParams.offset = (page* rowsPerPage) ;
   filterParams.sortColumn = sortColumn;
   filterParams.sortOrder = order;
 
-  const  { loading, error, data, fetchMore } = useQuery(ReturnData, {
-     errorPolicy: 'all' ,
+  const  { loading, networkStatus,error, data, refetch } = useQuery(ReturnData, {
+    // errorPolicy: 'all' ,
      variables: filterParams,
-     onCompleted : (data)=>{
-       console.log('finished fetching');
-     }
+     notifyOnNetworkStatusChange: true,
+     fetchPolicy:"cache-and-network"
+     // onCompleted : (data)=>{
+     //   console.log('finished fetching');
+     // }
   });
+
+
+
+  console.log('useQuer : ' + loading +  networkStatus );
+
+  var parsedData = makeData(data,schema, subSchema);
+
+  var rows = parsedData.rows;
+
+  var totalRecordCount = parsedData.totalRecordCount;
 
   return {
   //  initialLoad,setInitialLoad,
@@ -115,6 +179,6 @@ export  function useTableState(ReturnData,defaultParams) {
     isSelected,
     filterFieldChanged,
 
-    loading, error, data
+    loading, error, data,rows,totalRecordCount
   };
 }

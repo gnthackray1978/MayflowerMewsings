@@ -1,76 +1,51 @@
 import React, { Component } from 'react';
-import FTMViewTable from './FTMViewTable.jsx'
-import { gql} from '@apollo/client';
+
+import FTMViewTable from './FTMViewTable.jsx';
+import FTMViewTableToolbar from './FTMViewTableToolbar.jsx';
+
+import TableWrapper from '../../TableWrapper.jsx'
+import {gql} from '@apollo/client';
+
+import {useTableState} from '../../useTable';
 
 function FTMView() {
 
-
-	// 				new QueryArgument<StringGraphType> { Name = "location" },
-
-
-  const GET_FTMView = gql`
-  query Dna(
-     $limit: Int!,
-     $offset : Int!,
-     $sortColumn: String!,
-     $sortOrder : String!,
-     $surname : String!,
-     $yearStart : Int!,
-     $yearEnd : Int!,
-     $location : String!
-   ){
-    dna{
-      ftmviewsearch(limit : $limit,
-                 offset : $offset,
-                 sortColumn: $sortColumn,
-                 sortOrder : $sortOrder,
-                 surname : $surname,
-                 yearStart : $yearStart,
-                 yearEnd : $yearEnd,
-                 location : $location
-           ) {
-       page
-       totalResults
-       results {
-           id
-           firstName
-           surname
-           location
-           yearFrom
-           yearTo
-           origin
+    const GET_FTMView = gql`
+    query Dna(
+       $limit: Int!,
+       $offset : Int!,
+       $sortColumn: String!,
+       $sortOrder : String!,
+       $surname : String!,
+       $yearStart : Int!,
+       $yearEnd : Int!,
+       $location : String!
+     ){
+      dna{
+        ftmviewsearch(limit : $limit,
+                   offset : $offset,
+                   sortColumn: $sortColumn,
+                   sortOrder : $sortOrder,
+                   surname : $surname,
+                   yearStart : $yearStart,
+                   yearEnd : $yearEnd,
+                   location : $location
+             ) {
+         page
+         totalResults
+         results {
+             id
+             firstName
+             surname
+             location
+             yearFrom
+             yearTo
+             origin
+         }
        }
-     }
-    }
-  }
-  `;
-    const makeData = function(data){
-
-      let rows = [];
-
-      if(!data) return rows;
-
-      let idx =0;
-
-      while(idx < data.dna.ftmviewsearch.results.length){
-        let tp = data.dna.ftmviewsearch.results[idx];
-
-        rows.push(tp);
-
-        idx++;
       }
-
-      let totalRecordCount =0;
-
-      if(data && data.dna)
-       totalRecordCount =  data.dna.ftmviewsearch.totalResults;
-
-      return {
-        rows,
-        totalRecordCount
-      };
-
     }
+    `;
 
     const headCells = [
 
@@ -82,9 +57,26 @@ function FTMView() {
       { id: 'Origin', numeric: false, disablePadding: true, label: 'Origin' }
     ];
 
+    var state = useTableState(GET_FTMView,{
+      sortColumn : 'surname',
+      sortOrder : 'asc',
+      limit : 0,
+      offset :0,
+      yearStart : 1500,
+      yearEnd : 2000,
+      location : '',
+      surname : ''
+    },'dna','ftmviewsearch');
+
+    state.headCells = headCells;
+    state.title = 'FTM View';
+
     return (
         <div>
-          <FTMViewTable ReturnData = {GET_FTMView} makeData = {makeData} headCells ={headCells}></FTMViewTable>
+          <TableWrapper state = {state} >
+            <FTMViewTableToolbar state ={state}/>
+            <FTMViewTable state ={state}/>
+          </TableWrapper>
         </div>
     );
 
