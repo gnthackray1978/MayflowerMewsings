@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import WillTable from './WillTable.jsx'
 import { gql} from '@apollo/client';
+import WillTableToolbar from './WillTableToolbar.jsx'
+import TableWrapper from '../TableWrapper.jsx'
+
+import {useTableState} from '../useTable';
 
 function NorfolkWills() {
 
@@ -50,51 +54,40 @@ function NorfolkWills() {
   }
   `;
 
-    const makeData = function(data){
+  const headCells = [
+    { id: 'Year', numeric: false, disablePadding: true, label: 'Year' },
+    { id: 'Reference', numeric: false, disablePadding: true, label: 'Reference' },
+    { id: 'Description', numeric: false, disablePadding: true, label: 'Description' },
+    { id: 'Place', numeric: false, disablePadding: true, label: 'Place' },
+    { id: 'FirstName', numeric: false, disablePadding: true, label: 'FirstName' },
+    { id: 'Surname', numeric: false, disablePadding: true, label: 'Surname' },
+    { id: 'Typ', numeric: false, disablePadding: true, label: 'Type' }
+  ];
 
-      let rows = [];
+  var state = useTableState(GET_WILLS,{
+        sortColumn : 'surname',
+        sortOrder : 'asc',
+        limit : 0,
+        offset :0,
+        yearStart : 1700,
+        yearEnd : 2000,
+        ref : '',
+        desc : '',
+        place : '',
+        surname : ''
+  },'will','norfolksearch');
 
-      if(!data) return rows;
+  state.headCells = headCells;
+  state.title = 'Norfolk will search';
 
-      let idx =0;
-
-      while(idx < data.will.norfolksearch.results.length){
-        let tp = data.will.norfolksearch.results[idx];
-
-        rows.push(tp);
-
-        idx++;
-      }
-
-      let totalRecordCount =0;
-
-      if(data && data.will)
-       totalRecordCount =  data.will.norfolksearch.totalResults;
-
-      return {
-        rows,
-        totalRecordCount
-      };
-
-    }
-
-    const headCells = [
-    //  { id: 'Id', numeric: true, disablePadding: true, label: 'ID' },
-      { id: 'Year', numeric: false, disablePadding: true, label: 'Year' },
-      { id: 'Reference', numeric: false, disablePadding: true, label: 'Reference' },
-      { id: 'Description', numeric: false, disablePadding: true, label: 'Description' },
-      { id: 'Place', numeric: false, disablePadding: true, label: 'Place' },
-      { id: 'FirstName', numeric: false, disablePadding: true, label: 'FirstName' },
-      { id: 'Surname', numeric: false, disablePadding: true, label: 'Surname' },
-      { id: 'Typ', numeric: false, disablePadding: true, label: 'Type' },
-    ];
-
-
-    return (
-        <div>
-          <WillTable GET_WILLS = {GET_WILLS}  makeData = {makeData} headCells ={headCells}></WillTable>
-        </div>
-    );
+  return (
+      <div>
+        <TableWrapper state = {state} >
+          <WillTableToolbar state ={state}/>
+          <WillTable state ={state}/>
+        </TableWrapper>
+      </div>
+  );
 
 }
 

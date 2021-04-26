@@ -37,7 +37,7 @@ const PersonTableToolbar = (props) => {
 
 
   const classes = useToolbarStyles();
-  const { numSelected, title, filterFieldChanged, filterParams } = props;
+  const { numSelected, title, filterFieldChanged, filterParams } = props.state;
 
   const [yearStart, setyearStart] = React.useState(filterParams.yearStart);
   const [yearEnd, setyearEnd] = React.useState(filterParams.yearEnd);

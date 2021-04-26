@@ -36,7 +36,7 @@ const SourceTableToolbar = (props) => {
 //  console.log('rendered: DupeTableToolbar' );
 
   const classes = useToolbarStyles();
-  const { numSelected, title, filterFieldChanged, filterParams } = props;
+  const { numSelected, title, filterFieldChanged, filterParams } = props.state;
 
   const [location, setLocation] = React.useState(filterParams.yearStart);
   const [sourceRef, setSourceRef] = React.useState(filterParams.yearEnd);

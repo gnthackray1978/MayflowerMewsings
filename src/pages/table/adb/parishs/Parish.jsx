@@ -2,6 +2,14 @@ import React, { Component } from 'react';
 import ParishTable from './ParishTable.jsx'
 import { gql} from '@apollo/client';
 
+
+import ParishTableToolbar from './ParishTableToolbar.jsx'
+import TableWrapper from '../../TableWrapper.jsx'
+import {useTableState} from '../../useTable';
+
+
+
+
 function Parishs() {
 
 
@@ -41,37 +49,7 @@ function Parishs() {
     }
   }
   `;
-    const makeData = function(data){
-
-      let rows = [];
-      let totalRecordCount =0;
-
-      if(!data) return {
-          rows,
-          totalRecordCount
-        };
-
-      let idx =0;
-
-      while(idx < data.adb.parishsearch.results.length){
-        let tp = data.adb.parishsearch.results[idx];
-
-        rows.push(tp);
-
-        idx++;
-      }
-
-
-
-      if(data && data.adb)
-       totalRecordCount =  data.adb.parishsearch.totalResults;
-
-      return {
-        rows,
-        totalRecordCount
-      };
-
-    }
+  
     const headCells = [
       { id: 'parishName', numeric: false, disablePadding: true, label: 'Name' },
       { id: 'parishRegistersDeposited', numeric: false, disablePadding: true, label: 'Deposited' },
@@ -84,11 +62,25 @@ function Parishs() {
       { id: 'parishY', numeric: false, disablePadding: true, label: 'Lat' }
     ];
 
+    var state = useTableState(GET_Parishs,{
+      sortColumn : 'parishName',
+      sortOrder : 'asc',
+      limit : 25,
+      offset :0,
+      parishName : '',
+      county : ''
+    },'adb','parishsearch');
+
+    state.headCells = headCells;
+    state.title = 'Parish Search';
 
     return (
-        <div>
-          <ParishTable ReturnData = {GET_Parishs} makeData = {makeData} headCells = {headCells}></ParishTable>
-        </div>
+      <div>
+        <TableWrapper state = {state} >
+          <ParishTableToolbar state ={state}/>
+          <ParishTable state ={state}/>
+        </TableWrapper>
+      </div>
     );
 
 }

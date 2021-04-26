@@ -2,6 +2,11 @@ import React, { Component } from 'react';
 import MarriageTable from './MarriageTable.jsx'
 import { gql} from '@apollo/client';
 
+import MarriageTableToolbar from './MarriageTableToolbar.jsx'
+import TableWrapper from '../../TableWrapper.jsx'
+import {useTableState} from '../../useTable';
+
+
 function Marriages() {
 
 
@@ -51,37 +56,6 @@ function Marriages() {
     }
   }
   `;
-    const makeData = function(data){
-
-      let rows = [];
-      let totalRecordCount =0;
-
-      if(!data) return {
-          rows,
-          totalRecordCount
-        };
-
-      let idx =0;
-
-      while(idx < data.adb.marriagesearch.results.length){
-        let tp = data.adb.marriagesearch.results[idx];
-
-        rows.push(tp);
-
-        idx++;
-      }
-
-
-
-      if(data && data.adb)
-       totalRecordCount =  data.adb.marriagesearch.totalResults;
-
-      return {
-        rows,
-        totalRecordCount
-      };
-
-    }
 
     const headCells = [
       { id: 'maleCname', numeric: false, disablePadding: true, label: 'Groom Name' },
@@ -99,9 +73,33 @@ function Marriages() {
       { id: 'totalEvents', numeric: false, disablePadding: true, label: 'Dupes' }
     ];
 
+    var state = useTableState(GET_MARRIAGES,{
+      sortColumn : 'maleCname',
+      sortOrder : 'asc',
+      limit : 0,
+      offset :0,
+      surname : '',
+      yearStart : 1500,
+      yearEnd: 1800,
+      maleSurname : '',
+      femaleSurname: '',
+      location :''
+    },'adb','marriagesearch');
+
+    state.headCells = headCells;
+    state.title = 'Marriage Search';
+
+
     return (
+        // <div>
+        //   <MarriageTable ReturnData = {GET_MARRIAGES} makeData = {makeData} headCells= {headCells}></MarriageTable>
+        // </div>
+
         <div>
-          <MarriageTable ReturnData = {GET_MARRIAGES} makeData = {makeData} headCells= {headCells}></MarriageTable>
+          <TableWrapper state = {state} >
+            <MarriageTableToolbar state ={state}/>
+            <MarriageTable state ={state}/>
+          </TableWrapper>
         </div>
     );
 

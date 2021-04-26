@@ -36,7 +36,7 @@ const WillTableToolbar = (props) => {
 //  console.log('rendered: WillTableToolbar' );
 
   const classes = useToolbarStyles();
-  const { numSelected, title, filterFieldChanged, filterParams } = props;
+  const { numSelected, title, filterFieldChanged, filterParams } = props.state;
 
 
   const [yearStart, setYearStart] = React.useState(filterParams.yearStart);

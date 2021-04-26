@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import PersonTable from './PersonTable.jsx'
 import { gql} from '@apollo/client';
 
+import PersonTableToolbar from './PersonTableToolbar.jsx'
+import TableWrapper from '../../TableWrapper.jsx'
+import {useTableState} from '../../useTable';
+
 function Persons() {
 
 
@@ -61,37 +65,7 @@ function Persons() {
     }
   }
   `;
-    const makeData = function(data){
 
-      let rows = [];
-      let totalRecordCount =0;
-
-      if(!data) return {
-          rows,
-          totalRecordCount
-        };
-
-      let idx =0;
-
-      while(idx < data.adb.personsearch.results.length){
-        let tp = data.adb.personsearch.results[idx];
-
-        rows.push(tp);
-
-        idx++;
-      }
-
-
-
-      if(data && data.adb)
-       totalRecordCount =  data.adb.personsearch.totalResults;
-
-      return {
-        rows,
-        totalRecordCount
-      };
-
-    }
     const headCells = [
           { id: 'estBirthYearInt', numeric: false, disablePadding: true, label: 'Birth Year' },
           { id: 'deathInt', numeric: false, disablePadding: true, label: 'Death Year' },
@@ -114,10 +88,31 @@ function Persons() {
       { id: 'totalEvents', numeric: false, disablePadding: true, label: 'Events' }
     ];
 
+    var state = useTableState(GET_PersonS,{
+      sortColumn : 'birthint',
+      sortOrder : 'asc',
+      limit : 0,
+      offset :25,
+      yearStart : 1500,
+      yearEnd: 1800,
+      firstName : '',
+      surname : '',
+      birthLocation : '',
+      fatherChristianName :'',
+      fatherSurname : '',
+      motherChristianName : ''
+    },'adb','personsearch');
+
+    state.headCells = headCells;
+    state.title = 'Person Search';
+
     return (
-        <div>
-          <PersonTable ReturnData = {GET_PersonS} makeData = {makeData} headCells ={headCells}></PersonTable>
-        </div>
+      <div>
+        <TableWrapper state = {state} >
+          <PersonTableToolbar state ={state}/>
+          <PersonTable state ={state}/>
+        </TableWrapper>
+      </div>
     );
 
 }

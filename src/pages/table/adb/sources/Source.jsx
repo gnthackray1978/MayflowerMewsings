@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import SourceTable from './SourceTable.jsx'
 import { gql} from '@apollo/client';
 
+import SourceTableToolbar from './SourceTableToolbar.jsx'
+import TableWrapper from '../../TableWrapper.jsx'
+import {useTableState} from '../../useTable';
+
 function Sources() {
 
 
@@ -46,37 +50,8 @@ function Sources() {
     }
   }
   `;
-    const makeData = function(data){
-
-      let rows = [];
-      let totalRecordCount =0;
-
-      if(!data) return {
-          rows,
-          totalRecordCount
-        };
-
-      let idx =0;
-
-      while(idx < data.adb.sourcesearch.results.length){
-        let tp = data.adb.sourcesearch.results[idx];
-
-        rows.push(tp);
-
-        idx++;
-      }
 
 
-
-      if(data && data.adb)
-       totalRecordCount =  data.adb.sourcesearch.totalResults;
-
-      return {
-        rows,
-        totalRecordCount
-      };
-
-    }
     const headCells = [
       { id: 'sourceRef', numeric: false, disablePadding: true, label: 'Ref' },
       { id: 'sourceDate', numeric: false, disablePadding: true, label: 'Year From' },
@@ -88,11 +63,27 @@ function Sources() {
 
     ];
 
+    var state = useTableState(GET_SOURCES,{
+      sortColumn : 'sourceRef',
+      sortOrder : 'asc',
+      limit : 0,
+      offset :25,
+      yearStart : 1500,
+      yearEnd: 1800,
+      location :'',
+      sourceRef : ''
+    },'adb','sourcesearch');
+
+    state.headCells = headCells;
+    state.title = 'Source Search';
 
     return (
-        <div>
-          <SourceTable ReturnData = {GET_SOURCES} makeData = {makeData} headCells= {headCells}></SourceTable>
-        </div>
+      <div>
+        <TableWrapper state = {state} >
+          <SourceTableToolbar state ={state}/>
+          <SourceTable state ={state}/>
+        </TableWrapper>
+      </div>
     );
 
 }

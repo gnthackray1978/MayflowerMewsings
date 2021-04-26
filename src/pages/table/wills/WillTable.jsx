@@ -22,87 +22,34 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 
 import { withStyles } from '@material-ui/core/styles';
-import { ApolloClient, InMemoryCache, ApolloProvider, gql, useQuery ,useLazyQuery} from '@apollo/client';
 
-import WillTableToolbar from './WillTableToolbar.jsx';
 import { connect } from "react-redux";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
-import {useTableState} from '../useTable';
+ 
 import {theme,useStyles} from '../styleFuncs.jsx';
-import GenericTableHeader  from '../genericTableHeader.jsx';
+import TableHeaderFromState  from '../TableHeaderFromState.jsx';
 
 export default function WillTable(props) {
 
 
-  const {GET_WILLS, makeData, headCells} = props;
+  const {state} = props;
 
   const classes = useStyles();
 
-  var state = useTableState(GET_WILLS,{
-    sortColumn : 'surname',
-    sortOrder : 'asc',
-    limit : 0,
-    offset :0,
-    yearStart : 1700,
-    yearEnd : 2000,
-    ref : '',
-    desc : '',
-    place : '',
-    surname : ''
-  });
-
-  if (state.loading) return <span>loading...</span>
-
-  if(state.error && state.error.graphQLErrors && state.error.graphQLErrors.length >0){
-    return (
-      <div>
-        <pre>Bad: {state.error.graphQLErrors.map(({ message }, i) => (
-          <span key={i}>{message}</span>
-        ))}
-        </pre>
-      </div>
-    );
-  }
-
-  var parsedData = makeData(state.data);
-
-
-
-  var rows = parsedData.rows;
-
-  var totalRecordCount = parsedData.totalRecordCount;
-
   return (
-    <MuiThemeProvider theme={theme}>
-      <div className={classes.root}>
-
-
-          <WillTableToolbar numSelected={state.selected.length}
-            filterParams ={state.filterParams} title = 'Wills'
-            filterFieldChanged = {state.filterFieldChanged}>
-          </WillTableToolbar>
-          <TableContainer>
+    <TableContainer>
             <Table
               className={classes.table}
               aria-labelledby="tableTitle"
               size='small'
               aria-label="will table"
             >
-              <GenericTableHeader
-                classes={classes}
+              <TableHeaderFromState state= {state}/>
 
-                numSelected={state.selected.length}
-                order={state.order}
-                orderBy={state.orderBy}
-                onSelectAllClick={state.handleSelectAllClick}
-                onRequestSort={state.handleRequestSort}
-                rowCount={rows.length}
-                headCells={headCells}
-              />
               <TableBody>
                 {
 
-                  rows.map((row, index) => {
+                  state.rows.map((row, index) => {
                     console.log(row.reference);
                     const isItemSelected = state.isSelected(row.reference);
                     const labelId = `will-table-checkbox-${index}`;
@@ -136,18 +83,6 @@ export default function WillTable(props) {
 
               </TableBody>
             </Table>
-          </TableContainer>
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 25,50]}
-            component="div"
-            count={totalRecordCount}
-            rowsPerPage={state.rowsPerPage}
-            page={state.page}
-            onChangePage={state.handleChangePage}
-            onChangeRowsPerPage={state.handleChangeRowsPerPage}
-          />
-
-      </div>
-    </MuiThemeProvider>
+    </TableContainer>
   );
 }

@@ -22,51 +22,21 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 
 import { withStyles } from '@material-ui/core/styles';
-import { ApolloClient, InMemoryCache, ApolloProvider, gql, useQuery ,useLazyQuery} from '@apollo/client';
 
-import MarriageTableToolbar from './MarriageTableToolbar.jsx';
 import { connect } from "react-redux";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import {useTableState} from '../../useTable.jsx';
 import {theme,useStyles} from '../../styleFuncs.jsx';
-import GenericTableHeader  from '../../genericTableHeader.jsx';
+import TableHeaderFromState  from '../../TableHeaderFromState.jsx';
+
 
 export default function MarriageTable(props) {
 
-
-  const {ReturnData, makeData, headCells} = props;
+  const {state} = props;
 
   const classes = useStyles();
 
-  var state = useTableState(ReturnData,{
-          sortColumn : 'maleCname',
-          sortOrder : 'asc',
-          limit : 0,
-          offset :0,
-          surname : '',
-          yearStart : 1500,
-          yearEnd: 1800,
-          maleSurname : '',
-          femaleSurname: '',
-          location :''
-
-  });
-
-
-  var parsedData = makeData(state.data);
-
-  var rows = parsedData.rows;
-
-  var totalRecordCount = parsedData.totalRecordCount;
-
   return (
-    <MuiThemeProvider theme={theme}>
-      <div className={classes.root}>
-
-
-          <MarriageTableToolbar numSelected={state.selected.length} filterParams ={state.filterParams} title = 'Marriages'
-            filterFieldChanged = {state.filterFieldChanged}>
-          </MarriageTableToolbar>
           <TableContainer>
             <Table
               className={classes.table}
@@ -74,21 +44,12 @@ export default function MarriageTable(props) {
               size='small'
               aria-label="marriage table"
             >
-              <GenericTableHeader
-                classes={classes}
+              <TableHeaderFromState state= {state}/>
 
-                numSelected={state.selected.length}
-                order={state.order}
-                orderBy={state.sortColumn}
-                onSelectAllClick={state.handleSelectAllClick}
-                onRequestSort={state.handleRequestSort}
-                rowCount={rows.length}
-                headCells = {headCells}
-              />
               <TableBody>
                 {
 
-                  rows.map((row, index) => {
+                  state.rows.map((row, index) => {
                     //console.log(row.reference);
                     const isItemSelected = state.isSelected(row.id);
                     const labelId = `marriage-table-checkbox-${index}`;
@@ -126,17 +87,6 @@ export default function MarriageTable(props) {
               </TableBody>
             </Table>
           </TableContainer>
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 25,50]}
-            component="div"
-            count={totalRecordCount}
-            rowsPerPage={state.rowsPerPage}
-            page={state.page}
-            onChangePage={state.handleChangePage}
-            onChangeRowsPerPage={state.handleChangeRowsPerPage}
-          />
 
-      </div>
-    </MuiThemeProvider>
   );
 }

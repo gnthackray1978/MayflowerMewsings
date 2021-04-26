@@ -36,7 +36,7 @@ const ParishTableToolbar = (props) => {
 
 
   const classes = useToolbarStyles();
-  const { numSelected, title, filterFieldChanged, filterParams } = props;
+  const { numSelected, title, filterFieldChanged, filterParams } = props.state;
 
   const [county, setcounty] = React.useState(filterParams.county);
   const [parishName, setparishName] = React.useState(filterParams.parishName);
