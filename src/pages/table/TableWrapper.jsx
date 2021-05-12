@@ -39,11 +39,7 @@ export default function TableWrapper(props) {
 
   const classes = useStyles();
 
-  if (state.loading) {
-    return (<span>loading...</span>);
-  }
-
-  if(state.error && state.error.graphQLErrors && state.error.graphQLErrors.length >0){
+  if(!state.loading && state.error && state.error.graphQLErrors && state.error.graphQLErrors.length >0){
     return (
       <div>
         <pre>Bad: {state.error.graphQLErrors.map(({ message }, i) => (
@@ -54,17 +50,37 @@ export default function TableWrapper(props) {
     );
   }
 
+  let tp = (loading) => {
+
+    var child;
+
+    if(children.length > 1){
+      child = children[1];
+    }
+    else{
+      child = children;
+    }
+
+    if(loading){
+      return (<h5><span style={{color: "blue", padding: "20px"} } >loading...</span></h5>);
+    }
+    else{
+      return(<div>
+        {child}
+      </div>);
+    }
+
+  };
 
   return (
     <MuiThemeProvider theme={theme}>
       <div className={classes.root}>
+          {children.length > 1 && children[0]}
 
-
-
-
-           {children}
+          {tp(state.loading)}
 
           <TablePagination
+            labelRowsPerPage={'Page Rows'}
             rowsPerPageOptions={[5, 10, 25,50]}
             component="div"
             count={state.totalRecordCount}
