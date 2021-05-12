@@ -1,5 +1,6 @@
 import { APPLICATIONLISTLOADED, APPLICATIONSELECTED, FUNCTIONLISTLOADED,METADATALOADED,
-  FUNCTIONSELECTED,APPDIALOGOPEN,APPDIALOGCLOSED,FUNCDIALOGOPEN,FUNCDIALOGCLOSED} from './actionTypes.jsx';
+  FUNCTIONSELECTED,APPDIALOGOPEN,APPDIALOGCLOSED,FUNCDIALOGOPEN,FUNCDIALOGCLOSED,
+   TREESELECTED ,TREEPERSONSELECTED,DIAGRAMSELECTED} from './actionTypes.jsx';
 
 export default (state = {
   appName :1,
@@ -19,12 +20,34 @@ export default (state = {
   loadedFuncList :false,
   showAppListDialog :false,
   showFuncListDialog :false,
-
+  selectedTreeData : undefined,
+  selectedTreePersonData : undefined,
+  diagramId : 0,
   error: undefined
 }, action) => {
 
 
   switch (action.type) {
+
+    case TREEPERSONSELECTED:
+        //console.log('APPLICATIONSELECTED');
+        return {
+          ...state,
+           selectedTreePersonData : action.payload
+        };
+    case TREESELECTED:
+        //console.log('APPLICATIONSELECTED');
+        return {
+          ...state,
+           selectedTreeData : action.payload
+        };
+    case DIAGRAMSELECTED:
+        //console.log('APPLICATIONSELECTED');
+        return {
+          ...state,
+           diagramId : action.payload
+        };
+
 
     case METADATALOADED:
         //console.log('APPLICATIONLISTLOADED');

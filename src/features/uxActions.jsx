@@ -1,6 +1,37 @@
-
 import { METADATALOADED, APPLICATIONSELECTED,
-  FUNCTIONSELECTED, APPDIALOGOPEN ,APPDIALOGCLOSED,FUNCDIALOGOPEN,FUNCDIALOGCLOSED} from './actionTypes.jsx';
+  FUNCTIONSELECTED, APPDIALOGOPEN ,APPDIALOGCLOSED,FUNCDIALOGOPEN,
+  FUNCDIALOGCLOSED, TREESELECTED ,TREEPERSONSELECTED,DIAGRAMSELECTED} from './actionTypes.jsx';
+
+  export const setTreePerson = (state) =>{
+    //console.log('applicationSelected action');
+    return async (dispatch, getState)  => {
+         dispatch({
+           type: TREEPERSONSELECTED,
+           payload : state
+         });
+      }
+  };
+
+  export const setTree = (state) =>{
+    //console.log('applicationSelected action');
+    return async (dispatch, getState)  => {
+         dispatch({
+           type: TREESELECTED,
+           payload : state
+         });
+      }
+  };
+
+  export const setDiagram = (state) =>{
+    //console.log('applicationSelected action');
+    return async (dispatch, getState)  => {
+         dispatch({
+           type: DIAGRAMSELECTED,
+           payload : state
+         });
+      }
+  };
+
 
 export const funcSelected = (state) =>{
   //console.log('applicationSelected action');
