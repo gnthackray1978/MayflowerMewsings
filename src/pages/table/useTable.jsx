@@ -61,9 +61,13 @@ export  function useTableState(ReturnData,defaultParams, schema, subSchema) {
     setPage(newPage);
     console.log('called handleChangePage');
 
+  //  var tp = {};
+
+    var tp = (newPage * rowsPerPage);
+
     refetch(
       {
-        variables: {offset : (newPage* rowsPerPage)}
+        offset: tp
       }
     );
   };

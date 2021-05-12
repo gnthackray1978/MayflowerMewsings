@@ -91,10 +91,7 @@ function Marriages() {
 
 
     return (
-        // <div>
-        //   <MarriageTable ReturnData = {GET_MARRIAGES} makeData = {makeData} headCells= {headCells}></MarriageTable>
-        // </div>
-
+    
         <div>
           <TableWrapper state = {state} >
             <MarriageTableToolbar state ={state}/>
