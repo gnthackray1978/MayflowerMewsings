@@ -19,7 +19,8 @@ function FTMView() {
        $surname : String!,
        $yearStart : Int!,
        $yearEnd : Int!,
-       $location : String!
+       $location : String!,
+       $origin : String!
      ){
       dna{
         ftmviewsearch(limit : $limit,
@@ -29,7 +30,8 @@ function FTMView() {
                    surname : $surname,
                    yearStart : $yearStart,
                    yearEnd : $yearEnd,
-                   location : $location
+                   location : $location,
+                   origin : $origin
              ) {
          page
          totalResults
@@ -65,7 +67,8 @@ function FTMView() {
       yearStart : 1500,
       yearEnd : 2000,
       location : '',
-      surname : ''
+      surname : '',
+      origin : ''
     },'dna','ftmviewsearch');
 
     state.headCells = headCells;
