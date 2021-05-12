@@ -13,6 +13,8 @@ function Diagrams(props) {
     return (
         <div>
           Diagrams
+          <iframe src="http://localhost:39410/" ></iframe>
+
         </div>
     );
 
