@@ -12,7 +12,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { ApolloClient, InMemoryCache, ApolloProvider, gql, useQuery } from '@apollo/client';
 
-import SelectionToolBar from "./SelectionToolBar.jsx";
+
 import {funcSelected, funcDialogOpen , funcDialogClose} from "../uxActions.jsx";
 import {useAuthProvider} from "../../shared/IDSConnect/AuthProvider.jsx";
 import {
@@ -98,10 +98,12 @@ function GetFunctionList(appName, functions, funcSelected, closeFuncListDialog,h
 }
 
 function ApplicationList(props) {
-console.log('ApplicationList loaded ');
+
   const { classes, closeDrawer, funcListLoad, funcSelected,
     ShowFuncListDialog, funcDialogOpen, funcDialogClose, funcList, appName} = props;
 
+
+  
 
   let history = useHistory();
 
@@ -112,10 +114,7 @@ console.log('ApplicationList loaded ');
          <AppBar position="static">
            <Toolbar>
                <IconButton className={classes.menuButton} color="inherit" aria-label="Menu" onClick={()=>{
-                  //if(ShowFuncListDialog)
                     funcDialogClose(); //hopefully this is open when it's being cliucked on
-                  // else
-                  //   funcDialogOpen();
                  }} >
                  <MenuIcon/>
                </IconButton>
@@ -128,7 +127,8 @@ console.log('ApplicationList loaded ');
 
            </Toolbar>
          </AppBar>
-           {items}
+
+         {items}
 
       </div>
   );

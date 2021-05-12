@@ -10,6 +10,7 @@ import List from '@material-ui/core/List';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import ApplicationList from "../ApplicationList/ApplicationList.jsx";
+import TreeSelector from "../TreeSelector/TreeSelector.jsx";
 import { connect } from "react-redux";
 
 const styles = theme => ({
@@ -57,13 +58,26 @@ class SideDrawer extends Component {
       super(props);
    }
 
+
+
    render() {
-    const { classes ,ShowFuncListDialog} = this.props;
-// functions = {functions}
+    const { classes ,ShowFuncListDialog, appName} = this.props;
+
+    var getContent = () =>{
+      if(appName != 2)
+        return <ApplicationList/>
+      else
+        return <TreeSelector/>
+    };
+
+    var content = getContent();
+
+    console.log('SideDrawer loaded: ' + appName);
+
     return (
       <div>
         <Drawer open = {ShowFuncListDialog} >
-            <ApplicationList/>
+            { content }
         </Drawer>
       </div>
     );
@@ -78,6 +92,7 @@ SideDrawer.propTypes = {
 
 const mapStateToProps = state => {
   return {
+    appName : state.ux.appName,
     ShowFuncListDialog: state.ux.showFuncListDialog
   };
 };
