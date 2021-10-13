@@ -5,7 +5,7 @@ import TreePeopleTableToolbar from './TreePeopleTableToolbar.jsx';
 import { connect } from "react-redux";
 import TableWrapper from '../../../../pages/table/TableWrapper.jsx'
 import {useTableState} from '../../../../pages/table//useTable';
-import {setTree} from "../../../uxActions.jsx";
+
 import {gql} from '@apollo/client';
 
 function TreePeople(props) {
@@ -14,8 +14,8 @@ function TreePeople(props) {
 
     let origin ='';
 
-    if(selectedTreeData && selectedTreeData.name)
-      origin  = selectedTreeData.name;
+    if(selectedTreeData)
+      origin  = selectedTreeData;
 
     const GET_FTMView = gql`
     query Dna(
@@ -95,9 +95,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return {
-    setTree: (treeId) => dispatch(setTree(treeId)),
-  };
+  return { };
 };
 
 
