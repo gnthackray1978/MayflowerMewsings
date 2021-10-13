@@ -1,5 +1,5 @@
 
-import React, { Component } from 'react';
+import React, { Component,useEffect } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { lighten, makeStyles } from '@material-ui/core/styles';
@@ -37,14 +37,20 @@ const AvailableTreesToolbar = (props) => {
 //  console.log('rendered: TrsTableToolbar' );
 
   const classes = useToolbarStyles();
-  const { numSelected, title, filterFieldChanged, filterParams } = props.state;
+  const { numSelected, title, filterFieldChanged, filterParams , setSelected} = props.state;
 
   const [origin, setorigin] = React.useState(filterParams.origin);
-
+  const [groupNumber, setGroupNumber] = React.useState(filterParams.groupNumber);
 
   const boxClick = ()=>{
+   
+   
+    setSelected([]);
+   
+
     filterFieldChanged({
-      origin : origin
+      origin : origin,
+      groupNumber : Number(groupNumber)
     });
   };
 
@@ -58,8 +64,19 @@ const AvailableTreesToolbar = (props) => {
                      value={origin}
                      variant="standard"  size="small"
                      onChange = {(e)=>{
-                       setorigin(e.currentTarget.value);
+                       if(e.currentTarget.value!=origin)
+                        setorigin(e.currentTarget.value);
                      }}/>
+
+        <TextField className={classes.filter} id="groupNumber" label="GroupNumber"
+                     value={groupNumber}
+                     variant="standard"  size="small"
+                     onChange = {(e)=>{
+                       
+                      if(groupNumber!=e.currentTarget.value)
+                        setGroupNumber(e.currentTarget.value);
+                     }}/>
+
 
         <TableBox boxClick ={boxClick}/>
     </Toolbar>
