@@ -47,13 +47,15 @@ const FTMViewTableToolbar = (props) => {
   const [yearStart, setyearStart] = React.useState(String(filterParams.yearStart));
   const [yearEnd, setyearEnd] = React.useState(String(filterParams.yearEnd));
   const [location, setLocation] = React.useState(filterParams.location);
+  const [origin, setOrigin] = React.useState(filterParams.origin);
 
   const boxClick = ()=>{
     filterFieldChanged({
       yearStart : Number(yearStart),
       yearEnd : Number(yearEnd),
       location : location,
-      surname : surname
+      surname : surname,
+      origin: origin
     });
   };
 
@@ -84,6 +86,12 @@ const FTMViewTableToolbar = (props) => {
         onChange = {(e)=>{
           setLocation(e.currentTarget.value);
         }}/>
+      <TextField className={classes.filter} id="origin" label="Origin"
+          value={origin}
+          variant="standard"  size="small"
+          onChange = {(e)=>{
+            setOrigin(e.currentTarget.value);
+          }}/>
       <TextField className={classes.filter} id="surname" label="Surname"
         value={surname}
         variant="standard"  size="small"
@@ -98,7 +106,7 @@ const FTMViewTableToolbar = (props) => {
 };
 
 FTMViewTableToolbar.propTypes = {
-  state: PropTypes.object.isRequired 
+  state: PropTypes.object.isRequired
 };
 
 export default FTMViewTableToolbar;
