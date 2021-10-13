@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import  React, { useState, useEffect }  from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -30,7 +30,7 @@ const styles = theme => ({
   },
 
   root: {
-    paddingRight: theme.spacing.unit,
+    paddingRight: theme.spacing(1),
     minHeight : window.innerHeight -10
   },
 
@@ -79,7 +79,7 @@ function TabPanel(props) {
     >
       {value === index && (
 
-          <Typography>{children}</Typography>
+          <div>{children}</div>
 
       )}
     </div>
@@ -94,10 +94,17 @@ function a11yProps(index) {
 }
 
 function TreeSelector(props) {
-console.log('TreeSelector loaded ');
-  const { classes, closeDrawer, funcListLoad, funcSelected,
-    ShowFuncListDialog, funcDialogOpen, funcDialogClose, funcList, appName,
-    selectedTreeData, selectedTreePersonData} = props;
+    //
+    const { classes, closeDrawer, funcListLoad, funcSelected,
+            ShowFuncListDialog, funcDialogOpen, funcDialogClose,
+             funcList, appName,selectedTreeData, selectedTreePersonData} = props;
+            
+           // 
+    
+
+ //   console.log('TreeSelector loaded ' + selectedTreeData);
+    
+    useEffect(() => console.log('TreeSelector loaded ' ), []);
 
     const [value, setValue] = React.useState(0);
 
@@ -105,74 +112,78 @@ console.log('TreeSelector loaded ');
       setValue(newValue);
     };
 
-  let treeName ='Select Tree';
-  let personName = 'Select Person';
-  let treeId =0;
-  let personId =0;
+    let treeName ='Select_Tree';
+    let personName = 'Select Person';
+    
+    let personId =0;
 
-  if(selectedTreeData && selectedTreeData.name){
-    treeName  = selectedTreeData.name;
-    treeId = selectedTreeData.id;
-  }
+    if(selectedTreeData  ){
+      let count = selectedTreeData.split(' ');
+      if(count.length > 0)
+        treeName = String(count.length) + ' trees selected';
+      else
+        treeName  = selectedTreeData; 
+    }
 
-  if(selectedTreePersonData && selectedTreePersonData.firstName && selectedTreePersonData.surname)
-  {
-    personName  = selectedTreePersonData.firstName + ' ' + selectedTreePersonData.surname;
-    personId = selectedTreePersonData.id;
-  }
+    if(selectedTreePersonData && selectedTreePersonData.firstName && selectedTreePersonData.surname)
+    {
+      personName  = selectedTreePersonData.firstName + ' ' + selectedTreePersonData.surname;
+      personId = selectedTreePersonData.id;
+    }
 
-
-  return (
-      <div className = "inner">
-         <AppBar position="static">
-           <Toolbar>
-               <IconButton className={classes.menuButton} color="inherit" aria-label="Menu" onClick={()=>{
-                    funcDialogClose(); //hopefully this is open when it's being cliucked on
-                 }} >
-                 <MenuIcon/>
-               </IconButton>
-
-
-
-
-               <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
-                 <Tab label= {treeName} {...a11yProps(0)} />
-                 <Tab label= {personName}{...a11yProps(1)} />
-
-               </Tabs>
-
-
-           </Toolbar>
-         </AppBar>
+    return (
+        <div className = "inner">
+          <AppBar position="static">
+            <Toolbar>
+                <IconButton className={classes.menuButton} color="inherit" aria-label="Menu" onClick={()=>{
+                      funcDialogClose(); //hopefully this is open when it's being cliucked on
+                  }} >
+                  <MenuIcon/>
+                </IconButton>
 
 
 
-         <TabPanel value={value} index={0}>
-           <AvailableTrees></AvailableTrees>
-         </TabPanel>
-         <TabPanel value={value} index={1}>
-           <TreePeople></TreePeople>
-             <Toolbar>
-               <div className={classes.toolbarButtons}>
-                   <Button color="inherit" className ={classes.tolowerBtn}>
-                     <Typography variant="h6" color="inherit" >
-                       Run
-                     </Typography>
-                   </Button>
 
-                   <IconButton className={classes.menuButton} color="inherit" aria-label="Menu" onClick={()=>{
-                      alert(treeId + ' ' +personId);
-                   }} >
-                   <PlayArrow/>
-                 </IconButton>
+                <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
+                  <Tab label= {treeName} {...a11yProps(0)} />
+                  <Tab label= {personName}{...a11yProps(1)} />
+
+                </Tabs>
+
+
+            </Toolbar>
+          </AppBar>
+
+
+
+          <TabPanel value={value} index={0}>
+            <AvailableTrees></AvailableTrees>
+          </TabPanel>
+          <TabPanel value={value} index={1}>
+            <TreePeople></TreePeople>
+             
+            <Toolbar>
+              <div className={classes.toolbarButtons}>
+                  <Button color="inherit" className ={classes.tolowerBtn}>
+                    <Typography variant="h6" color="inherit" >
+                      Run
+                    </Typography>
+                  </Button>
+
+                  <IconButton className={classes.menuButton} color="inherit" aria-label="Menu" onClick={()=>{
+                      alert(treeName + ' ' +personId);
+                  }} >
+                  <PlayArrow/>
+                </IconButton>
                 </div>
-             </Toolbar>
-         </TabPanel>
+            </Toolbar>
+
+          </TabPanel>
 
 
 
-      </div>
-  );
+        </div>
+    );
 
 }
 
