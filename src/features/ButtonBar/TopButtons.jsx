@@ -13,10 +13,10 @@ import AppsIcon from '@material-ui/icons/Apps';
 
 const styles = theme => ({
   fab: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing(1),
   },
   extendedIcon: {
-    marginRight: theme.spacing.unit,
+    marginRight: theme.spacing(1),
   },
   root: {
   flexGrow: 1,
@@ -98,7 +98,7 @@ TopButtons.defaultProps  = {
 
 
 const mapStateToProps = state => {
- console.log('top buttons ' );
+// console.log('top buttons ' );
   let appName =  state.ux.appName;
   let appList =  state.ux.appList;
 

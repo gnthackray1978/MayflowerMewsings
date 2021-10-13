@@ -47,10 +47,10 @@ import { connect } from "react-redux";
 
 const styles = theme => ({
   // fab: {
-  //   margin: theme.spacing.unit,
+  //   margin: theme.spacing(1),
   // },
   extendedIcon: {
-    marginRight: theme.spacing.unit,
+    marginRight: theme.spacing(1),
   },
   root: {
   flexGrow: 1,
@@ -95,7 +95,7 @@ function GetSiteList(results, applicationSelected, siteDialogClose,history){
 //site.search.results[0].name
 
 
-  console.log('SiteDialog');
+  //console.log('SiteDialog');
   if(results){
 
 
@@ -110,7 +110,7 @@ function GetSiteList(results, applicationSelected, siteDialogClose,history){
                                 applicationSelected(ev.currentTarget.dataset.id);
                                 siteDialogClose();
                                 history.push('/'+ev.currentTarget.dataset.default);
-                                console.log(`Button ${ev.currentTarget.dataset.default} clicked`);
+                             //   console.log(`Button ${ev.currentTarget.dataset.default} clicked`);
                             }}>
              <ListItemText primary={site.name} />
            </ListItem>);

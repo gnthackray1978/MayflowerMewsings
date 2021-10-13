@@ -16,7 +16,7 @@ import { connect } from "react-redux";
 const styles = theme => ({
 
   root: {
-    paddingRight: theme.spacing.unit,
+    paddingRight: theme.spacing(1),
     minHeight : window.innerHeight -10
   },
 
@@ -58,21 +58,25 @@ class SideDrawer extends Component {
       super(props);
    }
 
-
+   componentDidMount(){
+    console.log('SideDrawer componentDidMount');
+   }
 
    render() {
     const { classes ,ShowFuncListDialog, appName} = this.props;
 
     var getContent = () =>{
-      if(appName != 2)
-        return <ApplicationList/>
+     // console.log(appName);
+      if(appName == 2 || appName ==6)
+        return <TreeSelector/>        
       else
-        return <TreeSelector/>
+        return <ApplicationList/>
+
     };
 
     var content = getContent();
 
-    console.log('SideDrawer loaded: ' + appName);
+  //  console.log('SideDrawer loaded: ' + appName);
 
     return (
       <div>

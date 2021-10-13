@@ -29,7 +29,7 @@ import { connect } from "react-redux";
 const styles = theme => ({
 
   root: {
-    paddingRight: theme.spacing.unit,
+    paddingRight: theme.spacing(1),
     minHeight : window.innerHeight -10
   },
 
