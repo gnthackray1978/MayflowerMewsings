@@ -84,6 +84,13 @@ const client = new ApolloClient({
            }
         },
 
+        ftmlocsearch: {
+          keyArgs: false,
+          merge(existing =[], incoming) {
+            return incoming;
+          }
+       },
+
         poisearch: {
            keyArgs: false,
            merge(existing =[], incoming) {
