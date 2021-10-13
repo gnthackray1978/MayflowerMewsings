@@ -555,7 +555,7 @@ const oidcMiddleware =  (url) => {
             //called by IDSConnect     componentdidmount
             //called by loginRedirect in IDSRedirect componentdidmount
             case "PAGE_LOAD":
-               console.log('reload');
+             //  console.log('reload');
                const query = action.payload;
 
                //if we're connected already we shouldn't
