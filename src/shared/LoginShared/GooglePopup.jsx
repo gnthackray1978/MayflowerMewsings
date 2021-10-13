@@ -39,10 +39,10 @@ import ImageButton from "./ImageButton.jsx";
 
 const styles = theme => ({
   // fab: {
-  //   margin: theme.spacing.unit,
+  //   margin: theme.spacing(1),
   // },
   extendedIcon: {
-    marginRight: theme.spacing.unit,
+    marginRight: theme.spacing(1),
   },
   root: {
   flexGrow: 1,
