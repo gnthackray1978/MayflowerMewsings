@@ -4,22 +4,33 @@ import { METADATALOADED, APPLICATIONSELECTED,
 
   export const setTreePerson = (state) =>{
     //console.log('applicationSelected action');
-    return async (dispatch, getState)  => {
-         dispatch({
-           type: TREEPERSONSELECTED,
-           payload : state
-         });
-      }
+
+      return async (dispatch, getState)  => {
+          dispatch({
+            type: TREEPERSONSELECTED,
+            payload : state
+          });
+        }
+
+    
   };
 
   export const setTree = (state) =>{
-    //console.log('applicationSelected action');
-    return async (dispatch, getState)  => {
-         dispatch({
-           type: TREESELECTED,
-           payload : state
-         });
+    //
+  
+      return async (dispatch, getState)  => {
+//        console.log('applicationSelected action');  /
+        var tp = getState();
+
+        if(tp.ux.selectedTreeData != state)
+        {
+          dispatch({
+            type: TREESELECTED,
+            payload : state
+          });
+        }
       }
+    
   };
 
   export const setDiagram = (state) =>{
