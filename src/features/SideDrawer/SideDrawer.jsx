@@ -1,14 +1,6 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
 import Drawer from '@material-ui/core/Drawer';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import Button from '@material-ui/core/Button';
-import List from '@material-ui/core/List';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
 import ApplicationList from "../ApplicationList/ApplicationList.jsx";
 import TreeSelector from "../TreeSelector/TreeSelector.jsx";
 import { connect } from "react-redux";
@@ -52,47 +44,31 @@ const styles = theme => ({
    },
 });
 
-class SideDrawer extends Component {
 
-   constructor(props) {
-      super(props);
-   }
+function SideDrawer(props){
 
-   componentDidMount(){
-    console.log('SideDrawer componentDidMount');
-   }
+  const { classes ,ShowFuncListDialog, appName, stateObj} = props;
 
-   render() {
-    const { classes ,ShowFuncListDialog, appName} = this.props;
+  var getContent = () =>{
+   // console.log(appName);
+    if(appName == 2 || appName ==6)
+      return <TreeSelector/>        
+    else
+      return <ApplicationList stateObj ={stateObj}/>
 
-    var getContent = () =>{
-     // console.log(appName);
-      if(appName == 2 || appName ==6)
-        return <TreeSelector/>        
-      else
-        return <ApplicationList/>
+  };
 
-    };
+  var content = getContent();
 
-    var content = getContent();
+  return (
+    <div>
+      <Drawer open = {ShowFuncListDialog} >
+          { content }
+      </Drawer>
+    </div>
+  );
 
-  //  console.log('SideDrawer loaded: ' + appName);
-
-    return (
-      <div>
-        <Drawer open = {ShowFuncListDialog} >
-            { content }
-        </Drawer>
-      </div>
-    );
-  }
 }
-
-
-
-SideDrawer.propTypes = {
-  classes: PropTypes.object.isRequired
-};
 
 const mapStateToProps = state => {
   return {

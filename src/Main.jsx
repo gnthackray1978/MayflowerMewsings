@@ -7,6 +7,8 @@ import TopButtons from './features/ButtonBar/TopButtons.jsx';
 import {AuthProvider} from './shared/IDSConnect/AuthProvider.jsx'
 import SiteDialog from './features/SiteDialog/SiteDialog.jsx';
 import PageContainer from './pages/PageContainer.jsx';
+import { UserManager, WebStorageStateStore, Log } from "oidc-client";
+
 import { ApolloClient, InMemoryCache, ApolloProvider, gql, useQuery } from '@apollo/client';
 import {metaDataLoaded} from "./features/uxActions.jsx";
 
@@ -51,8 +53,6 @@ query {
 
 `;
 
-
-
 function getPageName(pagePath, funcList){
 
  //  console.log('get page name ');
@@ -81,42 +81,87 @@ function getPageName(pagePath, funcList){
 }
 
 
+function useTableState(qry) {
+
+  
+  const makeData = function(data){
+
+    if(data && data.site.search.results.length>0){
+      var selection = getPageName(location.pathname, data.function.search.results);
+
+      let stateObj = {
+        sites: data.site.search.results,
+        funcs :data.function.search.results,
+        pageId : selection.pageId,
+        appId : selection.appId
+      };
+
+      return stateObj;
+    }
+    else{
+      
+
+      return {
+        appId :1,
+        sites : [
+            {
+              id: 1,
+              name: 'Front Page',
+              defaultPageName : 'default',
+              defaultPageTitle :'Default',
+              __typename: 'SiteType'
+            }],
+  
+            pageId :0,
+            funcs : []
+      };
+    }
+  }
+
+  const  { loading, networkStatus,error, data, refetch } = useQuery(qry, {
+
+     notifyOnNetworkStatusChange: true,
+     fetchPolicy:"no-cache"  
+  });
+
+  var stateObj = makeData(data);
+
+  return {
+    stateObj,
+    refetch ,
+    loading, networkStatus,error
+
+
+  };
+}
+
+
 
 function Main(props) {
 
-    const {metaDataLoaded} = props;
+    const {metaDataLoaded,config} = props;
+   
+    var state = useTableState(GET_Meta);
 
+    var userManager = new UserManager(config);
 
-    const { loading, error, data } = useQuery(GET_Meta, {
-      fetchPolicy: "no-cache",
-      onCompleted : (data)=>{
+    userManager.events.addUserLoaded((user)=>{
+      console.log('user loaded:'+user);
+    });
 
-        //console.log('Got app meta data');
+    userManager.getUser().then((user)=>{
+      if(user){
 
-        var selection = getPageName(location.pathname, data.function.search.results);
+        console.log('user: ' + user + ' count: ' + state.stateObj.sites.length +' '+ state.loading + ' '+ state.networkStatus + ' '+state.error);
 
-        let stateObj = {
-          sites: data.site.search.results,
-          funcs :data.function.search.results,
-          pageId : selection.pageId,
-          appId : selection.appId
-        };
-
-        metaDataLoaded(stateObj);
+        if(state.stateObj.sites.length < 2 && !state.loading)
+        {
+          state.refetch();
+          console.log('refreshing');
+        } 
 
       }
     });
-    //
-    // let sites;
-    // let functions;
-    //
-    // if(!loading && data){
-    //
-    //     sites = data.site.search.results;
-    //
-    //     functions =data.function.search.results;
-    // }
-
 
     return (
       <AuthProvider>
@@ -124,9 +169,9 @@ function Main(props) {
           <div>
             <TopButtons isData = {true} />
 
-            <SideDrawer/>
+            <SideDrawer stateObj = {state.stateObj}/>
 
-            <SiteDialog/>
+            <SiteDialog stateObj = {state.stateObj}/>
 
             <PageContainer/>
           </div>
@@ -137,7 +182,11 @@ function Main(props) {
 }
 
 const mapStateToProps = state => {
-  return {};
+
+  return {
+    profileObj : state.ids.profileObj,
+    config : state.ids.IdServParams
+  };
 };
 
 const mapDispatchToProps = dispatch => {

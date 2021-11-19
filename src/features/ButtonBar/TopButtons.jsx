@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import Toolbar from '@material-ui/core/Toolbar';
-import {PropTypes} from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -10,47 +8,31 @@ import { connect } from "react-redux";
 import IDSConnect   from "../../shared/IDSConnect/Components/IDSConnect.jsx";
 import {siteDialogOpen, siteDialogClose,funcDialogOpen,funcDialogClose} from "../uxActions.jsx";
 import AppsIcon from '@material-ui/icons/Apps';
+import {topButtonStyles} from '../styleFuncs.jsx';
 
-const styles = theme => ({
-  fab: {
-    margin: theme.spacing(1),
-  },
-  extendedIcon: {
-    marginRight: theme.spacing(1),
-  },
-  root: {
-  flexGrow: 1,
-  },
-  grow: {
-    marginLeft: 5,
-    flexGrow: 1,
-  },
-  menuButton: {
-    marginLeft: -12,
+/*
+Buttons that go accross the top of the screen
+funcdialogclose() is calling redux action and change state to open 
+side bar
 
-  },
-  tolowerBtn : {
-    textTransform: 'none'
-  }
-});
+title in the centre is a button thats clickable
+though no action has been assigned to it
 
-class TopButtons extends Component {
+siteDialogClose and open are actions that close and open 
+list of site applications . 
 
-  constructor(props) {
-     super(props);
-     ////console.log('TopButtons');
-   }
-//     <GoogleConnect mode = "login"/>
+the DATA from the server for applications and functions is loaded in main.jsx 
+and stored in redux
 
+*/ 
 
-  render() {
-
-    const { classes,modeChanged, SelectedApp, siteDialogOpen, siteDialogClose,
-       showAppListDialog, SelectedFunc, ShowFuncListDialog, funcDialogOpen , funcDialogClose, Title} = this.props;
-
-  //  var pageTitle = SelectedApp + '/' + SelectedFunc;
-
-
+function TopButtons(props) {
+  
+    const classes = topButtonStyles();
+  
+    const {siteDialogOpen, siteDialogClose,
+       showAppListDialog, ShowFuncListDialog, funcDialogOpen , funcDialogClose, Title} = props;
+ 
     return (
          <Toolbar>
              <IconButton className={classes.menuButton} color="inherit"
@@ -83,19 +65,11 @@ class TopButtons extends Component {
 
          </Toolbar>
      )
-   }
+   
 
 }
 
-TopButtons.propTypes = {
-  classes: PropTypes.object.isRequired,
-  modeChanged : PropTypes.func
-};
-
-TopButtons.defaultProps  = {
-  isData: true
-};
-
+ 
 
 const mapStateToProps = state => {
 // console.log('top buttons ' );
@@ -160,4 +134,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(TopButtons));
+export default connect(mapStateToProps, mapDispatchToProps)(TopButtons);

@@ -7,6 +7,7 @@ import TableWrapper from '../../TableWrapper.jsx'
 import {gql} from '@apollo/client';
 
 import {useTableState} from '../../useTable';
+import {getParams} from './qryStringFuncs';
 
 function FTMView() {
 
@@ -43,6 +44,8 @@ function FTMView() {
              yearFrom
              yearTo
              origin
+             birthLat
+             birthLong
        
          }
        }
@@ -60,16 +63,18 @@ function FTMView() {
       { id: 'Origin', numeric: false, disablePadding: true, label: 'Origin' }
     ];
 
+    var params = getParams();
+
     var state = useTableState(GET_FTMView,{
       sortColumn : 'surname',
       sortOrder : 'asc',
       limit : 0,
       offset :0,
-      yearStart : 1500,
-      yearEnd : 2000,
-      location : '',
-      surname : '',
-      origin : ''
+      yearStart : params.yearStart,
+      yearEnd : params.yearEnd,
+      location : params.location,
+      surname : params.surname,
+      origin : params.origin
     },'dna','ftmviewsearch');
 
     state.headCells = headCells;

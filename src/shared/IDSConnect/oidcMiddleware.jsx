@@ -427,11 +427,12 @@ const signInSilent = async (storeAPI, mgr, success)=>{
 
 const connectRedirect = async (connected,mgr,storeAPI)=>{
 
-
+ //try getting user from manager
+ console.log('connectRedirect');
+ 
     mgr = ensureValidUserManage(mgr,storeAPI,{ response_mode: "query" });
 
-    //try getting user from manager
-    //console.log('connect Redirect system set to NOT connected calling fetchuser');
+   
 
     let userResult = await fetchUser(mgr);
 
@@ -496,10 +497,13 @@ const loadUser =async (mgr,storeAPI)=>{
 
     if(signInResult.type == RS.USERVALID){
 
-      storeAPI.dispatch({ type: "RETRIEVE_GOOGLE_TOKEN"});
+    //  storeAPI.dispatch({ type: "RETRIEVE_GOOGLE_TOKEN"});
+      sessionStorage.setItem("googleFetchOnGoing", true);
 
       let tokenResult = await manageGoogleTokenRetrieval(storeAPI, signInResult.user);
-      storeAPI.dispatch({ type: "FINISHED_GOOGLE_FETCH"});
+      //storeAPI.dispatch({ type: "FINISHED_GOOGLE_FETCH"});
+      sessionStorage.setItem("googleFetchOnGoing", false);
+      
       if(tokenResult.type == RS.TOKENVALID || tokenResult.type == RS.FETCHEDVALID){
         storeAPI.dispatch(makeLoginDetailAction(signInResult.user, tokenResult.googleToken));
       }
@@ -571,17 +575,23 @@ const oidcMiddleware =  (url) => {
                  //          payload: true
                  //        });
 
-                 //console.log('reload with: ' + query.code);
-                 if(googleFetchOnGoing)
+                 console.log('reload with: ' + query.code);
+
+  
+
+                 if(sessionStorage.getItem("googleFetchOnGoing") === true)
                    break;
 
                  let connectRedirectResult = await connectRedirect(connected,mgr,storeAPI);
 
                  if(connectRedirectResult.type == RS.USERVALID){
-                   storeAPI.dispatch({ type: "RETRIEVE_GOOGLE_TOKEN"});
+                  // storeAPI.dispatch({ type: "RETRIEVE_GOOGLE_TOKEN"});
+                  sessionStorage.setItem("googleFetchOnGoing", true);
+
                    tokenResult = await manageGoogleTokenRetrieval(storeAPI, connectRedirectResult.user);
 
-                   storeAPI.dispatch({ type: "FINISHED_GOOGLE_FETCH"});
+                   sessionStorage.setItem("googleFetchOnGoing", false);
+                 //  storeAPI.dispatch({ type: "FINISHED_GOOGLE_FETCH"});
 
                    if(tokenResult.type == RS.TOKENVALID || tokenResult.type == RS.FETCHEDVALID){
                      storeAPI.dispatch(makeLoginDetailAction(connectRedirectResult.user, tokenResult.user));

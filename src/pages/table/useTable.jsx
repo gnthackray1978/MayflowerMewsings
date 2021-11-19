@@ -131,13 +131,19 @@ export  function useTableState(ReturnData,defaultParams, schema, subSchema) {
     }
 
     let totalRecordCount =0;
-
-    if(data && data[schema])
+    let loginInfo = '';
+    let errorMessage = '';
+    if(data && data[schema]){
      totalRecordCount =  data[schema][subSchema].totalResults;
+     loginInfo =  data[schema][subSchema].loginInfo;
+     errorMessage = data[schema][subSchema].error;
+    }
 
     return {
       rows,
-      totalRecordCount
+      totalRecordCount,
+      errorMessage,
+      loginInfo
     };
 
   }
@@ -166,6 +172,9 @@ export  function useTableState(ReturnData,defaultParams, schema, subSchema) {
   var rows = parsedData.rows;
 
   var totalRecordCount = parsedData.totalRecordCount;
+  
+  var loginInfo = parsedData.loginInfo;
+  var errorMessage = parsedData.errorMessage;
 
   return {
   //  initialLoad,setInitialLoad,
@@ -183,6 +192,6 @@ export  function useTableState(ReturnData,defaultParams, schema, subSchema) {
     isSelected,
     filterFieldChanged,
 
-    loading, error, data,rows,totalRecordCount
+    loading, error, data,rows,totalRecordCount,loginInfo,errorMessage
   };
 }

@@ -36,6 +36,8 @@ export default function WillTable(props) {
 
   const classes = useStyles();
 
+  console.log(state.loginInfo);
+
   return (
     <TableContainer>
             <Table
@@ -50,7 +52,7 @@ export default function WillTable(props) {
                 {
 
                   state.rows.map((row, index) => {
-                    console.log(row.reference);
+                    
                     const isItemSelected = state.isSelected(row.reference);
                     const labelId = `will-table-checkbox-${index}`;
 

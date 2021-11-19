@@ -36,6 +36,8 @@ function NorfolkWills() {
            ) {
        page
        totalResults
+       loginInfo
+       error
        results {
             id
            description

@@ -137,20 +137,20 @@ export default (state = {
           profileObj : undefined,
           access_token : undefined,
           googleRawToken : undefined,
-          googleFetchOnGoing : false
+          //googleFetchOnGoing : false
         };
 
-      case "RETRIEVE_GOOGLE_TOKEN":
-          return {
-            ...state,
-             googleFetchOnGoing :true
-          };
+      // case "RETRIEVE_GOOGLE_TOKEN":
+      //     return {
+      //       ...state,
+      //        googleFetchOnGoing :true
+      //     };
 
-      case "FINISHED_GOOGLE_FETCH":
-          return {
-            ...state,
-             googleFetchOnGoing :false
-          };
+      // case "FINISHED_GOOGLE_FETCH":
+      //     return {
+      //       ...state,
+      //        googleFetchOnGoing :false
+      //     };
 
       case "PATH_CONTAINS_AUTH":
           return {

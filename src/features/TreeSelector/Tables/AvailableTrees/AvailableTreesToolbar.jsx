@@ -26,6 +26,10 @@ const AvailableTreesToolbar = (props) => {
       origin : origin,
       groupNumber : Number(groupNumber)
     });
+
+    var newurl = window.location.protocol + "//" 
+    + window.location.host + window.location.pathname + '?origin='+origin + '&groupNumber='+groupNumber;
+    window.history.pushState({path:newurl},'',newurl);
   };
 
 

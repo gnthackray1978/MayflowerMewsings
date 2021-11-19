@@ -100,9 +100,9 @@ function GetFunctionList(appName, functions, funcSelected, closeFuncListDialog,h
 function ApplicationList(props) {
 
   const { classes, closeDrawer, funcListLoad, funcSelected,
-    ShowFuncListDialog, funcDialogOpen, funcDialogClose, funcList, appName} = props;
+    ShowFuncListDialog, funcDialogOpen, funcDialogClose, appName} = props;
 
-
+  let funcList = props.stateObj.funcs;
   
 
   let history = useHistory();
@@ -144,7 +144,7 @@ ApplicationList.propTypes = {
 const mapStateToProps = state => {
   return {
     appName : state.ux.appName,
-    funcList: state.ux.funcList,
+ //   funcList: state.ux.funcList,
     ShowFuncListDialog: state.ux.showFuncListDialog
   };
 };
