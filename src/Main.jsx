@@ -11,6 +11,8 @@ import { UserManager, WebStorageStateStore, Log } from "oidc-client";
 
 import { ApolloClient, InMemoryCache, ApolloProvider, gql, useQuery } from '@apollo/client';
 import {metaDataLoaded} from "./features/uxActions.jsx";
+import {formatDate, getCurrentTime,userExpired,makeLoginDetailAction,RS,validateUser} from './shared/oidcFuncLib.jsx';
+
 
 import {
   BrowserRouter as Router,
@@ -152,9 +154,20 @@ function Main(props) {
     userManager.getUser().then((user)=>{
       if(user){
 
-        console.log('user: ' + user + ' count: ' + state.stateObj.sites.length +' '+ state.loading + ' '+ state.networkStatus + ' '+state.error);
+        
+        let tp = userExpired(user);
 
-        if(state.stateObj.sites.length < 2 && !state.loading)
+
+        console.log('user: ' + user + 
+        ' count: ' + state.stateObj.sites.length 
+        +' loading '+ state.loading 
+        + ' net stat '+ state.networkStatus 
+        + ' error '+state.error
+        + ' exp ' + tp);
+       
+
+
+        if(state.stateObj.sites.length < 2 && !state.loading && !tp)
         {
           state.refetch();
           console.log('refreshing');
