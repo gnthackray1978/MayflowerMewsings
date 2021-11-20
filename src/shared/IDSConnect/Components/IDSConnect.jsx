@@ -1,5 +1,5 @@
 import Fab from '@material-ui/core/Fab';
-import React, { Component } from 'react';
+import React, { Component, useEffect } from 'react';
 import blue from '@material-ui/core/colors/blue';
 import { connect } from "react-redux";
 import { withStyles } from '@material-ui/core/styles';
@@ -11,121 +11,78 @@ import GooglePopup from "../../LoginShared/GooglePopup.jsx";
 import GoogleButton from "../../LoginShared/GoogleButton.jsx";
 
 import {login,logout,loginRedirect,setIdsLoginScreenVisible} from "../idsActions.jsx";
+import styles from "./styles.jsx";
+
 const queryString = require('query-string');
 
 
-const styles = theme => ({
-  fab: {
-    margin: theme.spacing(1),
-  },
-  extendedIcon: {
-    marginRight: theme.spacing(1),
-  },
-  root: {
-  flexGrow: 1,
-  },
-  grow: {
-    marginLeft: 50,
-    flexGrow: 1,
-  },
-  menuButton: {
-    marginLeft: -12,
-    marginRight: 20,
-  },
-  tolowerBtn : {
-    textTransform: 'none'
-  },
-  avatar: {
-    backgroundColor: blue[100],
-    color: blue[600],
-  },
+function renderLogin(props) {
 
-});
 
-class IDSConnect extends Component {
+  const { classes,login,IdsLogInDetailsVisible,ProfileObj,imageUrl,isImageButton,
+          isFabButton,profileObjName,setIdsLoginScreenVisible,Connected,logout} = props;
 
-  constructor(props) {
-    super(props);
+  let buttons ;
 
+  if(Connected){
+      if(isImageButton)
+        buttons = <ImageButton url = {imageUrl}
+          onClick={()=>setIdsLoginScreenVisible(true)}/>
+
+      if(isFabButton)
+        buttons = <Fab color="primary" aria-label="Add" className={classes.fab}
+          onClick={()=>setIdsLoginScreenVisible(true)}>{profileObjName}</Fab>
+  }
+  else{
+      buttons = (
+          <GoogleButton label ="Login" mode = "login" onClick ={e=>{
+              if (e) e.preventDefault();
+              login();
+        }}/>);
   }
 
-  componentDidMount() {
-    const {loginRedirect} = this.props;
+   return (
+       <div>
+           {buttons}
+            <GooglePopup open={IdsLogInDetailsVisible} ProfileObj ={ProfileObj} >
+                <div>
+                    <GoogleButton label ="Logout" mode = "logout" onClick ={()=>{
+                        // //console.log('Logout: ');
+
+                          logout();
+                          setIdsLoginScreenVisible(false);
+                        }}/>
+                    <GoogleButton label ="Cancel" mode = "cancel" onClick ={()=>setIdsLoginScreenVisible(false)}/>
+                </div>
+            </GooglePopup>
+       </div>
+   )
+
+}
+
+
+
+function IDSConnect(props)  {
+
+  const { classes,login,Connected, pathContainsAuth} = props;
+
+  useEffect(()=>{
+    const {loginRedirect} = props;
     //console.log('IDSConnect loginRedirect');
     var query = queryString.parse(window.location.search);
 
     loginRedirect(query);
 
-    
-  }
+  });
 
-
-
-  renderLogin() {
-
-
-    const { classes,login,IdsLogInDetailsVisible,ProfileObj,imageUrl,isImageButton,
-            isFabButton,profileObjName,setIdsLoginScreenVisible,Connected,logout} = this.props;
-
-
-
-
-
-    let buttons ;
-
-    if(Connected){
-        if(isImageButton)
-          buttons = <ImageButton url = {imageUrl}
-            onClick={()=>setIdsLoginScreenVisible(true)}/>
-
-        if(isFabButton)
-          buttons = <Fab color="primary" aria-label="Add" className={classes.fab}
-            onClick={()=>setIdsLoginScreenVisible(true)}>{profileObjName}</Fab>
-    }
-    else{
-        buttons = (
-            <GoogleButton label ="Login" mode = "login" onClick ={e=>{
-                if (e) e.preventDefault();
-                login();
-          }}/>);
-    }
-
-     return (
-         <div>
-             {buttons}
-              <GooglePopup open={IdsLogInDetailsVisible} ProfileObj ={ProfileObj} >
-                  <div>
-                      <GoogleButton label ="Logout" mode = "logout" onClick ={()=>{
-                          // //console.log('Logout: ');
-
-                            logout();
-                            setIdsLoginScreenVisible(false);
-                          }}/>
-                      <GoogleButton label ="Cancel" mode = "cancel" onClick ={()=>setIdsLoginScreenVisible(false)}/>
-                  </div>
-              </GooglePopup>
-         </div>
-     )
-
-  }
-
-  render() {
-
-    const { classes,login,Connected, pathContainsAuth} = this.props;
-
-  //console.log('pathContainsAuth: ' + pathContainsAuth);
-
-    let buttons = this.renderLogin();
-
+    let buttons = renderLogin(props);
 
     return(
         <div>
             {buttons}
         </div>
     );
-
-   }
-
+   
 }
 
 IDSConnect.propTypes = {
