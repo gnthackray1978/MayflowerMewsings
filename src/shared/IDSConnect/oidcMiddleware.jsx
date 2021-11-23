@@ -3,7 +3,8 @@ import { UserManager, WebStorageStateStore, Log } from "oidc-client";
 import {evtAccessTokenExpired, evtAccessTokenExpiring,evtOnUserSignedOut,
   evtOnUserUnloaded,evtOnSilentRenewError,evtOnUserLoaded} from './idsActions.jsx';
 
-  import {formatDate, getCurrentTime,userExpired,makeLoginDetailAction,RS,validateUser} from '../oidcFuncLib.jsx';
+  import {formatDate, getCurrentTime,userExpired,makeLoginDetailAction,
+    RS,validateUser,loginLib,ensureValidUserManage,fetchUser,connectRedirect,loadUser} from '../oidcFuncLib.jsx';
 
 //import { push } from 'react-router-redux';
 
@@ -11,253 +12,8 @@ var retryCount =0;
 
 
 
-const manageGoogleTokenRetrieval = async (storeAPI, user) => {
 
 
-  const retrieveGoogleToken =  (storeAPI,google_token_uri,access_token,googleToken)=>{
-
-    const googleTokenExpired = (token)=>{
-
-        if(!token){
-          throw "invalid token received";
-        }
-
-        let expirationDate = new Date(token.expires);
-
-        let now = getCurrentTime(true);
-
-
-        if(expirationDate > now){
-          //console.log('google token NOT expired - date: ' + formatDate(expirationDate,true) + ' now ' + formatDate(now,true));
-          return false;
-        }
-
-        //console.log('google token expired - date: ' + formatDate(expirationDate,true) + ' now ' + formatDate(now,true));
-        return true;
-      };
-
-    const getTokenFromAPI = (google_token_uri,access_token)=>{
-        //  var url = 'https://msgauth01.azurewebsites.net/token/test';
-        return new Promise((resolve, reject) => {
-          //console.log('--getTokenFromAPI--');
-          var xhr = new XMLHttpRequest();
-          xhr.open("GET", google_token_uri);
-          xhr.onload = () => {
-              //console.log('--Fetched google token');
-              if (xhr.status >= 200 && xhr.status < 300)
-                  resolve(JSON.parse(xhr.response));
-               else
-                  reject(xhr.statusText);
-          }
-          xhr.setRequestHeader("Authorization", "Bearer " + access_token);
-          xhr.send();
-        });
-
-      };
-
-    //console.log('**Retrieve Google Token**');
-
-
-    return new Promise(async (res, rej) => {
-        // we already have a valid token and it hasn't expired.
-        // so dont set anything
-        if(googleToken && !googleTokenExpired(googleToken)){
-          //console.log('**Existing Token Valid No call to API made');
-          res({type: RS.TOKENVALID,  googleToken :googleToken});
-        }
-
-        // we assume that user is valid and has not expired
-        let tokenObj = await getTokenFromAPI(google_token_uri, access_token).catch((e)=>{
-          //console.log(e);
-          res({type: RS.APIERROR,  message :e});
-        });
-
-        if(tokenObj){
-          if(googleTokenExpired(tokenObj)){
-            res({type : RS.FETCHEDEXPIRED, googleToken :undefined});
-          }
-          else{
-            res({type : RS.FETCHEDVALID, googleToken :tokenObj});
-          }
-        };
-
-
-      });
-
-  };
-
-
-
-  let mgr;
-
-  ensureValidUserManage(mgr,storeAPI);
-
-  let validationResult = validateUser(user);//
-
-  validationResult.user = user;
-
-  return new Promise(async (resolve, reject) => {
-
-    if(validationResult.type != RS.USERVALID){
-      //console.log('sign in silent user validation failed ' + validationResult.message);
-      resolve(validationResult);
-      return;
-    }
-
-    const google_token_uri = storeAPI.getState().ids.IdServParams.google_token_uri;
-    const googleToken = storeAPI.getState().google.googleRawToken;
-
-    let tokenResult = await retrieveGoogleToken(storeAPI,google_token_uri,user.access_token,googleToken);
-
-    resolve(tokenResult);
-  });
-};
-
-const fetchUser = (mgr)=>{
-
-  let countOfLoginAttempts = localStorage.getItem("loginAttemptCounter");
-
-  return new Promise((resolve, reject) => {
-    mgr.getUser().then((user)=>{
-      let result = validateUser(user);
-      result.message = result.message + ' on attempt ' +countOfLoginAttempts;
-      result.user = user;
-      resolve(result);
-    });
-  }).catch((e)=>{
-    resolve({ status: 'failure', message : e });
-  });
-
-  //  dispatch({
-  //    type: "USER_REFRESHED"
-  //  });
-
-
-};
-
-const ensureValidUserManage= (userManager,storeAPI, params)=>{
-
-
-
-
-  // event callback when the user has been loaded (on silent renew or redirect)
-
-  //onUserLoaded evtOnUserLoaded
-  let onUserLoaded = (user) => {
-    ////console.log('> user found');
-    //console.log('> user loaded');
-
-    storeAPI.dispatch({
-              type: "OnUserLoaded",
-              user :user
-            });
-
-  };
-
-  // event callback when silent renew errored
-  // onSilentRenewError evtOnSilentRenewError
-  let onSilentRenewError = (error) => {
-    //console.log('> silent renew error');
-    storeAPI.dispatch({
-              type: "onSilentRenewError",
-              error :error
-            });
-  };
-
-  // event callback when the access token expired
-  //onAccessTokenExpired evtAccessTokenExpired
-  let onAccessTokenExpired = () => {
-    //console.log('> access token expired');
-    storeAPI.dispatch({
-              type: "AccessTokenExpired"
-            });
-  };
-
-  // event callback when the user is logged out
-  //onUserUnloaded evtOnUserUnloaded
-  let onUserUnloaded = () => {
-    //console.log('> user loaded');
-    storeAPI.dispatch({
-          type: "OnUserUnloaded"
-        });
-  };
-
-  // event callback when the user is expiring
-  //onAccessTokenExpiring evtAccessTokenExpiring
-  let onAccessTokenExpiring = () => {
-    //console.log('> user expiring');
-    storeAPI.dispatch({
-              type: "AccessTokenExpiring"
-            });
-  }
-
-  // event callback when the user is signed out
-  //onUserSignedOut evtOnUserSignedOut
-  let onUserSignedOut = () => {
-    //console.log('> user signed out');
-    storeAPI.dispatch({
-              type: "OnUserSignedOut"
-            });
-  }
-
-  let setEvents = (mgr)=>{
-    mgr.events.addUserLoaded(onUserLoaded);
-    mgr.events.addSilentRenewError(onSilentRenewError);
-    mgr.events.addAccessTokenExpired(onAccessTokenExpired);
-    mgr.events.addAccessTokenExpiring(onAccessTokenExpiring);
-    mgr.events.addUserUnloaded(onUserUnloaded);
-    mgr.events.addUserSignedOut(onUserSignedOut);
-  };
-
-  let unsetEvents = (mgr)=>{
-    mgr.events.removeUserLoaded(onUserLoaded);
-    mgr.events.removeSilentRenewError(onSilentRenewError);
-    mgr.events.removeAccessTokenExpired(onAccessTokenExpired);
-    mgr.events.removeAccessTokenExpiring(onAccessTokenExpiring);
-    mgr.events.removeUserUnloaded(onUserUnloaded);
-    mgr.events.removeUserSignedOut(onUserSignedOut);
-  };
-
-  //reset usermanager
-  //this might be unecessary but the example i looked at did thus
-  //in future need to experiment removing this because it seems
-  //not needed to me
-  if(params){
-    if(userManager)
-      unsetEvents(userManager);
-
-    userManager = new UserManager(params);
-    setEvents(userManager);
-    return userManager;
-  }
-
-  if(userManager)
-    return userManager;
-
-  const ids = storeAPI.getState().ids.IdServParams;
-  const connected = storeAPI.getState().ids.connected;
-
-  var config = {
-      authority: ids.authority,
-      client_id: ids.client_id,
-      redirect_uri: ids.redirect_uri,
-      response_type: ids.response_type,
-      scope:ids.scope,
-      post_logout_redirect_uri: window.location.origin ,
-      loadUserInfo:ids.loadUserInfo,
-      IsExternalLoginOnly :ids.loadUserInfo,
-      silent_redirect_uri : ids.silent_redirect_uri,
-      automaticSilentRenew  : ids.automaticSilentRenew
-  };
-
-
-  if(!userManager){
-    userManager = new UserManager(config);
-    setEvents(userManager);
-  }
-
-  return userManager;
-}
 
 const signInSilent = async (storeAPI, mgr, success)=>{
 
@@ -338,100 +94,6 @@ const signInSilent = async (storeAPI, mgr, success)=>{
   });
 };
 
-const connectRedirect = async (connected,mgr,storeAPI)=>{
-
- //try getting user from manager
- console.log('connectRedirect');
- 
-    mgr = ensureValidUserManage(mgr,storeAPI,{ response_mode: "query" });
-
-   
-
-    let userResult = await fetchUser(mgr);
-
-
-    return new Promise(async (resolve, reject) => {
-      if(userResult.type == RS.USERVALID)
-      {
-      //  //console.log('connect Redirect success 1 ' + userResult.message);
-      //  localStorage.setItem("loginAttemptCounter", "0");
-        resolve(userResult);
-      }
-      else
-      {
-         //console.log('connect Redirect fetch user couldnt find user with error:' + userResult.message);
-         //console.log('connect Redirect calling signinredirect');
-
-         let signInResult = await mgr.signinRedirectCallback().catch((e)=> {
-          //   //console.log('Exception connect Redirect signinRedirectCallback' + e);
-          //   storeAPI.dispatch({type: "AUTH_FAILED"});
-          //   storeAPI.dispatch(push("/"));
-             resolve({type:RS.SIGNINFAILED, message :'Exception connect Redirect signinRedirectCallback' + e });
-         });
-
-         if(signInResult){
-           //console.log('connect Redirect in signinRedirectCallback calling fetchuser to check we have logged in');
-
-           userResult = await fetchUser(mgr);
-
-           resolve(userResult);
-          //  if(userResult.type == RS.USERVALID){
-          // //   localStorage.setItem("loginAttemptCounter", "0");
-          // //   //console.log('connect Redirect success 2 ' + userResult.message);
-          //
-          //   resolve(userResult);
-          //  }
-          //  else{
-          //    //console.log('connect Redirect failure 2 ' + userResult.message);
-          //    storeAPI.dispatch({type: "AUTH_FAILED"});
-          //  }
-
-        //   storeAPI.dispatch(push("/"));
-         }
-      };
-    });
-
-
-
-
-};
-
-const loadUser =async (mgr,storeAPI)=>{
-  //console.log('loadUser reached');
-
-  const ids = storeAPI.getState().ids;
-  //if we are not logged in i.e. if we dont have a valid user already
-  if(!ids.connected){
-    localStorage.setItem("loginAttemptCounter", "0");
-
-    mgr = ensureValidUserManage(mgr,storeAPI);
-
-    let signInResult = await fetchUser(mgr);
-
-    if(signInResult.type == RS.USERVALID){
-
-    //  storeAPI.dispatch({ type: "RETRIEVE_GOOGLE_TOKEN"});
-      sessionStorage.setItem("googleFetchOnGoing", true);
-
-      let tokenResult = await manageGoogleTokenRetrieval(storeAPI, signInResult.user);
-      //storeAPI.dispatch({ type: "FINISHED_GOOGLE_FETCH"});
-      sessionStorage.setItem("googleFetchOnGoing", false);
-
-      if(tokenResult.type == RS.TOKENVALID || tokenResult.type == RS.FETCHEDVALID){
-        storeAPI.dispatch(makeLoginDetailAction(signInResult.user, tokenResult.googleToken));
-      }
-      else {
-        //console.log('loadUser couldnt get google token :' + tokenResult.message);
-      }
-    }
-    else{
-      //console.log('loadUser couldnt get user :' + signInResult.message);
-    }
-  }
-
-}
-
-
 
 
 const oidcMiddleware =  (url) => {
@@ -440,17 +102,23 @@ const oidcMiddleware =  (url) => {
     return storeAPI => next => async (action) => {
 
         const connected = storeAPI.getState().ids.connected;
-
-        const expires_at_desc = storeAPI.getState().ids.expiresAtDesc;
-        const expires_at  = storeAPI.getState().ids.expiresAt;
-
-        const google_token_uri = storeAPI.getState().ids.IdServParams.google_token_uri;
-        const access_token = storeAPI.getState().ids.access_token;
-        const googleToken = storeAPI.getState().google.googleRawToken;
-
-        const googleFetchOnGoing =  storeAPI.getState().ids.googleFetchOnGoing;
-        const expired  =  storeAPI.getState().ids.expired;
+        const ids = storeAPI.getState().ids;
+        const googleRawToken =  storeAPI.getState().google.googleRawToken;
+      
         const expirationHandled = storeAPI.getState().ids.expirationHandled;
+       
+        const config = {
+          authority: ids.IdServParams.authority,
+          client_id: ids.IdServParams.client_id,
+          redirect_uri: ids.IdServParams.redirect_uri,
+          response_type: ids.IdServParams.response_type,
+          scope:ids.IdServParams.scope,
+          post_logout_redirect_uri: window.location.origin ,
+          loadUserInfo:ids.IdServParams.loadUserInfo,
+          IsExternalLoginOnly :ids.IdServParams.loadUserInfo,
+          silent_redirect_uri : ids.IdServParams.silent_redirect_uri,
+          automaticSilentRenew  : ids.IdServParams.automaticSilentRenew
+        };
 
         let tokenResult = undefined;
         let signInResult = undefined; //fix compiler errors
@@ -459,27 +127,11 @@ const oidcMiddleware =  (url) => {
             case "IDS_ATTEMPT_CONNECT":
                 //console.log('ATTEMPT_CONNECT starting connection attempt');
 
-                let ids = storeAPI.getState().ids;
+          
                 // we aren't already logged in and
                 // in the middle of an existing auto login
                 if(!ids.connected){
 
-                  ids = ids.IdServParams;
-
-                  var config = {
-                    authority: ids.authority,
-                    client_id: ids.client_id,
-                    redirect_uri: ids.redirect_uri,
-                    response_type: ids.response_type,
-                    scope:ids.scope,
-                    post_logout_redirect_uri: window.location.origin ,
-                    loadUserInfo:ids.loadUserInfo,
-                    IsExternalLoginOnly :ids.loadUserInfo,
-                    silent_redirect_uri : ids.silent_redirect_uri,
-                    automaticSilentRenew  : ids.automaticSilentRenew
-                  };
-
-                
                   mgr = new UserManager(config);
 
                   mgr.signinRedirect();
@@ -501,11 +153,7 @@ const oidcMiddleware =  (url) => {
                }
 
                if(query.code){
-                 // storeAPI.dispatch({
-                 //          type: "PATH_CONTAINS_AUTH",
-                 //          payload: true
-                 //        });
-
+                
                  console.log('reload with: ' + query.code);
 
   
@@ -513,43 +161,46 @@ const oidcMiddleware =  (url) => {
                  if(sessionStorage.getItem("googleFetchOnGoing") === true)
                    break;
 
-                 let connectRedirectResult = await connectRedirect(connected,mgr,storeAPI);
+                 let connectRedirectResult = await connectRedirect(mgr,ids.IdServParams);
 
                  if(connectRedirectResult.type == RS.USERVALID){
-                  // storeAPI.dispatch({ type: "RETRIEVE_GOOGLE_TOKEN"});
+                
                   sessionStorage.setItem("googleFetchOnGoing", true);
 
-                   tokenResult = await manageGoogleTokenRetrieval(storeAPI, connectRedirectResult.user);
+                   tokenResult = await manageGoogleTokenRetrieval(
+                      connectRedirectResult.user,ids.IdServParams,googleRawToken);
 
-                   sessionStorage.setItem("googleFetchOnGoing", false);
-                 //  storeAPI.dispatch({ type: "FINISHED_GOOGLE_FETCH"});
+                   sessionStorage.setItem("googleFetchOnGoing", false); 
 
+                
                    if(tokenResult.type == RS.TOKENVALID || tokenResult.type == RS.FETCHEDVALID){
                      storeAPI.dispatch(makeLoginDetailAction(connectRedirectResult.user, tokenResult.user));
                    }
                  }
                  else{
                     storeAPI.dispatch({type: "AUTH_FAILED"});
-                //    storeAPI.dispatch(push("/"));
+     
                  }
 
                }
                else{
                  if(query.state){
-                   // storeAPI.dispatch({
-                   //          type: "PATH_CONTAINS_AUTH",
-                   //          payload: true
-                   //        });
-
-                   //console.log('reload with: ' + query.state + ' ' + query.error);
+                
                     storeAPI.dispatch({
                              type: "SET_USER_LOGOUT"
                            });
+
               //     storeAPI.dispatch(push("/"));
                  }else{
                    //console.log('PAGE_LOAD Nothing in query string assumed page has been reloaded somehow');
                    localStorage.setItem("loginAttemptCounter",0);
-                   loadUser(mgr,storeAPI);
+                                     
+                   var lu = loadUser(mgr,ids,googleRawToken)
+                   .then(value => { console.log('test: ' +value) })
+                   .catch(err => { console.log(err) });
+                   
+            
+                   storeAPI.dispatch(lu);
                  }
 
 
@@ -563,7 +214,7 @@ const oidcMiddleware =  (url) => {
 
                 let logOutUrl =  window.location.origin;
 
-                mgr = ensureValidUserManage(mgr,storeAPI);
+                mgr = ensureValidUserManage(mgr,storeAPI.getState().ids.IdServParams);
 
                 mgr.getUser().then(function (user) {
                     if (user) {
@@ -593,37 +244,20 @@ const oidcMiddleware =  (url) => {
 
                 storeAPI.dispatch({type: 'expirationHandled'});
 
-                mgr = ensureValidUserManage(mgr,storeAPI);
+                mgr = ensureValidUserManage(mgr,storeAPI.getState().ids.IdServParams);
 
                 signInResult = await signInSilent(storeAPI,mgr);
 
                 if(signInResult.type == RS.USERVALID){
-                  tokenResult = await manageGoogleTokenRetrieval(storeAPI, signInResult.user);
+                  tokenResult = await manageGoogleTokenRetrieval( 
+                    signInResult.user,
+                    storeAPI.getState().ids.IdServParams,
+                    storeAPI.getState().google.googleRawToken);
                   if(tokenResult.type == RS.TOKENVALID ||
                         tokenResult.type == RS.FETCHEDVALID){
                           storeAPI.dispatch(makeLoginDetailAction(signInResult.user, tokenResult.googleToken));
                         }
                 }
-
-                // switch(signInResult.type){
-                //     case  RS.USERVALID :
-                //       let tokenResult = manageGoogleTokenRetrieval(storeAPI, signInResult.payload);
-                //       break;
-                //     case RS.TOOMANYATTEMPTS:
-                //       break;
-                //     case RS.FETCHEDEXPIRED:
-                //       storeAPI.dispatch({type: "DISCONNECT"});
-                //       break;
-                //     case RS.TOKENVALID:
-                //     case RS.FETCHEDVALID:
-                //       //set state to reflect we have valid ids user and valid google token
-                //       storeAPI.dispatch(makeLoginDetailAction(user, action));
-                //       break;
-                //     case RS.USERLOOKUPFAILED:
-                //     case RS.USEREXPIRED:
-                //       storeAPI.dispatch({type: "AUTH_FAILED"});
-                //       break;
-                //   }
 
 
 

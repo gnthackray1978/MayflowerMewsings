@@ -7,11 +7,8 @@ import TopButtons from './features/ButtonBar/TopButtons.jsx';
 import {AuthProvider} from './shared/IDSConnect/AuthProvider.jsx'
 import SiteDialog from './features/SiteDialog/SiteDialog.jsx';
 import PageContainer from './pages/PageContainer.jsx';
-import { UserManager, WebStorageStateStore, Log } from "oidc-client";
-
-import { ApolloClient, InMemoryCache, ApolloProvider, gql, useQuery } from '@apollo/client';
+import {gql, useQuery } from '@apollo/client';
 import {metaDataLoaded} from "./features/uxActions.jsx";
-import {formatDate, getCurrentTime,userExpired,makeLoginDetailAction,RS,validateUser} from './shared/oidcFuncLib.jsx';
 
 
 import {
@@ -141,46 +138,21 @@ function useTableState(qry) {
 
 function Main(props) {
 
-    const {metaDataLoaded,config} = props;
+    const {metaDataLoaded} = props;
    
     var state = useTableState(GET_Meta);
 
-    var userManager = new UserManager(config);
-
-    userManager.events.addUserLoaded((user)=>{
-      console.log('user loaded:'+user);
-    });
-
-    userManager.getUser().then((user)=>{
-      if(user){
-
-        
-        let tp = userExpired(user);
-
-
-        console.log('user: ' + user + 
-        ' count: ' + state.stateObj.sites.length 
-        +' loading '+ state.loading 
-        + ' net stat '+ state.networkStatus 
-        + ' error '+state.error
-        + ' exp ' + tp);
-       
-
-
-        if(state.stateObj.sites.length < 2 && !state.loading && !tp)
-        {
-          state.refetch();
-          console.log('refreshing');
-        } 
-
-      }
-    });
+    let metaSubset ={
+      loading : state.loading,
+      fnRefetch : state.refetch,
+      siteCount : state.stateObj.sites.length
+    }
 
     return (
       <AuthProvider>
 
           <div>
-            <TopButtons isData = {true} />
+            <TopButtons isData = {true} metaSubset = {metaSubset}/>
 
             <SideDrawer stateObj = {state.stateObj}/>
 
@@ -197,8 +169,7 @@ function Main(props) {
 const mapStateToProps = state => {
 
   return {
-    profileObj : state.ids.profileObj,
-    config : state.ids.IdServParams
+
   };
 };
 

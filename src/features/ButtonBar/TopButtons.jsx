@@ -31,7 +31,7 @@ function TopButtons(props) {
     const classes = topButtonStyles();
   
     const {siteDialogOpen, siteDialogClose,
-       showAppListDialog, ShowFuncListDialog, funcDialogOpen , funcDialogClose, Title} = props;
+       showAppListDialog, ShowFuncListDialog, funcDialogOpen , funcDialogClose, Title, metaSubset} = props;
  
     return (
          <Toolbar>
@@ -61,7 +61,7 @@ function TopButtons(props) {
                   }}>
                  <AppsIcon />
              </IconButton>
-             <IDSConnect mode = "login"/>
+             <IDSConnect mode = "login"  metaSubset = {metaSubset}/>
 
          </Toolbar>
      )

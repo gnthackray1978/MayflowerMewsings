@@ -152,17 +152,23 @@ export default (state = {
       //        googleFetchOnGoing :false
       //     };
 
-      case "PATH_CONTAINS_AUTH":
-          return {
-            ...state,
-             pathContainsAuth : action.payload
-          };
+      // case "PATH_CONTAINS_AUTH":
+      //     return {
+      //       ...state,
+      //        pathContainsAuth : action.payload
+      //     };
 
       case "expirationHandled":
           return {
             ...state,
              expirationHandled :true
           };
+
+          case "connected":
+            return {
+              ...state,
+               connected :true
+            };
 
 
       default:

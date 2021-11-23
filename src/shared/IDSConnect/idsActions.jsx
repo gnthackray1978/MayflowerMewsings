@@ -1,6 +1,14 @@
 
 //const queryString = require('query-string');
 //import { push } from 'react-router-redux';
+export const connected = () =>{
+  //console.log('evtAccessTokenExpired');
+  return async (dispatch, getState)  => {
+       dispatch({
+         type: "connected",
+       });
+    }
+};
 
 
 export const evtAccessTokenExpired = () =>{
