@@ -83,7 +83,7 @@ export default function TableWrapper(props) {
             labelRowsPerPage={'Page Rows'}
             rowsPerPageOptions={[5, 10, 25,50]}
             component="div"
-            count={state.totalRecordCount}
+            count={state.totalRecordCount || 0} 
             rowsPerPage={state.rowsPerPage}
             page={state.page}
             onChangePage={state.handleChangePage}
