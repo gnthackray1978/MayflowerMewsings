@@ -82,7 +82,7 @@ function getPageName(pagePath, funcList){
 
 function useTableState(qry) {
 
-  console.log('useTableState');
+ // console.log('useTableState');
 
   const makeData = function(data){
 

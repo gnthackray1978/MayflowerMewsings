@@ -28,7 +28,7 @@ and stored in redux
 
 function getPageName(pagePath, funcList){
 
-  console.log('get page name ');
+ // console.log('get page name ');
 
   var path = pagePath.replace('/','');
 
