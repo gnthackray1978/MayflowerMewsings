@@ -54,7 +54,7 @@ query {
 
 function getPageName(pagePath, funcList){
 
- //  console.log('get page name ');
+   console.log('get page name ');
 
    var path = pagePath.replace('/','');
 
@@ -82,7 +82,8 @@ function getPageName(pagePath, funcList){
 
 function useTableState(qry) {
 
-  
+  console.log('useTableState');
+
   const makeData = function(data){
 
     if(data && data.site.search.results.length>0){
@@ -145,7 +146,8 @@ function Main(props) {
     let metaSubset ={
       loading : state.loading,
       fnRefetch : state.refetch,
-      siteCount : state.stateObj.sites.length
+      siteCount : state.stateObj.sites.length,
+      sites : state.stateObj.funcs
     }
 
     return (
