@@ -1,7 +1,6 @@
 import Fab from '@material-ui/core/Fab';
 import React, { Component, useEffect } from 'react';
-import blue from '@material-ui/core/colors/blue';
-import { connect,useDispatch  } from "react-redux";
+import { connect  } from "react-redux";
 import { withStyles } from '@material-ui/core/styles';
 import {PropTypes} from 'prop-types';
 
@@ -12,7 +11,7 @@ import GoogleButton from "../../LoginShared/GoogleButton.jsx";
 import { UserManager, WebStorageStateStore, Log } from "oidc-client";
 
 import {setIdsLoginScreenVisible,connected} from "../idsActions.jsx";
-import {userExpired,loginLib,redirectHandler,makeStateFromSession,logoutLib} from '../../oidcFuncLib.jsx';
+import {loginLib,redirectHandler,makeStateFromSession,logoutLib} from '../../oidcFuncLib.jsx';
 
 
 import styles from "./styles.jsx";
@@ -25,13 +24,10 @@ function renderLogin(props) {
    const {profileObjName,
     imageUrl,
     ProfileObj,
-    Connected,
     isImageButton,
-    isFabButton, IDSConnected} = makeStateFromSession();
-  
-    console.log('render login: '+Connected);
-
-  const { classes,IdsLogInDetailsVisible,setIdsLoginScreenVisible,config,connectedFn} = props;
+    isFabButton, IDSConnected,googleTokenExpiration,idsTokenExpiration} = makeStateFromSession();
+ 
+  const { classes,IdsLogInDetailsVisible,setIdsLoginScreenVisible,config} = props;
 
   let buttons ;
 
@@ -49,7 +45,7 @@ function renderLogin(props) {
           <GoogleButton label ="Login" mode = "login" onClick ={e=>{
               if (e) e.preventDefault();
               loginLib(config,()=>{
-                connectedFn();
+             
               });
         }}/>);
   }
@@ -57,7 +53,11 @@ function renderLogin(props) {
    return (
        <div>
            {buttons}
-            <GooglePopup open={IdsLogInDetailsVisible} ProfileObj ={ProfileObj} >
+            <GooglePopup open={IdsLogInDetailsVisible} 
+            ProfileObj ={ProfileObj} 
+            googleTokenExpiration ={googleTokenExpiration}
+            idsTokenExpiration ={idsTokenExpiration}
+            >
                 <div>
                     <GoogleButton label ="Logout" mode = "logout" onClick ={()=>{
                         // //console.log('Logout: ');
@@ -88,6 +88,65 @@ function IDSConnect(props)  {
           setConnected(c);
         }
       }
+    });
+
+    var mgr = new UserManager(config);
+
+
+      mgr.events.addAccessTokenExpiring(() =>
+      {
+        console.log("token expiring...");
+
+          mgr.signinSilent({scope: config.scope, response_type: config.response_type})
+              .then((user) =>
+              {
+                  redirectHandler(config).then((c)=>{
+                        if(c!= undefined){
+                          if(connected!=c){
+                            setConnected(c);
+                          }
+                        }
+                      });
+              })
+              .catch((error) =>
+              {
+                  redirectHandler(config).then((c)=>{
+                    if(c!= undefined){
+                      if(connected!=c){
+                        setConnected(c);
+                      }
+                    }
+                });
+              });
+      });
+
+
+    mgr.events.addAccessTokenExpired(function(){
+
+      console.log("token expired...");
+      
+      mgr.signinSilent({scope: config.scope, response_type: config.response_type})
+      .then((user) =>
+      {
+          redirectHandler(config).then((c)=>{
+                if(c!= undefined){
+                  if(connected!=c){
+                    setConnected(c);
+                  }
+                }
+              });
+      })
+      .catch((error) =>
+      {
+          redirectHandler(config).then((c)=>{
+            if(c!= undefined){
+              if(connected!=c){
+                setConnected(c);
+              }
+            }
+        });
+      });
+
     });
 
 
@@ -148,15 +207,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
    
-  return {
-
-    
+  return {    
     setIdsLoginScreenVisible :isVisible =>{
       dispatch(setIdsLoginScreenVisible(isVisible))
-    },
-    
-    connectedFn :() =>{
-      dispatch(connected())
     }
   };
 };
