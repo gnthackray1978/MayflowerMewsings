@@ -1,41 +1,11 @@
-import AddIcon from '@material-ui/icons/Add';
-
-import AppBar from '@material-ui/core/AppBar';
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import ButtonContent from './button-content'
-import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
-import ControlIcon from '@material-ui/icons/OpenWith';
-import DeleteIcon from '@material-ui/icons/Delete';
 import Dialog from '@material-ui/core/Dialog';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Fab from '@material-ui/core/Fab';
-
-import Icon from '@material-ui/core/Icon';
-import IconButton from '@material-ui/core/IconButton';
-import InfoIcon from '@material-ui/icons/FeedBack';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemText from '@material-ui/core/ListItemText';
-import MenuIcon from '@material-ui/icons/Menu';
-import Nav from 'react-bootstrap/Nav';
-import NavItem from 'react-bootstrap/NavItem';
-import Navbar from 'react-bootstrap/Navbar';
-import NavigationIcon from '@material-ui/icons/Navigation';
-import PersonIcon from '@material-ui/icons/Person';
-
 import React, { Component } from 'react';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
 import blue from '@material-ui/core/colors/blue';
-
 import { withStyles } from '@material-ui/core/styles';
-import {PropTypes,func} from 'prop-types';
-
-
-import ImageButton from "./ImageButton.jsx";
-
+import {PropTypes} from 'prop-types';
 
 const styles = theme => ({
   // fab: {
@@ -74,13 +44,22 @@ class GooglePopup extends React.Component {
   }
 
   handleClose = () => {
-    this.props.onClose(false);
+  //  this.props.onClose(false);
   };
 
 
   render() {
 
-    const {className, theme, ProfileObj,classes, onClose, selectedValue, open,children } = this.props;
+    const {googleTokenExpiration,idsTokenExpiration,  open,children } = this.props;
+    
+    if(!googleTokenExpiration)
+      googleTokenExpiration = Date();
+
+    if(!idsTokenExpiration)
+      idsTokenExpiration = Date();
+
+    // googleTokenExpiration ={googleTokenExpiration}
+    // idsTokenExpiration ={idsTokenExpiration}
 
     if(this.props.ProfileObj == undefined){
      
@@ -105,6 +84,12 @@ class GooglePopup extends React.Component {
             </ListItem>
             <ListItem>
               <ListItemText primary= "Surname" secondary={this.props.ProfileObj.familyName}/>
+            </ListItem>
+            <ListItem>
+              <ListItemText primary= "Google Expiration"  secondary={googleTokenExpiration.toLocaleString("en-GB")}/>
+            </ListItem>
+            <ListItem>
+              <ListItemText primary= "IDS Expiration" secondary={idsTokenExpiration.toLocaleString("en-GB")}/>
             </ListItem>
             <ListItem>
                 {children}
