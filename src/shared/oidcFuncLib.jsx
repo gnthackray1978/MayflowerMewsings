@@ -696,7 +696,10 @@ export const connectRedirect = async (mgr,idServParams)=>{
 
   let validAccessToken = false;
 
-  let jsUserExpiresAt = new Date(expires_at *1000);
+  let jsUserExpiresAt = new Date();
+
+  if(expires_at)
+   jsUserExpiresAt = new Date(expires_at *1000);
 
   let now = getCurrentTime();
 
@@ -716,6 +719,10 @@ export const connectRedirect = async (mgr,idServParams)=>{
     imageUrl = loginState.profileObj.imageUrl;
 
 
+  let googleTokenExpiration = Date();
+
+  if(googleObj)
+    googleTokenExpiration =  new Date(googleObj.expires);
 
   var sessionState = {
     profileObjName,
@@ -729,7 +736,9 @@ export const connectRedirect = async (mgr,idServParams)=>{
      googleToken,
      googleObj : googleObj,
      GoogleConnected : validGoogleToken,
-     IDSConnected : validAccessToken
+     IDSConnected : validAccessToken,
+     googleTokenExpiration : googleTokenExpiration,
+     idsTokenExpiration : jsUserExpiresAt
   };
 
  // console.log('returning state : ' + sessionState.Connected + ' ' + access_token + ' ' + googleToken);
