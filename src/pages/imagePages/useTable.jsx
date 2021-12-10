@@ -2,10 +2,47 @@ import React  from 'react';
 import { ApolloClient, InMemoryCache, ApolloProvider, gql, useQuery ,useLazyQuery} from '@apollo/client';
 
 
-export function useTableState(qry) {
+export function useTableState() {
    
   // console.log('useTableState');
-
+  const GET_IMAGES = gql`
+  
+  query Image($page : String!){
+    image
+    {
+      imagesearch(page : $page) {
+        page
+         error
+        loginInfo
+        results {
+          id
+          path
+          title
+          info
+          parentImageId
+        }
+      }
+      
+      imageparentsearch(page : $page) {
+        page
+         error
+         
+        results {
+          id
+          title
+          to
+          from
+          info
+          page
+        }
+      }
+      
+    }
+     
+    
+  }
+  `;
+   
   
  
    const makeData = function(data){
@@ -33,7 +70,7 @@ export function useTableState(qry) {
      page: page
    };
 
-   const  { loading, networkStatus,error, data, refetch } = useQuery(qry, {
+   const  { loading, networkStatus,error, data, refetch } = useQuery(GET_IMAGES, {
       variables: filterParams,
       notifyOnNetworkStatusChange: true,
       fetchPolicy:"no-cache"  

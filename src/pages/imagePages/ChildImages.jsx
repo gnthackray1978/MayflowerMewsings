@@ -75,10 +75,7 @@ function ChildImages(props){
             >
               <CloseIcon />
             </IconButton>
-           
-            <Button autoFocus color="inherit" onClick={handleClose}>
-              Close
-            </Button>
+         
           </Toolbar>
         </AppBar>
 

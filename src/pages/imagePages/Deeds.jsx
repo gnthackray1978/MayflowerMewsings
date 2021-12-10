@@ -4,12 +4,12 @@ import {useTableState} from './useTable.jsx'
 import ImageParents from './ImageParents.jsx'; 
 
 
-function PTombstones(props) {
+function Deeds(props) {
 
   
     var state = useTableState();
 
-    console.log('PTombstones');
+    console.log('Deeds');
   
     return (
         <div>
@@ -20,4 +20,4 @@ function PTombstones(props) {
 }
 
 
-export default PTombstones;
+export default Deeds;

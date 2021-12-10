@@ -5,8 +5,15 @@ import FTMDupes from './FTMDupes.jsx';
 import FTMPersons from './FTMPersons.jsx';
 import FTMTrees from './FTMTrees.jsx';
 import Maps from './Maps.jsx';
+
 import PTombstones from './imagePages/PTombstones.jsx';
-import PWills from './imagePages/PWills.jsx';
+import HuntsWills from './imagePages/HuntsWills.jsx';
+import YorksWills from './imagePages/YorksWills.jsx';
+import Deeds from './imagePages/Deeds.jsx';
+import BMDs from './imagePages/BMDs.jsx';
+import Trees from './imagePages/Trees.jsx';
+import Marriages from './imagePages/Marriages.jsx';
+
 import TBirths from './TBirths.jsx';
 import TMarriages from './TMarriages.jsx';
 import TSources from './TSources.jsx';
@@ -52,8 +59,13 @@ function PageContainer(props) {
           <Route exact path="/tmarriages" component= {()=><TMarriages/>}/>
           <Route exact path="/tbirths" component= {()=><TBirths/>}/>
 
-          <Route exact path="/pwills" component= {()=><PWills/>}/>
+          <Route exact path="/huntswills" component= {()=><HuntsWills/>}/>
           <Route exact path="/ptombstones" component= {()=><PTombstones/>}/>
+          <Route exact path="/yorkswills" component= {()=><YorksWills/>}/>
+          <Route exact path="/bmds" component= {()=><BMDs/>}/>
+          <Route exact path="/deeds" component= {()=><Deeds/>}/>
+          <Route exact path="/marriages" component= {()=><Marriages/>}/>
+          <Route exact path="/trees" component= {()=><Trees/>}/>
 
           <Route exact path="/maps" component= {()=><Maps/>}/>
 
