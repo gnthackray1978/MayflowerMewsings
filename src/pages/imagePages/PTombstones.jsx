@@ -1,22 +1,63 @@
-import React, { Component } from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import { connect } from "react-redux";
+import React from 'react';
 
-const styles = theme => ({
+import { gql} from '@apollo/client';
+  
+import {useTableState} from './useTable.jsx' 
+import ImageParents from './ImageParents.jsx'; 
 
-});
-
+const GET_IMAGES = gql`
+  
+query Image($page : String!){
+  image
+  {
+    imagesearch(page : $page) {
+      page
+       error
+      loginInfo
+      results {
+        id
+        path
+        title
+        info
+        parentImageId
+      }
+    }
+    
+    imageparentsearch(page : $page) {
+      page
+       error
+       
+      results {
+        id
+        title
+        to
+        from
+        info
+        page
+      }
+    }
+    
+  }
+   
+  
+}
+`;
+ 
+ 
 function PTombstones(props) {
 
-    const {className, theme, classes} = props;
+  
+    var state = useTableState(GET_IMAGES);
 
+    console.log('PTombstones');
+  
     return (
         <div>
-          Tombstone pictures
+          <ImageParents parents = {state.parents}/>
         </div>
     );
 
 }
 
 
-export default withStyles(styles)(PTombstones);
+export default PTombstones;
