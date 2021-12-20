@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-//import Marker from '../../Marker';
 import { withStyles } from '@material-ui/core/styles';
 import { connect } from "react-redux";
 import GoogleMapReact from 'google-map-react';
