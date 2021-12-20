@@ -1,6 +1,6 @@
 const queryString = require('query-string');
 
-import { buildRowParams } from "@material-ui/data-grid";
+
 import { UserManager, WebStorageStateStore, Log } from "oidc-client";
 
 
