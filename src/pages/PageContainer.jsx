@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component , useEffect} from 'react';
 import Default from './Default.jsx';
 import Diagrams from './Diagrams.jsx';
 import FTMDupes from './FTMDupes.jsx';
@@ -19,7 +19,8 @@ import TMarriages from './TMarriages.jsx';
 import TSources from './TSources.jsx';
 import WLincolnshire from './WLincolnshire.jsx';  
 import WNorfolk from './WNorfolk.jsx';
-import Ancestrymatches from './Ancestrymatches.jsx';
+import Ancestrymatches from './Ancestrymatches.jsx';  
+
 
 import {
   Switch,
@@ -28,21 +29,10 @@ import {
 
 } from "react-router-dom";
 
+ 
 
 function PageContainer(props) {
-
-
-    // var tp = (state)=>{
-    //   return {
-    //     funcList: state.ux.funcList
-    //   }
-    // };
-    //
-    // const { funcList} = useSelector(tp,shallowEqual);
-
-  //  var page = getPageName(location.pathname, funcList);
-
-
+ 
     return (
       <Switch>
           <Route exact path="/ftmpersons" render = {()=><FTMPersons/>}/>
@@ -76,6 +66,5 @@ function PageContainer(props) {
 
 
 }
-
-
+ 
 export default PageContainer;
