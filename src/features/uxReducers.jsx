@@ -60,24 +60,27 @@ export default (state = {
         };
 
     case FUNCTIONSELECTED:
-        //console.log('APPLICATIONSELECTED');
+        //
         return {
           ...state,
            funcName : action.payload
         };
 
-      case APPLICATIONSELECTED:
+      case APPLICATIONSELECTED: 
           // if we have a new app selected
           // then invalidate the func list & selected Function
           // if same app nothing will change
           if(state.appName != action.payload){
             return {
-               ...state,
-            //   funcList: [],
-              // loadedFuncList :false,
+               ...state, 
                funcName : 0,
                appName : action.payload
             };
+          }
+          else{
+            return {
+              ...state
+           };
           }
 
         case APPDIALOGOPEN:
