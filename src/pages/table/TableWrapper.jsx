@@ -44,6 +44,12 @@ export default function TableWrapper(props) {
 
   };
 
+  if(!state.handleChangePage)
+    state.handleChangePage = ()=>{};
+
+  if(!state.handleChangeRowsPerPage)
+    state.handleChangeRowsPerPage = ()=>{};
+
   return (
     <MuiThemeProvider theme={theme}>
       <div className={classes.root}>
@@ -58,8 +64,11 @@ export default function TableWrapper(props) {
             count={state.totalRecordCount || 0} 
             rowsPerPage={state.rowsPerPage}
             page={state.page}
-            onChangePage={state.handleChangePage}
-            onChangeRowsPerPage={state.handleChangeRowsPerPage}
+        //    onChangePage={state.handleChangePage}
+            //onChangeRowsPerPage={state.handleChangeRowsPerPage}
+            onRowsPerPageChange = {state.handleChangeRowsPerPage}
+            onPageChange = {state.handleChangePage}
+
           />
 
       </div>
