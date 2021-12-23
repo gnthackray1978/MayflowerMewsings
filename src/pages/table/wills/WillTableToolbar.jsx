@@ -10,7 +10,7 @@ import TableBox from '../tableBox.jsx';
 const WillTableToolbar = (props) => {
 //  console.log('rendered: WillTableToolbar' );
 
-  const classes = useToolbarStyles();
+  const classes = useToolbarStyles(props.theme);
   const { numSelected, title, filterFieldChanged, filterParams } = props.state;
 
 

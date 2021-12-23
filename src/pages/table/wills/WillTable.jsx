@@ -11,9 +11,9 @@ import TableHeaderFromState  from '../TableHeaderFromState.jsx';
 export default function WillTable(props) {
 
 
-  const {state} = props;
+  const {state, theme} = props;
 
-  const classes = useStyles();
+  const classes = useStyles(theme);
 
   console.log(state.loginInfo);
 
