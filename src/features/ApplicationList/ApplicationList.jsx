@@ -9,7 +9,7 @@ import List from '@material-ui/core/List';
 import { ListItem, ListItemText } from '@material-ui/core';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-
+import { useTheme } from '@material-ui/core/styles';
 import {funcSelected, funcDialogOpen , funcDialogClose} from "../uxActions.jsx";
 import { BrowserRouter as Router,  useHistory } from "react-router-dom";
 import {applicationListStyles} from '../styleFuncs.jsx';
@@ -91,9 +91,9 @@ function GetFunctionList(appName, functions, funcSelected, closeFuncListDialog,h
 
 function ApplicationList(props) {
 
-  const {funcSelected, funcDialogClose, appName, theme} = props;
+  const {funcSelected, funcDialogClose, appName} = props;
 
-
+  const theme = useTheme();
   const classes = applicationListStyles(theme);
 
 
@@ -131,10 +131,7 @@ function ApplicationList(props) {
 }
 
 
-ApplicationList.propTypes = {
-  classes: PropTypes.object.isRequired,
-  toggleDrawer : PropTypes.func
-};
+
 
 const mapStateToProps = state => {
   return {

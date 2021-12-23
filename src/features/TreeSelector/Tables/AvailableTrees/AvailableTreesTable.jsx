@@ -7,15 +7,17 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableRow from '@material-ui/core/TableRow';
 
 import Link from '@material-ui/core/Link';
-
-import {theme,useSideBarStyles} from '../../../../pages/table/styleFuncs.jsx';
+import { useTheme } from '@material-ui/core/styles';
+import {useSideBarStyles} from '../../../../pages/table/styleFuncs.jsx';
 
 import TableHeaderFromState  from '../../../../pages/table/TableHeaderFromState.jsx';
 
 
 function AvailableTreesTable(props) {
 
-  const {state, theme} = props;
+  const {state} = props;
+
+  const theme = useTheme();
 
   const classes = useSideBarStyles(theme);
 

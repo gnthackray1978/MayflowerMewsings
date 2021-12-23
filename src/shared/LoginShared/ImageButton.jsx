@@ -155,10 +155,5 @@ function ImageButton(props) {
   );
 }
 
-ImageButton.propTypes = {
-  classes: PropTypes.object.isRequired,
-  onClick : PropTypes.func,
-  url : PropTypes.string
-};
 
 export default ImageButton;

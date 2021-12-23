@@ -1,6 +1,7 @@
 import React from 'react';
  import Paper from '@material-ui/core/Paper'; 
 import ChildImages from './ChildImages.jsx';
+import { useTheme } from '@material-ui/core/styles';
 import {styles} from './styleFuncs.jsx';
 
  
@@ -9,7 +10,8 @@ import {styles} from './styleFuncs.jsx';
 
   
 
-  const {parents, theme} = props;
+  const {parents} = props;
+  const theme = useTheme();
   const classes = styles(theme);
  
   return (

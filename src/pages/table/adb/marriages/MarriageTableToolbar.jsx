@@ -74,9 +74,5 @@ const MarriageTableToolbar = (props) => {
 };
 
 
-MarriageTableToolbar.propTypes = {
-  numSelected: PropTypes.number.isRequired,
-  filterFieldChanged : PropTypes.func
-};
 
 export default MarriageTableToolbar;

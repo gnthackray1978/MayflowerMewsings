@@ -6,13 +6,16 @@ import Toolbar from '@material-ui/core/Toolbar';
 import TextField from '@material-ui/core/TextField';
 import {useToolbarStyles} from '../../../../pages/table/styleFuncs.jsx';
 import TableBox from '../../../../pages/table/tableBox.jsx';
+import { useTheme } from '@material-ui/core/styles';
 
 const AvailableTreesToolbar = (props) => {
 //  console.log('rendered: TrsTableToolbar' );
 
   
-  const { numSelected, title, filterFieldChanged, filterParams , setSelected, theme} = props.state;
+  const { numSelected, title, filterFieldChanged, filterParams , setSelected} = props.state;
   
+  const theme = useTheme();
+
   const classes = useToolbarStyles(theme);
 
   const [origin, setorigin] = React.useState(filterParams.origin);

@@ -5,6 +5,7 @@ import clsx from 'clsx';
 import Toolbar from '@material-ui/core/Toolbar';
 import TextField from '@material-ui/core/TextField';
 import { connect } from "react-redux";
+import { useTheme } from '@material-ui/core/styles';
 import {useToolbarStyles} from '../../styleFuncs.jsx';
 import TableBox from '../../tableBox.jsx';
 
@@ -12,10 +13,11 @@ const MapPersonToolbar = (props) => {
 //  console.log('rendered: FTMViewTableToolbar' );
 
   
-  const {selectedTreeData, theme } = props;
+  const {selectedTreeData } = props;
 
   const { numSelected, title, filterFieldChanged, filterParams } = props.state;
   
+  const theme = useTheme();
   const classes = useToolbarStyles(theme);
   
   //console.log('MapPersonToolbar: '+selectedTreeData);

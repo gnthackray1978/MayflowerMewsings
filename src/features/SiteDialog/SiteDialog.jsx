@@ -4,6 +4,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import React, { Component , useEffect} from 'react'; 
+import { useTheme } from '@material-ui/core/styles';
 import {siteDialog} from '../styleFuncs.jsx';
 import {PropTypes,func} from 'prop-types';
 import {applicationSelected, siteDialogOpen, siteDialogClose} from "../uxActions.jsx";
@@ -85,8 +86,10 @@ function GetSiteList(results, applicationSelected, siteDialogClose,history){
 function SiteDialog(props) {
 
     
-    const {className, theme,ShowAppListDialog, 
+    const {ShowAppListDialog, 
       applicationSelected, siteDialogClose} = props;
+
+    const theme = useTheme();
 
     const classes = siteDialog(theme);
 

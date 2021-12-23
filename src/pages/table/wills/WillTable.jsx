@@ -4,15 +4,15 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableRow from '@material-ui/core/TableRow';
- 
+import { useTheme } from '@material-ui/core/styles';
 import {useStyles} from '../styleFuncs.jsx';
 import TableHeaderFromState  from '../TableHeaderFromState.jsx';
 
 export default function WillTable(props) {
 
 
-  const {state, theme} = props;
-
+  const {state} = props;
+  const theme = useTheme();
   const classes = useStyles(theme);
 
   console.log(state.loginInfo);

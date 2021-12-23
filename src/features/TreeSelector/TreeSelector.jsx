@@ -11,6 +11,7 @@ import AvailableTrees from './Tables/AvailableTrees/AvailableTrees.jsx'
 import TreePeople from './Tables/TreePeople/TreePeople.jsx'
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import { useTheme } from '@material-ui/core/styles';
 
 import {treeSelector} from '../styleFuncs.jsx';
 
@@ -91,8 +92,9 @@ function a11yProps(index) {
 
 function TreeSelector(props) {
     //
-    const { funcDialogClose, selectedTreeData, selectedTreePersonData, theme} = props;
+    const { funcDialogClose, selectedTreeData, selectedTreePersonData} = props;
             
+    const theme = useTheme();
     const classes = treeSelector(theme); 
     
     useEffect(() => console.log('TreeSelector loaded ' ), []);

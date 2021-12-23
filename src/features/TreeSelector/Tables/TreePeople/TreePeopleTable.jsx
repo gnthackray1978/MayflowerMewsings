@@ -9,13 +9,15 @@ import { connect } from "react-redux";
  import {useSideBarStyles} from '../../../../pages/table/styleFuncs.jsx';
 import TableHeaderFromState  from '../../../../pages/table/TableHeaderFromState.jsx';
 import {setTreePerson} from "../../../uxActions.jsx";
-
+import { useTheme } from '@material-ui/core/styles';
 
 
 function TreePeopleTable(props){
 
-  const {state, setTreePerson, theme} = props;
+  const {state, setTreePerson} = props;
 
+  const theme = useTheme();
+  
   const classes = useSideBarStyles(theme);
 
 

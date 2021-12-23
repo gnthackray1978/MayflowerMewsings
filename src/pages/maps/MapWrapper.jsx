@@ -1,14 +1,15 @@
 import React, { Component } from 'react'; 
 import { MuiThemeProvider } from "@material-ui/core/styles";
- 
-import {theme,useStyles} from './styleFuncs.jsx';
+import { useTheme } from '@material-ui/core/styles';
+import {useStyles} from './styleFuncs.jsx';
  
 
 export default function MapWrapper(props) {
 
 
-  const {state, children, theme} = props;
+  const {state, children} = props;
 
+  const theme = useTheme();
   const classes = useStyles(theme);
 
   if(!state.loading && state.error && state.error.graphQLErrors && state.error.graphQLErrors.length >0){

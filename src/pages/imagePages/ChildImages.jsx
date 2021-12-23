@@ -9,6 +9,7 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import CloseIcon from "@material-ui/icons/Close";
 import Slide from "@material-ui/core/Slide"; 
+import { useTheme } from '@material-ui/core/styles';
 import {styles} from './styleFuncs.jsx';
 
  
@@ -20,7 +21,9 @@ function ChildImages(props){
       
   
 
-  const {images, theme} = props;
+  const {images} = props;
+  const theme = useTheme();
+  
   const classes = styles(theme);
 
   const [selectedTile, setSelectedTile] = React.useState(null);
