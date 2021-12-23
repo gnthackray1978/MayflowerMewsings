@@ -1,11 +1,5 @@
 import React, { Component } from 'react';
 import Marriages from './table/adb/marriages/Marriage.jsx'
-import { withStyles } from '@material-ui/core/styles';
-import { connect } from "react-redux";
-
-const styles = theme => ({
-
-});
 
 function TMarriages(props) {
 
@@ -20,4 +14,4 @@ function TMarriages(props) {
 }
 
 
-export default withStyles(styles)(TMarriages);
+export default TMarriages;
