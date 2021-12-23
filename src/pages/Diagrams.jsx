@@ -1,10 +1,5 @@
 import React, { Component } from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import { connect } from "react-redux";
-
-const styles = theme => ({
-
-});
+ 
 
 function Diagrams(props) {
 
@@ -21,4 +16,4 @@ function Diagrams(props) {
 }
 
 
-export default withStyles(styles)(Diagrams);
+export default Diagrams;

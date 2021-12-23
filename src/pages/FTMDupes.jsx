@@ -1,11 +1,5 @@
 import React, { Component } from 'react';
 import Dupes from './table/dna/dupes/Dupes.jsx'
-import { withStyles } from '@material-ui/core/styles';
-import { connect } from "react-redux";
-
-const styles = theme => ({
-
-});
 
 function FTMDupes(props) {
 
@@ -20,4 +14,4 @@ function FTMDupes(props) {
 }
 
 
-export default withStyles(styles)(FTMDupes);
+export default FTMDupes;

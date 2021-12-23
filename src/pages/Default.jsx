@@ -1,10 +1,4 @@
 import React, { Component } from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import { connect } from "react-redux";
-
-const styles = theme => ({
-
-});
 
 function Default(props) {
 
@@ -19,4 +13,4 @@ function Default(props) {
 }
 
 
-export default withStyles(styles)(Default);
+export default Default;

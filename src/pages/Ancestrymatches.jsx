@@ -1,11 +1,5 @@
 import React, { Component } from 'react';
 import Poi from './table/dna/poi/Poi.jsx'
-import { withStyles } from '@material-ui/core/styles';
-import { connect } from "react-redux";
-
-const styles = theme => ({
-
-});
 
 function WLincolnshire(props) {
 
@@ -20,4 +14,4 @@ function WLincolnshire(props) {
 }
 
 
-export default withStyles(styles)(WLincolnshire);
+export default WLincolnshire;
