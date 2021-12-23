@@ -1,12 +1,6 @@
 import React, { Component } from 'react';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
-import { withStyles } from '@material-ui/core/styles';
-import { connect } from "react-redux";
-
-const styles = theme => ({
-
-});
 
 function TableBox(props) {
 
@@ -21,4 +15,4 @@ function TableBox(props) {
 }
 
 
-export default withStyles(styles)(TableBox);
+export default TableBox;
