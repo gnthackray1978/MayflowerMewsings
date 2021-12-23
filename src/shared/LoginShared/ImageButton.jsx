@@ -1,119 +1,120 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
 import ButtonBase from "@material-ui/core/ButtonBase";
+import {imageButton} from './styles.jsx';
 
-const styles = theme => ({
-  root: {
-    display: "flex",
-    flexWrap: "wrap",
-    width: 42
-  },
-  image: {
-    position: "relative",
-    height: 40,
 
-    [theme.breakpoints.down("xs")]: {
-      width: "42", // Overrides inline-style
-      height: 40
-    },
-    "&:hover, &$focusVisible": {
-      zIndex: 1,
-      "& $imageBackdrop": {
-        opacity: 0.15
-      },
-      "& $imageMarked": {
-        opacity: 0
-      },
-      "& $imageTitle": {
-        border: "4px solid currentColor"
-      }
-    }
-  },
-  focusVisible: {},
-  imageButton: {
-    position: "absolute",
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 80,
-    color: theme.palette.common.white
-  },
-  imageSrc: {
-    position: "absolute",
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
-    borderRadius: 80,
-    backgroundSize: "cover",
-    backgroundPosition: "center 100%"
-  },
-  imageBackdrop: {
-    position: "absolute",
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
-    borderRadius: 80,
+// const styles = theme => ({
+//   root: {
+//     display: "flex",
+//     flexWrap: "wrap",
+//     width: 42
+//   },
+//   image: {
+//     position: "relative",
+//     height: 40,
 
-    backgroundColor: theme.palette.common.black,
-    opacity: 0.4,
-    transition: theme.transitions.create("opacity")
-  },
-  imageTitle: {
-    position: "relative",
-    padding: `${theme.spacing(1) * 2}px ${theme.spacing(1) * 4}px ${theme
-      .spacing.unit + 6}px`
-  },
-  imageMarked: {
-    height: 3,
-    width: 18,
-    backgroundColor: theme.palette.common.white,
-    position: "absolute",
-    bottom: -2,
-    left: "calc(50% - 9px)",
-    transition: theme.transitions.create("opacity")
-  },
-  img__overlayInner: {
-    alignItems: "center",
+//     [theme.breakpoints.down("xs")]: {
+//       width: "42", // Overrides inline-style
+//       height: 40
+//     },
+//     "&:hover, &$focusVisible": {
+//       zIndex: 1,
+//       "& $imageBackdrop": {
+//         opacity: 0.15
+//       },
+//       "& $imageMarked": {
+//         opacity: 0
+//       },
+//       "& $imageTitle": {
+//         border: "4px solid currentColor"
+//       }
+//     }
+//   },
+//   focusVisible: {},
+//   imageButton: {
+//     position: "absolute",
+//     left: 0,
+//     right: 0,
+//     top: 0,
+//     bottom: 0,
+//     display: "flex",
+//     alignItems: "center",
+//     justifyContent: "center",
+//     borderRadius: 80,
+//     color: theme.palette.common.white
+//   },
+//   imageSrc: {
+//     position: "absolute",
+//     left: 0,
+//     right: 0,
+//     top: 0,
+//     bottom: 0,
+//     borderRadius: 80,
+//     backgroundSize: "cover",
+//     backgroundPosition: "center 100%"
+//   },
+//   imageBackdrop: {
+//     position: "absolute",
+//     left: 0,
+//     right: 0,
+//     top: 0,
+//     bottom: 0,
+//     borderRadius: 80,
 
-    display: "flex",
-    justifyContent: "center",
-    left: -5,
-    width: 53,
-    height: 50,
-    opacity: 1,
-    position: "absolute",
+//     backgroundColor: theme.palette.common.black,
+//     opacity: 0.4,
+//     transition: theme.transitions.create("opacity")
+//   },
+//   imageTitle: {
+//     position: "relative",
+//     padding: `${theme.spacing(1) * 2}px ${theme.spacing(1) * 4}px ${theme
+//       .spacing.unit + 6}px`
+//   },
+//   imageMarked: {
+//     height: 3,
+//     width: 18,
+//     backgroundColor: theme.palette.common.white,
+//     position: "absolute",
+//     bottom: -2,
+//     left: "calc(50% - 9px)",
+//     transition: theme.transitions.create("opacity")
+//   },
+//   img__overlayInner: {
+//     alignItems: "center",
 
-     borderRadius: 100,
-     background: 'linear-gradient(to right, red, green, yellow)',
-    top: -5,
+//     display: "flex",
+//     justifyContent: "center",
+//     left: -5,
+//     width: 53,
+//     height: 50,
+//     opacity: 1,
+//     position: "absolute",
 
-    zIndex: 0
-  },
-  img__overlayOuter: {
-    alignItems: "center",
+//      borderRadius: 100,
+//      background: 'linear-gradient(to right, red, green, yellow)',
+//     top: -5,
 
-    display: "flex",
-    justifyContent: "center",
-    left: -2,
-    width: 46,
-    height: 44,
-    opacity: 1,
-    position: "absolute",
+//     zIndex: 0
+//   },
+//   img__overlayOuter: {
+//     alignItems: "center",
 
-     borderRadius: 100,
-     background: 'white',
-    top: -2,
+//     display: "flex",
+//     justifyContent: "center",
+//     left: -2,
+//     width: 46,
+//     height: 44,
+//     opacity: 1,
+//     position: "absolute",
 
-    zIndex: 0
-  }
-});
+//      borderRadius: 100,
+//      background: 'white',
+//     top: -2,
+
+//     zIndex: 0
+//   }
+// });
 
 // const images = {
 //   url:
@@ -125,7 +126,9 @@ const styles = theme => ({
 function ImageButton(props) {
   ////console.log('ImageButton');
 
-  const { classes } = props;
+  //const { classes } = props;
+
+  const classes = imageButton(props.theme);
 
   return (
       <div className={classes.root}>
@@ -158,4 +161,4 @@ ImageButton.propTypes = {
   url : PropTypes.string
 };
 
-export default withStyles(styles)(ImageButton);
+export default ImageButton;

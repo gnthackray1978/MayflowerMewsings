@@ -1,12 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from "react-redux";
 import { loginRedirect, setPath} from "../idsActions.jsx";
-import { withStyles } from '@material-ui/core/styles';
+
 const queryString = require('query-string');
 
-const styles = theme => ({
-
-});
 
 class IDSRedirect extends Component {
   constructor(props) {
@@ -45,4 +42,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(IDSRedirect));
+export default connect(mapStateToProps, mapDispatchToProps)(IDSRedirect);
