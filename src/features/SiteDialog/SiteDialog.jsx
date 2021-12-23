@@ -3,9 +3,8 @@ import Dialog from '@material-ui/core/Dialog';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import React, { Component , useEffect} from 'react';
-import blue from '@material-ui/core/colors/blue';
-import { withStyles } from '@material-ui/core/styles';
+import React, { Component , useEffect} from 'react'; 
+import {siteDialog} from '../styleFuncs.jsx';
 import {PropTypes,func} from 'prop-types';
 import {applicationSelected, siteDialogOpen, siteDialogClose} from "../uxActions.jsx";
 import {
@@ -20,33 +19,33 @@ import {
 
 import { connect } from "react-redux";
 
-const styles = theme => ({
-  // fab: {
-  //   margin: theme.spacing(1),
-  // },
-  extendedIcon: {
-    marginRight: theme.spacing(1),
-  },
-  root: {
-  flexGrow: 1,
-  },
-  grow: {
-    marginLeft: 50,
-    flexGrow: 1,
-  },
-  menuButton: {
-    marginLeft: -12,
-    marginRight: 20,
-  },
-  tolowerBtn : {
-    textTransform: 'none'
-  },
-  avatar: {
-    backgroundColor: blue[100],
-    color: blue[600],
-  },
+// const styles = theme => ({
+//   // fab: {
+//   //   margin: theme.spacing(1),
+//   // },
+//   extendedIcon: {
+//     marginRight: theme.spacing(1),
+//   },
+//   root: {
+//   flexGrow: 1,
+//   },
+//   grow: {
+//     marginLeft: 50,
+//     flexGrow: 1,
+//   },
+//   menuButton: {
+//     marginLeft: -12,
+//     marginRight: 20,
+//   },
+//   tolowerBtn : {
+//     textTransform: 'none'
+//   },
+//   avatar: {
+//     backgroundColor: blue[100],
+//     color: blue[600],
+//   },
 
-});
+// });
 
 
 function GetSiteList(results, applicationSelected, siteDialogClose,history){
@@ -86,9 +85,10 @@ function GetSiteList(results, applicationSelected, siteDialogClose,history){
 function SiteDialog(props) {
 
     
-    const {className, theme,classes,ShowAppListDialog, 
+    const {className, theme,ShowAppListDialog, 
       applicationSelected, siteDialogClose} = props;
 
+    const classes = siteDialog(theme);
 
     let AppList = props.stateObj.sites;
     let history = useHistory();
@@ -106,11 +106,7 @@ function SiteDialog(props) {
 
 }
 
-SiteDialog.propTypes = {
-  classes: PropTypes.object.isRequired,
-  onClose: PropTypes.func,
-  selectedValue: PropTypes.string,
-};
+
 
 
 const mapStateToProps = state => {
@@ -131,4 +127,4 @@ const mapDispatchToProps = dispatch => {
 };
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(SiteDialog));
+export default connect(mapStateToProps, mapDispatchToProps)(SiteDialog);

@@ -1,69 +1,61 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types'; 
 import AppBar from '@material-ui/core/AppBar';
-import Drawer from '@material-ui/core/Drawer';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import Button from '@material-ui/core/Button';
+
 import List from '@material-ui/core/List';
 import { ListItem, ListItemText } from '@material-ui/core';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import { ApolloClient, InMemoryCache, ApolloProvider, gql, useQuery } from '@apollo/client';
-
 
 import {funcSelected, funcDialogOpen , funcDialogClose} from "../uxActions.jsx";
-import {useAuthProvider} from "../../shared/IDSConnect/AuthProvider.jsx";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  useHistory
-} from "react-router-dom";
+import { BrowserRouter as Router,  useHistory } from "react-router-dom";
+import {applicationListStyles} from '../styleFuncs.jsx';
+
 import './ApplicationList.css';
 
 import { connect } from "react-redux";
 
-const styles = theme => ({
+// const styles = theme => ({
 
-  root: {
-    paddingRight: theme.spacing(1),
-    minHeight : window.innerHeight -10
-  },
+//   root: {
+//     paddingRight: theme.spacing(1),
+//     minHeight : window.innerHeight -10
+//   },
 
-  list: {
-    width: 420,
-  },
+//   list: {
+//     width: 420,
+//   },
 
-  fullList: {
-    width: 'auto',
-  },
-  mygrid:{
-    margin:'0px'
-  },
-  input:{
-    width: '100px'
-  },
-  label: {
+//   fullList: {
+//     width: 'auto',
+//   },
+//   mygrid:{
+//     margin:'0px'
+//   },
+//   input:{
+//     width: '100px'
+//   },
+//   label: {
 
-    textAlign: 'center',
+//     textAlign: 'center',
 
-  },
-  toolBar: {
-    paddingLeft :'12px',
-    minHeight: '0px'
-  },
-  menuButton: {
-    marginLeft: -12,
-    marginRight: 20,
-  },
-  appBar: {
-     top: 'auto',
-     bottom: 0,
-   },
-});
+//   },
+//   toolBar: {
+//     paddingLeft :'12px',
+//     minHeight: '0px'
+//   },
+//   menuButton: {
+//     marginLeft: -12,
+//     marginRight: 20,
+//   },
+//   appBar: {
+//      top: 'auto',
+//      bottom: 0,
+//    },
+// });
 
 
 
@@ -99,8 +91,11 @@ function GetFunctionList(appName, functions, funcSelected, closeFuncListDialog,h
 
 function ApplicationList(props) {
 
-  const { classes, closeDrawer, funcListLoad, funcSelected,
-    ShowFuncListDialog, funcDialogOpen, funcDialogClose, appName} = props;
+  const {funcSelected, funcDialogClose, appName, theme} = props;
+
+
+  const classes = applicationListStyles(theme);
+
 
   let funcList = props.stateObj.funcs;
   
@@ -158,4 +153,4 @@ const mapDispatchToProps = dispatch => {
 };
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(ApplicationList));
+export default connect(mapStateToProps, mapDispatchToProps)(ApplicationList);

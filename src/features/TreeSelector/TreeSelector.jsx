@@ -1,70 +1,66 @@
 import  React, { useState, useEffect }  from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
-import Drawer from '@material-ui/core/Drawer';
 import IconButton from '@material-ui/core/IconButton';
 import PlayArrow from '@material-ui/icons/PlayArrow';
 import MenuIcon from '@material-ui/icons/Menu';
 import Button from '@material-ui/core/Button';
-import List from '@material-ui/core/List';
-import { ListItem, ListItemText } from '@material-ui/core';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import AvailableTrees from './Tables/AvailableTrees/AvailableTrees.jsx'
 import TreePeople from './Tables/TreePeople/TreePeople.jsx'
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import { ApolloClient, InMemoryCache, ApolloProvider, gql, useQuery } from '@apollo/client';
-import Box from '@material-ui/core/Box';
+
+import {treeSelector} from '../styleFuncs.jsx';
 
 import {funcSelected, funcDialogOpen , funcDialogClose} from "../uxActions.jsx";
 
 
 import { connect } from "react-redux";
 
-const styles = theme => ({
+// const styles = theme => ({
 
-  toolbarButtons: {
-    marginLeft: 'auto',
-  },
+//   toolbarButtons: {
+//     marginLeft: 'auto',
+//   },
 
-  root: {
-    paddingRight: theme.spacing(1),
-    minHeight : window.innerHeight -10
-  },
+//   root: {
+//     paddingRight: theme.spacing(1),
+//     minHeight : window.innerHeight -10
+//   },
 
-  list: {
-    width: 420,
-  },
+//   list: {
+//     width: 420,
+//   },
 
-  fullList: {
-    width: 'auto',
-  },
-  mygrid:{
-    margin:'0px'
-  },
-  input:{
-    width: '100px'
-  },
-  label: {
+//   fullList: {
+//     width: 'auto',
+//   },
+//   mygrid:{
+//     margin:'0px'
+//   },
+//   input:{
+//     width: '100px'
+//   },
+//   label: {
 
-    textAlign: 'center',
+//     textAlign: 'center',
 
-  },
-  toolBar: {
-    paddingLeft :'12px',
-    minHeight: '0px'
-  },
-  menuButton: {
-    marginLeft: -12,
-    marginRight: 20,
-  },
-  appBar: {
-     top: 'auto',
-     bottom: 0,
-   },
-});
+//   },
+//   toolBar: {
+//     paddingLeft :'12px',
+//     minHeight: '0px'
+//   },
+//   menuButton: {
+//     marginLeft: -12,
+//     marginRight: 20,
+//   },
+//   appBar: {
+//      top: 'auto',
+//      bottom: 0,
+//    },
+// });
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -95,14 +91,9 @@ function a11yProps(index) {
 
 function TreeSelector(props) {
     //
-    const { classes, closeDrawer, funcListLoad, funcSelected,
-            ShowFuncListDialog, funcDialogOpen, funcDialogClose,
-             funcList, appName,selectedTreeData, selectedTreePersonData} = props;
+    const { funcDialogClose, selectedTreeData, selectedTreePersonData, theme} = props;
             
-           // 
-    
-
- //   console.log('TreeSelector loaded ' + selectedTreeData);
+    const classes = treeSelector(theme); 
     
     useEffect(() => console.log('TreeSelector loaded ' ), []);
 
@@ -212,4 +203,4 @@ const mapDispatchToProps = dispatch => {
 };
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(TreeSelector));
+export default connect(mapStateToProps, mapDispatchToProps)(TreeSelector);
