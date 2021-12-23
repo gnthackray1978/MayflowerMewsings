@@ -7,9 +7,9 @@ import {theme,useStyles} from './styleFuncs.jsx';
 export default function MapWrapper(props) {
 
 
-  const {state, children} = props;
+  const {state, children, theme} = props;
 
-  const classes = useStyles();
+  const classes = useStyles(theme);
 
   if(!state.loading && state.error && state.error.graphQLErrors && state.error.graphQLErrors.length >0){
     return (

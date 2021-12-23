@@ -12,9 +12,9 @@ import {useStyles} from './styleFuncs.jsx';
 
 //  const { classes, onSelectAllClick, order,  orderBy, numSelected, rowCount, onRequestSort, headCells } = props;
 
-  const {onSelectAllClick, order,  orderBy, numSelected, rowCount, onRequestSort, headCells } = props.state;
+  const { order,  orderBy, onRequestSort, headCells } = props.state;
 
-  const classes = useStyles();
+  const classes = useStyles(props.theme);
 
 
 

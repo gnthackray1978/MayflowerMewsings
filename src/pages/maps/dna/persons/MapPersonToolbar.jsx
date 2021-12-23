@@ -11,10 +11,13 @@ import TableBox from '../../tableBox.jsx';
 const MapPersonToolbar = (props) => {
 //  console.log('rendered: FTMViewTableToolbar' );
 
-  const classes = useToolbarStyles();
-  const {selectedTreeData } = props;
-  const { numSelected, title, filterFieldChanged, filterParams } = props.state;
+  
+  const {selectedTreeData, theme } = props;
 
+  const { numSelected, title, filterFieldChanged, filterParams } = props.state;
+  
+  const classes = useToolbarStyles(theme);
+  
   //console.log('MapPersonToolbar: '+selectedTreeData);
   // numSelected={state.selected.length}
   //   filterParams ={state.filterParams} title = {state.title}
