@@ -11,7 +11,7 @@ import {setParams} from './qryStringFuncs';
 const FTMViewTableToolbar = (props) => {
 //  console.log('rendered: FTMViewTableToolbar' );
 
-  const classes = useToolbarStyles();
+  const classes = useToolbarStyles(props.theme);
   const { numSelected, title, filterFieldChanged, filterParams } = props.state; 
   const [surname, setSurname] = React.useState(filterParams.surname);
   const [yearStart, setyearStart] = React.useState(String(filterParams.yearStart));

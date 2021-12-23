@@ -10,7 +10,7 @@ import TableBox from '../../tableBox.jsx';
 const TrsTableToolbar = (props) => {
 //  console.log('rendered: TrsTableToolbar' );
 
-  const classes = useToolbarStyles();
+  const classes = useToolbarStyles(props.theme);
   const { numSelected, title, filterFieldChanged, filterParams } = props.state;
 
   const [origin, setorigin] = React.useState(filterParams.origin);

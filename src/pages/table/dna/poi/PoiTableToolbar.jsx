@@ -10,7 +10,7 @@ import TableBox from '../../tableBox.jsx';
 const PoiTableToolbar = (props) => {
 //  console.log('rendered: PoiTableToolbar' );
 
-  const classes = useToolbarStyles();
+  const classes = useToolbarStyles(props.theme);
   const { numSelected, title, filterFieldChanged, filterParams } = props.state;
 
 

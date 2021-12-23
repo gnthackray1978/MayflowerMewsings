@@ -10,9 +10,9 @@ import TableHeaderFromState  from '../../TableHeaderFromState.jsx';
 
 export default function PoiTable(props) {
 
-  const {state} = props;
+  const {state, theme} = props;
 
-  const classes = useStyles();
+  const classes = useStyles(theme);
 
   return (
         <TableContainer>

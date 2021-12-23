@@ -10,7 +10,7 @@ import TableBox from '../../tableBox.jsx';
 const SourceTableToolbar = (props) => {
 //  console.log('rendered: DupeTableToolbar' );
 
-  const classes = useToolbarStyles();
+  const classes = useToolbarStyles(props.theme);
   const { numSelected, title, filterFieldChanged, filterParams } = props.state;
 
   const [location, setLocation] = React.useState(filterParams.yearStart);

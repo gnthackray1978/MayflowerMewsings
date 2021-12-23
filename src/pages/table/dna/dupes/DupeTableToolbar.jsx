@@ -11,7 +11,7 @@ import TableBox from '../../tableBox.jsx';
 const DupeTableToolbar = (props) => {
 //  console.log('rendered: DupeTableToolbar' );
 
-  const classes = useToolbarStyles();
+  const classes = useToolbarStyles(props.theme);
   const { numSelected, title, filterFieldChanged, filterParams } = props.state;
 
   const [surname, setSurname] = React.useState(filterParams.surname);
