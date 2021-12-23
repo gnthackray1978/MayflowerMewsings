@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { ApolloClient, InMemoryCache, ApolloProvider, gql, useQuery ,useLazyQuery} from '@apollo/client';
 import { connect } from "react-redux";
-import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import {makeStateFromSession} from '../../shared/oidcFuncLib.jsx';
 
 
