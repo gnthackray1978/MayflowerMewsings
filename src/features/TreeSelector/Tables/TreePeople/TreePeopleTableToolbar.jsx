@@ -10,9 +10,10 @@ import TableBox from '../../../../pages/table/tableBox.jsx';
 const TreePeopleTableToolbar = (props) => {
 //  console.log('rendered: FTMViewTableToolbar' );
 
-  const classes = useToolbarStyles();
+  
   const { numSelected, title, filterFieldChanged, filterParams } = props.state;
- 
+  const classes = useToolbarStyles(props.theme);
+  
   const [surname, setSurname] = React.useState(filterParams.surname);
   const [yearStart, setyearStart] = React.useState(String(filterParams.yearStart));
   const [yearEnd, setyearEnd] = React.useState(String(filterParams.yearEnd));

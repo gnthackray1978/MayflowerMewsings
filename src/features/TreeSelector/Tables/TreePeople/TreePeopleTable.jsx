@@ -14,9 +14,9 @@ import {setTreePerson} from "../../../uxActions.jsx";
 
 function TreePeopleTable(props){
 
-  const {state, setTreePerson} = props;
+  const {state, setTreePerson, theme} = props;
 
-  const classes = useSideBarStyles();
+  const classes = useSideBarStyles(theme);
 
 
   return(

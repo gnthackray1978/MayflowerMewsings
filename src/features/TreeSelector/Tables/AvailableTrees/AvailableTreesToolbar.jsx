@@ -10,8 +10,10 @@ import TableBox from '../../../../pages/table/tableBox.jsx';
 const AvailableTreesToolbar = (props) => {
 //  console.log('rendered: TrsTableToolbar' );
 
-  const classes = useToolbarStyles();
-  const { numSelected, title, filterFieldChanged, filterParams , setSelected} = props.state;
+  
+  const { numSelected, title, filterFieldChanged, filterParams , setSelected, theme} = props.state;
+  
+  const classes = useToolbarStyles(theme);
 
   const [origin, setorigin] = React.useState(filterParams.origin);
   const [groupNumber, setGroupNumber] = React.useState(filterParams.groupNumber);

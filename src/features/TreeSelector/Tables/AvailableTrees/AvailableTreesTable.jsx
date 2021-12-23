@@ -15,9 +15,9 @@ import TableHeaderFromState  from '../../../../pages/table/TableHeaderFromState.
 
 function AvailableTreesTable(props) {
 
-  const {state} = props;
+  const {state, theme} = props;
 
-  const classes = useSideBarStyles();
+  const classes = useSideBarStyles(theme);
 
   
  
