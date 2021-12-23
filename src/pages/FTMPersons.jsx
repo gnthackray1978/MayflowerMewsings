@@ -1,11 +1,6 @@
 import React, { Component } from 'react';
 import FTMView from './table/dna/FTMView/FTMView.jsx'
-import { withStyles } from '@material-ui/core/styles';
-import { connect } from "react-redux";
 
-const styles = theme => ({
-
-});
 
 function FTMPersons(props) {
 
@@ -20,4 +15,4 @@ function FTMPersons(props) {
 }
 
 
-export default withStyles(styles)(FTMPersons);
+export default FTMPersons;

@@ -7,9 +7,10 @@ import {styles} from './styleFuncs.jsx';
  
  function ImageParents(props){
 
-  const classes = styles();
+  
 
-  const {parents} = props;
+  const {parents, theme} = props;
+  const classes = styles(theme);
  
   return (
       <div>        

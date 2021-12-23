@@ -18,9 +18,11 @@ import {styles} from './styleFuncs.jsx';
 
 function ChildImages(props){
       
-  const classes = styles();
+  
 
-  const {images} = props;
+  const {images, theme} = props;
+  const classes = styles(theme);
+
   const [selectedTile, setSelectedTile] = React.useState(null);
  
   //?w=164&h=164&fit=crop&auto=format
