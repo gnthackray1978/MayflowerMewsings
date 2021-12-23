@@ -1,11 +1,5 @@
 import  React, { useState, useEffect }  from 'react';
-import { withStyles } from '@material-ui/core/styles';
 import MapPerson from './maps/dna/persons/MapPerson'
-import { connect } from "react-redux";
- 
-const styles = theme => ({
-
-});
 
 function Maps(props) {
     const {className, theme, classes} = props;
@@ -21,4 +15,4 @@ function Maps(props) {
 }
 
 
-export default withStyles(styles)(Maps);
+export default Maps;

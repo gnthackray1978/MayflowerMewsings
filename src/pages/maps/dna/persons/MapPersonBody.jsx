@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import { connect } from "react-redux";
 import GoogleMapReact from 'google-map-react';
-import { RestaurantRounded } from '@material-ui/icons';
 import mapStyles from './mapStyles.json';
 
 const defaultMapOptions = {
@@ -11,9 +8,6 @@ const defaultMapOptions = {
 
 const AnyReactComponent = ({ text }) => <div>{text}</div>;
 
-const styles = theme => ({
-
-});
 
 
 const InfoWindowTreeSection = (props) =>{
@@ -228,4 +222,4 @@ class MapPersonBody extends React.Component  {
 
 }
  
-export default withStyles(styles)(MapPersonBody);
+export default MapPersonBody;
