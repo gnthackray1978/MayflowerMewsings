@@ -1,42 +1,40 @@
-import { lighten, makeStyles } from '@material-ui/core/styles';
-import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
+import { makeStyles} from '@material-ui/core/styles';
+// export const theme = createMuiTheme({
+//   overrides: {
+//     MuiTableCell: {
+//       root: {
+//         fontSize : '0.700rem',
+//         textAlign : 'left'
+//       }
+//     },
 
-export const theme = createMuiTheme({
-  overrides: {
-    MuiTableCell: {
-      root: {
-        fontSize : '0.700rem',
-        textAlign : 'left'
-      }
-    },
+//     MuiTable: {
+//       root: {
+//         width: '95%',
 
-    MuiTable: {
-      root: {
-        width: '95%',
+//       }
+//     },
 
-      }
-    },
+//     MuiFormControl: {
+//       root: {
+//         paddingRight: '20px',
+//         flex: '1 1 100%',
+//         paddingBottom: '40px',
+//         paddingTop: '40px',
+//       }
+//     },
 
-    MuiFormControl: {
-      root: {
-        paddingRight: '20px',
-        flex: '1 1 100%',
-        paddingBottom: '40px',
-        paddingTop: '40px',
-      }
-    },
-
-    MuiFormLabel: {
-      root: {
-        paddingRight: '20px',
-        paddingTop: '40px',
-      }
-    },
+//     MuiFormLabel: {
+//       root: {
+//         paddingRight: '20px',
+//         paddingTop: '40px',
+//       }
+//     },
 
 
-  }
+//   }
 
-});
+// });
 
 export const useSideBarStyles = makeStyles((theme) => ({
   root: {
