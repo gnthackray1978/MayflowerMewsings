@@ -1,16 +1,10 @@
 import React, { Component } from 'react';
 import LincsWills from './table/wills/LincsWills.jsx'
-import { withStyles } from '@material-ui/core/styles';
-import { connect } from "react-redux";
 
-const styles = theme => ({
-
-});
 
 function WLincolnshire(props) {
 
-    const {className, theme, classes} = props;
-
+ 
     return (
         <div>
           <LincsWills></LincsWills>
@@ -20,4 +14,4 @@ function WLincolnshire(props) {
 }
 
 
-export default withStyles(styles)(WLincolnshire);
+export default WLincolnshire;

@@ -1,11 +1,5 @@
 import React, { Component } from 'react';
 import NorfolkWills from './table/wills/NorfolkWills.jsx'
-import { withStyles } from '@material-ui/core/styles';
-import { connect } from "react-redux";
-
-const styles = theme => ({
-
-});
 
 function WNorfolk(props) {
 
@@ -20,4 +14,4 @@ function WNorfolk(props) {
 }
 
 
-export default withStyles(styles)(WNorfolk);
+export default WNorfolk;
