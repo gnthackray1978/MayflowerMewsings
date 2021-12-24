@@ -1,9 +1,9 @@
 import Fab from '@material-ui/core/Fab';
 import React, { Component } from 'react';
-import blue from '@material-ui/core/colors/blue';
 
 import { connect } from "react-redux";
-import { withStyles } from '@material-ui/core/styles';
+import { useTheme } from '@material-ui/core/styles';
+import {googleConnectStyles} from './GoogleConnectStyles';
 import {PropTypes} from 'prop-types';
 
 import {setGoogleApi, setGoogleSignOutState, setLoginScreenVisible} from "../googleActions.jsx";
@@ -14,33 +14,6 @@ import GooglePopup from "../../LoginShared/GooglePopup.jsx";
 import GoogleButton from "../../LoginShared/GoogleButton.jsx";
 
 
-const styles = theme => ({
-  fab: {
-    margin: theme.spacing(1),
-  },
-  extendedIcon: {
-    marginRight: theme.spacing(1),
-  },
-  root: {
-  flexGrow: 1,
-  },
-  grow: {
-    marginLeft: 50,
-    flexGrow: 1,
-  },
-  menuButton: {
-    marginLeft: -12,
-    marginRight: 20,
-  },
-  tolowerBtn : {
-    textTransform: 'none'
-  },
-  avatar: {
-    backgroundColor: blue[100],
-    color: blue[600],
-  },
-
-});
 
 class GoogleConnect extends Component {
 
@@ -75,9 +48,13 @@ class GoogleConnect extends Component {
   renderLogin() {
 
 
-    const { classes, isImageButton, isFabButton, imageUrl,profileObjName,
-      ProfileObj, LogInDetailsVisible, setLoginScreenVisible, setGoogleApiSignIn} = this.props;
+    const {  isImageButton, isFabButton, imageUrl,profileObjName,
+        ProfileObj, LogInDetailsVisible,
+         setLoginScreenVisible, setGoogleApiSignIn} = this.props;
 
+    const theme = useTheme();
+
+    const classes = googleConnectStyles(theme);
 
     let buttons = (
         <GoogleButton label ="Login" mode = "login" onClick ={e=>{
@@ -241,4 +218,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(GoogleConnect));
+export default connect(mapStateToProps, mapDispatchToProps)(GoogleConnect);
