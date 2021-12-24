@@ -9,6 +9,7 @@ import IDSConnect   from "../../shared/IDSConnect/Components/IDSConnect.jsx";
 import {siteDialogOpen, siteDialogClose,funcDialogOpen,funcDialogClose} from "../uxActions.jsx";
 import AppsIcon from '@material-ui/icons/Apps';
 import {topButtonStyles} from '../styleFuncs.jsx';
+import { useTheme } from '@material-ui/core/styles';
 
 /*
 Buttons that go accross the top of the screen
@@ -58,14 +59,20 @@ function getPageName(pagePath, funcList){
 
 function TopButtons(props) {
   
-    const classes = topButtonStyles();
-  
+    
+    const theme = useTheme();
+
     const {siteDialogOpen, siteDialogClose,
        showAppListDialog, ShowFuncListDialog, funcDialogOpen , 
        funcDialogClose, metaSubset} = props;
+
+    const classes =  topButtonStyles(theme);
  
-    //console.log('top buttons ' + SelectedFunc + ' ' + SelectedApp);
+    //console.log(props);
     var selection = getPageName(location.pathname, metaSubset.sites);
+
+ 
+
 
     return (
          <Toolbar>
@@ -86,6 +93,7 @@ function TopButtons(props) {
                      {selection.title}
                  </Typography>
              </Button>
+             
              <IconButton className={classes.menuButton} color="inherit"
                aria-label="Menu"  onClick={()=>{
                   if(showAppListDialog)
@@ -95,6 +103,7 @@ function TopButtons(props) {
                   }}>
                  <AppsIcon />
              </IconButton>
+             
              <IDSConnect mode = "login"  metaSubset = {metaSubset}/>
 
          </Toolbar>
