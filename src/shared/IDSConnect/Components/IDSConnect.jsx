@@ -1,7 +1,6 @@
 import Fab from '@material-ui/core/Fab';
 import React, { Component, useEffect } from 'react';
 import { connect  } from "react-redux";
-import { withStyles } from '@material-ui/core/styles';
 import {PropTypes} from 'prop-types';
 
 import loadScript from "../../LoginShared/load-script.js";
@@ -10,11 +9,11 @@ import GooglePopup from "../../LoginShared/GooglePopup.jsx";
 import GoogleButton from "../../LoginShared/GoogleButton.jsx";
 import { UserManager, WebStorageStateStore, Log } from "oidc-client";
 
-import {setIdsLoginScreenVisible,connected} from "../idsActions.jsx";
+import {setIdsLoginScreenVisible} from "../idsActions.jsx";
 import {loginLib,redirectHandler,makeStateFromSession,logoutLib} from '../../oidcFuncLib.jsx';
+import { useTheme } from '@material-ui/core/styles';
 
-
-import styles from "./styles.jsx";
+import {styles} from "./styles.jsx";
 
 
 
@@ -27,7 +26,10 @@ function renderLogin(props) {
     isImageButton,
     isFabButton, IDSConnected,googleTokenExpiration,idsTokenExpiration} = makeStateFromSession();
  
-  const { classes,IdsLogInDetailsVisible,setIdsLoginScreenVisible,config} = props;
+  const {IdsLogInDetailsVisible,setIdsLoginScreenVisible,config} = props;
+
+  const theme = useTheme();
+  const classes = styles(theme);
 
   let buttons ;
 
@@ -81,8 +83,10 @@ function IDSConnect(props)  {
 
     const { classes,config,metaSubset} = props;
      
-    
+    console.log('loading IDSConnect: ' + connected);
+
     redirectHandler(config).then((c)=>{
+      //console.log('IDSConnect redirected : ' + c + ' , ' + connected)
       if(c!= undefined){
         if(connected!=c){
           setConnected(c);
@@ -93,67 +97,67 @@ function IDSConnect(props)  {
     var mgr = new UserManager(config);
 
 
-      mgr.events.addAccessTokenExpiring(() =>
-      {
-        console.log("token expiring...");
+    mgr.events.addAccessTokenExpiring(() =>
+    {
+      console.log("token expiring...");
 
-          mgr.signinSilent({scope: config.scope, response_type: config.response_type})
-              .then((user) =>
-              {
-                  redirectHandler(config).then((c)=>{
-                        if(c!= undefined){
-                          if(connected!=c){
-                            setConnected(c);
-                          }
+        mgr.signinSilent({scope: config.scope, response_type: config.response_type})
+            .then((user) =>
+            {
+                redirectHandler(config).then((c)=>{
+                      if(c!= undefined){
+                        if(connected!=c){
+                          setConnected(c);
                         }
-                      });
-              })
-              .catch((error) =>
-              {
-                  redirectHandler(config).then((c)=>{
-                    if(c!= undefined){
-                      if(connected!=c){
-                        setConnected(c);
                       }
+                    });
+            })
+            .catch((error) =>
+            {
+                redirectHandler(config).then((c)=>{
+                  if(c!= undefined){
+                    if(connected!=c){
+                      setConnected(c);
                     }
-                });
+                  }
               });
-      });
+            });
+    });
 
 
     mgr.events.addAccessTokenExpired(function(){
 
-      console.log("token expired...");
-      
-      mgr.signinSilent({scope: config.scope, response_type: config.response_type})
-      .then((user) =>
-      {
-          redirectHandler(config).then((c)=>{
-                if(c!= undefined){
-                  if(connected!=c){
-                    setConnected(c);
-                  }
+    console.log("token expired...");
+
+    mgr.signinSilent({scope: config.scope, response_type: config.response_type})
+    .then((user) =>
+    {
+        redirectHandler(config).then((c)=>{
+              if(c!= undefined){
+                if(connected!=c){
+                  setConnected(c);
                 }
-              });
-      })
-      .catch((error) =>
-      {
-          redirectHandler(config).then((c)=>{
-            if(c!= undefined){
-              if(connected!=c){
-                setConnected(c);
               }
+            });
+    })
+    .catch((error) =>
+    {
+        redirectHandler(config).then((c)=>{
+          if(c!= undefined){
+            if(connected!=c){
+              setConnected(c);
             }
-        });
+          }
       });
+    });
 
     });
 
 
-    if(metaSubset.siteCount < 2 && !metaSubset.loading && connected)
+    if(metaSubset.siteCount < 3 && !metaSubset.loading && connected)
     {
       metaSubset.fnRefetch();
-     // console.log('refreshing');
+      console.log('refreshing');
     } 
 
 
@@ -167,24 +171,6 @@ function IDSConnect(props)  {
    
 }
 
-IDSConnect.propTypes = {
-  handleClick : PropTypes.func,
-  //jsSrc: PropTypes.string,
-  isImageButton: PropTypes.bool,
-  isFabButton: PropTypes.bool,
-  imageUrl: PropTypes.string,
-  profileObjName: PropTypes.string,
-  ProfileObj : PropTypes.object,
-  LogInDetailsVisible: PropTypes.bool,
-  onClick : PropTypes.func,
-  mode: PropTypes.string,
-  disabled : PropTypes.bool,
-  render : PropTypes.func,
-  type: PropTypes.string,
-  //tag: PropTypes.string,
-  //icon: PropTypes.bool,
-  Connected : PropTypes.bool
-};
 
 
 
@@ -214,4 +200,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(IDSConnect));
+export default connect(mapStateToProps, mapDispatchToProps)(IDSConnect);
