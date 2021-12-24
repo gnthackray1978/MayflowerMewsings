@@ -1,24 +1,12 @@
-import React, { Component } from 'react';
+import React, { Component , useEffect} from 'react';
 import { connect } from "react-redux";
-
-import { withStyles } from '@material-ui/core/styles';
 import SideDrawer from './features/SideDrawer/SideDrawer.jsx';
 import TopButtons from './features/ButtonBar/TopButtons.jsx';
 import {AuthProvider} from './shared/IDSConnect/AuthProvider.jsx'
 import SiteDialog from './features/SiteDialog/SiteDialog.jsx';
 import PageContainer from './pages/PageContainer.jsx';
 import {gql, useQuery } from '@apollo/client';
-import {metaDataLoaded} from "./features/uxActions.jsx";
-
-
-import {
-  BrowserRouter as Router,
-} from "react-router-dom";
-
-const styles = () => ({
-
-});
-
+import {metaDataLoaded,applicationSelected} from "./features/uxActions.jsx";
 
 const GET_Meta = gql`
 
@@ -54,7 +42,7 @@ query {
 
 function getPageName(pagePath, funcList){
 
-   console.log('get page name ');
+   //console.log('get page name ');
 
    var path = pagePath.replace('/','');
 
@@ -139,9 +127,15 @@ function useTableState(qry) {
 
 function Main(props) {
 
-    const {metaDataLoaded} = props;
-   
-    var state = useTableState(GET_Meta);
+    const {metaDataLoaded,applicationSelected} = props;
+ 
+    let state = useTableState(GET_Meta);    
+
+    useEffect(() => { 
+        if(state.stateObj)          
+          applicationSelected(state.stateObj.appId);      
+    });
+
 
     let metaSubset ={
       loading : state.loading,
@@ -149,6 +143,7 @@ function Main(props) {
       siteCount : state.stateObj.sites.length,
       sites : state.stateObj.funcs
     }
+ 
 
     return (
       <AuthProvider>
@@ -160,11 +155,14 @@ function Main(props) {
 
             <SiteDialog stateObj = {state.stateObj}/>
 
-            <PageContainer/>
+            <PageContainer stateObj = {state.stateObj}/>
           </div>
 
       </AuthProvider>
     );
+ 
+
+
 
 }
 
@@ -177,9 +175,10 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    applicationSelected: (selectedApp) => dispatch(applicationSelected(selectedApp)),
     metaDataLoaded: (data) => dispatch(metaDataLoaded(data)),
   };
 };
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Main));
+export default connect(mapStateToProps, mapDispatchToProps)(Main);
