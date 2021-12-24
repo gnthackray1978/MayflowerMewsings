@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types'; 
 import AppBar from '@material-ui/core/AppBar';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import Button from '@material-ui/core/Button';
-
 import List from '@material-ui/core/List';
 import { ListItem, ListItemText } from '@material-ui/core';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -14,52 +12,9 @@ import {funcSelected, funcDialogOpen , funcDialogClose} from "../uxActions.jsx";
 import { BrowserRouter as Router,  useHistory } from "react-router-dom";
 import {applicationListStyles} from '../styleFuncs.jsx';
 
-import './ApplicationList.css';
 
 import { connect } from "react-redux";
-
-// const styles = theme => ({
-
-//   root: {
-//     paddingRight: theme.spacing(1),
-//     minHeight : window.innerHeight -10
-//   },
-
-//   list: {
-//     width: 420,
-//   },
-
-//   fullList: {
-//     width: 'auto',
-//   },
-//   mygrid:{
-//     margin:'0px'
-//   },
-//   input:{
-//     width: '100px'
-//   },
-//   label: {
-
-//     textAlign: 'center',
-
-//   },
-//   toolBar: {
-//     paddingLeft :'12px',
-//     minHeight: '0px'
-//   },
-//   menuButton: {
-//     marginLeft: -12,
-//     marginRight: 20,
-//   },
-//   appBar: {
-//      top: 'auto',
-//      bottom: 0,
-//    },
-// });
-
-
-
-
+ 
 
 function GetFunctionList(appName, functions, funcSelected, closeFuncListDialog,history, funcName){
 
@@ -105,7 +60,7 @@ function ApplicationList(props) {
   var items = GetFunctionList(appName,funcList,funcSelected,funcDialogClose,history);
 
   return (
-      <div className = "inner">
+      <div  className={classes.inner}>
          <AppBar position="static">
            <Toolbar>
                <IconButton className={classes.menuButton} color="inherit" aria-label="Menu" onClick={()=>{
@@ -129,6 +84,7 @@ function ApplicationList(props) {
   );
 
 }
+
 
 
 

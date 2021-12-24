@@ -31,7 +31,9 @@ export const topButtonStyles = makeStyles((theme) =>
 export const applicationListStyles = makeStyles((theme) => 
     (
         {
-
+            inner: {
+              width : 400,            
+            },
             root: {
               paddingRight: theme.spacing(1),
               minHeight : window.innerHeight -10
