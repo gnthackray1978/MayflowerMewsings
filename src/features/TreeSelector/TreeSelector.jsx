@@ -180,11 +180,7 @@ function TreeSelector(props) {
 
 }
 
-
-TreeSelector.propTypes = {
-  classes: PropTypes.object.isRequired,
-  toggleDrawer : PropTypes.func
-};
+ 
 
 const mapStateToProps = state => {
   return {
