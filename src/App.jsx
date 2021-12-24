@@ -1,35 +1,60 @@
 import React, { Component } from 'react';
+import { ThemeProvider, createTheme ,makeStyles} from '@material-ui/core/styles';
+import { BrowserRouter as Router } from "react-router-dom";
 
-import {
-  Switch,
-  Route,
-    BrowserRouter as Router
-} from "react-router-dom";
-
+ 
 import Main from './Main.jsx';
+ 
+const theme = createTheme({
+  overrides: {
+    MuiTableCell: {
+      root: {
+        fontSize : '0.700rem',
+        textAlign : 'left'
+      }
+    },
 
-import IDSRedirect from './shared/IDSConnect/Components/IDSRedirect.jsx';
+    MuiTable: {
+      root: {
+        width: '95%',
 
-class App extends Component {
-  constructor(props) {
-     super(props);
-   }
+      }
+    },
 
+    MuiFormControl: {
+      root: {
+        paddingRight: '20px',
+        flex: '1 1 100%',
+        paddingBottom: '40px',
+        paddingTop: '40px',
+      }
+    },
 
-   render() {
+    MuiFormLabel: {
+      root: {
+        paddingRight: '20px',
+        paddingTop: '40px',
+      }
+    }, 
+ 
+    
 
-    let result;
+     
 
-    result = <Main/>
-
-    let test = <IDSRedirect/>;
-
-    return (
-     <Router>
-          <Main/>
-      </Router>
-    );
   }
+
+});
+ 
+function App(){
+
+    
+    return (
+      <ThemeProvider theme={theme}>        
+        <Router>
+            <Main/>
+        </Router>
+      </ThemeProvider>
+    );
 }
 
 export default App;
