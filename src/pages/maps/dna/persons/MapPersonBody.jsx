@@ -1,12 +1,45 @@
 import React, { Component } from 'react';
 import GoogleMapReact from 'google-map-react';
-import mapStyles from './mapStyles.json';
+import {mapStyles} from '../../styleFuncs.jsx';
+import { useTheme } from '@material-ui/core/styles';
+
 
 const defaultMapOptions = {
-  styles: mapStyles
+  styles: [
+    {
+      "featureType": "all",
+      "elementType": "labels.text",
+      "stylers": [
+        {
+          "visibility": "off"
+        }
+      ]
+    },
+    {
+      "featureType": "poi",
+      "elementType": "labels.icon",
+      "stylers": [
+        {
+          "visibility": "off"
+        }
+      ]
+    },
+    {
+      "featureType": "road",
+      "elementType": "all",
+      
+      "stylers": [{ "visibility": "off" }]
+    }
+  ]
 };
 
-const AnyReactComponent = ({ text }) => <div>{text}</div>;
+const defaultProps = {
+  center: {
+    lat: 52.1270660000,
+    lng: -0.2151950000
+  },
+  zoom: 5
+};
 
 
 
@@ -132,33 +165,14 @@ const Marker = ({show, place, treeColours }) => {
 };
  
    
-class MapPersonBody extends React.Component  {
+function MapPersonBody(props) {
 
-  constructor(props){
-    super(props);
-    this.state ={
-      rows : props.rows,
-      treeColours : props.treeColours
-    }
-  }
+    const [rows, setRows] = React.useState(props.rows);
+    const [treeColours, setTreeColours] = React.useState(props.treeColours);
 
-  // componentDidMount(){
-  //   console.log('mappersonbody componentDidMount');
-  // }
- 
+    const theme = useTheme();
+    const classes = mapStyles(theme);
 
-  render() {
-  //  console.log('mappersonbody render');
-
-    var that = this;
-
-    const defaultProps = {
-      center: {
-        lat: 52.1270660000,
-        lng: -0.2151950000
-      },
-      zoom: 5
-    };
 
     const handleApiLoaded = (map, maps) => {
       // use map and maps objects
@@ -166,28 +180,24 @@ class MapPersonBody extends React.Component  {
 
     var onChildClickCallback = (key) => {
      
-        const index = that.state.rows.findIndex((e) => e.id === Number(key));
+        let tpRows = rows;
+        
+        const index = tpRows.findIndex((e) => e.id === Number(key));
         
         if(index >= 0){
-          that.state.rows[index].show = !that.state.rows[index].show; // eslint-disable-line no-param-reassign
-          //return { places: places };
-          that.setState({
-            rows: [...rows]
-          });
+          tpRows[index].show = !tpRows[index].show; // eslint-disable-line no-param-reassign
+        
+          setRows([...tpRows]);
         }
         else{
-          that.setState({
-            rows: that.state.rows
-          });
+          setRows([...tpRows]);
         }
     };
 
-    const rows = this.state.rows;
-    const treeColours = this.state.treeColours;
-
+   
     if(!rows)
     {
-      return (<div>No Data</div>);
+      return (<div className={classes.noData}>No Data</div>);
     }
     else{
       return (
@@ -218,7 +228,7 @@ class MapPersonBody extends React.Component  {
         </div>  
       );
     }
-  }
+  
 
 }
  

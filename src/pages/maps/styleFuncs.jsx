@@ -192,3 +192,13 @@ export const useToolbarStyles = makeStyles((theme) => ({
 
 
 }));
+
+
+export const mapStyles = makeStyles((theme) => ({
+  noData: {
+    marginLeft: '30px',
+    marginTop :'10px'
+  },
+
+ 
+}));
