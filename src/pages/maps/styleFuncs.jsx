@@ -1,4 +1,4 @@
-import { makeStyles} from '@material-ui/core/styles';
+import {lighten, makeStyles} from '@material-ui/core/styles';
 // export const theme = createMuiTheme({
 //   overrides: {
 //     MuiTableCell: {
@@ -110,6 +110,10 @@ export const useStyles = makeStyles((theme) => ({
 
 
 export const useToolbarStyles = makeStyles((theme) => ({
+  menuButton: {
+    marginTop: 12,
+    marginRight: 20,
+  },
   root: {
     paddingLeft: theme.spacing(2),
     paddingRight: theme.spacing(1),

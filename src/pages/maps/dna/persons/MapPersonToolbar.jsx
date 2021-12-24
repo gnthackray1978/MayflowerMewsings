@@ -8,6 +8,8 @@ import { connect } from "react-redux";
 import { useTheme } from '@material-ui/core/styles';
 import {useToolbarStyles} from '../../styleFuncs.jsx';
 import TableBox from '../../tableBox.jsx';
+import IconButton from '@material-ui/core/IconButton';
+import SearchIcon from '@material-ui/icons/Search';
 
 const MapPersonToolbar = (props) => {
 //  console.log('rendered: FTMViewTableToolbar' );
@@ -48,6 +50,9 @@ const MapPersonToolbar = (props) => {
         [classes.highlight]: numSelected > 0,
       })}
     >
+      <IconButton className={classes.menuButton} color="inherit" aria-label="Menu" onClick= { ()=>{}}>
+        <SearchIcon />
+      </IconButton>
 
       <TextField className={classes.yearBox} id="yearStart" label="Year From"
         value={yearStart}
