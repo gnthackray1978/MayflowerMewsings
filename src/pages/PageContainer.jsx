@@ -58,7 +58,7 @@ function PageContainer(props) {
           <Route exact path="/trees" component= {()=><Trees/>}/>
 
           <Route exact path="/maps" component= {()=><Maps/>}/>
-
+          <Route exact path="/heatmaps" component= {()=><Maps/>}/>
           <Route path="/" component= {()=><Default/>}/>
 
         </Switch>

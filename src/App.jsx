@@ -1,12 +1,23 @@
 import React, { Component } from 'react';
 import { ThemeProvider, createTheme ,makeStyles} from '@material-ui/core/styles';
 import { BrowserRouter as Router } from "react-router-dom";
-
- 
+import purple from '@material-ui/core/colors/purple';
+import green from '@material-ui/core/colors/green';
 import Main from './Main.jsx';
  
 const theme = createTheme({
+  palette: {
+      
+    primary: {
+      main: '#999999' 
+    },
+    secondary: {
+      main: '#000000'     
+    }
+  },
+
   overrides: {
+
     MuiTableCell: {
       root: {
         fontSize : '0.700rem',

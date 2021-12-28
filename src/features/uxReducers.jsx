@@ -1,6 +1,6 @@
 import { APPLICATIONLISTLOADED, APPLICATIONSELECTED, FUNCTIONLISTLOADED,METADATALOADED,
   FUNCTIONSELECTED,APPDIALOGOPEN,APPDIALOGCLOSED,FUNCDIALOGOPEN,FUNCDIALOGCLOSED,
-   TREESELECTED ,TREEPERSONSELECTED,DIAGRAMSELECTED} from './actionTypes.jsx';
+   TREESELECTED ,TREEPERSONSELECTED,DIAGRAMSELECTED, TREESELECTORDIALOGCLOSED,TREESELECTORDIALOGOPEN} from './actionTypes.jsx';
 
 export default (state = {
   appName :1,
@@ -20,6 +20,7 @@ export default (state = {
   loadedFuncList :false,
   showAppListDialog :false,
   showFuncListDialog :false,
+  showTreeSelectorDialog :false,
   selectedTreeData : undefined,
   selectedTreePersonData : undefined,
   diagramId : 0,
@@ -110,7 +111,21 @@ export default (state = {
               ...state,
                showFuncListDialog : false
             };
+        //showTreeSelectorDialog TREESELECTORDIALOGCLOSED,TREESELECTORDIALOGOPEN
+        case TREESELECTORDIALOGOPEN:
+            //console.log('TREESELECTORDIALOGOPEN');
+            return {
+              ...state,
+              showTreeSelectorDialog : true
+            };
 
+        case TREESELECTORDIALOGCLOSED:
+            //console.log('TREESELECTORDIALOGCLOSED');
+            return {
+              ...state,
+              showTreeSelectorDialog : false
+            };
+//showTreeSelecto
 
       default:
           return state;

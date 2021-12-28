@@ -10,14 +10,16 @@ import {useToolbarStyles} from '../../styleFuncs.jsx';
 import TableBox from '../../tableBox.jsx';
 import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
+// treeSelectorDialogClose
+import {treeSelectorDialogOpen,treeSelectorDialogClose} from "../../../../features/uxActions.jsx";
 
 const MapPersonToolbar = (props) => {
 //  console.log('rendered: FTMViewTableToolbar' );
 
   
-  const {selectedTreeData } = props;
+  const {selectedTreeData,treeSelectorDialogClose ,showTreeSelectorDialog , treeSelectorDialogOpen} = props;
 
-  const { numSelected, title, filterFieldChanged, filterParams } = props.state;
+  const { numSelected, title, filterFieldChanged, filterParams} = props.state;
   
   const theme = useTheme();
   const classes = useToolbarStyles(theme);
@@ -50,7 +52,15 @@ const MapPersonToolbar = (props) => {
         [classes.highlight]: numSelected > 0,
       })}
     >
-      <IconButton className={classes.menuButton} color="inherit" aria-label="Menu" onClick= { ()=>{}}>
+      <IconButton className={classes.menuButton} color="inherit" aria-label="Menu"
+       onClick= {()=>
+        {
+          console.log('onclick');
+          if(showTreeSelectorDialog)
+            treeSelectorDialogClose();
+          else
+            treeSelectorDialogOpen();
+        }}>
         <SearchIcon />
       </IconButton>
 
@@ -100,13 +110,15 @@ MapPersonToolbar.propTypes = {
  
 const mapStateToProps = state => {
   return { 
-    selectedTreeData : state.ux.selectedTreeData
+    selectedTreeData : state.ux.selectedTreeData,
+    showTreeSelectorDialog : state.ux.showTreeSelectorDialog
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    
+    treeSelectorDialogOpen: () => dispatch(treeSelectorDialogOpen()),
+    treeSelectorDialogClose: () => dispatch(treeSelectorDialogClose()),
   };
 };
 

@@ -2,6 +2,7 @@ import  React, { useState, useEffect }  from 'react';
 import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import IconButton from '@material-ui/core/IconButton';
+import SearchIcon from '@material-ui/icons/Search';
 import PlayArrow from '@material-ui/icons/PlayArrow';
 import MenuIcon from '@material-ui/icons/Menu';
 import Button from '@material-ui/core/Button';
@@ -15,7 +16,7 @@ import { useTheme } from '@material-ui/core/styles';
 
 import {treeSelector} from '../styleFuncs.jsx';
 
-import {funcSelected, funcDialogOpen , funcDialogClose} from "../uxActions.jsx";
+import {funcSelected, funcDialogOpen , funcDialogClose,treeSelectorDialogClose} from "../uxActions.jsx";
 
 
 import { connect } from "react-redux";
@@ -92,7 +93,7 @@ function a11yProps(index) {
 
 function TreeSelector(props) {
     //
-    const { funcDialogClose, selectedTreeData, selectedTreePersonData} = props;
+    const { treeSelectorDialogClose, selectedTreeData, selectedTreePersonData} = props;
             
     const theme = useTheme();
     const classes = treeSelector(theme); 
@@ -129,9 +130,9 @@ function TreeSelector(props) {
           <AppBar position="static">
             <Toolbar>
                 <IconButton className={classes.menuButton} color="inherit" aria-label="Menu" onClick={()=>{
-                      funcDialogClose(); //hopefully this is open when it's being cliucked on
+                      treeSelectorDialogClose(); //hopefully this is open when it's being cliucked on
                   }} >
-                  <MenuIcon/>
+                  <SearchIcon/>
                 </IconButton>
 
 
@@ -184,9 +185,6 @@ function TreeSelector(props) {
 
 const mapStateToProps = state => {
   return {
-    appName : state.ux.appName,
-    funcList: state.ux.funcList,
-    ShowFuncListDialog: state.ux.showFuncListDialog,
     selectedTreeData : state.ux.selectedTreeData,
     selectedTreePersonData : state.ux.selectedTreePersonData
   };
@@ -196,6 +194,7 @@ const mapDispatchToProps = dispatch => {
   return {
     funcSelected: (selectedApp) => dispatch(funcSelected(selectedApp)),
     funcDialogOpen: () => dispatch(funcDialogOpen()),
+    treeSelectorDialogClose : ()=>dispatch(treeSelectorDialogClose()),
     funcDialogClose: () => dispatch(funcDialogClose()),
   };
 };

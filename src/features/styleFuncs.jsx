@@ -68,6 +68,7 @@ export const applicationListStyles = makeStyles((theme) =>
             appBar: {
                top: 'auto',
                bottom: 0,
+               color: 'gray'
              },
           }
 

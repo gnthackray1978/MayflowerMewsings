@@ -4,6 +4,8 @@ import SideDrawer from './features/SideDrawer/SideDrawer.jsx';
 import TopButtons from './features/ButtonBar/TopButtons.jsx';
 import {AuthProvider} from './shared/IDSConnect/AuthProvider.jsx'
 import SiteDialog from './features/SiteDialog/SiteDialog.jsx';
+import TreeSelectionDrawer from './features/SideDrawer/TreeSelectionDrawer.jsx';
+
 import PageContainer from './pages/PageContainer.jsx';
 import {gql, useQuery } from '@apollo/client';
 import {metaDataLoaded,applicationSelected} from "./features/uxActions.jsx";
@@ -152,6 +154,8 @@ function Main(props) {
             <TopButtons isData = {true} metaSubset = {metaSubset}/>
 
             <SideDrawer stateObj = {state.stateObj}/>
+            
+            <TreeSelectionDrawer stateObj = {state.stateObj}/>
 
             <SiteDialog stateObj = {state.stateObj}/>
 

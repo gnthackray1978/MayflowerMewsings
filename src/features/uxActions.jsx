@@ -1,48 +1,46 @@
 import { METADATALOADED, APPLICATIONSELECTED,
   FUNCTIONSELECTED, APPDIALOGOPEN ,APPDIALOGCLOSED,FUNCDIALOGOPEN,
-  FUNCDIALOGCLOSED, TREESELECTED ,TREEPERSONSELECTED,DIAGRAMSELECTED} from './actionTypes.jsx';
+  FUNCDIALOGCLOSED, TREESELECTED ,TREEPERSONSELECTED,DIAGRAMSELECTED,
+  TREESELECTORDIALOGOPEN,TREESELECTORDIALOGCLOSED} from './actionTypes.jsx';
 
-  export const setTreePerson = (state) =>{
-    //console.log('applicationSelected action');
+export const setTreePerson = (state) =>{
+  //console.log('applicationSelected action');
 
-      return async (dispatch, getState)  => {
-          dispatch({
-            type: TREEPERSONSELECTED,
-            payload : state
-          });
-        }
-
-    
-  };
-
-  export const setTree = (state) =>{
-    //
-  
-      return async (dispatch, getState)  => {
-//        console.log('applicationSelected action');  /
-        var tp = getState();
-
-        if(tp.ux.selectedTreeData != state)
-        {
-          dispatch({
-            type: TREESELECTED,
-            payload : state
-          });
-        }
-      }
-    
-  };
-
-  export const setDiagram = (state) =>{
-    //console.log('applicationSelected action');
     return async (dispatch, getState)  => {
-         dispatch({
-           type: DIAGRAMSELECTED,
-           payload : state
-         });
-      }
-  };
+        dispatch({
+          type: TREEPERSONSELECTED,
+          payload : state
+        });
+      }    
+};
 
+export const setTree = (state) =>{
+  //
+
+    return async (dispatch, getState)  => {
+//        console.log('applicationSelected action');  /
+      var tp = getState();
+
+      if(tp.ux.selectedTreeData != state)
+      {
+        dispatch({
+          type: TREESELECTED,
+          payload : state
+        });
+      }
+    }
+  
+};
+
+export const setDiagram = (state) =>{
+  //console.log('applicationSelected action');
+  return async (dispatch, getState)  => {
+        dispatch({
+          type: DIAGRAMSELECTED,
+          payload : state
+        });
+    }
+};
 
 export const funcSelected = (state) =>{
   //console.log('applicationSelected action');
@@ -94,7 +92,6 @@ export const siteDialogClose = () =>{
     }
 };
 
-
 export const funcDialogOpen = () =>{
   //console.log('siteDialogOpen action');
 
@@ -111,6 +108,26 @@ export const funcDialogClose = () =>{
   return async (dispatch, getState)  => {
        dispatch({
          type: FUNCDIALOGCLOSED
+       });
+    }
+};
+
+export const treeSelectorDialogOpen = () =>{
+  //console.log('siteDialogOpen action');
+
+  return async (dispatch, getState)  => {
+       dispatch({
+         type: TREESELECTORDIALOGOPEN
+       });
+    }
+};
+
+export const treeSelectorDialogClose = () =>{
+  //console.log('siteDialogClose action');
+
+  return async (dispatch, getState)  => {
+       dispatch({
+         type: TREESELECTORDIALOGCLOSED
        });
     }
 };
