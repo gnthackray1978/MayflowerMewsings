@@ -1,20 +1,14 @@
 import  React, { useState, useEffect }  from 'react';
 
 import MapPersonBody from './MapPersonBody.jsx';
-import MapPersonToolbar from './MapPersonToolbar.jsx';
+import MappingToolbar from '../MappingToolbar.jsx';
 
-import MapWrapper from '../../MapWrapper.jsx'
+import MapWrapper from '../MapWrapper.jsx'
 import {gql} from '@apollo/client';
 
-import {useMapState} from '../../useMap';
+import {useMapState} from '../useMap';
 
-// function MPBWrapper({ rows, treeColours }) {
-//   return (
-//     <div>
-//      <MapPersonBody rows ={rows} treeColours = {treeColours}/>
-//     </div>
-//   );
-// }
+ 
 
 function makeData(data, schema, subSchema){
 
@@ -185,7 +179,7 @@ function MapPerson() {
         //rows treeColours
         <div>
           <MapWrapper state = {state} >
-            <MapPersonToolbar state ={state}/>
+            <MappingToolbar state ={state}/>
             <MapPersonBody rows ={state.rows} treeColours = {state.treeColours}/>
           </MapWrapper>
         </div>

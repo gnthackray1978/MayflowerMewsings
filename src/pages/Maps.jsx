@@ -1,5 +1,5 @@
 import  React, { useState, useEffect }  from 'react';
-import MapPerson from './maps/dna/persons/MapPerson'
+import MapPerson from './maps/treePersonLocations/MapPerson'
 
 function Maps(props) {
     const {className, theme, classes} = props;

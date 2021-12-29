@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import GoogleMapReact from 'google-map-react';
-import {mapStyles} from '../../styleFuncs.jsx';
+import {mapStyles} from '../styleFuncs.jsx';
 import { useTheme } from '@material-ui/core/styles';
 
 

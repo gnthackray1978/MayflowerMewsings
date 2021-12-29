@@ -3,8 +3,7 @@ import Default from './Default.jsx';
 import Diagrams from './Diagrams.jsx';
 import FTMDupes from './FTMDupes.jsx';
 import FTMPersons from './FTMPersons.jsx';
-import FTMTrees from './FTMTrees.jsx';
-import Maps from './Maps.jsx';
+import FTMTrees from './FTMTrees.jsx'; 
 
 import PTombstones from './imagePages/PTombstones.jsx';
 import HuntsWills from './imagePages/HuntsWills.jsx';
@@ -20,7 +19,8 @@ import TSources from './TSources.jsx';
 import WLincolnshire from './WLincolnshire.jsx';  
 import WNorfolk from './WNorfolk.jsx';
 import Ancestrymatches from './Ancestrymatches.jsx';  
-
+import MapPerson from './maps/treePersonLocations/MapPerson'
+import HeatMap from './maps/treePersonHeatMaps/HeatMap'
 
 import {
   Switch,
@@ -57,8 +57,9 @@ function PageContainer(props) {
           <Route exact path="/marriages" component= {()=><Marriages/>}/>
           <Route exact path="/trees" component= {()=><Trees/>}/>
 
-          <Route exact path="/maps" component= {()=><Maps/>}/>
-          <Route exact path="/heatmaps" component= {()=><Maps/>}/>
+          <Route exact path="/maps" component= {()=><MapPerson/>}/>
+          <Route exact path="/heatmaps" component= {()=><HeatMap/>}/>
+          
           <Route path="/" component= {()=><Default/>}/>
 
         </Switch>

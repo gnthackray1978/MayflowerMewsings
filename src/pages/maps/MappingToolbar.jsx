@@ -6,14 +6,14 @@ import Toolbar from '@material-ui/core/Toolbar';
 import TextField from '@material-ui/core/TextField';
 import { connect } from "react-redux";
 import { useTheme } from '@material-ui/core/styles';
-import {useToolbarStyles} from '../../styleFuncs.jsx';
-import TableBox from '../../tableBox.jsx';
+import {useToolbarStyles} from './styleFuncs.jsx';
+import TableBox from './tableBox.jsx';
 import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
 // treeSelectorDialogClose
-import {treeSelectorDialogOpen,treeSelectorDialogClose} from "../../../../features/uxActions.jsx";
+import {treeSelectorDialogOpen,treeSelectorDialogClose} from "../../features/uxActions.jsx";
 
-const MapPersonToolbar = (props) => {
+const MappingToolbar = (props) => {
 //  console.log('rendered: FTMViewTableToolbar' );
 
   
@@ -103,9 +103,7 @@ const MapPersonToolbar = (props) => {
   );
 };
 
-MapPersonToolbar.propTypes = {
-  state: PropTypes.object.isRequired
-};
+
 
  
 const mapStateToProps = state => {
@@ -123,4 +121,4 @@ const mapDispatchToProps = dispatch => {
 };
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(MapPersonToolbar);
+export default connect(mapStateToProps, mapDispatchToProps)(MappingToolbar);
