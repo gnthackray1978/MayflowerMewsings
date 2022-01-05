@@ -120,6 +120,8 @@ export  function useTableState(ReturnData,defaultParams, schema, subSchema) {
 
     if(!data) return rows;
 
+    if(!data[schema][subSchema]) return rows;
+
     let idx =0;
 
     while(idx < data[schema][subSchema].results.length){
