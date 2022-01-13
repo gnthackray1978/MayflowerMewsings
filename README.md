@@ -1,4 +1,4 @@
-# Skeleton React App
-Basic React App with Google Token based login
-using my idserver4 instance.
-(well it will be when i fix all the bugs)
+# Mayflower Mewsings.   
+Personal website. React and Redux front end.  
+Auth handled by modified IdentityServer4 instance. 
+Data comes from GraphQL backend. 
