@@ -12,9 +12,24 @@ export default (state = {
     IsExternalLoginOnly :true,
     silent_redirect_uri: 'http://localhost:1234',
     automaticSilentRenew: true,
-    google_token_uri :'https://msgauth01.azurewebsites.net/token'
-
+    google_token_uri :'https://msgauth01.azurewebsites.net/token',
+    AllowOfflineAccess : true
   },
+  GNTServParams :{
+    authority: "https://msgauth01.azurewebsites.net",
+    client_id: "gnthackray",
+    redirect_uri: "http://gnthackray.co.uk",
+    response_type: "code",
+    scope:"openid profile api1",
+    post_logout_redirect_uri: "http://gnthackray.co.uk",
+    loadUserInfo: true,
+    IsExternalLoginOnly :true,
+    silent_redirect_uri: "http://gnthackray.co.uk",
+    automaticSilentRenew: true,
+    google_token_uri :'https://msgauth01.azurewebsites.net/token',
+    AllowOfflineAccess : true
+  },
+
 
   infoloaded :false,
   IdsLogInDetailsVisible :false
