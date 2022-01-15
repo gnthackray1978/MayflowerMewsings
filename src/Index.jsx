@@ -127,7 +127,7 @@ function useTableState(qry) {
 
 
 
-function Main(props) {
+function Index(props) {
 
     const {metaDataLoaded,applicationSelected} = props;
  
@@ -185,4 +185,4 @@ const mapDispatchToProps = dispatch => {
 };
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(Main);
+export default connect(mapStateToProps, mapDispatchToProps)(Index);

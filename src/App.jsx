@@ -3,7 +3,7 @@ import { ThemeProvider, createTheme ,makeStyles} from '@material-ui/core/styles'
 import { BrowserRouter as Router } from "react-router-dom";
 import purple from '@material-ui/core/colors/purple';
 import green from '@material-ui/core/colors/green';
-import Main from './Main.jsx';
+import Index from './Index.jsx';
  
 const theme = createTheme({
   palette: {
@@ -62,7 +62,7 @@ function App(){
     return (
       <ThemeProvider theme={theme}>        
         <Router>
-            <Main/>
+            <Index/>
         </Router>
       </ThemeProvider>
     );
