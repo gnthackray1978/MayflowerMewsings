@@ -282,7 +282,7 @@ export const logoutLib = (idServParams)=>{
 
 
 
-export const ensureValidUserManage= (userManager,ids, params)=>{
+export const ensureValidUserManage= (userManager,idServParams, params)=>{
 
   // event callback when the user has been loaded (on silent renew or redirect)
 
@@ -363,19 +363,18 @@ export const ensureValidUserManage= (userManager,ids, params)=>{
   if(userManager)
     return userManager;
 
-  //const ids = storeAPI.getState().ids.IdServParams;
-   
+ 
   var config = {
-      authority: ids.authority,
-      client_id: ids.client_id,
-      redirect_uri: ids.redirect_uri,
-      response_type: ids.response_type,
-      scope:ids.scope,
+      authority: idServParams.authority,
+      client_id: idServParams.client_id,
+      redirect_uri: idServParams.redirect_uri,
+      response_type: idServParams.response_type,
+      scope:idServParams.scope,
       post_logout_redirect_uri: window.location.origin ,
-      loadUserInfo:ids.loadUserInfo,
-      IsExternalLoginOnly :ids.loadUserInfo,
-      silent_redirect_uri : ids.silent_redirect_uri,
-      automaticSilentRenew  : ids.automaticSilentRenew
+      loadUserInfo:idServParams.loadUserInfo,
+      IsExternalLoginOnly :idServParams.loadUserInfo,
+      silent_redirect_uri : idServParams.silent_redirect_uri,
+      automaticSilentRenew  : idServParams.automaticSilentRenew
   };
 
 
