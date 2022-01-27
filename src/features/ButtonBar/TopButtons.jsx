@@ -3,13 +3,17 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+import GamepadIcon from '@material-ui/icons/Gamepad';
 import Typography from '@material-ui/core/Typography';
 import { connect } from "react-redux";
 import IDSConnect   from "../../shared/IDSConnect/Components/IDSConnect.jsx";
-import {siteDialogOpen, siteDialogClose,funcDialogOpen,funcDialogClose} from "../uxActions.jsx";
+import {siteDialogOpen, siteDialogClose,funcDialogOpen,funcDialogClose,
+          treeSelectorDialogOpen,treeSelectorDialogClose, toggleDiagramControls} from "../uxActions.jsx";
 import AppsIcon from '@material-ui/icons/Apps';
 import {topButtonStyles} from '../styleFuncs.jsx';
 import { useTheme } from '@material-ui/core/styles';
+
+import SearchIcon from '@material-ui/icons/Search';
 
 /*
 Buttons that go accross the top of the screen
@@ -64,16 +68,19 @@ function TopButtons(props) {
 
     const {siteDialogOpen, siteDialogClose,
        showAppListDialog, ShowFuncListDialog, funcDialogOpen , 
-       funcDialogClose, metaSubset} = props;
+       funcDialogClose, metaSubset,showTreeSelectorDialog, 
+       treeSelectorDialogOpen,treeSelectorDialogClose, toggleDiagramControls} = props;
 
     const classes =  topButtonStyles(theme);
  
     //console.log(props);
     var selection = getPageName(location.pathname, metaSubset.sites);
 
- 
+    let showDiagramControls =false;
 
-
+    if(selection.appId ==2)
+      showDiagramControls =true;
+    
     return (
          <Toolbar>
              <IconButton className={classes.menuButton} color="inherit"
@@ -88,12 +95,34 @@ function TopButtons(props) {
                  <MenuIcon />
              </IconButton>
 
+             {showDiagramControls && <IconButton className={classes.menuButton} color="inherit" aria-label="Menu"
+                  onClick= {()=>
+                    {
+                      console.log('onclick');
+                      if(showTreeSelectorDialog)
+                        treeSelectorDialogClose();
+                      else
+                        treeSelectorDialogOpen();
+                    }}>
+              <SearchIcon />
+            </IconButton>}
+
              <Button color="inherit"  className={classes.grow}>
                  <Typography variant="h6" color="inherit"  className ={classes.tolowerBtn}>
                      {selection.title}
                  </Typography>
              </Button>
              
+             {showDiagramControls && 
+              <IconButton className={classes.menuButton} color="inherit" aria-label="Menu"
+                    onClick= {()=>
+                      {
+                        toggleDiagramControls();
+                      }}>
+                <GamepadIcon />
+              </IconButton>
+             }
+
              <IconButton className={classes.menuButton} color="inherit"
                aria-label="Menu"  onClick={()=>{
                   if(showAppListDialog)
@@ -120,9 +149,11 @@ const mapStateToProps = state => {
   let showFuncListDialog = state.ux.showFuncListDialog;
  
   return {
- 
+    selectedTreeData : state.ux.selectedTreeData,
+    showTreeSelectorDialog : state.ux.showTreeSelectorDialog,
     ShowAppListDialog :showAppListDialog,
     ShowFuncListDialog :showFuncListDialog
+
   };
 };
 
@@ -132,8 +163,11 @@ const mapDispatchToProps = dispatch => {
     funcDialogOpen: () => dispatch(funcDialogOpen()),
     funcDialogClose: () => dispatch(funcDialogClose()),
     siteDialogOpen: () => dispatch(siteDialogOpen()),
-    siteDialogClose: () => dispatch(siteDialogClose())
-    //
+    siteDialogClose: () => dispatch(siteDialogClose()),
+    treeSelectorDialogOpen: () => dispatch(treeSelectorDialogOpen()),
+    treeSelectorDialogClose: () => dispatch(treeSelectorDialogClose()),
+    toggleDiagramControls: ()=> dispatch(toggleDiagramControls())
+    
   };
 };
 
