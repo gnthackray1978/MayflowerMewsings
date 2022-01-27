@@ -22,6 +22,11 @@ import Ancestrymatches from './Ancestrymatches.jsx';
 import MapPerson from './maps/treePersonLocations/MapPerson'
 import HeatMap from './maps/treePersonHeatMaps/HeatMap'
 
+import Ancestors from './diagrams/ancestors/Ancestors'
+import Descendants from './diagrams/descendants/Descendants'
+import FDDescendants from './diagrams/fddescendants/FDDescendants'
+
+
 import {
   Switch,
   Route,
@@ -60,6 +65,11 @@ function PageContainer(props) {
           <Route exact path="/maps" component= {()=><MapPerson/>}/>
           <Route exact path="/heatmaps" component= {()=><HeatMap/>}/>
           
+          <Route exact path="/ancestors" component= {()=><Ancestors/>}/>
+          <Route exact path="/descendants" component= {()=><Descendants/>}/>
+          <Route exact path="/fddescendants" component= {()=><FDDescendants/>}/>
+          
+
           <Route path="/" component= {()=><Default/>}/>
 
         </Switch>
