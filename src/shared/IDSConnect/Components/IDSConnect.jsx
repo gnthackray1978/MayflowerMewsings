@@ -35,8 +35,7 @@ function renderLogin(props) {
 
   if(IDSConnected){
       if(isImageButton)
-        buttons = <ImageButton url = {imageUrl}
-          onClick={()=>setIdsLoginScreenVisible(true)}/>
+        buttons = <div><ImageButton url = {imageUrl} onClick={()=>setIdsLoginScreenVisible(true)}/></div>
 
       if(isFabButton)
         buttons = <Fab color="primary" aria-label="Add" className={classes.fab}
@@ -95,6 +94,8 @@ function IDSConnect(props)  {
     });
 
     var mgr = new UserManager(config);
+
+
 
 
     mgr.events.addAccessTokenExpiring(() =>
@@ -176,10 +177,13 @@ function IDSConnect(props)  {
 
 const mapStateToProps = state => {
  
- 
-     
+  let config = state.ids.IdServParams;
+
+  if(window.location.origin.includes('gnthackray'))
+    config = state.ids.GNTServParams;   
+
   return {
-    config : state.ids.IdServParams,
+    config : config,
     IdsLogInDetailsVisible : state.ids.IdsLogInDetailsVisible,
 
     LogInDetailsVisible : state.google.LogInDetailsVisible,
