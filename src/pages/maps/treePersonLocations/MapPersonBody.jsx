@@ -7,11 +7,11 @@ import { useTheme } from '@material-ui/core/styles';
 const defaultMapOptions = {
   styles: [
     {
-      "featureType": "all",
+      "featureType": "administrative",
       "elementType": "labels.text",
       "stylers": [
         {
-          "visibility": "off"
+          "visibility": "on"
         }
       ]
     },
