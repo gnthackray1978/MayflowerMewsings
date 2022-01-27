@@ -1,7 +1,9 @@
 import { METADATALOADED, APPLICATIONSELECTED,
   FUNCTIONSELECTED, APPDIALOGOPEN ,APPDIALOGCLOSED,FUNCDIALOGOPEN,
   FUNCDIALOGCLOSED, TREESELECTED ,TREEPERSONSELECTED,DIAGRAMSELECTED,
-  TREESELECTORDIALOGOPEN,TREESELECTORDIALOGCLOSED} from './actionTypes.jsx';
+  TREESELECTORDIALOGOPEN,TREESELECTORDIALOGCLOSED,
+  DISPLAYDIAGRAMCONTROLS,HIDEDIAGRAMCONTROLS, TOGGLEDIAGRAMCONTROLS} from './actionTypes.jsx';
+ 
 
 export const setTreePerson = (state) =>{
   //console.log('applicationSelected action');
@@ -131,3 +133,34 @@ export const treeSelectorDialogClose = () =>{
        });
     }
 };
+ 
+export const toggleDiagramControls = () =>{
+  //console.log('siteDialogClose action');
+
+  return async (dispatch, getState)  => {
+       dispatch({
+         type: TOGGLEDIAGRAMCONTROLS
+       });
+    }
+}; 
+
+export const showDiagramControls = () =>{
+  //console.log('siteDialogClose action');
+
+  return async (dispatch, getState)  => {
+       dispatch({
+         type: DISPLAYDIAGRAMCONTROLS
+       });
+    }
+};
+
+export const hideDiagramControls = () =>{
+  //console.log('siteDialogClose action');
+
+  return async (dispatch, getState)  => {
+       dispatch({
+         type: HIDEDIAGRAMCONTROLS
+       });
+    }
+};
+

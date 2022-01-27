@@ -1,6 +1,8 @@
 import { APPLICATIONLISTLOADED, APPLICATIONSELECTED, FUNCTIONLISTLOADED,METADATALOADED,
   FUNCTIONSELECTED,APPDIALOGOPEN,APPDIALOGCLOSED,FUNCDIALOGOPEN,FUNCDIALOGCLOSED,
-   TREESELECTED ,TREEPERSONSELECTED,DIAGRAMSELECTED, TREESELECTORDIALOGCLOSED,TREESELECTORDIALOGOPEN} from './actionTypes.jsx';
+   TREESELECTED ,TREEPERSONSELECTED,DIAGRAMSELECTED,
+    TREESELECTORDIALOGCLOSED,TREESELECTORDIALOGOPEN,
+    DISPLAYDIAGRAMCONTROLS,HIDEDIAGRAMCONTROLS,TOGGLEDIAGRAMCONTROLS} from './actionTypes.jsx';
 
 export default (state = {
   appName :1,
@@ -21,6 +23,7 @@ export default (state = {
   showAppListDialog :false,
   showFuncListDialog :false,
   showTreeSelectorDialog :false,
+  showDiagramControls : false,
   selectedTreeData : undefined,
   selectedTreePersonData : undefined,
   diagramId : 0,
@@ -29,6 +32,27 @@ export default (state = {
 
 
   switch (action.type) {
+  
+    case TOGGLEDIAGRAMCONTROLS:
+      return {
+        ...state,
+        showDiagramControls : !state.showDiagramControls
+      }; 
+     
+    case DISPLAYDIAGRAMCONTROLS:
+       //console.log('APPLICATIONSELECTED');
+       return {
+         ...state,
+         showDiagramControls : true
+       }; 
+    case HIDEDIAGRAMCONTROLS:
+        //console.log('APPLICATIONSELECTED');
+        return {
+          ...state,
+          showDiagramControls : false
+        };
+
+
 
     case TREEPERSONSELECTED:
         //console.log('APPLICATIONSELECTED');
