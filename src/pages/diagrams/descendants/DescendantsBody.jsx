@@ -1,10 +1,13 @@
 import  React from 'react';
 
-function DescendantsBody() {
+function DescendantsBody(props) {
+
+    var {rows} = props;
+
+    if(!rows) rows = [];
 
     return ( 
-        <div>
-            descendants graphs will go here...... eventually :/
+        <div> {rows.length + ' test'} 
         </div>
     );
 

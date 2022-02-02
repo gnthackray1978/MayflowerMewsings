@@ -49,6 +49,7 @@ function TreePeople(props) {
              location
              yearFrom
              yearTo
+             personId
          }
        }
       }

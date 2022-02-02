@@ -1,13 +1,15 @@
 import  React from 'react';
 
-function AncestorsBody() {
+function AncestorsBody(props) {
+
+    var {rows} = props;
+
+    if(!rows) rows = [];
 
     return ( 
-        <div>
-            ancestry graphs will go here...... eventually :/
+        <div> {rows.length} 
         </div>
     );
-
 }
 
 

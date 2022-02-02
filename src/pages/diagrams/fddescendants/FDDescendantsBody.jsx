@@ -1,12 +1,16 @@
 import  React from 'react';
 
-function FDDescendantsBody() {
+function FDDescendantsBody(props) {
+
+    var {rows} = props;
+
+    if(!rows) rows = [];
 
     return ( 
-        <div>
-            fd descendants graphs will go here...... eventually :/
+        <div> {rows.length} 
         </div>
     );
+
 
 }
 

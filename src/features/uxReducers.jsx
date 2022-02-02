@@ -24,8 +24,8 @@ export default (state = {
   showFuncListDialog :false,
   showTreeSelectorDialog :false,
   showDiagramControls : false,
-  selectedTreeData : undefined,
-  selectedTreePersonData : undefined,
+  selectedTreeData : '',
+  selectedTreePersonData : {personId:0},
   diagramId : 0,
   error: undefined
 }, action) => {

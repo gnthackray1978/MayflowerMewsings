@@ -5,28 +5,25 @@ import { ApolloClient, InMemoryCache, ApolloProvider, gql, useQuery ,useLazyQuer
 import { connect } from "react-redux";
 
 
-export  function useMapState(qry) {
+export  function useMapState(qry,defaultParams) {
 
  // console.log('useMapState ');
- 
-  const [getMapData, { loading,networkStatus, error,data }] = useLazyQuery(qry,{fetchPolicy: 'network-only'},);
- 
-  const filterFieldChanged = (filterObj) => {
-    
-   // console.log('filterFieldChanged');
-   
-    if(filterObj.origin == undefined || filterObj.origin == ''){
-      filterObj.origin ='_21_Alan!Douglas';
-    }
+ // const [filterParams, setFilterParams] = React.useState(defaultParams);
 
-    getMapData({ variables: filterObj} );
- 
-   };
+  const  { loading, networkStatus,error, data, refetch } = useQuery(qry, {
+    // errorPolicy: 'all' ,
+     variables: defaultParams,
+     notifyOnNetworkStatusChange: true,
+     fetchPolicy:"cache-and-network"
+     // onCompleted : (data)=>{
+     //   console.log('finished fetching');
+     // }
+  });
 
   return {  
     data,
     loading, 
     error ,
-    filterFieldChanged
+    refetch
   };
 }
