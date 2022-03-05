@@ -6,6 +6,12 @@ import { APPLICATIONLISTLOADED, APPLICATIONSELECTED, FUNCTIONLISTLOADED,METADATA
 
 export default (state = {
   appName :1,
+  ancestorConfig :{
+    backgroundcolour : 'white', 
+    linecolour : 'black',
+    textcolour :'black',
+    spousecolour :'slateblue'
+  },
   appList : [
       {
         id: 1,
