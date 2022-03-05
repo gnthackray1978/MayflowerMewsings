@@ -2,52 +2,14 @@ import  React, { useState, useEffect }  from 'react';
 
 import AncestorsBody from './AncestorsBody.jsx';
 import DiagramToolbar from '../DiagramToolbar.jsx';
-
+import {AncTree} from '../../diagrams/drawinglib/static/AncTree';
 import DiagramWrapper from '../DiagramWrapper.jsx'
+import {transformData, populateAncestryObjects} from '../diagFuncs.jsx'
 import {gql} from '@apollo/client';
 
 import { connect } from "react-redux";
 import {useMapState} from '../useMap';
-
  
-function makeData(data, schema, subSchema){
-
-  console.log('make data desc' );
-
-  let rows = [];
-
-  if(!data) return rows;
-
-  let idx =0;
-
-  if(!data[schema][subSchema]){
-    console.log('usemap makedata: ' + schema + ' ' + subSchema + ' schema not loaded');
-    return rows;
-  }
-
-  if(data[schema][subSchema].results == null){
-    console.log('usemap makedata: ' + schema + ' ' + subSchema + ' results were null');
-    return rows;
-  }
-
-  while(idx < data[schema][subSchema].results.length){
-    let tp = data[schema][subSchema].results[idx];
-
-    rows.push( {
-                   ...tp
-               });
-
-    idx++;
-  }
-
-
-  return {
-    rows
-  };
-
-}
-
-
 function Ancestors(props) {
 
   const {selectedTreeData,selectedTreePersonData} = props;
@@ -63,17 +25,41 @@ function Ancestors(props) {
                 personId : $personId,
                 origin : $origin
           ) {
-      page
-      totalResults
-      results {        
-        id
-        generationIdx,
-        index,
-        christianName,
-        surname
+              generationsCount
+              maxGenerationLength
+              totalResults
+              results {        
+                        id
+                        generationIdx
+                        index
+                        christianName
+                        surname
+                        childCount
+                        childIdx,
+                        childIdxLst
+                        childLst
+                        children
+                        descendantCount
+                        fatherId
+                        fatherIdx        
+                        isDisplayed
+                        isFamilyEnd
+                        isFamilyStart
+                        isHtmlLink
+                        isParentalLink
+                        motherId
+                        motherIdx
+                        personId
+                        relationType
+                        spouseIdxLst
+                        spouseIdLst
+                        birthLocation
+                        christianName
+                        surname
+                        dOB  
+                      }
+           }
       }
-    }
-    }
   }
   `;
 
@@ -88,14 +74,47 @@ function Ancestors(props) {
     title : 'Ancestor View'
   };
 
-  let data = makeData(state.data,'diagram','ancestorsearch');
+  let data = transformData(state.data,'diagram','ancestorsearch', populateAncestryObjects);
 
+ 
+  const graph = new AncTree();
+ 
+  if(data.newRows && data.newRows.length >0){
+       
+      //console.log('Diagrams load with new anc tree ' + a );
+ 
+      var _zoomLevel = 100;
+      
+
+      graph.selectedPersonId = 3217;
+      graph.selectedPersonX = 0;
+      graph.selectedPersonY = 0;
+
+      graph.SetInitialValues(Number(_zoomLevel), 30.0, 170.0, 70.0, 
+                      70.0, 100.0, 20.0, 40.0, 20.0, screen.width, screen.height);
+
+      //    var _personId = '913501a6-1216-4764-be8c-ae11fd3a0a8b';
+      //    var _zoomLevel = 100;
+      //    var _xpos = 750.0;
+      //    var _ypos = 100.0;
+      
+
+      graph.generations = data.newRows;
+ 
+        graph.SetCentrePoint(0, 0);
+      
+        graph.RelocateToSelectedPerson();
+      
+        graph.bt_refreshData = false;
+
+      
+  }
 
     return ( 
         <div>
           <DiagramWrapper state = {state} >
-            <DiagramToolbar state ={state}/>
-            <AncestorsBody rows ={data.rows} />
+            <DiagramToolbar graph ={graph} state ={state}/>
+            <AncestorsBody graph ={graph} />
           </DiagramWrapper>
         </div>
     );

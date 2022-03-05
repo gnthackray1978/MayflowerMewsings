@@ -1,13 +1,14 @@
 import  React from 'react';
+import Diagrams from '../Diagrams.jsx'
 
 function AncestorsBody(props) {
 
-    var {rows} = props;
-
-    if(!rows) rows = [];
-
+    
+    const { graph, ancestorConfig} = props;
+    
     return ( 
-        <div> {rows.length} 
+        <div> 
+            <Diagrams graph = {graph}/>
         </div>
     );
 }

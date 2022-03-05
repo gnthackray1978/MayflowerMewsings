@@ -4,48 +4,15 @@ import DescendantsBody from './DescendantsBody.jsx';
 import DiagramToolbar from '../DiagramToolbar.jsx';
 
 import DiagramWrapper from '../DiagramWrapper.jsx'
+
+import {transformData, populateDescendantObjects} from '../diagFuncs.jsx';
+
 import {gql} from '@apollo/client';
 import { connect } from "react-redux";
 import {useMapState} from '../useMap';
 
 
-function makeData(data, schema, subSchema){
-
-  console.log('make data desc' );
-
-  let rows = [];
-
-  if(!data) return rows;
-
-  let idx =0;
-
-  if(!data[schema][subSchema]){
-    console.log('usemap makedata: ' + schema + ' ' + subSchema + ' schema not loaded');
-    return rows;
-  }
-
-  if(data[schema][subSchema].results == null){
-    console.log('usemap makedata: ' + schema + ' ' + subSchema + ' results were null');
-    return rows;
-  }
-
-  while(idx < data[schema][subSchema].results.length){
-    let tp = data[schema][subSchema].results[idx];
-
-    rows.push( {
-                   ...tp
-               });
-
-    idx++;
-  }
-
-
-  return {
-    rows
-  };
-
-}
-
+ 
 
 function Descendants(props) {
  
@@ -63,14 +30,36 @@ function Descendants(props) {
                   personId : $personId,
                   origin : $origin
             ) {
-        page
+        generationsCount
+        maxGenerationLength
         totalResults
         results {        
           id
-          generationIdx,
-          index,
-          christianName,
+          generationIdx
+          index
+          christianName
           surname
+          childCount
+          childIdxLst
+          childLst
+          descendantCount
+          fatherId
+          fatherIdx        
+          isDisplayed
+          isFamilyEnd
+          isFamilyStart
+          isHtmlLink
+          isParentalLink
+          motherId
+          motherIdx
+          personId
+          relationType
+          spouseIdxLst
+          spouseIdLst
+          birthLocation
+          christianName
+          surname
+          dOB  
         }
       }
       }
@@ -88,13 +77,13 @@ function Descendants(props) {
       title : 'Map View'
     };
 
-    let data = makeData(state.data,'diagram','descendantsearch');
+    let data = transformData(state.data,'diagram','descendantsearch', populateDescendantObjects);
 
     return ( 
         <div>
           <DiagramWrapper state = {state} >
             <DiagramToolbar state ={state}/>
-            <DescendantsBody rows ={data.rows} />
+            <DescendantsBody rows ={data.newRows} />
           </DiagramWrapper>
         </div>
     );
