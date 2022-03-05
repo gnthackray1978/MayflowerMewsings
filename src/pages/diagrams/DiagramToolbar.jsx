@@ -16,9 +16,7 @@ import RemoveCircleOutline from '@material-ui/icons/RemoveCircleOutline';
 
 
 // treeSelectorDialogClose
-import {hideDiagramControls} from "../../features/uxActions.jsx";
-
-
+import {hideDiagramControls} from "../../features/uxActions.jsx"; 
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -42,8 +40,17 @@ function PaperComponent(props) {
 const DiagramToolbar = (props) => {
 //  console.log('rendered: FTMViewTableToolbar' );
 
-  
-  const {showDiagramControls,hideDiagramControls} = props;
+      // if(movement){
+          
+      //   if(movement.x != 0){
+      //     //console.log('mmoving:'+ movement.x);
+      //     graph.centrePoint += movement.x ;
+      //   }
+      //   if(movement.y!=0)
+      //     graph.centreVerticalPoint += movement.y ;
+      //}
+
+  const {showDiagramControls,hideDiagramControls,graph} = props;
 
   const handleClose = () => {
     hideDiagramControls();
@@ -53,7 +60,7 @@ const DiagramToolbar = (props) => {
   const classes = useToolbarStyles(theme);
 
   return (
-    <Toolbar className={clsx(classes.root )} >      
+    <div >      
       <Dialog disableEnforceFocus
               style={{ pointerEvents: 'none' }}
               PaperProps={{ style: { pointerEvents: 'auto', width : '115px', height:'190px' } }}
@@ -68,22 +75,80 @@ const DiagramToolbar = (props) => {
         </DialogTitle>
         <DialogContent>
          
-           <IconButton color="inherit" style={{ position :'absolute', left : '32px', top : '35px' }} aria-label="Menu"  onClick= {()=>{}}><ArrowUpward/></IconButton>
+           <IconButton color="inherit" 
+                  onMouseDown={e => {
+                    graph.centreVerticalPoint += -1;
+                    e.stopPropagation();
+                  }
+                  }   
+
+                  onMouseUp={e => {
+                    
+                    e.stopPropagation();
+                  }
+                  } 
+
+                  style={{ position :'absolute', left : '32px', top : '35px' }} 
+                  aria-label="Menu"  onClick= {()=>{}}><ArrowUpward/></IconButton>
          
 
-          <IconButton color="inherit" style={{ position :'absolute', left : '0px', top : '65px' }} a aria-label="Menu"  onClick= {()=>{}}><ArrowBack/></IconButton>
+          <IconButton color="inherit" 
+                        onMouseDown={e => {
+                          graph.centrePoint += -1 ;
+                          e.stopPropagation();
+                        }
+                        }   
+
+                        onMouseUp={e => {
+                          
+                          e.stopPropagation();
+                        }
+                        } 
+          style={{ position :'absolute', left : '0px', top : '65px' }} 
+          aria-label="Menu"  onClick= {()=>{}}><ArrowBack/></IconButton>
       
-          <IconButton color="inherit" style={{ position :'absolute', left : '65px', top : '65px' }} a aria-label="Menu"  onClick= {()=>{}}><ArrowForward/></IconButton>
+          <IconButton color="inherit" 
+                  onMouseDown={e => {
+                    graph.centrePoint += 1 ;
+                    e.stopPropagation();
+                  }
+                  }   
+
+                  onMouseUp={e => {
+                     
+                    e.stopPropagation();
+                  }
+                  } 
+          style={{ position :'absolute', left : '65px', top : '65px' }} 
+          aria-label="Menu"  onClick= {()=>{}}><ArrowForward/></IconButton>
           
-          <IconButton color="inherit" style={{ position :'absolute', left : '32px', top : '100px' }} a aria-label="Menu"  onClick= {()=>{}}><ArrowDownward/></IconButton>
+          <IconButton color="inherit" 
+             onMouseDown={e => {
+              graph.centreVerticalPoint += 1;
+              e.stopPropagation();
+            }
+            }   
+
+            onMouseUp={e => {
+            
+              e.stopPropagation();
+            }
+            } 
+          style={{ position :'absolute', left : '32px', top : '100px' }}
+           aria-label="Menu"  onClick= {()=>{}}><ArrowDownward/></IconButton>
       
-          <IconButton color="inherit" style={{ position :'absolute', left : '34px', top : '135px' }} a aria-label="Menu"  onClick= {()=>{}}><AddCircleOutline/></IconButton>
-          <IconButton color="inherit" style={{ position :'absolute', left : '65px', top : '135px' }} a aria-label="Menu"  onClick= {()=>{}}><RemoveCircleOutline/></IconButton>
+          <IconButton color="inherit" 
+          style={{ position :'absolute', left : '34px', top : '135px' }} 
+          aria-label="Menu"  onClick= {()=>{}}><AddCircleOutline/></IconButton>
+          
+          <IconButton color="inherit" 
+          style={{ position :'absolute', left : '65px', top : '135px' }} 
+          aria-label="Menu"  onClick= {()=>{}}><RemoveCircleOutline/></IconButton>
 
         </DialogContent>
        
       </Dialog>
-    </Toolbar>
+    </div>
   );
 };
 
@@ -93,7 +158,8 @@ const DiagramToolbar = (props) => {
 const mapStateToProps = state => {
   return { 
     selectedTreeData : state.ux.selectedTreeData,
-    showDiagramControls :state.ux.showDiagramControls
+    showDiagramControls :state.ux.showDiagramControls,
+    movement : state.ux.movement
   };
 };
 
