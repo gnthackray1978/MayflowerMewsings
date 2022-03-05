@@ -98,6 +98,22 @@ const client = new ApolloClient({
            }
         },
       }
+    },
+    Diagram: {
+      fields: {
+        ancestorsearch: {
+            keyArgs: false,
+            merge(existing =[], incoming) {
+              return incoming;
+            }
+        },    
+        descendantsearch: {
+          keyArgs: false,
+          merge(existing =[], incoming) {
+            return incoming;
+          }
+      },          
+      }
     }
 
    }
