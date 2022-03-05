@@ -1,6 +1,5 @@
 import React, { Component , useEffect} from 'react';
-import Default from './Default.jsx';
-import Diagrams from './Diagrams.jsx';
+import Default from './Default.jsx'; 
 import FTMDupes from './FTMDupes.jsx';
 import FTMPersons from './FTMPersons.jsx';
 import FTMTrees from './FTMTrees.jsx'; 
@@ -45,8 +44,7 @@ function PageContainer(props) {
           <Route exact path="/ftmtrees" component= {()=><FTMTrees/>}/>
           <Route exact path="/ftmdupes" component= {()=><FTMDupes/>}/>
 
-          <Route exact path="/diagrams" component= {()=><Diagrams/>}/>
-
+         
           <Route exact path="/wnorfolk" component= {()=><WNorfolk/>}/>
           <Route exact path="/wlincolnshire" component= {()=><WLincolnshire/>}/>
 
