@@ -10,7 +10,7 @@ import GoogleButton from "../../LoginShared/GoogleButton.jsx";
 import { UserManager, WebStorageStateStore, Log } from "oidc-client";
 
 import {setIdsLoginScreenVisible} from "../idsActions.jsx";
-import {loginLib,redirectHandler,makeStateFromSession,logoutLib} from '../../oidcFuncLib.jsx';
+import {loginLib,redirectHandler,makeStateFromSession,logoutLib,userExpiredAtCutOff, removeoidc} from '../../oidcFuncLib.jsx';
 import { useTheme } from '@material-ui/core/styles';
 
 import {styles} from "./styles.jsx";
@@ -78,90 +78,101 @@ function renderLogin(props) {
 
 function IDSConnect(props)  {
 
+    const { classes,config,metaSubset} = props;
+
     const [connected, setConnected] = React.useState(makeStateFromSession().Connected);
 
-    const { classes,config,metaSubset} = props;
-     
-    console.log('loading IDSConnect: ' + connected);
 
-    redirectHandler(config).then((c)=>{
-      //console.log('IDSConnect redirected : ' + c + ' , ' + connected)
-      if(c!= undefined){
-        if(connected!=c){
-          setConnected(c);
-        }
-      }
-    });
+    userExpiredAtCutOff(config, 30, (expired)=>{
+      switch(expired){
+        case 1://expired
+            
+            removeoidc();
+          break;
+        case 2://valid 
+        case 3://no user
 
-    var mgr = new UserManager(config);
+            console.log('loading IDSConnect: ' + connected);
 
-
-
-
-    mgr.events.addAccessTokenExpiring(() =>
-    {
-      console.log("token expiring...");
-
-        mgr.signinSilent({scope: config.scope, response_type: config.response_type})
-            .then((user) =>
-            {
-                redirectHandler(config).then((c)=>{
-                      if(c!= undefined){
-                        if(connected!=c){
-                          setConnected(c);
-                        }
-                      }
-                    });
-            })
-            .catch((error) =>
-            {
-                redirectHandler(config).then((c)=>{
-                  if(c!= undefined){
-                    if(connected!=c){
-                      setConnected(c);
-                    }
-                  }
-              });
-            });
-    });
-
-
-    mgr.events.addAccessTokenExpired(function(){
-
-    console.log("token expired...");
-
-    mgr.signinSilent({scope: config.scope, response_type: config.response_type})
-    .then((user) =>
-    {
-        redirectHandler(config).then((c)=>{
+            redirectHandler(config).then((c)=>{
+              //console.log('IDSConnect redirected : ' + c + ' , ' + connected)
               if(c!= undefined){
                 if(connected!=c){
                   setConnected(c);
                 }
               }
             });
+        
+            var mgr = new UserManager(config);
+            mgr.ident = Math.random();
+        
+        
+        
+            mgr.events.addAccessTokenExpiring(() =>
+            {
+              console.log("token expiring...");
+        
+                mgr.signinSilent({scope: config.scope, response_type: config.response_type})
+                    .then((user) =>
+                    {
+                        redirectHandler(config).then((c)=>{
+                              if(c!= undefined){
+                                if(connected!=c){
+                                  setConnected(c);
+                                }
+                              }
+                            });
+                    })
+                    .catch((error) =>
+                    {
+                        redirectHandler(config).then((c)=>{
+                          if(c!= undefined){
+                            if(connected!=c){
+                              setConnected(c);
+                            }
+                          }
+                      });
+                    });
+            });
+        
+        
+            mgr.events.addAccessTokenExpired(function(){
+        
+              console.log("token expired..." + mgr.ident);
+        
+              mgr.signinSilent({scope: config.scope, response_type: config.response_type})
+              .then((user) =>
+              {
+                  redirectHandler(config).then((c)=>{
+                        if(c!= undefined){
+                          if(connected!=c){
+                            setConnected(c);
+                          }
+                        }
+                      });
+              })
+              .catch((error) =>
+              {
+                  redirectHandler(config).then((c)=>{
+                    if(c!= undefined){
+                      if(connected!=c){
+                        setConnected(c);
+                      }
+                    }
+                });
+              });
+        
+            });
+
+          break;
+      }
+
     })
-    .catch((error) =>
-    {
-        redirectHandler(config).then((c)=>{
-          if(c!= undefined){
-            if(connected!=c){
-              setConnected(c);
-            }
-          }
-      });
-    });
 
-    });
+    
 
 
-    if(metaSubset.siteCount < 3 && !metaSubset.loading && connected)
-    {
-      metaSubset.fnRefetch();
-      console.log('refreshing');
-    } 
-
-
+ 
     let buttons = renderLogin(props);
 
     return(

@@ -32,18 +32,71 @@ if(utc){
 return d;
 };
 
+export const removeoidc = function(){
+
+  //  console.log('local storage');
+    for (var i = 0; i < localStorage.length; i++){ 
+      //console.log(localStorage.key(i));
+      if(localStorage.key(i).includes('oidc')){
+        localStorage.removeItem(localStorage.key(i));
+      }
+    }
+     
+   // console.log('session storage');
+    for (var i = 0; i < sessionStorage.length; i++){ 
+      //console.log(sessionStorage.key(i));
+      if(sessionStorage.key(i).includes('oidc')){
+        sessionStorage.removeItem(sessionStorage.key(i));
+      }
+    }
+};
+
+export const userExpiredAtCutOff = (config, cutOffInMinutes, expired)=>{
+ 
+  var mgr = new UserManager(config);
+
+  mgr.getUser().then((user)=>{
+    if(user){ 
+      
+      let jsUserExpiresAt = new Date(user.expires_at *1000);
+
+      
+      var MS_PER_MINUTE = 60000;
+      const timeElapsed = Date.now();
+
+      const today = new Date(timeElapsed);
+
+      var cutOff = new Date(today - 30 * MS_PER_MINUTE);
+
+      if(jsUserExpiresAt < cutOff)
+      {
+      //  console.log(jsUserExpiresAt.toLocaleDateString('en-GB') + " " + jsUserExpiresAt.toTimeString());
+        expired(1);//expired user
+      }
+      else{
+        expired(2);//valid user
+      }
+
+    }
+    else{
+      expired(3);// no user
+    } 
+  });
+
+};
+
 export const userExpired = (user)=>{
-let jsUserExpiresAt = new Date(user.expires_at *1000);
+  let jsUserExpiresAt = new Date(user.expires_at *1000);
 
-let now = getCurrentTime();
+  let now = getCurrentTime();
 
-if(jsUserExpiresAt > now){
-  //console.log('IDS user token NOT expired - expires at: '   +  user.expires_at + ' ' + formatDate(jsUserExpiresAt)  + ' now ' +  formatDate(now));
-  return false;
-}
+  if(jsUserExpiresAt > now){
+    //console.log('IDS user token NOT expired - expires at: '   +  user.expires_at + ' ' + formatDate(jsUserExpiresAt)  + ' now ' +  formatDate(now));
+    return false;
+  }
 
-//console.log('IDS user token expired - expired at: ' +  user.expires_at + ' ' + formatDate(jsUserExpiresAt) + ' now ' + formatDate(now));
-return true;
+  //console.log('IDS user token expired - expired at: ' +  user.expires_at + ' ' + formatDate(jsUserExpiresAt) + ' now ' + formatDate(now));
+  return true;
 };
 
 
