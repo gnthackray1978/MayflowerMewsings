@@ -260,7 +260,11 @@ export class TreeUI {
 
     }
 
-    DrawButton (ctx, width, height, _person, checked) {
+    DrawButton (width, height, _person, checked) {
+
+        let ctx = this._ctx;
+        let uiConfig = this._uiConfig;
+
         var linkArea = { x1: 0, x2: 0, y1: 0, y2: 0, action: 'box' };
         //
         if (_person.IsDisplayed &&

@@ -82,6 +82,10 @@ export function AncTree() {
 
       this.workingX1 =0.0;
       this.workingX2 =0.0;
+
+
+      this.movementx =0;
+      this.movementy =0;
 }
 
 

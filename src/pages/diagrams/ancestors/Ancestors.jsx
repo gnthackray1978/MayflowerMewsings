@@ -4,7 +4,7 @@ import AncestorsBody from './AncestorsBody.jsx';
 import DiagramToolbar from '../DiagramToolbar.jsx';
 import {AncTree} from '../../diagrams/drawinglib/static/AncTree';
 import DiagramWrapper from '../DiagramWrapper.jsx'
-import {transformData, populateAncestryObjects} from '../diagFuncs.jsx'
+import {transformData, populateAncestryObjects} from '../drawinglib/graphDataFuncs.jsx'
 import {gql} from '@apollo/client';
 
 import { connect } from "react-redux";

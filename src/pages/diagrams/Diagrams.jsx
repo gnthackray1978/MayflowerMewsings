@@ -68,7 +68,10 @@ function Diagrams(props) {
     
       if(graph){
       
-       // graph.SetCentrePoint(frameCountx, frameCounty);
+      
+
+        graph.centrePoint += graph.movementx ;
+        graph.centreVerticalPoint += graph.movementy ;
 
         graph.treeUI = new TreeUI(ctx,ancestorConfig, true, ()=>{});
      

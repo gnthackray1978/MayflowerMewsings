@@ -50,7 +50,7 @@ export const getPersonFromId = (id, rows)=>{
 
     let newRows =[];
 
-    while(generationIdx < 4){
+    while(generationIdx < rows.length){
         personIdx =0;
 
         newRows.push([]);
@@ -71,7 +71,7 @@ export const getPersonFromId = (id, rows)=>{
                 Father : undefined,
                 FatherId: rows[generationIdx][personIdx].fatherId,
                 FatherIdx: rows[generationIdx][personIdx].fatherIdx,
-                IsDisplayed: rows[generationIdx][personIdx].isDisplayed,
+                IsDisplayed: true,
                 IsFamilyEnd: rows[generationIdx][personIdx].isFamilyEnd,
                 IsFamilyStart: rows[generationIdx][personIdx].isFamilyStart,
                 IsHtmlLink: rows[generationIdx][personIdx].isHtmlLink,
@@ -195,10 +195,15 @@ export const getPersonFromId = (id, rows)=>{
           for(let childIdx of newRows[generationIdx][personIdx].ChildIdxLst){
             //we shouldn't ever have children for the last generation
             //so generationIdx -1 should always be ok.
-            let child = newRows[generationIdx+1][childIdx];
-          
-            if(child)
-              newRows[generationIdx][personIdx].Children.push(child);
+            if(newRows.length > (generationIdx+1) && newRows[generationIdx+1].length > childIdx){
+              let child = newRows[generationIdx+1][childIdx];
+            
+              if(child)
+                newRows[generationIdx][personIdx].Children.push(child);
+            }
+            else{
+              console.log('missing child');
+            }
           }
         //}
            

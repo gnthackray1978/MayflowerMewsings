@@ -1,13 +1,15 @@
 import  React from 'react';
+import Diagrams from '../Diagrams.jsx'
+
+
 
 function DescendantsBody(props) {
 
-    var {rows} = props;
-
-    if(!rows) rows = [];
-
+    const { graph, ancestorConfig} = props;
+    
     return ( 
-        <div> {rows.length + ' test'} 
+        <div> 
+            <Diagrams graph = {graph}/>
         </div>
     );
 

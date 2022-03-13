@@ -1,8 +1,5 @@
 
-import React, { Component , useState} from 'react';
-import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import Toolbar from '@material-ui/core/Toolbar';
+import React, { Component , useState} from 'react'; 
 import { connect } from "react-redux";
 import { useTheme } from '@material-ui/core/styles';
 import {useToolbarStyles} from './styleFuncs.jsx';
@@ -38,18 +35,7 @@ function PaperComponent(props) {
 
 
 const DiagramToolbar = (props) => {
-//  console.log('rendered: FTMViewTableToolbar' );
-
-      // if(movement){
-          
-      //   if(movement.x != 0){
-      //     //console.log('mmoving:'+ movement.x);
-      //     graph.centrePoint += movement.x ;
-      //   }
-      //   if(movement.y!=0)
-      //     graph.centreVerticalPoint += movement.y ;
-      //}
-
+ 
   const {showDiagramControls,hideDiagramControls,graph} = props;
 
   const handleClose = () => {
@@ -77,13 +63,13 @@ const DiagramToolbar = (props) => {
          
            <IconButton color="inherit" 
                   onMouseDown={e => {
-                    graph.centreVerticalPoint += -1;
+                    graph.movementy = -1;
                     e.stopPropagation();
                   }
                   }   
 
                   onMouseUp={e => {
-                    
+                    graph.movementy = 0;
                     e.stopPropagation();
                   }
                   } 
@@ -92,15 +78,15 @@ const DiagramToolbar = (props) => {
                   aria-label="Menu"  onClick= {()=>{}}><ArrowUpward/></IconButton>
          
 
-          <IconButton color="inherit" 
+                      <IconButton color="inherit" 
                         onMouseDown={e => {
-                          graph.centrePoint += -1 ;
+                          graph.movementx = -1 ;
                           e.stopPropagation();
                         }
                         }   
 
                         onMouseUp={e => {
-                          
+                          graph.movementx = 0;
                           e.stopPropagation();
                         }
                         } 
@@ -109,13 +95,13 @@ const DiagramToolbar = (props) => {
       
           <IconButton color="inherit" 
                   onMouseDown={e => {
-                    graph.centrePoint += 1 ;
+                    graph.movementx = 1 ;
                     e.stopPropagation();
                   }
                   }   
 
                   onMouseUp={e => {
-                     
+                    graph.movementx = 0;
                     e.stopPropagation();
                   }
                   } 
@@ -124,13 +110,13 @@ const DiagramToolbar = (props) => {
           
           <IconButton color="inherit" 
              onMouseDown={e => {
-              graph.centreVerticalPoint += 1;
+              graph.movementy = 1;
               e.stopPropagation();
             }
             }   
 
             onMouseUp={e => {
-            
+              graph.movementy = 0;
               e.stopPropagation();
             }
             } 
