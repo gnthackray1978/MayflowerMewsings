@@ -184,22 +184,21 @@ export const getPersonFromId = (id, rows)=>{
   export const populateDescendantObjects = (newRows)=>{
 
     let generationIdx =0;
-    let personIdx =0;
-  
+   
     while(generationIdx < newRows.length){
-      personIdx =0;
+     
   
-      while(personIdx < newRows[generationIdx].length){
+      for(let person of newRows[generationIdx]){
         //if(newRows[generationIdx][personIdx].ChildIdxLst.length >0){
 
-          for(let childIdx of newRows[generationIdx][personIdx].ChildIdxLst){
+          for(let childIdx of person.ChildIdxLst){
             //we shouldn't ever have children for the last generation
             //so generationIdx -1 should always be ok.
             if(newRows.length > (generationIdx+1) && newRows[generationIdx+1].length > childIdx){
               let child = newRows[generationIdx+1][childIdx];
             
               if(child)
-                newRows[generationIdx][personIdx].Children.push(child);
+                person.Children.push(child);
             }
             else{
               console.log('missing child');
@@ -207,15 +206,24 @@ export const getPersonFromId = (id, rows)=>{
           }
         //}
            
-          for(let spouseIdx of newRows[generationIdx][personIdx].SpouseIdxLst){
+          for(let spouseIdx of person.SpouseIdxLst){
             let spouse = newRows[generationIdx][spouseIdx];
           
             if(spouse)
-              newRows[generationIdx][personIdx].Spouses.push(spouse);
+              person.Spouses.push(spouse);
           }
         
+
+          var father = getPersonFromId(person.FatherId, newRows);
+      
+          if(father)
+            person.Father = father;
   
-        personIdx++;
+          var mother = getPersonFromId(person.MotherId, newRows);
+  
+          if(mother)
+            person.Mother = mother;
+  
       }
       generationIdx++;
     } 

@@ -4,7 +4,9 @@
 import {TreeBase} from "./TreeBase.js";
 import {TreeUI} from "./TreeUI.js";
 
-import {MiddleParents, createFamilyCountArray} from '../graphDiagFuncs.jsx';
+import {MiddleParents, createFamilyCountArray, GetPrev, GetFirst, GetParentXs} from '../graphDiagFuncs.jsx';
+
+
 
 
 export function DescTree() {
@@ -32,6 +34,8 @@ export function DescTree() {
     // this.centrePointXOffset = 0.0;
     // this.centrePointYOffset = 0.0;
 
+
+
     this.original_distanceBetweenBoxs = 0.0;
     this.original_distanceBetweenGens = 0.0;
     this.original_boxWidth = 0.0;
@@ -42,17 +46,20 @@ export function DescTree() {
     this.original_middleSpan = 40.0;
     this.original_topSpan = 20.0;
 
-
-
-    this.zoomPercentage = 0.0;
+    this.distancesbetfam = 0.0;
+    this.lowerSpan = 0.0;
+    this.middleSpan = 0.0;
+    this.topSpan = 0.0;
     this.distanceBetweenBoxs = 0.0;
     this.distanceBetweenGens = 0.0;
     this.halfBox = 0.0;
     this.halfBoxHeight = 0.0;
+    this.boxWidth = 0.0;
+    this.boxHeight = 0.0;
 
 
-    this.mouse_x = 0; //int
-    this.mouse_y = 0; //int
+
+
 
 //    this.initial_mouse_x = 0; //int
 //    this.initial_mouse_y = 0; //int
@@ -65,17 +72,20 @@ export function DescTree() {
     this.drawingY1 = 0.0;
     this.drawingY2 = 0.0;
 
-    this.drawingCentre = 0.0;
-    this.drawingWidth = 0.0;
-    this.drawingHeight = 0.0;
+  //  this.drawingCentre = 0.0;
+    // this.drawingWidth = 0.0;
+    // this.drawingHeight = 0.0;
+
+    this.mouse_x = 0; //int
+    this.mouse_y = 0; //int
 
     this.mouseXPercLocat = 0.0;
     this.mouseYPercLocat = 0.0;
+    this.zoomPercentage = 0.0;
 
     this.zoomAmount = 8; //int
 
-    this.boxWidth = 0.0;
-    this.boxHeight = 0.0;
+
     this.sourceId = null;
 
 
@@ -83,25 +93,11 @@ export function DescTree() {
     this.selectedPersonX = 0;
     this.selectedPersonY = 0;
     this.treeUI;
-
-    this.distancesbetfam = 0.0;
-    this.lowerSpan = 0.0;
-    this.middleSpan = 0.0;
-    this.topSpan = 0.0;
-
-
-
-
     this.startx1 = 0.0;
     //this.endx2 = 0.0;
 
-
-    this.firstPX = 0.0;
-    this.secondPX = 0.0;
     this.percX1 = 0.0;
     this.percY1 = 0.0;
-
-
     this.movementx =0;
     this.movementy =0;
 
@@ -138,6 +134,7 @@ DescTree.prototype = {
             this.bt_screenWidth = screen_width;
 
             this.zoomPercentage = zoomPerc;
+
             this.original_distanceBetweenBoxs = dist_bet_box;
             this.original_distanceBetweenGens = dist_bet_gen;
             this.original_boxWidth = box_wid;
@@ -254,66 +251,74 @@ DescTree.prototype = {
     SetZoom: function (percentage) {
 
 
-    if (percentage !== 0.0) {
-    var _workingtp = 0.0;
-    var _percLocal_x = 0.0;
-    var _percLocal_y = 0.0;
+        if (percentage !== 0.0) {
+            var _workingtp = 0.0;
+            var _percLocal_x = 0.0;
+            var _percLocal_y = 0.0;
 
-    //zoom drawing components
-    this.zoomPercentage += percentage;
-    this.zoomLevel += percentage;
-    _workingtp = this.original_distanceBetweenBoxs / 100;
-    this.distanceBetweenBoxs = _workingtp * this.zoomPercentage;
-    _workingtp = this.original_boxWidth / 100;
-    this.boxWidth = _workingtp * this.zoomPercentage;
-    this.halfBox = this.boxWidth / 2;
-    _workingtp = this.original_distancesbetfam / 100;
-    _workingtp = this.original_distanceBetweenGens / 100;
-    this.distanceBetweenGens = _workingtp * this.zoomPercentage;
-    _workingtp = this.original_boxHeight / 100;
-    this.boxHeight = _workingtp * this.zoomPercentage;
+            //zoom drawing components
+            this.zoomPercentage += percentage;
+            this.zoomLevel += percentage;
+            _workingtp = this.original_distanceBetweenBoxs / 100;
+            this.distanceBetweenBoxs = _workingtp * this.zoomPercentage;
+            _workingtp = this.original_boxWidth / 100;
+            this.boxWidth = _workingtp * this.zoomPercentage;
+            this.halfBox = this.boxWidth / 2;
+            _workingtp = this.original_distancesbetfam / 100;
+            _workingtp = this.original_distanceBetweenGens / 100;
+            this.distanceBetweenGens = _workingtp * this.zoomPercentage;
+            _workingtp = this.original_boxHeight / 100;
+            this.boxHeight = _workingtp * this.zoomPercentage;
 
-    this.halfBoxHeight = this.boxHeight / 2;
+            this.halfBoxHeight = this.boxHeight / 2;
 
-    this.ComputeLocations();
-
-    this.GetPercDistances();
-    _percLocal_x = this.percX1;
-    _percLocal_y = this.percY1;
+            this.ComputeLocations();
 
 
-    this.centreVerticalPoint += (this.drawingHeight / 100) * (_percLocal_y - this.mouseYPercLocat);
+            let percentages = this.GetPercDistances();
 
-    this.centrePoint += (this.drawingWidth / 100) * (_percLocal_x - this.mouseXPercLocat);
-
-    this.ComputeLocations();
-    } //end percentage ==0.0)
+            _percLocal_x = percentages.percX1;
+            _percLocal_y = percentages.percY1;
 
 
 
-    this.DrawTree();
+             let drawingHeight = this.drawingY2 - this.drawingY1;
+             let drawingWidth = this.drawingX2 - this.drawingX1;
+
+
+            this.centreVerticalPoint += (drawingHeight / 100) * (_percLocal_y - this.mouseYPercLocat);
+
+            this.centrePoint += (drawingWidth / 100) * (_percLocal_x - this.mouseXPercLocat);
+
+            this.ComputeLocations();
+        } //end percentage ==0.0)
+
+
+
+        this.DrawTree();
 
     },
     SetZoomStart: function () {
-    this.GetPercDistances();
-    this.mouseXPercLocat = this.percX1;
-    this.mouseYPercLocat = this.percY1;
+        let percentages = this.GetPercDistances();
+
+        this.mouseXPercLocat = percentages.percX1;
+        this.mouseYPercLocat = percentages.percY1;
     },
     GetPercDistances: function () {
 
 
-        var _distanceFromX1 = 0.0;
-        var _distanceFromY1 = 0.0;
-        var _onePercentDistance = 0.0;
+        let _distanceFromX1 = 0.0;
+        let _distanceFromY1 = 0.0;
+        let _onePercentDistance = 0.0;
 
-        this.percX1 = 0.0;
-        this.percY1 = 0.0;
+        let percX1 = 0.0;
+        let percY1 = 0.0;
 
 
-        this.drawingWidth = this.drawingX2 - this.drawingX1;
-        this.drawingHeight = this.drawingY2 - this.drawingY1;
+        let drawingWidth = this.drawingX2 - this.drawingX1;
+        let drawingHeight = this.drawingY2 - this.drawingY1;
 
-        if (this.drawingWidth !== 0 && this.drawingHeight !== 0) {
+        if (drawingWidth !== 0 && drawingHeight !== 0) {
             if (this.drawingX1 > 0) {
                 _distanceFromX1 = this.mouse_x - this.drawingX1; //;
             }
@@ -321,8 +326,8 @@ DescTree.prototype = {
                  _distanceFromX1 = Math.abs(this.drawingX1) + this.mouse_x;
             }
 
-            _onePercentDistance = this.drawingWidth / 100;
-            this.percX1 = _distanceFromX1 / _onePercentDistance;
+            _onePercentDistance = drawingWidth / 100;
+            percX1 = _distanceFromX1 / _onePercentDistance;
 
             if (this.drawingY1 > 0) {
                 _distanceFromY1 = this.mouse_y - this.drawingY1; // ;
@@ -331,11 +336,15 @@ DescTree.prototype = {
                 _distanceFromY1 = Math.abs(this.drawingY1) + this.mouse_y;
             }
 
-            _onePercentDistance = this.drawingHeight / 100;
-            this.percY1 = _distanceFromY1 / _onePercentDistance;
+            _onePercentDistance = drawingHeight / 100;
+            percY1 = _distanceFromY1 / _onePercentDistance;
 
         }
 
+        return {
+            percX1,
+            percY1
+        };
     },
 
     SetMouse: function (x, y, mousestate) {
@@ -982,10 +991,12 @@ DescTree.prototype = {
 
                             _middleParents = MiddleParents(this.generations[_genIdx-1], genPerson.FatherIdx, genPerson.MotherIdx);
 
-                            var _nextParentLink = this.GetFirst(_genIdx, genPerson.FatherIdx, genPerson.MotherIdx);
-                            var _prevParentLink = this.GetPrev(_genIdx, genPerson.FatherIdx, genPerson.MotherIdx);
-
-                            this.GetParentXs(_genIdx, genPerson.FatherIdx, genPerson.MotherIdx);
+                            var _nextParentLink = GetFirst(this.generations[_genIdx-1], genPerson.FatherIdx, genPerson.MotherIdx);
+                            var _prevParentLink = GetPrev(this.generations[_genIdx-1], genPerson.FatherIdx, genPerson.MotherIdx);
+                        
+                            //there should always be a father and mother at this point
+                            //as we are never in generation zero
+                            let parentXs = GetParentXs( genPerson.Father.X1,  genPerson.Mother.X1, this.halfBox);
 
                             var incSize = 0;
 
@@ -1100,13 +1111,13 @@ DescTree.prototype = {
                             _family0.push(new Array(_thirdStorkX, _thirdRow));
                             _family0.push(new Array(_middleParents, _thirdRow));
                             _family0.push(new Array(_middleParents, _fourthRow));
-                            _family0.push(new Array(this.firstPX, _fourthRow));
-                            _family0.push(new Array(this.firstPX, _parent_gen_lower_y));
-                            _family0.push(new Array(this.firstPX, _fourthRow));
+                            _family0.push(new Array(parentXs.firstPX, _fourthRow));
+                            _family0.push(new Array(parentXs.firstPX, _parent_gen_lower_y));
+                            _family0.push(new Array(parentXs.firstPX, _fourthRow));
 
-                            _family0.push(new Array(this.secondPX, _fourthRow));
-                            _family0.push(new Array(this.secondPX, _parent_gen_lower_y));
-                            _family0.push(new Array(this.secondPX, _fourthRow));
+                            _family0.push(new Array(parentXs.secondPX, _fourthRow));
+                            _family0.push(new Array(parentXs.secondPX, _parent_gen_lower_y));
+                            _family0.push(new Array(parentXs.secondPX, _fourthRow));
                             _family0.push(new Array(_middleParents, _fourthRow));
                             _family0.push(new Array(_middleParents, _thirdRow));
 
@@ -1153,9 +1164,9 @@ DescTree.prototype = {
             this.drawingY2 = lastPersonY2;
         }
         //drawingCentreVertical = drawingY2 - drawingY1;
-        this.drawingCentre = (this.drawingX2 - this.drawingX1) / 2;
-        this.drawingHeight = this.drawingY2 - this.drawingY1;
-        this.drawingWidth = this.drawingX2 - this.drawingX1;
+     //   this.drawingCentre = (this.drawingX2 - this.drawingX1) / 2;
+        //this.drawingHeight = this.drawingY2 - this.drawingY1;
+        //this.drawingWidth = this.drawingX2 - this.drawingX1;
 
     },
 
@@ -1329,194 +1340,7 @@ DescTree.prototype = {
 
             idx++;
         }
-    },
-
-    // createFamilyCountArray: function (genidx) {
-
-    //     var newswitchs = Array();
-    //     var leftCounter = 0.0;
-    //     var rightCounter = 0.0;
-    //     var idx = 0;
-
-    //     if (genidx !== 0) {
-    //         while (idx < this.generations[genidx].length) {
-    //             var _tp = this.generations[genidx][idx];
-    //             if (_tp.IsParentalLink &&
-    //                     _tp.IsDisplayed) {
-    //                 newswitchs.push(0.0);
-    //                 if (_tp.X1 > MiddleParents(this.generations[genidx-1], _tp.FatherIdx, _tp.MotherIdx)) {
-    //                     rightCounter++;
-    //                     if (leftCounter > 0)
-    //                         newswitchs[newswitchs.length - 2] = leftCounter;
-    //                     leftCounter = 0;
-    //                 }
-    //                 else {
-    //                     leftCounter++;
-    //                     if (rightCounter > 0)
-    //                         newswitchs[newswitchs.length - 2] = rightCounter;
-    //                     rightCounter = 0;
-    //                 }
-    //             }
-    //             idx++;
-    //         }
-    //         if (leftCounter !== 0) newswitchs[newswitchs.length - 1] = leftCounter;
-    //         if (rightCounter !== 0) newswitchs[newswitchs.length - 1] = rightCounter;
-    //         idx = newswitchs.length - 1;
-    //         while (idx > 0) {
-    //             if (newswitchs[idx - 1] === 0)
-    //                 newswitchs[idx - 1] = newswitchs[idx];
-    //             idx--;
-    //         }
-    //     }
-    //     return newswitchs;
-    // },
-
-    // MiddleParents: function (genidx, fatIdx, motIdx) {
-    //     // return
-    //     var middleParents = 0.0;
-
-
-    //     // returns 1 less than the furthest parent to the right!
-
-    //     // midx = 22
-    //     // fidx = 25 // F25 M24
-
-    //     // midx = 25
-    //     // fidx = 22 // 24 25
-
-    //     // if the parent had more than 1 spouse then 2 parents might not be next to each other in the generation.
-    //     if (Math.abs(fatIdx - motIdx) > 1) {
-    //         if (fatIdx < motIdx) {
-    //             middleParents = (this.generations[genidx - 1][motIdx - 1].X1 + this.generations[genidx - 1][motIdx].X2) / 2;
-    //         }
-    //         else {
-    //             middleParents = (this.generations[genidx - 1][fatIdx - 1].X1 + this.generations[genidx - 1][fatIdx].X2) / 2;
-    //         }
-    //     }
-    //     else {
-    //         try{
-    //             middleParents = (this.generations[genidx - 1][fatIdx].X1 + this.generations[genidx - 1][motIdx].X2) / 2;
-    //         }
-    //         catch(e){
-    //             console.log('middle parents failed: ' +genidx + ' '+ fatIdx+ ' '+ motIdx );
-    //         }
-    //     }
-
-    //     return middleParents;
-    // },
-
-    GetParentXs: function (genidx, fatIdx, motIdx) {
-
-        if (genidx < 1) {
-            this.secondPX = this.centrePoint;
-            this.firstPX = this.centrePoint;
-        }
-        else {
-            if (this.generations[genidx - 1][fatIdx].X1 > this.generations[genidx - 1][motIdx].X1) {
-                this.secondPX = this.generations[genidx - 1][fatIdx].X1 + this.halfBox;
-                this.firstPX = this.generations[genidx - 1][motIdx].X1 + this.halfBox;
-
-            }
-            else {
-                this.secondPX = this.generations[genidx - 1][motIdx].X1 + this.halfBox;
-                this.firstPX = this.generations[genidx - 1][fatIdx].X1 + this.halfBox;
-            }
-        }
-
-    },
-
-    GetFirst: function (genidx, fatIdx, motIdx) {
-
-        var middleParents = MiddleParents(this.generations[genidx-1], fatIdx, motIdx);
-
-        var nextParentLink = middleParents;
-        var idxParentLink = motIdx;
-
-        // if we only have 1 parent, but that parent
-        // later remarries we want the next nextparent setting to the current parents edge
-        if (fatIdx == motIdx) {
-            //remember fatidx and motidx are the same!
-            if (this.generations[genidx - 1][fatIdx].SpouseIdLst.length > 0) {
-                return this.generations[genidx - 1][fatIdx].X2;
-            }
-        }
-
-        // if multiple spouses set next parent as end of first one
-        if (this.generations[genidx - 1][fatIdx].SpouseIdLst.length > 1) {
-            if (Math.abs(fatIdx - motIdx) == 1) {
-                return nextParentLink;
-            }
-        }
-
-        if (fatIdx > motIdx) idxParentLink = fatIdx;
-
-        var rightX2OfCurrentParent = this.generations[genidx - 1][idxParentLink].X2;
-
-        var idx = 0;
-
-        var _treePerson = null;
-
-        var isFound = false;
-        while (idx < this.generations[genidx - 1].length) {
-            if (this.generations[genidx - 1][idx].IsDisplayed
-                && this.generations[genidx - 1][idx].ChildCount > 0
-                && this.generations[genidx - 1][idx].X1 > rightX2OfCurrentParent) {
-                isFound = true;
-                _treePerson = this.generations[genidx - 1][idx];
-                break;
-            }
-            idx++;
-        }
-
-        if (isFound)
-            nextParentLink = this.generations[genidx - 1][idx].X1;
-
-        return nextParentLink;
-    },
-
-    GetPrev: function (genidx, fatIdx, motIdx) {
-
-        var middleParents = (this.generations[genidx - 1][fatIdx].X1 + this.generations[genidx - 1][motIdx].X2) / 2;
-
-        var prevParentLink = middleParents;
-
-        //left parent
-        var idxParentLink = fatIdx;
-        if (fatIdx > motIdx) idxParentLink = motIdx;
-
-        var currentParentsLeft = this.generations[genidx - 1][idxParentLink].X1;
-
-        if (this.generations[genidx - 1][fatIdx].SpouseIdLst.length > 1) {
-
-            if (Math.abs(fatIdx - motIdx) == 2) {
-                return prevParentLink;
-            }
-
-        }
-
-
-        var idx = 0;
-
-        var _treePerson = null;
-
-        while (idx < this.generations[genidx - 1].length) {
-            if (this.generations[genidx - 1][idx].IsDisplayed
-                    && this.generations[genidx - 1][idx].ChildCount > 0
-                    && this.generations[genidx - 1][idx].X1 < currentParentsLeft) {
-                _treePerson = this.generations[genidx - 1][idx];
-
-            }
-            idx++;
-        }
-
-        // if(_treePerson != null)
-        //   console.log('last person ' + _treePerson.Name);
-
-        if (_treePerson != null)
-            prevParentLink = _treePerson.X2;
-
-
-        return prevParentLink;
     }
+
 
 };
