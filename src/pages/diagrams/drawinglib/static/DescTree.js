@@ -4,9 +4,61 @@
 import {TreeBase} from "./TreeBase.js";
 import {TreeUI} from "./TreeUI.js";
 
-import {MiddleParents, createFamilyCountArray, GetPrev, GetFirst, GetParentXs} from '../graphDiagFuncs.jsx';
+import {MiddleParents, createFamilyCountArray, GetPrev, GetFirst, GetParentXs, CreateArray} from '../graphDiagFuncs.jsx';
+import { ThreeDRotationSharp } from "@material-ui/icons";
 
 
+export function GraphBoundary(){
+
+    this.X1 = 0.0;
+    this.X2 = 0.0;
+    this.Y1 = 0.0;
+    this.Y2 = 0.0;
+
+}
+GraphBoundary.prototype = {
+
+    GetPercDistances: function (mousePoint) {
+        let _distanceFromX1 = 0.0;
+        let _distanceFromY1 = 0.0;
+        let _onePercentDistance = 0.0;
+
+        let percX1 = 0.0;
+        let percY1 = 0.0;
+
+
+        let drawingWidth = this.X2 - this.X1;
+        let drawingHeight = this.Y2 - this.Y1;
+
+        if (drawingWidth !== 0 && drawingHeight !== 0) {
+            if (this.X1 > 0) {
+                _distanceFromX1 = mousePoint.x - this.X1; //;
+            }
+            else {
+                 _distanceFromX1 = Math.abs(this.X1) + mousePoint.x;
+            }
+
+            _onePercentDistance = drawingWidth / 100;
+            percX1 = _distanceFromX1 / _onePercentDistance;
+
+            if (this.Y1 > 0) {
+                _distanceFromY1 = mousePoint.y - this.Y1; // ;
+            }
+            else {
+                _distanceFromY1 = Math.abs(this.Y1) + mousePoint.y;
+            }
+
+            _onePercentDistance = drawingHeight / 100;
+            percY1 = _distanceFromY1 / _onePercentDistance;
+
+        }
+
+        return {
+            percX1,
+            percY1
+        };
+    }
+}
 
 
 export function DescTree() {
@@ -25,8 +77,8 @@ export function DescTree() {
 
     this.generations = [];
   //  this.familiesPerGeneration = [];
-    this.familySpanLines = [];
-    this.childlessMarriages = [];
+    this.familyEdges = [];
+    this.marriageEdges = [];
 
     this.centrePoint = 750.0;
     this.centreVerticalPoint = 0.0;
@@ -52,6 +104,7 @@ export function DescTree() {
     this.topSpan = 0.0;
     this.distanceBetweenBoxs = 0.0;
     this.distanceBetweenGens = 0.0;
+    
     this.halfBox = 0.0;
     this.halfBoxHeight = 0.0;
     this.boxWidth = 0.0;
@@ -67,17 +120,13 @@ export function DescTree() {
   //  this.xFromCentre = 0.0;
   //  this.yFromCentre = 0.0;
 
-    this.drawingX1 = 0.0;
-    this.drawingX2 = 0.0;
-    this.drawingY1 = 0.0;
-    this.drawingY2 = 0.0;
+    this._graphBoundary = new GraphBoundary();
 
-  //  this.drawingCentre = 0.0;
-    // this.drawingWidth = 0.0;
-    // this.drawingHeight = 0.0;
+    this.mouse = {
+        x: 0,
+        y: 0
+    };
 
-    this.mouse_x = 0; //int
-    this.mouse_y = 0; //int
 
     this.mouseXPercLocat = 0.0;
     this.mouseYPercLocat = 0.0;
@@ -96,12 +145,12 @@ export function DescTree() {
     this.startx1 = 0.0;
     //this.endx2 = 0.0;
 
-    this.percX1 = 0.0;
-    this.percY1 = 0.0;
+    // this.percX1 = 0.0;
+    // this.percY1 = 0.0;
     this.movementx =0;
     this.movementy =0;
 
-    this.BaseSetZoom = this.SetZoom;
+  //  this.BaseSetZoom = this.SetZoom;
 }
 
 
@@ -125,8 +174,7 @@ DescTree.prototype = {
             this.zoomLevel = 0.0;
             // this.centrePointXOffset = 0.0;
             // this.centrePointYOffset = 0.0;
-            this.mouse_x = 0; //int
-            this.mouse_y = 0; //int
+            this.mouse ={x:0,y:0};
             this.mouseXPercLocat = 0.0;
             this.mouseYPercLocat = 0.0;
 
@@ -210,51 +258,36 @@ DescTree.prototype = {
         }
 
     },
-
-
-    MoveTree: function (direction) {
-    // console.log('move tree' + direction);
-
-    if (direction == 'SOUTH') this.centreVerticalPoint -= 1;
-    if (direction == 'NORTH') this.centreVerticalPoint += 1;
-    if (direction == 'EAST') this.centrePoint += 1;
-    if (direction == 'WEST') this.centrePoint -= 1;
-
-
-    if (direction == 'UP' || direction == 'DOWN') {
-
-    var x = this.bt_screenWidth / 2;
-    var y = this.bt_screenHeight / 2;
-
-    this.SetMouse(x, y);
-
-
-    this.SetZoomStart();
-
-    this.SetCentrePoint(1000000, 1000000);
-
-
-    if (direction == 'UP') {
-    this.ZoomIn();
-    }
-    else {
-    this.ZoomOut();
-    }
-
-
-    }
-    else {
-    this.DrawTree();
-    }
-
-    },
+ 
     SetZoom: function (percentage) {
 
+        // var workingtp = this.original_lowerStalkHeight / 100;
+
+        // this.lowerSpan = workingtp * this.zoomPercentage; // (int)original_lowerStalkHeight;
+
+        // workingtp = this.original_middleSpan / 100;
+
+        // this.middleSpan = workingtp * this.zoomPercentage; //(int)original_middleSpan;
+
+        // workingtp = this.original_topSpan / 100;
+
+        // this.topSpan = workingtp * this.zoomPercentage; //(int)original_topSpan;
+
+        var x = this.bt_screenWidth / 2;
+        var y = this.bt_screenHeight / 2;
+
+        this.SetMouse(x, y);
+
+ 
+
+        let percentages = this._graphBoundary.GetPercDistances(this.mouse);
+
+        this.mouseXPercLocat = percentages.percX1;
+        this.mouseYPercLocat = percentages.percY1;
+        
 
         if (percentage !== 0.0) {
-            var _workingtp = 0.0;
-            var _percLocal_x = 0.0;
-            var _percLocal_y = 0.0;
+            var _workingtp = 0.0; 
 
             //zoom drawing components
             this.zoomPercentage += percentage;
@@ -274,89 +307,42 @@ DescTree.prototype = {
 
             this.ComputeLocations();
 
-
-            let percentages = this.GetPercDistances();
-
-            _percLocal_x = percentages.percX1;
-            _percLocal_y = percentages.percY1;
-
+            let percentages = this._graphBoundary.GetPercDistances(this.mouse);
+ 
+             let drawingHeight = this._graphBoundary.Y2 - this._graphBoundary.Y1;
+             let drawingWidth = this._graphBoundary.X2 - this._graphBoundary.X1;
 
 
-             let drawingHeight = this.drawingY2 - this.drawingY1;
-             let drawingWidth = this.drawingX2 - this.drawingX1;
+            this.centreVerticalPoint += (drawingHeight / 100) * (percentages.percY1 - this.mouseYPercLocat);
 
-
-            this.centreVerticalPoint += (drawingHeight / 100) * (_percLocal_y - this.mouseYPercLocat);
-
-            this.centrePoint += (drawingWidth / 100) * (_percLocal_x - this.mouseXPercLocat);
+            this.centrePoint += (drawingWidth / 100) * (percentages.percX1 - this.mouseXPercLocat);
 
             this.ComputeLocations();
         } //end percentage ==0.0)
 
 
 
-        this.DrawTree();
+        this.DrawTreeInner();
 
     },
-    SetZoomStart: function () {
-        let percentages = this.GetPercDistances();
-
-        this.mouseXPercLocat = percentages.percX1;
-        this.mouseYPercLocat = percentages.percY1;
-    },
-    GetPercDistances: function () {
-
-
-        let _distanceFromX1 = 0.0;
-        let _distanceFromY1 = 0.0;
-        let _onePercentDistance = 0.0;
-
-        let percX1 = 0.0;
-        let percY1 = 0.0;
-
-
-        let drawingWidth = this.drawingX2 - this.drawingX1;
-        let drawingHeight = this.drawingY2 - this.drawingY1;
-
-        if (drawingWidth !== 0 && drawingHeight !== 0) {
-            if (this.drawingX1 > 0) {
-                _distanceFromX1 = this.mouse_x - this.drawingX1; //;
-            }
-            else {
-                 _distanceFromX1 = Math.abs(this.drawingX1) + this.mouse_x;
-            }
-
-            _onePercentDistance = drawingWidth / 100;
-            percX1 = _distanceFromX1 / _onePercentDistance;
-
-            if (this.drawingY1 > 0) {
-                _distanceFromY1 = this.mouse_y - this.drawingY1; // ;
-            }
-            else {
-                _distanceFromY1 = Math.abs(this.drawingY1) + this.mouse_y;
-            }
-
-            _onePercentDistance = drawingHeight / 100;
-            percY1 = _distanceFromY1 / _onePercentDistance;
-
-        }
-
-        return {
-            percX1,
-            percY1
-        };
-    },
-
+     
+    
     SetMouse: function (x, y, mousestate) {
         //    console.log('mouse set: ' + x + ' , ' + y);
-        this.mouse_x = x;
-        this.mouse_y = y;
+       
+
+        this.mouse = {
+            x:  x,
+            y: y
+        };
+
+
 
         if (mousestate == undefined) mousestate = false;
 
-        var mouseLink = this.bt_links.LinkContainingPoint(this.mouse_x, this.mouse_y);
+        var mouseLink = this.bt_links.LinkContainingPoint(this.mouse.x, this.mouse.y);
 
-        var buttonLink = this.bt_buttonLinks.LinkContainingPoint(this.mouse_x, this.mouse_y);
+        var buttonLink = this.bt_buttonLinks.LinkContainingPoint(this.mouse.x, this.mouse.y);
 
 
         if (mouseLink !== null || buttonLink !== null) {
@@ -548,99 +534,103 @@ DescTree.prototype = {
     RelocateToSelectedPerson: function () {
 
 
-    var personId = this.selectedPersonId;
-    var _xpos = this.selectedPersonX;
-    var _ypos = this.selectedPersonY;
-
-    this.ComputeLocations();
-
-
-    var distanceToMove = 0.0;
-    var currentPersonLocation = 0;
-    var _temp = this._GetTreePerson(this.generations, personId);
-
-    var x = 0.0;
-    var y = 0.0;
-
-    if (_temp !== null) {
-        if (_xpos === 0.0) {
-            currentPersonLocation = (this.generations[0][0].X1 + this.generations[0][0].X2) / 2;
-            var requiredLocation = this.bt_screenWidth / 2;
-            distanceToMove = requiredLocation - currentPersonLocation;
-
-            this.centrePoint += distanceToMove;
-        }
-        else {
-            currentPersonLocation = _temp.X1;
-
-            if (currentPersonLocation < 0.0) {
-                distanceToMove = _xpos - currentPersonLocation;
-            }
-
-            if (currentPersonLocation > this.bt_screenWidth) {
-                distanceToMove = 0.0 - ((this.bt_screenWidth - _xpos) + (_xpos - this.bt_screenWidth));
-            }
-
-            if (currentPersonLocation >= 0 && currentPersonLocation <= this.bt_screenWidth) {   //100 - 750
-                distanceToMove = _xpos - currentPersonLocation;
-                // 800 - 100
-            }
-
-            this.centrePoint += distanceToMove;
-        }
-
-        if (_ypos === 0.0) {
-            var _currentPersonLocation = (this.generations[0][0].Y1 + this.generations[0][0].Y2) / 2;
-            var _requiredLocation = this.boxHeight;
-            var _distanceToMove = _requiredLocation - _currentPersonLocation;
-            this.centreVerticalPoint -= _distanceToMove;
-        }
-        else {
-
-            if (_temp === null) {
-                currentPersonLocation = 0.0;
-            }
-            else {
-                currentPersonLocation = _temp.Y1;
-
-                if (currentPersonLocation > this.bt_screenHeight) {
-                    distanceToMove = currentPersonLocation - _ypos;
-                }
-                if (currentPersonLocation >= 0 && currentPersonLocation <= this.bt_screenHeight) {
-                    distanceToMove = currentPersonLocation - _ypos;
-                }
-                if (currentPersonLocation < 0) {
-                    distanceToMove = _ypos - currentPersonLocation;
-                }
-            }
-
-            this.centreVerticalPoint -= distanceToMove;
-        }
+        var personId = this.selectedPersonId;
+        var _xpos = this.selectedPersonX;
+        var _ypos = this.selectedPersonY;
 
         this.ComputeLocations();
 
-        if (_ypos === 0) {
-            y = 0 - this.bt_screenHeight / 2;
-        }
-        else {
-            y = (_temp.Y2 + _temp.Y1) / 2;
-        }
 
-        if (_xpos === 0) {
-            x = this.bt_screenWidth / 2;
+        var distanceToMove = 0.0;
+        var currentPersonLocation = 0;
+        var _temp = this._GetTreePerson(this.generations, personId);
+
+        var x = 0.0;
+        var y = 0.0;
+
+        if (_temp !== null) {
+            if (_xpos === 0.0) {
+                currentPersonLocation = (this.generations[0][0].X1 + this.generations[0][0].X2) / 2;
+                var requiredLocation = this.bt_screenWidth / 2;
+                distanceToMove = requiredLocation - currentPersonLocation;
+
+                this.centrePoint += distanceToMove;
+            }
+            else {
+                currentPersonLocation = _temp.X1;
+
+                if (currentPersonLocation < 0.0) {
+                    distanceToMove = _xpos - currentPersonLocation;
+                }
+
+                if (currentPersonLocation > this.bt_screenWidth) {
+                    distanceToMove = 0.0 - ((this.bt_screenWidth - _xpos) + (_xpos - this.bt_screenWidth));
+                }
+
+                if (currentPersonLocation >= 0 && currentPersonLocation <= this.bt_screenWidth) {   //100 - 750
+                    distanceToMove = _xpos - currentPersonLocation;
+                    // 800 - 100
+                }
+
+                this.centrePoint += distanceToMove;
+            }
+
+            if (_ypos === 0.0) {
+                var _currentPersonLocation = (this.generations[0][0].Y1 + this.generations[0][0].Y2) / 2;
+                var _requiredLocation = this.boxHeight;
+                var _distanceToMove = _requiredLocation - _currentPersonLocation;
+                this.centreVerticalPoint -= _distanceToMove;
+            }
+            else {
+
+                if (_temp === null) {
+                    currentPersonLocation = 0.0;
+                }
+                else {
+                    currentPersonLocation = _temp.Y1;
+
+                    if (currentPersonLocation > this.bt_screenHeight) {
+                        distanceToMove = currentPersonLocation - _ypos;
+                    }
+                    if (currentPersonLocation >= 0 && currentPersonLocation <= this.bt_screenHeight) {
+                        distanceToMove = currentPersonLocation - _ypos;
+                    }
+                    if (currentPersonLocation < 0) {
+                        distanceToMove = _ypos - currentPersonLocation;
+                    }
+                }
+
+                this.centreVerticalPoint -= distanceToMove;
+            }
+
+            this.ComputeLocations();
+
+            if (_ypos === 0) {
+                y = 0 - this.bt_screenHeight / 2;
+            }
+            else {
+                y = (_temp.Y2 + _temp.Y1) / 2;
+            }
+
+            if (_xpos === 0) {
+                x = this.bt_screenWidth / 2;
+            }
+            else {
+                x = (_temp.X2 + _temp.X1) / 2;
+            }
+
+            this.SetMouse(x, y);
+ 
+            let percentages = this._graphBoundary.GetPercDistances(this.mouse);
+
+            this.mouseXPercLocat = percentages.percX1;
+            this.mouseYPercLocat = percentages.percY1;
+
+            this.DrawTree();
         }
-        else {
-            x = (_temp.X2 + _temp.X1) / 2;
-        }
-
-        this.SetMouse(x, y);
-        this.SetZoomStart();
-      //  this.SetCentrePoint(1000000, 1000000);
-
-
-        this.DrawTree();
-    }
     },
+
+
     Debug: function () {
         console.log('debugging');
 
@@ -678,26 +668,7 @@ DescTree.prototype = {
 
     },
 
-    SetZoom: function (p_percentage) {
-
-
-        var workingtp = this.original_lowerStalkHeight / 100;
-
-        this.lowerSpan = workingtp * this.zoomPercentage; // (int)original_lowerStalkHeight;
-
-        workingtp = this.original_middleSpan / 100;
-
-        this.middleSpan = workingtp * this.zoomPercentage; //(int)original_middleSpan;
-
-        workingtp = this.original_topSpan / 100;
-
-        this.topSpan = workingtp * this.zoomPercentage; //(int)original_topSpan;
-
-
-        this.BaseSetZoom(Number(p_percentage));
-
-
-    },
+ 
 
     DrawTree: function () {
      //  requestAnimationFrame($.proxy(this.DrawTreeInner, this) );
@@ -787,24 +758,24 @@ DescTree.prototype = {
 
 
         try {
-            while (_fslOuter < this.familySpanLines.length) {
+            while (_fslOuter < this.familyEdges.length) {
                 _fslInner = 0;
-                while (_fslInner < this.familySpanLines[_fslOuter].length) {
+                while (_fslInner < this.familyEdges[_fslOuter].length) {
 
                     //if (_fslOuter == 7 && _fslInner == 15) {
-                    this.treeUI.DrawLine(this.bt_screenWidth, this.bt_screenHeight,this.familySpanLines[_fslOuter][_fslInner]);
+                    this.treeUI.DrawLine(this.bt_screenWidth, this.bt_screenHeight,this.familyEdges[_fslOuter][_fslInner]);
                     // }
                     _fslInner++;
 
 
-                } // end familySpanLines[_fslOuter].length
+                } // end familyEdges[_fslOuter].length
 
                 _fslOuter++;
-            } // end this.familySpanLines.length
+            } // end this.familyEdges.length
 
 
         } catch (e) {
-            console.log('error drawing familySpanLines: familySpanLines idx ' + _fslOuter + ' ' + _fslInner);
+            console.log('error drawing familyEdges: familyEdges idx ' + _fslOuter + ' ' + _fslInner);
         }
 
 
@@ -812,9 +783,9 @@ DescTree.prototype = {
         _fslOuter = 0;
 
         try {
-            while (_fslOuter < this.childlessMarriages.length) {
+            while (_fslOuter < this.marriageEdges.length) {
 
-                this.treeUI.DrawLine(this.bt_screenWidth, this.bt_screenHeight,this.childlessMarriages[_fslOuter]);
+                this.treeUI.DrawLine(this.bt_screenWidth, this.bt_screenHeight,this.marriageEdges[_fslOuter]);
 
                 _fslOuter++;
             }
@@ -835,18 +806,18 @@ DescTree.prototype = {
         var _displayGenCount = 0;
         var _genIdx = 0;
 
-        this.childlessMarriages = [];
+        this.marriageEdges = [];
 
-        this.drawingX2 = 0.0;
+        this._graphBoundary.X2 = 0.0;
 
 
-        this.familySpanLines = [];
+      // this.familyEdges = [];
 
 
         //initialize familyspan array
      //   while (_genIdx < this.generations.length) {
 
-     //       this.familySpanLines.push([]);
+     //       this.familyEdges.push([]);
 
      //       _genIdx++;
      //   }
@@ -859,9 +830,11 @@ DescTree.prototype = {
 
         var lastPersonY2 = 0.0;
 
-        while (_genIdx < this.generations.length) {
-            this.familySpanLines.push([]);
+        this.familyEdges = CreateArray(this.generations);
 
+        while (_genIdx < this.generations.length) {
+           // this.familyEdges.push([]);
+           // this.familyEdges[_genIdx] =[];
             //IsGenerationDisplayed
       //      var tp = this.IsGenerationDisplayed(_genIdx);
         //    if (tp != this.generations[_genIdx].GenerationVisible) {
@@ -892,7 +865,7 @@ DescTree.prototype = {
                 if(_genIdx>0)
                     familydirectionCounts = createFamilyCountArray(_genIdx, this.generations[_genIdx], this.generations[_genIdx-1]);
 
-                var _familyIdx = -1;
+            //    var _familyIdx = -1;
                 var _personIdx = 0;
 
                 while (_personIdx < this.generations[_genIdx].length) {
@@ -906,25 +879,10 @@ DescTree.prototype = {
 
                         genPerson.X2 = genPerson.X1 + this.boxWidth;
 
-                        var _isDoubleSpouseEnd = false;
                         var _isSpouse = genPerson.IsHtmlLink;
 
-                        if (_isSpouse) {
-
-                            if ((this.generations[_genIdx].length > _personIdx + 1) && this.generations[_genIdx][_personIdx + 1].IsHtmlLink) {
-                                _isDoubleSpouseEnd = true;
-                                //  console.log('double spouse: ' + _genIdx + ',' + _personIdx);
-                            }
-
-                        }
-
                         var _parent_gen_lower_y = 0.0;
-                        if (genPerson.IsFamilyStart) {
-                            _familyIdx++;
-                            // this.familySpanLines[_genIdx][_familyIdx] = [];
-                            this.familySpanLines[_genIdx].push([]);
-                        }
-
+                     
 
                         if (genPerson.SpouseIdxLst.length > 0 && genPerson.ChildCount === 0 && !_isSpouse) {
                             var spouseIdx = genPerson.SpouseIdxLst[0];
@@ -944,7 +902,7 @@ DescTree.prototype = {
                                     myArray = new Array((tp + this.halfBox), (_current_gen_upper_y + this.boxHeight));
                                     marriagePoints.push(myArray);
 
-                                    this.childlessMarriages.push(marriagePoints);
+                                    this.marriageEdges.push(marriagePoints);
                                 }
                             }
 
@@ -969,9 +927,13 @@ DescTree.prototype = {
                         var _fourthRow = _parent_gen_lower_y + this.topSpan;
 
                         if ((!(genPerson.IsFamilyEnd && _isSpouse)) && _genIdx > 0) {
-                            if (!_isDoubleSpouseEnd) {
-                                var _family = this.familySpanLines[_genIdx][_familyIdx];
+                            if (!genPerson.DoubleSpouseEnd) {
+                                // console.log('needed: ' + _genIdx + '  - ' + 
+                                // _familyIdx + ' ' + genPerson.FamilyIdx + ' '  
+                                // +this.familyEdges[_genIdx].length);
+                                var _family = this.familyEdges[_genIdx][genPerson.FamilyIdx];
 
+                                
                                 //  console.log(genPerson.Name);
 
                                 _family.push(new Array((genPerson.X1 + this.halfBox), _firstRow));
@@ -1101,8 +1063,9 @@ DescTree.prototype = {
 
                             }
 
+                            
                             //endregion
-                            var _family0 = this.familySpanLines[_genIdx][_familyIdx];
+                            var _family0 = this.familyEdges[_genIdx][genPerson.FamilyIdx];
 
 
                             _family0.push(new Array(_secondStorkX, _firstRow));
@@ -1157,16 +1120,13 @@ DescTree.prototype = {
         }
 
         if (this.generations.length > 0) {
-            this.drawingY1 = this.generations[0][0].Y1;
+            this._graphBoundary.Y1 = this.generations[0][0].Y1;
         }
 
         if (this.generations[_displayGenCount - 1].length > 0) {
-            this.drawingY2 = lastPersonY2;
+            this._graphBoundary.Y2 = lastPersonY2;
         }
-        //drawingCentreVertical = drawingY2 - drawingY1;
-     //   this.drawingCentre = (this.drawingX2 - this.drawingX1) / 2;
-        //this.drawingHeight = this.drawingY2 - this.drawingY1;
-        //this.drawingWidth = this.drawingX2 - this.drawingX1;
+   
 
     },
 
@@ -1185,17 +1145,18 @@ DescTree.prototype = {
         var lastVisibleIdx = -1;
         var firstFamilyIdx = -1;
         var lastFamilyIdx = -1;
+        var _familyIdx = -1;
 
-        this.childlessMarriages = [];
+        this.marriageEdges = [];
 
-        this.familySpanLines = [];
+        this.familyEdges = [];
         // initialize familyspan array
         // set generation variables
         // visible family count
         // visible person count
         // generation displayed
         while (genIdx < this.generations.length) {
-            this.familySpanLines.push([]);
+            this.familyEdges.push([]);
 
             personIdx = 0;
             isDisplayed = false;
@@ -1205,9 +1166,18 @@ DescTree.prototype = {
             lastVisibleIdx = -1;
             firstFamilyIdx = 0; //should always be a family
             lastFamilyIdx = 0;
+            _familyIdx = -1;
 
             while (personIdx < this.generations[genIdx].length) {
                 if (this.generations[genIdx][personIdx].IsDisplayed) {
+
+                    if (this.generations[genIdx][personIdx].IsFamilyStart) {
+                        _familyIdx++; 
+                        //console.log('added:' + genIdx + ' ' + personIdx);
+                        
+                        this.familyEdges[genIdx].push([]);
+                    }
+
                     if (this.generations[genIdx][personIdx].IsFamilyStart) {
                         familyCount++;
                     }
@@ -1229,6 +1199,19 @@ DescTree.prototype = {
                     if (firstVisibleIdx == -1) firstVisibleIdx = personIdx;
 
 
+                    let _isDoubleSpouseEnd = false;
+          
+                    if (this.generations[genIdx][personIdx].IsHtmlLink) {
+          
+                        if ((this.generations[genIdx][personIdx].length > personIdx + 1) 
+                              && this.generations[genIdx][personIdx + 1].IsHtmlLink) {
+                            _isDoubleSpouseEnd = true; 
+                        }
+          
+                    }
+                    
+                    this.generations[genIdx][personIdx].DoubleSpouseEnd = _isDoubleSpouseEnd;
+                    this.generations[genIdx][personIdx].FamilyIdx = _familyIdx;
                 }
                 personIdx++;
             }
@@ -1264,7 +1247,7 @@ DescTree.prototype = {
 
 
             if (genidx === 0) {
-                this.drawingX1 = currentRowX1;
+                this._graphBoundary.X1 = currentRowX1;
                 currentRowX1 = this.centrePoint - (((this.generations[genidx].length * this.boxWidth) + ((this.generations[genidx].length - 1) * this.distanceBetweenBoxs)) / 2);
             }
             else {

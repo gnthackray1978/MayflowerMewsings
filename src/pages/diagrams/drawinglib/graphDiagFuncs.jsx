@@ -191,3 +191,24 @@ export const GetParentXs = (fatherX1, motherX1,halfBoxWidth) => {
     return result;
 
 }
+
+export const CreateArray = (shape) => {
+
+    var newArray = [];
+    let genIdx=0;
+    for(var generation  of shape){
+        newArray.push([]);
+        let idx =0;
+        
+        while(idx < generation.VisibleFamilyCount){
+            newArray[genIdx].push([]);
+            idx++;
+        }
+
+        genIdx++;
+        
+    }
+    
+    return newArray;
+
+}

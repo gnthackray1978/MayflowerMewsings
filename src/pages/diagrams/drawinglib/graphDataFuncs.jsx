@@ -83,7 +83,9 @@ export const getPersonFromId = (id, rows)=>{
                 RelationType: rows[generationIdx][personIdx].relationType,
                 SpouseIdxLst: rows[generationIdx][personIdx].spouseIdxLst ?? [],
                 SpouseIdLst: rows[generationIdx][personIdx].spouseIdLst ?? [], 
-                Spouses:[],                             
+                Spouses:[], 
+                DoubleSpouseEnd : false,     
+                FamilyIdx :-1,                       
                 X1 :0,
                 X2 :0,
                 Y1 :0,
@@ -187,7 +189,7 @@ export const getPersonFromId = (id, rows)=>{
    
     while(generationIdx < newRows.length){
      
-  
+      let personIdx =0;
       for(let person of newRows[generationIdx]){
         //if(newRows[generationIdx][personIdx].ChildIdxLst.length >0){
 
@@ -223,6 +225,8 @@ export const getPersonFromId = (id, rows)=>{
   
           if(mother)
             person.Mother = mother;
+
+          personIdx++;
   
       }
       generationIdx++;

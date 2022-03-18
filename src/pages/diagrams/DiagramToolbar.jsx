@@ -123,11 +123,19 @@ const DiagramToolbar = (props) => {
           style={{ position :'absolute', left : '32px', top : '100px' }}
            aria-label="Menu"  onClick= {()=>{}}><ArrowDownward/></IconButton>
       
-          <IconButton color="inherit" 
+          <IconButton color="inherit" onMouseDown={e => {
+              graph.ZoomIn();
+              e.stopPropagation();
+            }
+            }
           style={{ position :'absolute', left : '34px', top : '135px' }} 
           aria-label="Menu"  onClick= {()=>{}}><AddCircleOutline/></IconButton>
           
-          <IconButton color="inherit" 
+          <IconButton color="inherit" onMouseDown={e => {
+              graph.ZoomOut();
+              e.stopPropagation();
+            }
+            }
           style={{ position :'absolute', left : '65px', top : '135px' }} 
           aria-label="Menu"  onClick= {()=>{}}><RemoveCircleOutline/></IconButton>
 
