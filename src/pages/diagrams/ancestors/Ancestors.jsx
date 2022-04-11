@@ -79,6 +79,8 @@ function Ancestors(props) {
  
   const graph = new AncTree();
  
+  let Body = ()=>{return(<div>loading</div>)};
+
   if(data.newRows && data.newRows.length >0){
        
       //console.log('Diagrams load with new anc tree ' + a );
@@ -108,13 +110,19 @@ function Ancestors(props) {
         graph.bt_refreshData = false;
 
       
+        Body = ()=>{ return(<div>
+            <DiagramToolbar graph ={graph} state ={state}/>
+            <AncestorsBody graph ={graph} />
+        </div>)};
   }
+
+
+
 
     return ( 
         <div>
           <DiagramWrapper state = {state} >
-            <DiagramToolbar graph ={graph} state ={state}/>
-            <AncestorsBody graph ={graph} />
+            <Body/>
           </DiagramWrapper>
         </div>
     );

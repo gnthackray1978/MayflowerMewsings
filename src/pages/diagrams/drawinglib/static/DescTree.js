@@ -1,10 +1,7 @@
-/*global requestAnimationFrame*/
-//MiddleParents
-
-import {TreeBase} from "./TreeBase.js";
-import {TreeUI} from "./TreeUI.js";
 
 import {MiddleParents, createFamilyCountArray, GetPrev, GetFirst, GetParentXs, CreateArray} from '../graphDiagFuncs.jsx';
+
+
 import { ThreeDRotationSharp } from "@material-ui/icons";
 
 

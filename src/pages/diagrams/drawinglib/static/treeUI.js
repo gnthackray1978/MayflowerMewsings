@@ -81,47 +81,6 @@ Array.prototype.LinkContainingPoint = function (mx,my) {
 
 };
 
-Array.prototype.ContainsPerson = function (value) {
-
-    for (var i = 0; i < this.length; i++) {
-
-        if (this[i].PersonId == value.PersonId) {
-            return true;
-        }
-    }
-
-
-
-    return false;
-
-};
-
-Array.prototype.SortByGenIdx = function()
-{
-    for(var i=0;i<this.length;i++)
-	{
-		for(var j=i+1;j<this.length;j++)
-		{
-			if(Number(this[i].GenerationIdx) < Number(this[j].GenerationIdx))
-			{
-				var tempValue = this[j];
-				this[j] = this[i];
-				this[i] = tempValue;
-			}
-		}
-	}
-};
-
-Array.prototype.RemoveDupes = function () {
-
-    var uniqueNames = [];
-    $.each(this, function (i, el) {
-        if ($.inArray(el, uniqueNames) === -1) uniqueNames.push(el);
-    });
-
-    return uniqueNames;
-};
-
 
 
 

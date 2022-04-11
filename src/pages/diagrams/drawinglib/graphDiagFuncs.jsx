@@ -1,4 +1,48 @@
 
+Array.prototype.ContainsPerson = function (value) {
+
+    for (var i = 0; i < this.length; i++) {
+  
+        if (this[i].PersonId == value.PersonId) {
+            return true;
+        }
+    }
+  
+  
+  
+    return false;
+  
+  };
+  
+  Array.prototype.SortByGenIdx = function()
+  {
+    for(var i=0;i<this.length;i++)
+    {
+      for(var j=i+1;j<this.length;j++)
+      {
+        if(Number(this[i].GenerationIdx) < Number(this[j].GenerationIdx))
+        {
+          var tempValue = this[j];
+          this[j] = this[i];
+          this[i] = tempValue;
+        }
+      }
+    }
+  };
+  
+  Array.prototype.RemoveDupes = function () {
+  
+    var uniqueNames = [];
+    $.each(this, function (i, el) {
+        if ($.inArray(el, uniqueNames) === -1) uniqueNames.push(el);
+    });
+  
+    return uniqueNames;
+  };
+  
+  
+
+
 export const createFamilyCountArray =  (genidx, currentGeneration, parentsGeneration) => {
 
 
@@ -212,3 +256,102 @@ export const CreateArray = (shape) => {
     return newArray;
 
 }
+
+export const getDescendants =  (nodes, person, startGen) =>{
+
+    let moveList = [];
+    var moveGenIdx = startGen;
+
+
+    while (moveGenIdx > 0)
+    {
+
+        if (!moveList.ContainsPerson(nodes[moveGenIdx][person]))
+        {
+            moveList.push(nodes[moveGenIdx][person]);
+        }
+
+        person = nodes[moveGenIdx][person].ChildIdx;
+
+        moveGenIdx--;
+    }
+
+    moveList.SortByGenIdx();
+
+    for(let p of moveList){
+
+        if(p.RecordLink.Name.includes('Shepherd')){
+            console.log('shepfound');
+        }
+    }
+
+    return moveList;
+};
+
+export const dump =  (nodes) =>{
+
+ 
+
+    for(let gen of nodes){
+        
+        let genStr ='';
+        for(let person of gen){
+            genStr += ','+ person.GenerationIdx +','+person.PersonId + ',' +person.Index + ',' + person.FatherId + ',' + person.FatherIdx + ','+ person.MotherId + ',' + person.MotherIdx;
+        }
+        
+        console.log(genStr);
+    }
+};
+ 
+
+
+export const getParentGeneration = (nodes, movePerson)=>{
+
+    let requiredGeneration = movePerson.GenerationIdx + 1;
+
+
+    if(nodes.length > requiredGeneration)
+        return nodes[requiredGeneration];
+    
+    return;
+};
+
+export const CreateChildPositionFromParent = (parentGeneration, movePerson, boxWidth) => {
+
+    let result = {
+        x1 : 0.0,
+        x2 : 0.0
+    };
+
+    if (movePerson.FatherIdx == -1)
+    {
+        result.x1 = ((parentGeneration[movePerson.MotherIdx].X1 + parentGeneration[movePerson.MotherIdx].X2) / 2) - (boxWidth / 2);
+        result.x2 = result.x1 + boxWidth;
+    }
+
+    if (movePerson.MotherIdx == -1)
+    {
+        result.x1 = ((parentGeneration[movePerson.FatherIdx].X1 + parentGeneration[movePerson.FatherIdx].X2) / 2) - (boxWidth / 2);
+        result.x2 = result.x1 + boxWidth;
+    }
+
+    var parentX1 = 0.0;
+    var parentX2 = 0.0;
+
+    if (movePerson.FatherIdx != -1 && movePerson.MotherIdx != -1)
+    {
+        parentX2 = parentGeneration[movePerson.MotherIdx].X2;
+        parentX1 = parentGeneration[movePerson.FatherIdx].X1;
+
+        if (movePerson.FatherIdx > movePerson.MotherIdx)
+        {
+            parentX2 = parentGeneration[movePerson.FatherIdx].X2;
+            parentX1 = parentGeneration[movePerson.MotherIdx].X1;
+        }
+
+        result.x1 = ((parentX2 + parentX1) / 2) - ((movePerson.X2 - movePerson.X1) / 2);
+        result.x2 = result.x1 + (movePerson.X2 - movePerson.X1);
+    }
+
+    return result;
+};

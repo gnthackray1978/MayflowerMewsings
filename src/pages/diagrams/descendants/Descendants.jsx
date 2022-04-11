@@ -6,6 +6,7 @@ import DiagramWrapper from '../DiagramWrapper.jsx'
 import {transformData, populateDescendantObjects} from '../drawinglib/graphDataFuncs.jsx';
 import {gql} from '@apollo/client';
 import { connect } from "react-redux";
+import {getParams} from '../queryParams';
 import {useMapState} from '../useMap';
 import {DescTree} from '../../diagrams/drawinglib/static/DescTree';
 
@@ -62,6 +63,11 @@ function Descendants(props) {
       }
     }
     `;
+
+    
+    var params = getParams();
+
+    console.log(params.origin + ' ' + params.personId);
 
     var state = useMapState(GET_FTMView,{
       personId : selectedTreePersonData,     

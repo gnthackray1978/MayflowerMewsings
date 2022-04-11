@@ -1,6 +1,5 @@
 
 
-
 export const getPersonFromId = (id, rows)=>{
    
     // let result;
@@ -55,7 +54,11 @@ export const getPersonFromId = (id, rows)=>{
 
         newRows.push([]);
 
-        while(personIdx < rows[generationIdx].length){
+       let length =  rows[generationIdx].length;
+
+    
+
+        while(personIdx < length){
 
             newRows[generationIdx].push(
                 {
@@ -111,7 +114,7 @@ export const getPersonFromId = (id, rows)=>{
                 }
                 }
             );
-
+              
             personIdx++;
         }
         generationIdx++;
@@ -137,11 +140,15 @@ export const getPersonFromId = (id, rows)=>{
       
               if(father)
                 person.Father = father;
-      
+              else
+                person.FatherIdx = -1;
+
               var mother = getPersonFromId(person.MotherId, newRows);
       
               if(mother)
                 person.Mother = mother;
+              else
+                person.MotherIdx = -1;
 
         }
 
