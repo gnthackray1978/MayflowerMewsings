@@ -1,4 +1,4 @@
-import {Vector} from "../Types/Vector.js";
+import {Vector} from "../types/Vector.js";
 
 export function Utils(currentBB, gwidth, hwidth) {
     this.currentBB = currentBB;

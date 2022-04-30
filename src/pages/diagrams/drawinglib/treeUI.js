@@ -1,5 +1,5 @@
-import plusImg from '../../../../../public/Assets/plus.png';
-import minusImg from '../../../../../public/Assets/minus.png';
+import plusImg from '../../../../public/Assets/plus.png';
+import minusImg from '../../../../public/Assets/minus.png';
 
 
 const descendantConfig = {
@@ -131,24 +131,6 @@ export class TreeUI {
   
         };
     }
-
-    //code from here moved to constructor
-    // Init(isAnc, callback){
-
-    // }
-
-    // UpdateUI (screen_width, screen_height, box_width, box_height) {
-
-    //     this.screen_width = screen_width;
-    //     this.screen_height = screen_height;
-    //     // this.canvas = document.getElementById("myCanvas");
-
-
-    //     // this.context = this.canvas.getContext("2d");
-
-    //     this.boxWidth = box_width;
-    //     this.boxHeight = box_height;
-    // }
 
     ClearScreen(){
         let ctx = this._ctx;
@@ -593,46 +575,4 @@ export class TreeUI {
         return nameAr;
     }
 
-    static WireUp(runner){
-      $("#myCanvas").unbind();
-      $(".button_box").unbind();
-
-      $(".button_box").mousedown(function (evt) {
-          var _dir = '';
-
-          if (evt.target.id == "up") _dir = 'UP';
-          if (evt.target.id == "dn") _dir = 'DOWN';
-          if (evt.target.id == "we") _dir = 'WEST';
-          if (evt.target.id == "no") _dir = 'NORTH';
-          if (evt.target.id == "es") _dir = 'EAST';
-          if (evt.target.id == "so") _dir = 'SOUTH';
-          if (evt.target.id == "de") _dir = 'DEBUG';
-
-          runner.movebuttondown(_dir);
-
-      }).mouseup(function () {
-          runner.movebuttonup();
-      });
-
-      $("#myCanvas").mousedown(function (evt) {
-          evt.preventDefault();
-          evt.originalEvent.preventDefault();
-          runner.canvasmousedown();
-      });
-
-      $("#myCanvas").mouseup(function (evt) {
-        evt.preventDefault();
-        runner.canvasmouseup();
-      });
-
-      $("#myCanvas").click(function (evt) {
-        var boundingrec = document.getElementById("myCanvas").getBoundingClientRect();
-        runner.canvasclick(evt.clientX ,boundingrec.left, evt.clientY , boundingrec.top);
-      });
-
-      $("#myCanvas").mousemove(function (evt) {
-         var boundingrec = document.getElementById("myCanvas").getBoundingClientRect();
-         runner.canvasmove(evt.clientX ,boundingrec.left, evt.clientY , boundingrec.top);
-      });
-    }
 }

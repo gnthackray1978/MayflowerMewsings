@@ -2,7 +2,7 @@ import  React, { useState, useEffect }  from 'react';
 
 import AncestorsBody from './AncestorsBody.jsx';
 import DiagramToolbar from '../DiagramToolbar.jsx';
-import {AncTree} from '../../diagrams/drawinglib/static/AncTree';
+import {AncTree} from './AncTree';
 import DiagramWrapper from '../DiagramWrapper.jsx'
 import {transformData, populateAncestryObjects} from '../drawinglib/graphDataFuncs.jsx'
 import {gql} from '@apollo/client';
@@ -103,17 +103,17 @@ function Ancestors(props) {
 
       graph.generations = data.newRows;
  
-        graph.SetCentrePoint(0, 0);
-      
-        graph.RelocateToSelectedPerson();
-      
-        graph.bt_refreshData = false;
+      graph.SetCentrePoint(0, 0);
+    
+      graph.RelocateToSelectedPerson();
+    
+      graph.bt_refreshData = false;
 
-      
-        Body = ()=>{ return(<div>
-            <DiagramToolbar graph ={graph} state ={state}/>
-            <AncestorsBody graph ={graph} />
-        </div>)};
+    
+      Body = ()=>{ return(<div>
+          <DiagramToolbar graph ={graph} state ={state}/>
+          <AncestorsBody graph ={graph} />
+      </div>)};
   }
 
 

@@ -3,7 +3,7 @@ import React, { useRef, useEffect , useState} from 'react'
 
 import { connect } from "react-redux";
 
-import {TreeUI} from '../diagrams/drawinglib/static/treeUI';
+import {TreeUI} from './drawinglib/treeUI';
 import useCanvas from './useCanvas'
 
 function resizeCanvas(canvas) {

@@ -8,7 +8,7 @@ import {gql} from '@apollo/client';
 import { connect } from "react-redux";
 import {getParams} from '../queryParams';
 import {useMapState} from '../useMap';
-import {DescTree} from '../../diagrams/drawinglib/static/DescTree';
+import {DescTree} from './DescTree';
 
 
 function Descendants(props) {
@@ -84,45 +84,50 @@ function Descendants(props) {
 
 
     
-  const graph = new DescTree();
- 
-  if(data.newRows && data.newRows.length >0){
-       
-      //console.log('Diagrams load with new anc tree ' + a );
- 
-      var _zoomLevel = 100;
-      
+    const graph = new DescTree();
+  
+    let Body = ()=>{return(<div>loading</div>)};
 
-      graph.selectedPersonId = 3217;
-      graph.selectedPersonX = 0;
-      graph.selectedPersonY = 0;
+    if(data.newRows && data.newRows.length >0){
+        
+        //console.log('Diagrams load with new anc tree ' + a );
+  
+        var _zoomLevel = 100;
+        
 
-      graph.SetInitialValues(Number(_zoomLevel), 30.0, 170.0, 70.0, 
-                      70.0, 100.0, 20.0, 40.0, 20.0, screen.width, screen.height);
+        graph.selectedPersonId = 3217;
+        graph.selectedPersonX = 0;
+        graph.selectedPersonY = 0;
 
-      //    var _personId = '913501a6-1216-4764-be8c-ae11fd3a0a8b';
-      //    var _zoomLevel = 100;
-      //    var _xpos = 750.0;
-      //    var _ypos = 100.0;
-      
+        graph.SetInitialValues(Number(_zoomLevel), 30.0, 170.0, 70.0, 
+                        70.0, 100.0, 20.0, 40.0, 20.0, screen.width, screen.height);
 
-      graph.generations = data.newRows;
-      graph.UpdateGenerationState();
+        //    var _personId = '913501a6-1216-4764-be8c-ae11fd3a0a8b';
+        //    var _zoomLevel = 100;
+        //    var _xpos = 750.0;
+        //    var _ypos = 100.0;
+        
+
+        graph.generations = data.newRows;
+        graph.UpdateGenerationState();
         graph.SetCentrePoint(0, 0);
       
         graph.RelocateToSelectedPerson();
       
         graph.bt_refreshData = false;
 
-      
-  }
+        
+          Body = ()=>{ return(<div>
+            <DiagramToolbar  graph ={graph} state ={state}/>
+            <DescendantsBody  graph ={graph} />
+        </div>)};
+    }
 
 
     return ( 
         <div>
           <DiagramWrapper state = {state} >
-            <DiagramToolbar  graph ={graph} state ={state}/>
-            <DescendantsBody  graph ={graph} />
+            <Body/>
           </DiagramWrapper>
         </div>
     );

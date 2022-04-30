@@ -1,8 +1,8 @@
 
-import {Vector} from "./Types/Vector.js";
-import {Node} from "./Types/Node.js";
-import {Point} from "./Types/Point.js";
-import {Spring} from "./Types/Spring.js";
+import {Vector} from "./types/Vector.js";
+import {Node} from "./types/Node.js";
+import {Point} from "./types/Point.js";
+import {Spring} from "./types/Spring.js";
 
 export function FDLayout(channel, graph, camera, settings, parentNode, parentLayout, firstNode) {
     this._channel = channel;

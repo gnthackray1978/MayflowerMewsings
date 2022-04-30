@@ -1,5 +1,5 @@
-import {Vector} from "../Types/Vector.js";
-import {Utils} from "../Libs/Utils.js";
+import {Vector} from "./types/Vector.js";
+import {Utils} from "./Utils.js";
 
 export class RenderLib{
 

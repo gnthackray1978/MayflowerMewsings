@@ -8,6 +8,12 @@ import {gql} from '@apollo/client';
 
 import {useMapState} from '../useMap';
 
+import {VisControlsUI} from "../fddescendants/libs/VisControlsUI.js";
+import {DataHandler} from "./libs/DataHandler.js";
+
+import {LayoutSettings} from "../fddescendants/libs/LayoutSettings.js";
+import {ForceDirect} from "../fddescendants/libs/ForceDirect.js";
+import mitt from 'mitt';
 
 function makeData(data, schema, subSchema){
 
@@ -64,19 +70,46 @@ function FDDescendants(props) {
                 personId : $personId,
                 origin : $origin
           ) {
-      page
+      generationsCount
+      maxGenerationLength
       totalResults
       results {        
         id
-        generationIdx,
-        index,
-        christianName,
+        generationIdx
+        index
+        christianName
         surname
+        childCount
+        childIdxLst
+        childLst
+        descendantCount
+        fatherId
+        fatherIdx        
+        isDisplayed
+        isFamilyEnd
+        isFamilyStart
+        isHtmlLink
+        isParentalLink
+        motherId
+        motherIdx
+        personId
+        relationType
+        spouseIdxLst
+        spouseIdLst
+        birthLocation
+        christianName
+        surname
+        dOB  
       }
     }
     }
   }
   `;
+
+  
+  var params = getParams();
+
+  console.log(params.origin + ' ' + params.personId);
 
   var state = useMapState(GET_FTMView,{
     personId : selectedTreePersonData,     
@@ -89,16 +122,41 @@ function FDDescendants(props) {
     title : 'Map View'
   };
 
-  let data = makeData(state.data,'diagram','descendantsearch');
+  let data = transformData(state.data,'diagram','descendantsearch', populateDescendantObjects);
 
-    return ( 
-        <div>
-          <DiagramWrapper state = {state} >
-            <DiagramToolbar state ={state}/>
-            <FDDescendantsBody rows ={data.rows} />
-          </DiagramWrapper>
-        </div>
-    );
+
+  let Body = ()=>{return(<div>loading</div>)};
+
+  if(data.newRows && data.newRows.length >0){
+   
+      var channel = mitt();
+      var settings = new LayoutSettings();
+  
+      var diagUI = new VisControlsUI(channel, settings);
+    
+      let _forceDirect = new ForceDirect(channel, settings);
+      var dataHandler = new DataHandler(data.newRows);
+      
+      _forceDirect.init(dataHandler, params.personId);
+    
+    
+      diagUI.InitEvents();
+
+      
+        Body = ()=>{ return(<div>
+          <DiagramToolbar  graph ={_forceDirect} state ={state}/>
+          <FDDescendantsBody  graph ={_forceDirect} />
+      </div>)};
+  }
+
+
+  return ( 
+      <div>
+        <DiagramWrapper state = {state} >
+          <Body/>
+        </DiagramWrapper>
+      </div>
+  );
 
 }
 

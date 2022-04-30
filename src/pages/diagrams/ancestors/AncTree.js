@@ -1,5 +1,5 @@
 
-import {getDescendants,getParentGeneration, CreateChildPositionFromParent} from '../graphDiagFuncs.jsx';
+import {getDescendants,getParentGeneration, CreateChildPositionFromParent} from '../drawinglib/graphDiagFuncs.jsx';
 
 
 export function Layout(){

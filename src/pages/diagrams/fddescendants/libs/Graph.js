@@ -1,5 +1,5 @@
-import {Node} from "./Types/Node.js";
-import {Edge} from "./Types/Edge.js";
+import {Node} from "../types/Node.js";
+import {Edge} from "../types/Edge.js";
 
 export function Graph(channel) {
     this.channel = channel;

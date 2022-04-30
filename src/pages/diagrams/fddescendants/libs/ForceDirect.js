@@ -24,7 +24,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 
 import {LayoutList} from "./LayoutList.js";
 import {Graph} from "./Graph.js";
-import {RenderLib} from "./Static/RenderLib.js";
+import {RenderLib} from "./RenderLib.js";
 import {RenderingHandler} from "./RenderingHandler.js";
 //test
 export function ForceDirect(channel,settings, gedPreLoader) {
@@ -52,11 +52,20 @@ export function ForceDirect(channel,settings, gedPreLoader) {
     });
 
 
+    var that = this;
+
+    this.settings.speed =params.sp;
+    this.settings.increment =params.im;
+    this.settings.year = params.sy;
+
+    this.gedPreLoader.GetGenerations(id, function(data){
+        that.run(data);
+    });
 
 }
 
 ForceDirect.prototype = {
-    init: function(id, params) {
+    init: function(data, params) {
 
         var that = this;
 
@@ -64,9 +73,7 @@ ForceDirect.prototype = {
         this.settings.increment =params.im;
         this.settings.year = params.sy;
 
-        this.gedPreLoader.GetGenerations(id, function(data){
-            that.run(data);
-        });
+        that.run(data);
     },
 
     kill: function() {
