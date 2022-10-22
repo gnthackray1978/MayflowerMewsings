@@ -9,7 +9,7 @@ export  function useTableState(ReturnData,defaultParams, schema, subSchema) {
   const [order, setOrder] = React.useState(defaultParams.sortOrder);
   const [sortColumn, setSortColumn] = React.useState(defaultParams.sortColumn);
   const [selected, setSelected] = React.useState([]);
-  const [treeString, setTreeString] = React.useState(defaultParams.treeString);
+  const [treeSelectionState, setTreeState] = React.useState(defaultParams.treeSelectionState);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(50);
 
@@ -33,7 +33,7 @@ export  function useTableState(ReturnData,defaultParams, schema, subSchema) {
   };
 
 
-  const handleClick2 = (event, rows, row, singleSelect) => {
+  const setTreeSelectionState = (event, rows, row, singleSelect) => {
 
     let name = row.id;
 
@@ -93,9 +93,12 @@ export  function useTableState(ReturnData,defaultParams, schema, subSchema) {
 
       let originString = makeOriginString(rows,newSelected, row);
 
+      let treeState = {idString : newSelected.join(','),description : originString};
+
       setSelected(newSelected);
-      setTreeString(originString);
-      //return originString;
+      setTreeState(treeState);
+      
+      console.log('newSelected',newSelected);
     }
 
   };
@@ -228,20 +231,22 @@ export  function useTableState(ReturnData,defaultParams, schema, subSchema) {
 
   const setSelection = function(){
     
-    if(!treeString || treeString == '') return;
+    console.log('setSelection called');
+
+    if(!treeSelectionState || treeSelectionState.idString == '') return;
     if(selected.length != 0) return;
     if(!rows || rows.length==0) return;
 
    
-    let treeNames = treeString.split(' ');
-    let idList =[];
+    let idList = treeSelectionState.idString.split(',');
+    // let idList =[];
 
-    rows.forEach(row=>{
-      treeNames.forEach(name => {
-        if(row.name == name && !idList.includes(row.id))
-          idList.push(row.id);
-      });
-    });
+    // rows.forEach(row=>{
+    //   treeNames.forEach(name => {
+    //     if(row.name == name && !idList.includes(row.id))
+    //       idList.push(row.id);
+    //   });
+    // });
 
     if(idList.length >0)
       setSelected(idList);
@@ -263,6 +268,6 @@ export  function useTableState(ReturnData,defaultParams, schema, subSchema) {
     isSelected,
     filterFieldChanged,
 
-    loading, error, data,rows,totalRecordCount,setSelected,handleClick2,treeString,setSelection
+    loading, error, data,rows,totalRecordCount,setSelected,setTreeSelectionState,treeSelectionState,setSelection
   };
 }

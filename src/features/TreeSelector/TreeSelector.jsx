@@ -112,11 +112,11 @@ function TreeSelector(props) {
     let personId =0;
 
     if(selectedTreeData  ){
-      let count = selectedTreeData.split(' ');
-      if(count.length > 0)
-        treeName = String(count.length) + ' trees selected';
+      let count = selectedTreeData.idString.split(',').length-1;
+      if(count > 0)
+        treeName = String(count+1) + ' trees selected';
       else
-        treeName  = selectedTreeData; 
+        treeName  = selectedTreeData.description; 
     }
 
     if(selectedTreePersonData && selectedTreePersonData.firstName && selectedTreePersonData.surname)

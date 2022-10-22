@@ -1,4 +1,3 @@
-
 import Dialog from '@material-ui/core/Dialog';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -16,44 +15,13 @@ import {
   useHistory
 } from "react-router-dom";
 
-
-
 import { connect } from "react-redux";
-
-// const styles = theme => ({
-//   // fab: {
-//   //   margin: theme.spacing(1),
-//   // },
-//   extendedIcon: {
-//     marginRight: theme.spacing(1),
-//   },
-//   root: {
-//   flexGrow: 1,
-//   },
-//   grow: {
-//     marginLeft: 50,
-//     flexGrow: 1,
-//   },
-//   menuButton: {
-//     marginLeft: -12,
-//     marginRight: 20,
-//   },
-//   tolowerBtn : {
-//     textTransform: 'none'
-//   },
-//   avatar: {
-//     backgroundColor: blue[100],
-//     color: blue[600],
-//   },
-
-// });
-
 
 function GetSiteList(results, applicationSelected, siteDialogClose,history){
 //site.search.results[0].name
 
 
-  //console.log('SiteDialog');
+  
   if(results){
 
 
@@ -86,8 +54,9 @@ function GetSiteList(results, applicationSelected, siteDialogClose,history){
 function SiteDialog(props) {
 
     
-    const {ShowAppListDialog, 
-      applicationSelected, siteDialogClose} = props;
+    const {ShowAppListDialog, applicationSelected, siteDialogClose} = props;
+
+    console.log('SiteDialog: ' + props);
 
     const theme = useTheme();
 

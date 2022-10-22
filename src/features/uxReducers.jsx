@@ -30,7 +30,7 @@ export default (state = {
   showFuncListDialog :false,
   showTreeSelectorDialog :false,
   showDiagramControls : false,
-  selectedTreeData : '',
+  selectedTreeData : {idString : '',description : ''},
   selectedTreePersonData : {personId:0},
   diagramId : 0,
   error: undefined

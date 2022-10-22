@@ -6,7 +6,8 @@ import MenuIcon from '@material-ui/icons/Menu';
 import GamepadIcon from '@material-ui/icons/Gamepad';
 import Typography from '@material-ui/core/Typography';
 import { connect } from "react-redux";
-import IDSConnect   from "../../shared/IDSConnect/Components/IDSConnect.jsx";
+import GoogleIDSConnect   from "../../shared/GoogleIDS/GoogleIDX.jsx";
+
 import {siteDialogOpen, siteDialogClose,funcDialogOpen,funcDialogClose,
           treeSelectorDialogOpen,treeSelectorDialogClose, toggleDiagramControls} from "../uxActions.jsx";
 import AppsIcon from '@material-ui/icons/Apps';
@@ -133,7 +134,7 @@ function TopButtons(props) {
                  <AppsIcon />
              </IconButton>
              
-             <IDSConnect mode = "login"  metaSubset = {metaSubset}/>
+             <GoogleIDSConnect/>
 
          </Toolbar>
      )

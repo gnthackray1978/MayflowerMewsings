@@ -18,15 +18,13 @@ function AvailableTrees(props) {
      $sortColumn: String!,
      $sortOrder : String!,
      $origin : String!
-     $groupNumber : Int!
    ){
     dna{
       treerecsearch(limit : $limit,
              offset : $offset,
              sortColumn: $sortColumn,
              sortOrder : $sortOrder,
-             origin : $origin,
-             groupNumber : $groupNumber
+             origin : $origin
            ) {
        page
        totalResults
@@ -53,22 +51,21 @@ function AvailableTrees(props) {
          sortOrder : 'desc',
          limit : 0,
          offset :0,
-         treeString :selectedTreeData ?? '',
-         origin : '',
-         groupNumber : 0
+         treeSelectionState :selectedTreeData ?? {idString : '',description : ''},
+         origin : ''
     },'dna','treerecsearch');
 
     state.headCells = headCells;
     state.title = 'Available Trees';
     state.setSelection();
 
-    //console.log('updated available trees ' + state.treeString);
+    //console.log('updated available trees ' + state.treeSelectionState);
 
 
 
     useEffect(() => {      
       //console.log('updated available trees useffect');
-      setTree(state.treeString);
+      setTree(state.treeSelectionState);
     }, [state, setTree]);
 
     return (
@@ -81,10 +78,6 @@ function AvailableTrees(props) {
     );
 
 }
-
-
-//export default AvailableTrees ;
-
 
 const mapStateToProps = state => {
   return { 

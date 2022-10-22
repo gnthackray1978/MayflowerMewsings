@@ -19,22 +19,17 @@ const AvailableTreesToolbar = (props) => {
   const classes = useToolbarStyles(theme);
 
   const [origin, setorigin] = React.useState(filterParams.origin);
-  const [groupNumber, setGroupNumber] = React.useState(filterParams.groupNumber);
 
-  const boxClick = ()=>{
-   
-   
+  const boxClick = ()=>{      
     setSelected([]);
    
-
     filterFieldChanged({
-      origin : origin,
-      groupNumber : Number(groupNumber)
+      origin : origin
     });
 
     var newurl = window.location.protocol + "//" 
-    + window.location.host + window.location.pathname + '?origin='+origin + '&groupNumber='+groupNumber;
-    window.history.pushState({path:newurl},'',newurl);
+                    + window.location.host + window.location.pathname + '?origin='+origin;
+                    window.history.pushState({path:newurl},'',newurl);
   };
 
 
@@ -50,16 +45,6 @@ const AvailableTreesToolbar = (props) => {
                        if(e.currentTarget.value!=origin)
                         setorigin(e.currentTarget.value);
                      }}/>
-
-        <TextField className={classes.filter} id="groupNumber" label="GroupNumber"
-                     value={groupNumber}
-                     variant="standard"  size="small"
-                     onChange = {(e)=>{
-                       
-                      if(groupNumber!=e.currentTarget.value)
-                        setGroupNumber(e.currentTarget.value);
-                     }}/>
-
 
         <TableBox boxClick ={boxClick}/>
     </Toolbar>
