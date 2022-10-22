@@ -29,6 +29,7 @@ tmp/
 
 #parcel output folder
 dist
+.parcel-cache/
 
 # Bower stuff.
 bower_components/
