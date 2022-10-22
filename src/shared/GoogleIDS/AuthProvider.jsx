@@ -4,15 +4,12 @@ import { connect } from "react-redux";
 //console.log('context created');
 const AuthContext = React.createContext()
 
-
 function _AuthProvider(props) {
 
-  const {access_token} = props;
-
-//  var access_token =1;
+  const {tokenExpiresAt} = props;
 
   return (
-    <AuthContext.Provider value={access_token}>
+    <AuthContext.Provider value={tokenExpiresAt}>
         {props.children}
     </AuthContext.Provider>
   )
@@ -29,17 +26,16 @@ function useAuthProvider() {
 
 const mapStateToProps = state => {
   return {
-    access_token : state.ids.access_token
+    tokenExpiresAt : state.ids.tokenExpiresAt
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-
+ //   setTokenExpiration: (time) => dispatch(setTokenExpiration(time)),
   };
 };
 
-//export default connect(mapStateToProps, mapDispatchToProps)(CountProvider);
 
 var AuthProvider =  connect(mapStateToProps, mapDispatchToProps)(_AuthProvider);
 

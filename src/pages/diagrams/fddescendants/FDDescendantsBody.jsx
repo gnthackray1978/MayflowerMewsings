@@ -1,17 +1,15 @@
 import  React from 'react';
+import FDDiagrams from '../canvas/FDDiagrams.jsx'
 
 function FDDescendantsBody(props) {
 
-    var {rows} = props;
-
-    if(!rows) rows = [];
+    const { graph, ancestorConfig} = props;
 
     return ( 
-        <div> {rows.length} 
+        <div> 
+            <FDDiagrams graph = {graph}/>
         </div>
-    );
-
-
+    ); 
 }
 
 

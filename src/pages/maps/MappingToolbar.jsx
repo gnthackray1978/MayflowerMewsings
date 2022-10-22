@@ -41,7 +41,7 @@ const MappingToolbar = (props) => {
       yearEnd : Number(yearEnd),
       location : location,
       surname : surname ,
-      origin: selectedTreeData
+      origin: selectedTreeData.idString
     });
   };
 
@@ -93,7 +93,7 @@ const MappingToolbar = (props) => {
 
       <div  className = {classes.originOuter}>
         <div className = {classes.originMiddle}>
-          <div className = {classes.originInner}>{selectedTreeData}</div>
+          <div className = {classes.originInner}>{selectedTreeData.description}</div>
         </div>
       </div>
 

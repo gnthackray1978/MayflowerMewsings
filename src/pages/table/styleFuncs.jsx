@@ -83,6 +83,10 @@ export const useToolbarStyles = makeStyles((theme) => ({
     paddingRight: theme.spacing(1),
     height: '25px',
   },
+  menuButton: {
+    marginTop: 12,
+    marginRight: 20,
+  },
   highlight:
     theme.palette.type === 'light'
       ? {
@@ -98,4 +102,50 @@ export const useToolbarStyles = makeStyles((theme) => ({
     paddingTop: '0px'
   },
 
+  originOuter: {
+    maxWidth: '538px',
+    flex: "1 1 100%",
+    border: "0",
+    margin: "0",
+    display: "inline-flex",
+    padding: "0",
+    position: "relative",
+    minWidth: "0",
+    paddingTop: "40px",
+    paddingRight: "20px",
+    flexDirection: "column",
+    paddingBottom: "40px",
+    verticalAlign: "top"
+  },
+  originMiddle: {
+    color: "rgba(0, 0, 0, 0.87)",
+    cursor: "text",
+    display: "inline-flex",
+    position: "relative",
+    fontSize: "1rem",
+    boxSizing: "border-box",
+    alignItems: "center",
+    fontFamily: "\"Roboto\", \"Helvetica\", \"Arial\", sans-serif",
+    fontWeight: "400",
+    lineHeight: "1.1876em",
+    letterSpacing: "0.00938em",
+    marginTop : "16px"
+  },
+  originInner: {
+    font: "inherit",
+    color: "currentColor",
+    width: "100%",
+    border: "0",
+    height: "1.1876em",
+    margin: "0",
+    display: "block",
+    padding: "6px 0 7px",
+    minWidth: "0",
+    background: "none",
+    boxSizing: "content-box",
+    animationName: "mui-auto-fill-cancel",
+    letterSpacing: "inherit",
+    animationDuration: "10ms",
+    WebkitTapHighlightColor: "transparent"
+  }
 }));

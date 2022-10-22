@@ -29,10 +29,9 @@ export default (state = {
     google_token_uri :'https://msgauth01.azurewebsites.net/token',
     AllowOfflineAccess : true
   },
-
-
   infoloaded :false,
-  IdsLogInDetailsVisible :false
+  IdsLogInDetailsVisible :false,
+  tokenExpiresAt : undefined
 }, action) => {
 
 
@@ -45,9 +44,22 @@ export default (state = {
         IdsLogInDetailsVisible : action.payload,
       };
 
+    case "SET_TOKENEXPIRATION":
+      //console.log('reducer SET_TOKENEXPIRATION');
+    
+      if(state.tokenExpiresAt != action.payload){
+        return {
+            ...state,  
+            tokenExpiresAt : action.payload
+        };
+      }
+      else{
+        return {
+          ...state
+        };
+      };
 
       default:
           return state;
-
-    }
+  }
 };

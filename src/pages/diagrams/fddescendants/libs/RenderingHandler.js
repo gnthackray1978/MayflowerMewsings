@@ -1,17 +1,4 @@
-
-var __bind = function (fn, me) { return function () { return fn.apply(me, arguments); }; }; // stolen from coffeescript, thanks jashkenas! ;-)
-
-RenderingHandler.requestAnimationFrame = __bind(window.requestAnimationFrame ||
-	window.webkitRequestAnimationFrame ||
-	window.mozRequestAnimationFrame ||
-	window.oRequestAnimationFrame ||
-	window.msRequestAnimationFrame ||
-	function (callback, element) {
-	    window.setTimeout(callback, 10);
-	}, window);
-
-//layouts
-//renderer
+ 
 
 export function RenderingHandler(channel, layoutList, renderer) {
     this._channel = channel;
@@ -29,6 +16,7 @@ export function RenderingHandler(channel, layoutList, renderer) {
 }
 
 RenderingHandler.prototype = {
+    //this thing needs to be called
     start: function() {
 
         if (this._started) return;
@@ -36,7 +24,7 @@ RenderingHandler.prototype = {
 
         var that = this;
 
-        RenderingHandler.requestAnimationFrame(function step() {
+     //   RenderingHandler.requestAnimationFrame(function step() {
 
             that.layouts.UpdateActiveLayouts();
 
@@ -83,10 +71,10 @@ RenderingHandler.prototype = {
                 }
             } else {
 
-                RenderingHandler.requestAnimationFrame(step);
+            //    RenderingHandler.requestAnimationFrame(step);
 
             }
-        });
+     //   });
 
     },
     done: function() {

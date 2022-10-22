@@ -7,10 +7,12 @@ import DiagramWrapper from '../DiagramWrapper.jsx'
 import {gql} from '@apollo/client';
 
 import {useMapState} from '../useMap';
+import {getParams} from '../queryParams';
 
+import {transformData, populateDescendantObjects} from '../drawinglib/graphDataFuncs.jsx';
 import {VisControlsUI} from "../fddescendants/libs/VisControlsUI.js";
 import {DataHandler} from "./libs/DataHandler.js";
-
+import { connect } from "react-redux";
 import {LayoutSettings} from "../fddescendants/libs/LayoutSettings.js";
 import {ForceDirect} from "../fddescendants/libs/ForceDirect.js";
 import mitt from 'mitt';
@@ -55,7 +57,7 @@ function makeData(data, schema, subSchema){
 
 function FDDescendants(props) {
  
-    
+  console.log('FDDescendants');
   const {selectedTreeData,selectedTreePersonData} = props;
 
 
@@ -133,16 +135,13 @@ function FDDescendants(props) {
       var settings = new LayoutSettings();
   
       var diagUI = new VisControlsUI(channel, settings);
-    
-      let _forceDirect = new ForceDirect(channel, settings);
+     
       var dataHandler = new DataHandler(data.newRows);
       
-      _forceDirect.init(dataHandler, params.personId);
-    
-    
+      let _forceDirect = new ForceDirect(channel, settings, dataHandler);
+
       diagUI.InitEvents();
 
-      
         Body = ()=>{ return(<div>
           <DiagramToolbar  graph ={_forceDirect} state ={state}/>
           <FDDescendantsBody  graph ={_forceDirect} />
@@ -161,4 +160,19 @@ function FDDescendants(props) {
 }
 
 
-export default FDDescendants;
+const mapStateToProps = state => {
+  return { 
+
+    selectedTreePersonData : state.ux.selectedTreePersonData.personId != 0 ? state.ux.selectedTreePersonData.personId :3217,
+    selectedTreeData : state.ux.selectedTreeData != '' ? state.ux.selectedTreeData : '_34_Kennington'
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return { };
+};
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(FDDescendants);
+
+

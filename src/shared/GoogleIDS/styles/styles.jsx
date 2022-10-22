@@ -1,6 +1,46 @@
 import { makeStyles} from '@material-ui/core/styles';
 import blue from '@material-ui/core/colors/blue';
 
+export const styles = makeStyles((theme) => 
+    (
+        {
+          fab: {
+            margin: theme.spacing(1),
+          },
+          extendedIcon: {
+            marginRight: theme.spacing(1),
+          },
+          root: {
+          flexGrow: 1,
+          },
+          grow: {
+            marginLeft: 50,
+            flexGrow: 1,
+          },
+          menuButton: {
+            marginLeft: -12,
+            marginRight: 20,
+          },
+          tolowerBtn : {
+            textTransform: 'none'
+          },
+          avatar: {
+            backgroundColor: blue[100],
+            color: blue[600],
+          },
+          show: {
+            display: 'block',
+          },
+          hide: { display: 'none' },
+          googleContainer: {
+            marginTop: '1px'
+          },
+        
+        }
+
+    )
+);
+
 export const defaultStyle = (state, classes,theme) => {
   if (state.active) {
     if (theme === 'dark')  return classes.initialStyle + ' ' + classes.activeStyle;
@@ -51,7 +91,7 @@ export const googleButton = makeStyles((theme) => (
       fontSize: 14,
       fontWeight: '500',
       fontFamily: 'Roboto, sans-serif',
-      marginLeft:25
+      marginLeft:15
     },
   
     hoveredStyle : {
@@ -85,7 +125,6 @@ export const googleButton = makeStyles((theme) => (
 
   }
 ));
-  
 
 export const imageButton = makeStyles((theme) => (
   {
@@ -197,4 +236,16 @@ export const imageButton = makeStyles((theme) => (
 
       zIndex: 0
     }
-  }));
+}));
+
+export const googlePopup = makeStyles((theme) => (
+    {
+      listItem: {
+        marginTop: '0px',
+        marginBottom: '0px',
+        paddingTop : '0px',
+        paddingBottom : '0px',
+      },
+     
+}));
+ 

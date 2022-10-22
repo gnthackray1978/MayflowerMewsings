@@ -2,7 +2,7 @@ import React, { Component , useEffect} from 'react';
 import { connect } from "react-redux";
 import SideDrawer from './features/SideDrawer/SideDrawer.jsx';
 import TopButtons from './features/ButtonBar/TopButtons.jsx';
-import {AuthProvider} from './shared/IDSConnect/AuthProvider.jsx'
+import {AuthProvider} from './shared/GoogleIDS/AuthProvider.jsx'
 import SiteDialog from './features/SiteDialog/SiteDialog.jsx';
 import TreeSelectionDrawer from './features/SideDrawer/TreeSelectionDrawer.jsx';
 
@@ -13,7 +13,7 @@ import {metaDataLoaded,applicationSelected} from "./features/uxActions.jsx";
 const GET_Meta = gql`
 
 
-query {
+query Site($query : String!) {
   function
   {
     search(appid: 0) {
@@ -28,7 +28,7 @@ query {
     }
   }
   site {
-    search(query: "Star Wars") {
+    search(query: $query) {
       page
       results {
         id,
@@ -70,7 +70,7 @@ function getPageName(pagePath, funcList){
 }
 
 
-function useTableState(qry) {
+function useTableState(qry, tokenExpiresAt) {
 
  // console.log('useTableState');
 
@@ -108,8 +108,12 @@ function useTableState(qry) {
     }
   }
 
-  const  { loading, networkStatus,error, data, refetch } = useQuery(qry, {
+  var filterParams = {
+    query: tokenExpiresAt
+  };
 
+  const  { loading, networkStatus,error, data, refetch } = useQuery(qry, {
+    variables: filterParams,
      notifyOnNetworkStatusChange: true,
      fetchPolicy:"no-cache"  
   });
@@ -129,9 +133,11 @@ function useTableState(qry) {
 
 function Index(props) {
 
-    const {metaDataLoaded,applicationSelected} = props;
+    const {metaDataLoaded,applicationSelected,tokenExpiresAt} = props;
+    
+    console.log('Index: ' + tokenExpiresAt);
  
-    let state = useTableState(GET_Meta);    
+    let state = useTableState(GET_Meta,tokenExpiresAt);    
 
     useEffect(() => { 
         if(state.stateObj)          
@@ -148,8 +154,6 @@ function Index(props) {
  
 
     return (
-      <AuthProvider>
-
           <div>
             <TopButtons isData = {true} metaSubset = {metaSubset}/>
 
@@ -162,7 +166,6 @@ function Index(props) {
             <PageContainer stateObj = {state.stateObj}/>
           </div>
 
-      </AuthProvider>
     );
  
 
@@ -173,7 +176,7 @@ function Index(props) {
 const mapStateToProps = state => {
 
   return {
-
+    tokenExpiresAt : state.ids.tokenExpiresAt
   };
 };
 

@@ -1,4 +1,4 @@
-import {Vector} from "./types/Vector.js";
+import {Vector} from "../types/Vector.js";
 import {Utils} from "./Utils.js";
 
 export class RenderLib{

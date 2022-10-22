@@ -1,5 +1,5 @@
 import  React from 'react';
-import Diagrams from '../Diagrams.jsx'
+import Diagrams from '../canvas/Diagrams.jsx'
 
 
 

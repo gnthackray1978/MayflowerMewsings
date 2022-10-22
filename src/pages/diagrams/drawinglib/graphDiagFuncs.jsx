@@ -278,12 +278,12 @@ export const getDescendants =  (nodes, person, startGen) =>{
 
     moveList.SortByGenIdx();
 
-    for(let p of moveList){
+    // for(let p of moveList){
 
-        if(p.RecordLink.Name.includes('Shepherd')){
-            console.log('shepfound');
-        }
-    }
+    //     if(p.RecordLink.Name.includes('Shepherd')){
+    //         console.log('shepfound');
+    //     }
+    // }
 
     return moveList;
 };
