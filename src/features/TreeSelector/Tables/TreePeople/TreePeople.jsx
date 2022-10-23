@@ -4,7 +4,7 @@ import TreePeopleTable from './TreePeopleTable.jsx';
 import TreePeopleTableToolbar from './TreePeopleTableToolbar.jsx';
 import { connect } from "react-redux";
 import TableWrapper from '../../../../pages/table/TableWrapper.jsx'
-import {useTableState} from '../../../../pages/table//useTable';
+import {useAvTreesState} from '../../../../pages/table//useTable';
 
 import {gql} from '@apollo/client';
 
@@ -63,7 +63,7 @@ function TreePeople(props) {
       { id: 'BirthLocation', numeric: false, disablePadding: true, label: 'BirthLocation' }
     ];
 
-    var state = useTableState(GET_FTMView,{
+    var state = useAvTreesState(GET_FTMView,{
       sortColumn : 'surname',
       sortOrder : 'asc',
       limit : 0,

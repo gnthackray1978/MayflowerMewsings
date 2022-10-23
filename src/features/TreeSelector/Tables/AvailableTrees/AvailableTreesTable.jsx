@@ -37,7 +37,7 @@ function AvailableTreesTable(props) {
                 {
 
                   state.rows.map((row, index) => {
-                    //console.log(row.reference);
+                 
                     const isItemSelected = state.isSelected(row.id);
                     const labelId = `availtrees-table-checkbox-${index}`;
 

@@ -3,7 +3,7 @@ import { useQuery } from '@apollo/client';
 
 
 
-export  function useTableState(ReturnData,defaultParams, schema, subSchema) {
+export  function useAvTreesState(ReturnData,defaultParams, schema, subSchema) {
 
   const [initialLoad, setInitialLoad] = React.useState(false);
   const [order, setOrder] = React.useState(defaultParams.sortOrder);
@@ -227,8 +227,7 @@ export  function useTableState(ReturnData,defaultParams, schema, subSchema) {
   if(!totalRecordCount) totalRecordCount =0;
 
 
-  //console.log('called useTableState: ' + selected);
-
+ 
   const setSelection = function(){
     
     console.log('setSelection called');

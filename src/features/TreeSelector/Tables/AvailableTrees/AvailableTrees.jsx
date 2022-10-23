@@ -2,7 +2,7 @@ import React, { Component , useEffect} from 'react';
 import AvailableTreesTable from './AvailableTreesTable.jsx'
 import AvailableTreesToolbar from './AvailableTreesToolbar.jsx'
 import TableWrapper from '../../../../pages/table/TableWrapper.jsx'
-import {useTableState} from './useTable';
+import {useAvTreesState} from './useTable';
 import {gql} from '@apollo/client';
 import {setTree} from "../../../uxActions.jsx";
 import { connect } from "react-redux";
@@ -46,7 +46,7 @@ function AvailableTrees(props) {
     ];
 
 
-    var state = useTableState(get_availableTrees,{
+    var state = useAvTreesState(get_availableTrees,{
          sortColumn : 'cM',
          sortOrder : 'desc',
          limit : 0,
