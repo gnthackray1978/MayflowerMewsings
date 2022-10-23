@@ -77,7 +77,7 @@ export  function useTableState(ReturnData,defaultParams, schema, subSchema) {
   };
 
   const filterFieldChanged = (filterObj) => {
-    console.log('called filterFieldChanged');
+    //console.log('called filterFieldChanged');
 
     filterObj.limit =rowsPerPage;
     filterObj.offset = (page* rowsPerPage);
@@ -162,7 +162,7 @@ export  function useTableState(ReturnData,defaultParams, schema, subSchema) {
 
 
 
-  console.log('useQuer : ' + loading +  networkStatus );
+  //console.log('useQuer : ' + loading +  networkStatus );
 
   var parsedData = makeData(data,schema, subSchema);
 

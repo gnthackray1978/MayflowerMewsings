@@ -56,7 +56,7 @@ function SiteDialog(props) {
     
     const {ShowAppListDialog, applicationSelected, siteDialogClose} = props;
 
-    console.log('SiteDialog: ' + props);
+    //console.log('SiteDialog: ' + props);
 
     const theme = useTheme();
 

@@ -135,7 +135,7 @@ function Index(props) {
 
     const {metaDataLoaded,applicationSelected,tokenExpiresAt} = props;
     
-    console.log('Index: ' + tokenExpiresAt);
+    //console.log('Index: ' + tokenExpiresAt);
  
     let state = useTableState(GET_Meta,tokenExpiresAt);    
 

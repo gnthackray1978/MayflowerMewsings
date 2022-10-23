@@ -43,13 +43,13 @@ function GoogleIDSConnect(props) {
     const theme = useTheme();
     const classes = styles(theme);
 
-    console.log('GoogleIDSConnect');
+    //console.log('GoogleIDSConnect');
     const [user, setUser] = useState(undefined);
   
 
 
     var loggedIn = (responce)=>{
-      console.log('Logged in');
+    //  console.log('Logged in');
       var userObject = jwt_decode(responce.credential);
     //  console.log(responce.credential);
   
