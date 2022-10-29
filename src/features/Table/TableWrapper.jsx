@@ -2,7 +2,7 @@ import React from 'react';
 import TablePagination from '@material-ui/core/TablePagination'; 
 import {MuiThemeProvider } from "@material-ui/core/styles"; 
 import { useTheme } from '@material-ui/core/styles';
-import {useStyles} from './styleFuncs.jsx';
+import {useStyles} from '../../pages/table/styleFuncs.jsx';
  
 
 export default function TableWrapper(props) {

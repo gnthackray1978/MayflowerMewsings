@@ -3,8 +3,8 @@ import PersonTable from './PersonTable.jsx'
 import { gql} from '@apollo/client';
 
 import PersonTableToolbar from './PersonTableToolbar.jsx'
-import TableWrapper from '../../TableWrapper.jsx'
-import {useTableState} from '../../useTable';
+import TableWrapper from '../../../../features/Table/TableWrapper.jsx'
+import {useTableState} from '../../../../features/Table/useTable';
 
 function Persons() {
 

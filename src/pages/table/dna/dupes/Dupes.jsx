@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import DupeTable from './DupeTable.jsx'
 import DupeTableToolbar from './DupeTableToolbar.jsx'
-import TableWrapper from '../../TableWrapper.jsx'
+import TableWrapper from '../../../../features/Table/TableWrapper.jsx'
 import {gql} from '@apollo/client';
-import {useTableState} from '../../useTable';
+import {useTableState} from '../../../../features/Table/useTable';
 
 function Dupes() {
 

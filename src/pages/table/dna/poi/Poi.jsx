@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PoiTable from './PoiTable.jsx'
 import PoiTableToolbar from './PoiTableToolbar.jsx'
-import TableWrapper from '../../TableWrapper.jsx'
+import TableWrapper from '../../../../features/Table/TableWrapper.jsx'
 import {gql} from '@apollo/client';
-import {useTableState} from '../../useTable';
+import {useTableState} from '../../../../features/Table/useTable';
 
 function Poi() {
     const GET_Poi = gql`

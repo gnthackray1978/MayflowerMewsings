@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import TrsTable from './TrsTable.jsx'
 import TrsTableToolbar from './TrsTableToolbar.jsx'
-import TableWrapper from '../../TableWrapper.jsx'
+import TableWrapper from '../../../../features/Table/TableWrapper.jsx'
 import {gql} from '@apollo/client';
-import {useTableState} from '../../useTable';
+import {useTableState} from '../../../../features/Table/useTable';
 
 function Trs() {
 

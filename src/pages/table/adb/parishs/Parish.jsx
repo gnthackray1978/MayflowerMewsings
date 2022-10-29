@@ -4,8 +4,8 @@ import { gql} from '@apollo/client';
 
 
 import ParishTableToolbar from './ParishTableToolbar.jsx'
-import TableWrapper from '../../TableWrapper.jsx'
-import {useTableState} from '../../useTable';
+import TableWrapper from '../../../../features/Table/TableWrapper.jsx'
+import {useTableState} from '../../../../features/Table/useTable';
 
 
 

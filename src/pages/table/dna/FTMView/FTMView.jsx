@@ -3,10 +3,10 @@ import React, { Component } from 'react';
 import FTMViewTable from './FTMViewTable.jsx';
 import FTMViewTableToolbar from './FTMViewTableToolbar.jsx';
 
-import TableWrapper from '../../TableWrapper.jsx'
+import TableWrapper from '../../../../features/Table/TableWrapper.jsx'
 import {gql} from '@apollo/client';
 
-import {useTableState} from '../../useTable';
+import {useTableState} from '../../../../features/Table/useTable';
 import {getParams} from '../../../../features/Table/qryStringFuncs';
 
 function FTMView() {

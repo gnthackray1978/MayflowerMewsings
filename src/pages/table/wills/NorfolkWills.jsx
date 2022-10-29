@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import WillTable from './WillTable.jsx'
 import { gql} from '@apollo/client';
-import WillTableToolbar from './WillTableToolbar.jsx'
-import TableWrapper from '../TableWrapper.jsx'
 
-import {useTableState} from '../useTable';
+
+import WillTableToolbar from './WillTableToolbar.jsx'
+import TableWrapper from '../../../../features/Table/TableWrapper.jsx'
+
+import {useTableState} from '../../../../features/Table/useTable';
+
 
 function NorfolkWills() {
 
