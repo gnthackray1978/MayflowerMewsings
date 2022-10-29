@@ -4,7 +4,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
-import {useStyles} from './styleFuncs.jsx';
+import {useStyles} from '../../pages/table/styleFuncs.jsx';
 
 
 

@@ -7,7 +7,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Link from '@material-ui/core/Link';
 import { connect } from "react-redux";
  import {useSideBarStyles} from '../../../../pages/table/styleFuncs.jsx';
-import TableHeaderFromState  from '../../../../pages/table/TableHeaderFromState.jsx';
+import TableHeaderFromState  from '../../../Table/TableHeaderFromState.jsx';
 import {setTreePerson} from "../../../uxActions.jsx";
 import { useTheme } from '@material-ui/core/styles';
 

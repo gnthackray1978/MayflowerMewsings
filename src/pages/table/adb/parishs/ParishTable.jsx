@@ -6,7 +6,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableRow from '@material-ui/core/TableRow';
 import { useTheme } from '@material-ui/core/styles';
 import {useStyles} from '../../styleFuncs.jsx';
-import TableHeaderFromState  from '../../TableHeaderFromState.jsx';
+import TableHeaderFromState  from '../../../../features/Table/TableHeaderFromState.jsx';
 
 export default function ParishTable(props) {
 

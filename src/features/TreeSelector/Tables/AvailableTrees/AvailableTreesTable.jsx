@@ -10,7 +10,7 @@ import Link from '@material-ui/core/Link';
 import { useTheme } from '@material-ui/core/styles';
 import {useSideBarStyles} from '../../../../pages/table/styleFuncs.jsx';
 
-import TableHeaderFromState  from '../../../../pages/table/TableHeaderFromState.jsx';
+import TableHeaderFromState  from '../../../Table/TableHeaderFromState.jsx';
 
 
 function AvailableTreesTable(props) {

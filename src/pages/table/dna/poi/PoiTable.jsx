@@ -7,7 +7,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Link from '@material-ui/core/Link';
 import { useTheme } from '@material-ui/core/styles';
 import {useStyles} from '../../styleFuncs.jsx';
-import TableHeaderFromState  from '../../TableHeaderFromState.jsx';
+import TableHeaderFromState  from '../../../../features/Table/TableHeaderFromState.jsx';
 
 export default function PoiTable(props) {
 
