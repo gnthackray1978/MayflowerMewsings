@@ -237,16 +237,8 @@ export  function useAvTreesState(ReturnData,defaultParams, schema, subSchema) {
     if(!rows || rows.length==0) return;
 
    
-    let idList = treeSelectionState.idString.split(',');
-    // let idList =[];
-
-    // rows.forEach(row=>{
-    //   treeNames.forEach(name => {
-    //     if(row.name == name && !idList.includes(row.id))
-    //       idList.push(row.id);
-    //   });
-    // });
-
+    let idList = treeSelectionState.idString.split(',').map(Number);
+  
     if(idList.length >0)
       setSelected(idList);
   

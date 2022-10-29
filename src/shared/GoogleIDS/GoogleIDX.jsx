@@ -62,7 +62,7 @@ function GoogleIDSConnect(props) {
 
       setTimeout(() => {
         /* global google */
-        console.log('expired');
+        //console.log('expired');
         google.accounts.id.prompt(); 
 
       }, 1000 * 60 * 62)
