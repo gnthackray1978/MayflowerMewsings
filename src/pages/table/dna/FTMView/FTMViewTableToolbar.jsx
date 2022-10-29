@@ -7,7 +7,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import TextField from '@material-ui/core/TextField';
 import {useToolbarStyles} from '../../styleFuncs.jsx';
 import TableBox from '../../tableBox.jsx';
-import {setParams} from './qryStringFuncs';
+import {setParams} from '../../../../features/Table/qryStringFuncs';
 
 import IconButton from '@material-ui/core/IconButton';
 

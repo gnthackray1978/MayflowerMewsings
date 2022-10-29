@@ -2,7 +2,7 @@ import React, { Component , useEffect} from 'react';
 import AvailableTreesTable from './AvailableTreesTable.jsx'
 import AvailableTreesToolbar from './AvailableTreesToolbar.jsx'
 import TableWrapper from '../../../../pages/table/TableWrapper.jsx'
-import {useAvTreesState} from './useTable';
+import {useAvTreesState} from './useAvTreesState';
 import {gql} from '@apollo/client';
 import {setTree} from "../../../uxActions.jsx";
 import { connect } from "react-redux";

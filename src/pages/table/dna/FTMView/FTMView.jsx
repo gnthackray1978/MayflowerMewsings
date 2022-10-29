@@ -7,7 +7,7 @@ import TableWrapper from '../../TableWrapper.jsx'
 import {gql} from '@apollo/client';
 
 import {useTableState} from '../../useTable';
-import {getParams} from './qryStringFuncs';
+import {getParams} from '../../../../features/Table/qryStringFuncs';
 
 function FTMView() {
 
