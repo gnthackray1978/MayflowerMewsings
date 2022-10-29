@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import Toolbar from '@material-ui/core/Toolbar';
 import TextField from '@material-ui/core/TextField';
 import {useToolbarStyles} from '../../../../pages/table/styleFuncs.jsx';
-import TableBox from '../../../../pages/table/tableBox.jsx';
+import TableBox from '../../../Table/tableBox.jsx';
 import { useTheme } from '@material-ui/core/styles';
 
 const AvailableTreesToolbar = (props) => {

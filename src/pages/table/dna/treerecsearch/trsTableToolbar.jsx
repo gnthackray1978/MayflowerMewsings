@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import Toolbar from '@material-ui/core/Toolbar';
 import TextField from '@material-ui/core/TextField'; 
 import {useToolbarStyles} from '../../styleFuncs.jsx';
-import TableBox from '../../tableBox.jsx';
+import TableBox from '../../../../features/Table/tableBox.jsx';
 
 const TrsTableToolbar = (props) => {
 //  console.log('rendered: TrsTableToolbar' );
