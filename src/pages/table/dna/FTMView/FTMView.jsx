@@ -63,19 +63,21 @@ function FTMView() {
       { id: 'Origin', numeric: false, disablePadding: true, label: 'Origin' }
     ];
 
-    var params = getParams();
-
-    var state = useTableState(GET_FTMView,{
+    var defaultValues = {
       sortColumn : 'surname',
       sortOrder : 'asc',
       limit : 0,
       offset :0,
-      yearStart : params.yearStart,
-      yearEnd : params.yearEnd,
-      location : params.location,
-      surname : params.surname,
-      origin : params.origin
-    },'dna','ftmviewsearch');
+      yearStart : 1500,
+      yearEnd : 2000,
+      location : '',
+      surname : '',
+      origin : ''
+    };
+
+    var params = getParams(defaultValues);
+
+    var state = useTableState(GET_FTMView,params,'dna','ftmviewsearch');
 
     state.headCells = headCells;
     state.title = 'FTM View';
