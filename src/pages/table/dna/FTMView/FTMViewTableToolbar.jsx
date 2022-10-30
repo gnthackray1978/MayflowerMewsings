@@ -26,7 +26,7 @@ const FTMViewTableToolbar = (props) => {
   const [yearEnd, setyearEnd] = React.useState(String(filterParams.yearEnd));
   const [location, setLocation] = React.useState(filterParams.location);
 
-  const boxClick = ()=>{
+  const searchClick = ()=>{
 
     let params = {
       yearStart : Number(yearStart),
@@ -91,7 +91,7 @@ const FTMViewTableToolbar = (props) => {
           setSurname(e.currentTarget.value);
         }}/>
 
-      <TableBox boxClick ={boxClick}/>
+      <TableBox boxClick ={searchClick}/>
 
     </Toolbar>
   );
