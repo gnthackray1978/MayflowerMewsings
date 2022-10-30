@@ -4,9 +4,9 @@ import { gql} from '@apollo/client';
 
 
 import WillTableToolbar from './WillTableToolbar.jsx'
-import TableWrapper from '../../../../features/Table/TableWrapper.jsx'
+import TableWrapper from '../../../features/Table/TableWrapper.jsx';
 
-import {useTableState} from '../../../../features/Table/useTable';
+import {useTableState} from '../../../features/Table/useTable';
 
 
 function NorfolkWills() {
