@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 import TreePeopleTable from './TreePeopleTable.jsx';
 import TreePeopleTableToolbar from './TreePeopleTableToolbar.jsx';
 import { connect } from "react-redux";
-import TableWrapper from '../../../../pages/table/TableWrapper.jsx'
-import {useAvTreesState} from '../../../../pages/table//useTable';
+import TableWrapper from '../../../Table/TableWrapper.jsx';
+import {useAvTreesState} from '../../../Table/useTable';
 
 import {gql} from '@apollo/client';
 
