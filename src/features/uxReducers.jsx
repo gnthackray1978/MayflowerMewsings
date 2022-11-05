@@ -4,6 +4,8 @@ import { APPLICATIONLISTLOADED, APPLICATIONSELECTED, FUNCTIONLISTLOADED,METADATA
     TREESELECTORDIALOGCLOSED,TREESELECTORDIALOGOPEN,
     DISPLAYDIAGRAMCONTROLS,HIDEDIAGRAMCONTROLS,TOGGLEDIAGRAMCONTROLS} from './actionTypes.jsx';
 
+
+
 export default (state = {
   appName :1,
   ancestorConfig :{
@@ -30,7 +32,7 @@ export default (state = {
   showFuncListDialog :false,
   showTreeSelectorDialog :false,
   showDiagramControls : false,
-  selectedTreeData : {idString : '',description : ''},
+  selectedTreeData : {origin : '',originDescription : ''},
   selectedTreePersonData : {personId:0},
   diagramId : 0,
   error: undefined

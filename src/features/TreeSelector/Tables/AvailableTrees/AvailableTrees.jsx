@@ -2,7 +2,7 @@ import React, { Component , useEffect} from 'react';
 import AvailableTreesTable from './AvailableTreesTable.jsx'
 import AvailableTreesToolbar from './AvailableTreesToolbar.jsx'
 import TableWrapper from '../../../../features/Table/TableWrapper.jsx'
-
+import {getParams} from '../../../../features/Table/qryStringFuncs.jsx';
 import {useAvTreesState} from './useAvTreesState';
 import {gql} from '@apollo/client';
 import {setTree} from "../../../uxActions.jsx";
@@ -18,14 +18,14 @@ function AvailableTrees(props) {
      $offset : Int!,
      $sortColumn: String!,
      $sortOrder : String!,
-     $origin : String!
+     $treeName : String!
    ){
     dna{
       treerecsearch(limit : $limit,
              offset : $offset,
              sortColumn: $sortColumn,
              sortOrder : $sortOrder,
-             origin : $origin
+             treeName : $treeName
            ) {
        page
        totalResults
@@ -46,15 +46,19 @@ function AvailableTrees(props) {
         { id: 'CM', numeric: false, disablePadding: true, label: 'CM' }
     ];
 
-
-    var state = useAvTreesState(get_availableTrees,{
+    let queryString = getParams({
          sortColumn : 'cM',
          sortOrder : 'desc',
          limit : 0,
          offset :0,
-         treeSelectionState :selectedTreeData ?? {idString : '',description : ''},
-         origin : ''
-    },'dna','treerecsearch');
+         origin :selectedTreeData?.origin ?? '',
+         originDescription :selectedTreeData?.originDescription ?? '',
+         treeName : ''
+    });
+
+    
+
+    var state = useAvTreesState(get_availableTrees,queryString,'dna','treerecsearch');
 
     state.headCells = headCells;
     state.title = 'Available Trees';
@@ -66,7 +70,8 @@ function AvailableTrees(props) {
 
     useEffect(() => {      
       //console.log('updated available trees useffect');
-      setTree(state.treeSelectionState);
+      setTree({origin : state.origin, 
+        originDescription: state.originDescription});
     }, [state, setTree]);
 
     return (
@@ -88,7 +93,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    setTree: (treeId) => dispatch(setTree(treeId)),
+    setTree: (selectedTrees) => dispatch(setTree(selectedTrees)),
   };
 };
 

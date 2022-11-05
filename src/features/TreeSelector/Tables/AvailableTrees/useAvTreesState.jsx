@@ -1,15 +1,17 @@
 import React  from 'react';
 import { useQuery } from '@apollo/client';
-
+import {getParams,setParams} from '../../../Table/qryStringFuncs';
 
 
 export  function useAvTreesState(ReturnData,defaultParams, schema, subSchema) {
 
-  const [initialLoad, setInitialLoad] = React.useState(false);
+  //const [initialLoad, setInitialLoad] = React.useState(false);
   const [order, setOrder] = React.useState(defaultParams.sortOrder);
   const [sortColumn, setSortColumn] = React.useState(defaultParams.sortColumn);
   const [selected, setSelected] = React.useState([]);
-  const [treeSelectionState, setTreeState] = React.useState(defaultParams.treeSelectionState);
+  const [origin, setOrigin] = React.useState(defaultParams.origin);
+  const [originDescription, setOriginDescription] = React.useState(defaultParams.originDescription);
+  //const [treeSelectionState, setTreeState] = React.useState(defaultParams.treeSelectionState);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(50);
 
@@ -91,13 +93,15 @@ export  function useAvTreesState(ReturnData,defaultParams, schema, subSchema) {
         );
       }
 
-      let originString = makeOriginString(rows,newSelected, row);
+   //   let originString = makeOriginString(rows,newSelected, row);
 
-      let treeState = {idString : newSelected.join(','),description : originString};
+    //  let treeState = {origin : newSelected.join(','),originDescription : originString};
 
       setSelected(newSelected);
-      setTreeState(treeState);
-      
+      //setTreeState(treeState);
+      setOrigin(newSelected.join(','));
+      setOriginDescription(makeOriginString(rows,newSelected, row));
+
       console.log('newSelected',newSelected);
     }
 
@@ -232,16 +236,33 @@ export  function useAvTreesState(ReturnData,defaultParams, schema, subSchema) {
     
     console.log('setSelection called');
 
-    if(!treeSelectionState || treeSelectionState.idString == '') return;
-    if(selected.length != 0) return;
-    if(!rows || rows.length==0) return;
+   // if(!originDescription || !origin) return;
 
-   
-    let idList = treeSelectionState.idString.split(',').map(Number);
-  
-    if(idList.length >0)
-      setSelected(idList);
-  
+    //set the query string
+
+   // setParams({'origin': treeSelectionState.origin});
+    setParams({'origin': origin, 'originDescription': originDescription});
+
+    //break out if selection is already set, we don't want to get 
+    //as into an infinite loop which is what happens if selected is repeatdly set
+    //if(originDescription != '') return;    
+    if(selected.length != 0) return;
+   // if(!rows || rows.length==0) return;
+
+    //tidy up the origin string
+    let strOrigin = String(origin);
+
+    if(strOrigin != ""){
+      strOrigin.replace(',,',',');
+
+      let idList = String(strOrigin).split(',').map(Number);
+    
+      if(idList.length >0)
+        setSelected(idList);
+    
+    }
+    
+
   }
 
   return {
@@ -259,6 +280,7 @@ export  function useAvTreesState(ReturnData,defaultParams, schema, subSchema) {
     isSelected,
     filterFieldChanged,
 
-    loading, error, data,rows,totalRecordCount,setSelected,setTreeSelectionState,treeSelectionState,setSelection
+    loading, error, data,rows,totalRecordCount,setSelected,origin,originDescription,setSelection,setTreeSelectionState
+
   };
 }

@@ -23,7 +23,8 @@ export const setTree = (state) =>{
 //        console.log('applicationSelected action');  /
       var tp = getState();
 
-      if(tp.ux.selectedTreeData != state)
+      if(tp.ux.selectedTreeData.originDescription != state.originDescription 
+        || tp.ux.selectedTreeData.origin != state.origin)
       {
         dispatch({
           type: TREESELECTED,

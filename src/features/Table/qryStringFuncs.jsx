@@ -61,7 +61,7 @@ export const setParams = (params) =>{
 
     if(search.length > 0){
     
-        JSON.parse('{"' + search.replace(/&/g, '","').replace(/=/g,'":"') + '"}', function(key, value) { return key===""?value:decodeURIComponent(value) })
+        search = JSON.parse('{"' + search.replace(/&/g, '","').replace(/=/g,'":"') + '"}', function(key, value) { return key===""?value:decodeURIComponent(value) })
         
         returnedTarget = Object.assign(search, params);
     }

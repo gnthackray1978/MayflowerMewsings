@@ -26,6 +26,8 @@ const FTMViewTableToolbar = (props) => {
   const [yearEnd, setyearEnd] = React.useState(String(filterParams.yearEnd));
   const [location, setLocation] = React.useState(filterParams.location);
 
+  const originDescription = selectedTreeData?.originDescription != '' ? selectedTreeData?.originDescription : filterParams.originDescription;
+
   const searchClick = ()=>{
 
     let params = {
@@ -33,7 +35,7 @@ const FTMViewTableToolbar = (props) => {
       yearEnd : Number(yearEnd),
       location : location,
       surname : surname,
-      origin: selectedTreeData.idString
+      origin: selectedTreeData.origin
     };
 
     filterFieldChanged(params);
@@ -61,7 +63,7 @@ const FTMViewTableToolbar = (props) => {
       </IconButton>
       <div  className = {classes.originOuter}>
         <div className = {classes.originMiddle}>
-          <div className = {classes.originInner}>{selectedTreeData.description}</div>
+          <div className = {classes.originInner}>{originDescription}</div>
         </div>
       </div>
       <TextField className={classes.filter} id="yearStart" label="Year From"

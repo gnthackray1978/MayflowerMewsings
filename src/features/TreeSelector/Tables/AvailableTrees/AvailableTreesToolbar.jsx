@@ -18,18 +18,18 @@ const AvailableTreesToolbar = (props) => {
 
   const classes = useToolbarStyles(theme);
 
-  const [origin, setorigin] = React.useState(filterParams.origin);
+  const [treeName, setTreeName] = React.useState(filterParams.treeName);
 
-  const boxClick = ()=>{      
+  const searchAvailableTreesClicked = ()=>{      
     setSelected([]);
    
     filterFieldChanged({
-      origin : origin
+      treeName : treeName
     });
 
-    var newurl = window.location.protocol + "//" 
-                    + window.location.host + window.location.pathname + '?origin='+origin;
-                    window.history.pushState({path:newurl},'',newurl);
+    // var newurl = window.location.protocol + "//" 
+    //                 + window.location.host + window.location.pathname + '?treeName='+treeName;
+    //                 window.history.pushState({path:newurl},'',newurl);
   };
 
 
@@ -38,15 +38,15 @@ const AvailableTreesToolbar = (props) => {
                           [classes.highlight]: numSelected > 0,
                        })}>
 
-         <TextField className={classes.filter} id="origin" label="Origin"
-                     value={origin}
+         <TextField className={classes.filter} id="origin" label="Tree Name"
+                     value={treeName}
                      variant="standard"  size="small"
                      onChange = {(e)=>{
-                       if(e.currentTarget.value!=origin)
-                        setorigin(e.currentTarget.value);
+                       if(e.currentTarget.value!=treeName)
+                        setTreeName(e.currentTarget.value);
                      }}/>
 
-        <TableBox boxClick ={boxClick}/>
+        <TableBox boxClick ={searchAvailableTreesClicked}/>
     </Toolbar>
   );
 };
