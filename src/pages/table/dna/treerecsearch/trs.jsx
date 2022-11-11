@@ -4,6 +4,7 @@ import TrsTableToolbar from './TrsTableToolbar.jsx'
 import TableWrapper from '../../../../features/Table/TableWrapper.jsx'
 import {gql} from '@apollo/client';
 import {useTableState} from '../../../../features/Table/useTable';
+import {getParams} from '../../../../features/Table/qryStringFuncs';
 
 function Trs() {
 
@@ -46,13 +47,17 @@ function Trs() {
         { id: 'Origin', numeric: false, disablePadding: true, label: 'Origin' }
     ];
 
-    var state = useTableState(GET_Trs,{
-         sortColumn : 'cM',
-         sortOrder : 'desc',
-         limit : 0,
-         offset :0,
-         origin : ''
-    },'dna','treerecsearch');
+    var defaultValues = {
+      sortColumn : 'cM',
+      sortOrder : 'desc',
+      limit : 0,
+      offset :0,
+      origin : ''
+    };
+
+    var params = getParams(defaultValues);
+
+    var state = useTableState(GET_Trs,params,'dna','treerecsearch');
 
     state.headCells = headCells;
     state.title = 'Trees Over View';
