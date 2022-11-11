@@ -6,25 +6,30 @@ import Toolbar from '@material-ui/core/Toolbar';
 import TextField from '@material-ui/core/TextField';
 import {useToolbarStyles} from '../../styleFuncs.jsx';
 import TableBox from '../../../../features/Table/tableBox.jsx';
+import {setParams} from '../../../../features/Table/qryStringFuncs';
 
 const PersonTableToolbar = (props) => {
-//  console.log('rendered: DupeTableToolbar' );
 
 
   const classes = useToolbarStyles(props.theme);
   const { numSelected, title, filterFieldChanged, filterParams } = props.state;
 
-  const [yearStart, setyearStart] = React.useState(filterParams.yearStart);
-  const [yearEnd, setyearEnd] = React.useState(filterParams.yearEnd);
+  const [yearStart, setYearStart] = React.useState(filterParams.yearStart);
+  const [yearEnd, setYearEnd] = React.useState(filterParams.yearEnd);
 
-  const [firstName, setFirstName] = React.useState(filterParams.maleSurname);
-  const [surname, setSurname] = React.useState(filterParams.femaleSurname);
-  const [fatherChristianName, setFatherChristianName] = React.useState(filterParams.location);
-  const [fatherSurname, setFatherSurname] = React.useState(filterParams.location);
-  const [motherChristianName, setMotherChristianName] = React.useState(filterParams.location);
+  const [firstName, setFirstName] = React.useState(filterParams.firstName);
+  const [surname, setSurname] = React.useState(filterParams.surname);
+  const [fatherChristianName, setFatherChristianName] = React.useState(filterParams.fatherChristianName);
+  const [fatherSurname, setFatherSurname] = React.useState(filterParams.fatherSurname);
+  const [motherChristianName, setMotherChristianName] = React.useState(filterParams.motherChristianName);
 //
-  const boxClick = ()=>{
-    filterFieldChanged({
+  const searchClick = ()=>{
+   
+    let params = {
+      sortColumn : 'yearStart',
+      sortOrder : 'asc',
+      limit : 50,
+      offset :0,
       yearStart : yearStart,
       yearEnd : yearEnd,
       firstName: firstName,
@@ -32,7 +37,11 @@ const PersonTableToolbar = (props) => {
       fatherChristianName: fatherChristianName,
       fatherSurname: fatherSurname,
       motherChristianName: motherChristianName
-    });
+    };
+
+    setParams(params);
+
+    filterFieldChanged(params);
   };
 
   return (
@@ -46,25 +55,25 @@ const PersonTableToolbar = (props) => {
       value={yearStart}
       variant="standard"  size="small"
       onChange = {(e)=>{
-          setyearStart(e.currentTarget.value);
+          setYearStart(e.currentTarget.value);
       }}/>
     <TextField className={classes.filter} id="yearEnd" label="Year To"
       value={yearEnd}
       variant="standard"  size="small"
       onChange = {(e)=>{
-         setyearEnd(e.currentTarget.value);
+         setYearEnd(e.currentTarget.value);
       }}/>
     <TextField className={classes.filter} id="firstName" label="First Name"
       value={firstName}
       variant="standard"  size="small"
       onChange = {(e)=>{
-        setLocation(e.currentTarget.value);
+        setFirstName(e.currentTarget.value);
       }}/>
     <TextField className={classes.filter} id="surname" label="Surname"
       value={surname}
       variant="standard"  size="small"
       onChange = {(e)=>{
-        setMaleSurname(e.currentTarget.value);
+        setSurname(e.currentTarget.value);
       }}/>
 
     <TextField className={classes.filter} id="fatherChristianName" label="Father Name"
@@ -88,7 +97,7 @@ const PersonTableToolbar = (props) => {
           setMotherChristianName(e.currentTarget.value);
     }}/>
 
-    <TableBox boxClick ={boxClick}/>
+    <TableBox boxClick ={searchClick}/>
 
     </Toolbar>
   );
@@ -96,7 +105,6 @@ const PersonTableToolbar = (props) => {
 
 
 PersonTableToolbar.propTypes = {
-  numSelected: PropTypes.number.isRequired,
   filterFieldChanged : PropTypes.func
 };
 

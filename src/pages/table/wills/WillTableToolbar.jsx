@@ -6,31 +6,34 @@ import Toolbar from '@material-ui/core/Toolbar';
 import TextField from '@material-ui/core/TextField'; 
 import {useToolbarStyles} from '../styleFuncs.jsx';
 import TableBox from '../../../features/Table/tableBox.jsx';
+import {setParams} from '../../../features/Table/qryStringFuncs';
 
 const WillTableToolbar = (props) => {
 //  console.log('rendered: WillTableToolbar' );
 
   const classes = useToolbarStyles(props.theme);
   const { numSelected, title, filterFieldChanged, filterParams } = props.state;
-
-
   const [yearStart, setYearStart] = React.useState(filterParams.yearStart);
-const [yearEnd, setYearEnd] = React.useState(filterParams.yearEnd);
-const [ref, setRef] = React.useState(filterParams.ref);
-const [desc, setDesc] = React.useState(filterParams.desc);
-const [place, setPlace] = React.useState(filterParams.place);
-const [surname, setSurname] = React.useState(filterParams.surname);
+  const [yearEnd, setYearEnd] = React.useState(filterParams.yearEnd);
+  const [ref, setRef] = React.useState(filterParams.ref);
+  const [desc, setDesc] = React.useState(filterParams.desc);
+  const [place, setPlace] = React.useState(filterParams.place);
+  const [surname, setSurname] = React.useState(filterParams.surname);
 
-const boxClick = ()=>{
-  filterFieldChanged({
-    yearStart : yearStart,
-    yearEnd : yearEnd,
-    ref : ref,
-    desc : desc,
-    place : place,
-    surname : surname
-  });
-};
+  const searchClick = ()=>{   
+    let params = {
+      yearStart : yearStart,
+      yearEnd : yearEnd,
+      ref : ref,
+      desc : desc,
+      place : place,
+      surname : surname
+    };
+
+    setParams(params);
+
+    filterFieldChanged(params);
+  };
 
   return (
     <Toolbar
@@ -89,7 +92,7 @@ const boxClick = ()=>{
       }}/>
 
 
-      <TableBox boxClick ={boxClick}/>
+      <TableBox boxClick ={searchClick}/>
 
     </Toolbar>
   );

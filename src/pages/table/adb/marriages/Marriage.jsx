@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import MarriageTable from './MarriageTable.jsx'
 import { gql} from '@apollo/client';
-
+import {getParams} from '../../../../features/Table/qryStringFuncs';
 import MarriageTableToolbar from './MarriageTableToolbar.jsx'
 import TableWrapper from '../../../../features/Table/TableWrapper.jsx'
 import {useTableState} from '../../../../features/Table/useTable';
@@ -73,7 +73,7 @@ function Marriages() {
       { id: 'totalEvents', numeric: false, disablePadding: true, label: 'Dupes' }
     ];
 
-    var state = useTableState(GET_MARRIAGES,{
+    var defaultValues = {
       sortColumn : 'maleCname',
       sortOrder : 'asc',
       limit : 0,
@@ -84,7 +84,11 @@ function Marriages() {
       maleSurname : '',
       femaleSurname: '',
       location :''
-    },'adb','marriagesearch');
+    };
+
+    var params = getParams(defaultValues);
+   
+    var state = useTableState(GET_MARRIAGES,params,'adb','marriagesearch');
 
     state.headCells = headCells;
     state.title = 'Marriage Search';

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ParishTable from './ParishTable.jsx'
 import { gql} from '@apollo/client';
 
-
+import {getParams} from '../../../../features/Table/qryStringFuncs';
 import ParishTableToolbar from './ParishTableToolbar.jsx'
 import TableWrapper from '../../../../features/Table/TableWrapper.jsx'
 import {useTableState} from '../../../../features/Table/useTable';
@@ -62,14 +62,18 @@ function Parishs() {
       { id: 'parishY', numeric: false, disablePadding: true, label: 'Lat' }
     ];
 
-    var state = useTableState(GET_Parishs,{
+    var defaultValues = {
       sortColumn : 'parishName',
       sortOrder : 'asc',
       limit : 25,
       offset :0,
       parishName : '',
       county : ''
-    },'adb','parishsearch');
+    };
+
+    var params = getParams(defaultValues);
+
+    var state = useTableState(GET_Parishs,params,'adb','parishsearch');
 
     state.headCells = headCells;
     state.title = 'Parish Search';

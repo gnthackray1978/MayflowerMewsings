@@ -6,6 +6,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import TextField from '@material-ui/core/TextField';
 import {useToolbarStyles} from '../../styleFuncs.jsx';
 import TableBox from '../../../../features/Table/tableBox.jsx';
+import {setParams} from '../../../../features/Table/qryStringFuncs';
 
 const ParishTableToolbar = (props) => {
 
@@ -16,11 +17,15 @@ const ParishTableToolbar = (props) => {
   const [county, setcounty] = React.useState(filterParams.county);
   const [parishName, setparishName] = React.useState(filterParams.parishName);
 
-  const boxClick = ()=>{
-    filterFieldChanged({
+  const boxClick = ()=>{   
+    let params = {
       county : county,
       parishName : parishName
-    });
+    };
+
+    setParams(params);
+
+    filterFieldChanged(params);
   };
 
   return (

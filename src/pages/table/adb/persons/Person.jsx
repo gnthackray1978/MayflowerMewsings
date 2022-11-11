@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PersonTable from './PersonTable.jsx'
 import { gql} from '@apollo/client';
-
+import {getParams} from '../../../../features/Table/qryStringFuncs';
 import PersonTableToolbar from './PersonTableToolbar.jsx'
 import TableWrapper from '../../../../features/Table/TableWrapper.jsx'
 import {useTableState} from '../../../../features/Table/useTable';
@@ -88,7 +88,7 @@ function Persons() {
       { id: 'totalEvents', numeric: false, disablePadding: true, label: 'Events' }
     ];
 
-    var state = useTableState(GET_PersonS,{
+    var defaultValues = {
       sortColumn : 'birthint',
       sortOrder : 'asc',
       limit : 0,
@@ -101,7 +101,11 @@ function Persons() {
       fatherChristianName :'',
       fatherSurname : '',
       motherChristianName : ''
-    },'adb','personsearch');
+    };
+
+    var params = getParams(defaultValues);
+
+    var state = useTableState(GET_PersonS,params,'adb','personsearch');
 
     state.headCells = headCells;
     state.title = 'Person Search';

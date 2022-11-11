@@ -5,7 +5,7 @@ import { gql} from '@apollo/client';
 
 import WillTableToolbar from './WillTableToolbar.jsx'
 import TableWrapper from '../../../features/Table/TableWrapper.jsx';
-
+import {getParams} from '../../../features/Table/qryStringFuncs';
 import {useTableState} from '../../../features/Table/useTable';
 
 
@@ -69,18 +69,22 @@ function NorfolkWills() {
     { id: 'Typ', numeric: false, disablePadding: true, label: 'Type' }
   ];
 
-  var state = useTableState(GET_WILLS,{
-        sortColumn : 'surname',
-        sortOrder : 'asc',
-        limit : 0,
-        offset :0,
-        yearStart : 1700,
-        yearEnd : 2000,
-        ref : '',
-        desc : '',
-        place : '',
-        surname : ''
-  },'will','norfolksearch');
+  var defaultValues = {
+    sortColumn : 'surname',
+    sortOrder : 'asc',
+    limit : 0,
+    offset :0,
+    yearStart : 1700,
+    yearEnd : 2000,
+    ref : '',
+    desc : '',
+    place : '',
+    surname : ''
+  };
+
+  var params = getParams(defaultValues);
+
+  var state = useTableState(GET_WILLS,params,'will','norfolksearch');
 
   state.headCells = headCells;
   state.title = 'Norfolk will search';

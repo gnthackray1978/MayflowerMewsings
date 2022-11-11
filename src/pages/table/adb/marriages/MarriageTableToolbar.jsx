@@ -6,6 +6,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import TextField from '@material-ui/core/TextField';
 import {useToolbarStyles} from '../../styleFuncs.jsx';
 import TableBox from '../../../../features/Table/tableBox.jsx';
+import {setParams} from '../../../../features/Table/qryStringFuncs';
 
 const MarriageTableToolbar = (props) => {
 //  console.log('rendered: DupeTableToolbar' );
@@ -19,14 +20,19 @@ const MarriageTableToolbar = (props) => {
   const [femaleSurname, setFemaleSurname] = React.useState(filterParams.femaleSurname);
   const [location, setLocation] = React.useState(filterParams.location);
 
-  const boxClick = ()=>{
-    filterFieldChanged({
+  const searchClick = ()=>{
+  
+    let params = {
       yearStart : yearStart,
       yearEnd : yearEnd,
       maleSurname : maleSurname,
       femaleSurname : femaleSurname,
       location : location
-    });
+    };
+
+    setParams(params);
+
+    filterFieldChanged(params);
   };
 
   return (
@@ -68,7 +74,7 @@ const MarriageTableToolbar = (props) => {
           setFemaleSurname(e.currentTarget.value);
         }}/>
 
-    <TableBox boxClick ={boxClick}/>
+    <TableBox boxClick ={searchClick}/>
     </Toolbar>
   );
 };
