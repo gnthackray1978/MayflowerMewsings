@@ -6,6 +6,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import TextField from '@material-ui/core/TextField'; 
 import {useToolbarStyles} from '../../styleFuncs.jsx';
 import TableBox from '../../../../features/Table/tableBox.jsx';
+import {setParams} from '../../../../features/Table/qryStringFuncs';
 
 const PoiTableToolbar = (props) => {
 //  console.log('rendered: PoiTableToolbar' );
@@ -25,8 +26,9 @@ const PoiTableToolbar = (props) => {
 
   const [name, setName] = React.useState(filterParams.name);
 
-  const boxClick = ()=>{
-    filterFieldChanged({
+  const searchClicked = ()=>{
+
+    let params = {
       surname : surname,
       location : location,
       mincm : Number(mincm),
@@ -34,7 +36,11 @@ const PoiTableToolbar = (props) => {
       yearEnd : Number(yearEnd),
       country :country,
       name : name
-    });
+    };
+
+    setParams(params);
+ 
+    filterFieldChanged(params);
   };
 
   return (
@@ -94,7 +100,7 @@ const PoiTableToolbar = (props) => {
           setCountry(e.currentTarget.value);
       }}/>
 
-    <TableBox boxClick ={boxClick}/>
+    <TableBox boxClick ={searchClicked}/>
 
     </Toolbar>
   );

@@ -4,6 +4,7 @@ import DupeTableToolbar from './DupeTableToolbar.jsx'
 import TableWrapper from '../../../../features/Table/TableWrapper.jsx'
 import {gql} from '@apollo/client';
 import {useTableState} from '../../../../features/Table/useTable';
+import {getParams} from '../../../../features/Table/qryStringFuncs';
 
 function Dupes() {
 
@@ -49,13 +50,17 @@ function Dupes() {
       { id: 'Surname', numeric: false, disablePadding: true, label: 'Surname' }
     ];
 
-    var state = useTableState(GET_DUPES,{
+    var defaultValues = {
       sortColumn : 'surname',
       sortOrder : 'asc',
       limit : 0,
       offset :0,
       surname : ''
-    },'dna','dupesearch');
+    };
+
+    var params = getParams(defaultValues);
+
+    var state = useTableState(GET_DUPES,params,'dna','dupesearch');
 
     state.headCells = headCells;
     state.title = 'Dupes';

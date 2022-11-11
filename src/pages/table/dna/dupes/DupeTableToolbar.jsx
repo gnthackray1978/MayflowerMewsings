@@ -6,7 +6,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import TextField from '@material-ui/core/TextField'; 
 import {useToolbarStyles} from '../../styleFuncs.jsx';
 import TableBox from '../../../../features/Table/tableBox.jsx'; 
-
+import {setParams} from '../../../../features/Table/qryStringFuncs';
 
 const DupeTableToolbar = (props) => {
 //  console.log('rendered: DupeTableToolbar' );
@@ -17,9 +17,14 @@ const DupeTableToolbar = (props) => {
   const [surname, setSurname] = React.useState(filterParams.surname);
 
   const boxClick = ()=>{
-    filterFieldChanged({
+
+    let params = {
       surname : surname
-    });
+    };
+
+    setParams(params);
+
+    filterFieldChanged(params);
   };
 
 

@@ -4,6 +4,7 @@ import PoiTableToolbar from './PoiTableToolbar.jsx'
 import TableWrapper from '../../../../features/Table/TableWrapper.jsx'
 import {gql} from '@apollo/client';
 import {useTableState} from '../../../../features/Table/useTable';
+import {getParams} from '../../../../features/Table/qryStringFuncs';
 
 function Poi() {
     const GET_Poi = gql`
@@ -66,7 +67,7 @@ function Poi() {
         { id: 'SharedCentimorgans', numeric: false, disablePadding: true, label: 'cMs' }
     ];
 
-    var state = useTableState(GET_Poi,{
+    var defaultValues = {
       sortColumn : 'yearStart',
       sortOrder : 'asc',
       limit : 0,
@@ -78,7 +79,11 @@ function Poi() {
        location :'',
        country : 'England',
        name :'GNT GRT ATH'
-    },'dna','poisearch');
+    };
+
+    var params = getParams(defaultValues);
+
+    var state = useTableState(GET_Poi,params,'dna','poisearch');
 
     state.headCells = headCells;
     state.title = 'POI';
