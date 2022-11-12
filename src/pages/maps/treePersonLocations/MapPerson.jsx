@@ -103,7 +103,23 @@ function makeData(data, schema, subSchema){
 
 }
 
+const parseLocations = (rawLocations) => {
+  let locations = [];
 
+  if (rawLocations) {
+    for (let r of rawLocations) {
+      locations.push({
+        id: r.id,
+        birthLat: r.birthLat,
+        birthLong: r.birthLong,
+        show: r.show,
+        locationData: { trees: r.trees, ftmPersonSummary: r.ftmPersonSummary }
+      });
+    }
+  }
+
+  return locations;
+} 
 
 function MapPerson() {
 
@@ -175,12 +191,14 @@ function MapPerson() {
 
     //useEffect(() => console.log('MapPerson componentDidMount' ), []);
  
+    let tp = parseLocations(state.rows);
+
     return (
         //rows treeColours
         <div>
           <MapWrapper state = {state} >
             <MappingToolbar state ={state}/>
-            <MapPersonBody rows ={state.rows} treeColours = {state.treeColours}/>
+            <MapPersonBody locations ={tp} treeColours = {state.treeColours}/>
           </MapWrapper>
         </div>
     );

@@ -164,10 +164,12 @@ const Marker = ({show, place, treeColours }) => {
  
 };
  
-   
+  
+
 function MapPersonBody(props) {
 
-    const [rows, setRows] = React.useState(props.rows);
+ 
+    const [locations, setLocations] = React.useState(props.locations);
     const [treeColours, setTreeColours] = React.useState(props.treeColours);
 
     const theme = useTheme();
@@ -180,22 +182,22 @@ function MapPersonBody(props) {
 
     var onChildClickCallback = (key) => {
      
-        let tpRows = rows;
+        let tpRows = locations;
         
         const index = tpRows.findIndex((e) => e.id === Number(key));
         
         if(index >= 0){
           tpRows[index].show = !tpRows[index].show; // eslint-disable-line no-param-reassign
         
-          setRows([...tpRows]);
+          setLocations([...tpRows]);
         }
         else{
-          setRows([...tpRows]);
+          setLocations([...tpRows]);
         }
     };
 
    
-    if(!rows)
+    if(!locations)
     {
       return (<div className={classes.noData}>No Data</div>);
     }
@@ -211,15 +213,15 @@ function MapPersonBody(props) {
             options={defaultMapOptions}
             onChildClick={onChildClickCallback}
           >
-            {rows && rows.length >0 && rows.map((place) => (
+            {locations && locations.length >0 && locations.map((location) => (
               
 
               <Marker
-                  key={place.id}
-                  lat={place.birthLat}
-                  lng={place.birthLong} 
-                  show ={place.show}
-                  place={place}
+                  key={location.id}
+                  lat={location.birthLat}
+                  lng={location.birthLong} 
+                  show ={location.show}
+                  place={location.locationData}
                   treeColours ={treeColours}
                 />
 
@@ -229,6 +231,8 @@ function MapPersonBody(props) {
       );
     }
   
+
+
 
 }
  
