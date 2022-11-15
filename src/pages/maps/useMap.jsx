@@ -19,7 +19,15 @@ export  function useMapState(qry) {
       filterObj.origin ='_21_Alan!Douglas';
     }
 
-    getMapData({ variables: filterObj} );
+    getMapData({ 
+        notifyOnNetworkStatusChange: true, 
+        variables: filterObj,
+        fetchPolicy: 'network-only',
+        onCompleted: (data) => {
+          console.log('onCompleted');
+        }
+      }
+      );
  
    };
 
