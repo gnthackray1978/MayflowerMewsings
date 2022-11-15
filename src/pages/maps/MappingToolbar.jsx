@@ -10,8 +10,9 @@ import {useToolbarStyles} from './styleFuncs.jsx';
 import TableBox from './tableBox.jsx';
 import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
-// treeSelectorDialogClose
 import {treeSelectorDialogOpen,treeSelectorDialogClose} from "../../features/uxActions.jsx";
+import {setParams} from '../../features/Table/qryStringFuncs';
+
 
 const MappingToolbar = (props) => {
 //  console.log('rendered: FTMViewTableToolbar' );
@@ -24,25 +25,24 @@ const MappingToolbar = (props) => {
   const theme = useTheme();
   const classes = useToolbarStyles(theme);
   
-  //console.log('MapPersonToolbar: '+selectedTreeData);
-  // numSelected={state.selected.length}
-  //   filterParams ={state.filterParams} title = {state.title}
-  //   filterFieldChanged = {state.filterFieldChanged}
-
-
   const [surname, setSurname] = React.useState(filterParams.surname);
   const [yearStart, setyearStart] = React.useState(String(filterParams.yearStart));
   const [yearEnd, setyearEnd] = React.useState(String(filterParams.yearEnd));
   const [location, setLocation] = React.useState(filterParams.location);
  
   const boxClick = ()=>{
-    filterFieldChanged({
+  
+    let params = {
       yearStart : Number(yearStart),
       yearEnd : Number(yearEnd),
       location : location,
       surname : surname ,
       origin: selectedTreeData.origin
-    });
+    };
+
+    setParams(params);
+
+    filterFieldChanged(params);
   };
 
   return (

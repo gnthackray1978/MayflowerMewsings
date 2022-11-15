@@ -2,7 +2,7 @@ import  React, { useState, useEffect }  from 'react';
 
 import MapPersonBody from './MapPersonBody.jsx';
 import MappingToolbar from '../MappingToolbar.jsx';
-
+import {getParams} from '../../../features/Table/qryStringFuncs';
 import MapWrapper from '../MapWrapper.jsx'
 import {gql} from '@apollo/client';
 
@@ -123,13 +123,18 @@ const parseLocations = (rawLocations) => {
 
 function MapPerson() {
 
-    const [filterParams, setFilterParams] = React.useState({   
+    var defaultValues = {
       yearStart : 1500,
       yearEnd : 2000,
       location : '',
       surname : '',
       origin : '_21_Alan!Douglas'
-    });
+    };
+
+    var params = getParams(defaultValues);
+
+  
+    const [filterParams, setFilterParams] = React.useState(params);
 
     const GET_FTMView = gql`
     query Dna(      
