@@ -211,6 +211,7 @@ function MapPersonBody(props) {
             yesIWantToUseGoogleMapApiInternals
             onGoogleApiLoaded={({ map, maps }) => handleApiLoaded(map, maps)}
             options={defaultMapOptions}
+            heatmapLibrary={true}  
             onChildClick={onChildClickCallback}
           >
             {locations && locations.length >0 && locations.map((location) => (
