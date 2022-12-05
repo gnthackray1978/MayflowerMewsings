@@ -6,7 +6,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import TextField from '@material-ui/core/TextField'; 
 import {useToolbarStyles} from '../../styleFuncs.jsx';
 import TableBox from '../../../../features/Table/tableBox.jsx';
-import {setParams} from '../../../../features/Table/qryStringFuncs';
+import {getParams, setParams} from '../../../../features/Table/qryStringFuncs';
 
 const TrsTableToolbar = (props) => {
 //  console.log('rendered: TrsTableToolbar' );
@@ -14,13 +14,13 @@ const TrsTableToolbar = (props) => {
   const classes = useToolbarStyles(props.theme);
   const { numSelected, title, filterFieldChanged, filterParams } = props.state;
 
-  const [origin, setorigin] = React.useState(filterParams.origin);
+  const [treeName, setTreeName] = React.useState(filterParams.treeName);
 
 
   const boxClick = ()=>{
     
     let params = {
-      origin : origin
+      treeName: getParams().treeName ?? ''
     };
 
     setParams(params);
@@ -34,11 +34,11 @@ const TrsTableToolbar = (props) => {
                           [classes.highlight]: numSelected > 0,
                        })}>
 
-         <TextField className={classes.filter} id="origin" label="Origin"
-           value={origin}
+         <TextField className={classes.filter} id="treeName" label="Tree Name"
+           value={treeName}
            variant="standard"  size="small"
            onChange = {(e)=>{
-             setorigin(e.currentTarget.value);
+             setTreeName(e.currentTarget.value);
            }}/>
 
         <TableBox boxClick ={boxClick}/>

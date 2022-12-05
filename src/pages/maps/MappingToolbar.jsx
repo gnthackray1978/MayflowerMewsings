@@ -11,8 +11,8 @@ import TableBox from './tableBox.jsx';
 import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
 import {treeSelectorDialogOpen,treeSelectorDialogClose} from "../../features/uxActions.jsx";
-import {setParams} from '../../features/Table/qryStringFuncs';
-
+import {getParams, setParams} from '../../features/Table/qryStringFuncs';
+ 
 
 const MappingToolbar = (props) => {
 //  console.log('rendered: FTMViewTableToolbar' );
@@ -30,6 +30,8 @@ const MappingToolbar = (props) => {
   const [yearEnd, setyearEnd] = React.useState(String(filterParams.yearEnd));
   const [location, setLocation] = React.useState(filterParams.location);
  
+ 
+
   const boxClick = ()=>{
   
     let params = {
@@ -37,14 +39,14 @@ const MappingToolbar = (props) => {
       yearEnd : Number(yearEnd),
       location : location,
       surname : surname ,
-      origin: selectedTreeData.origin
+      origin: getParams().origin
     };
 
     setParams(params);
 
     filterFieldChanged(params);
   };
-
+  console.log('mapping toolbar');
   return (
     <Toolbar
       className={clsx(classes.root, {
@@ -52,7 +54,8 @@ const MappingToolbar = (props) => {
         [classes.highlight]: numSelected > 0,
       })}
     >
-      <IconButton className={classes.menuButton} color="inherit" aria-label="Menu"
+      
+      <IconButton  variant="text" className={classes.menuButton} aria-label="Menu"  label="Year From"
        onClick= {()=>
         {
           console.log('onclick');
@@ -61,8 +64,16 @@ const MappingToolbar = (props) => {
           else
             treeSelectorDialogOpen();
         }}>
-        <SearchIcon />
+       
+        <div className={classes.topLabel}>Tree Name(s)</div>
+        <SearchIcon className ={classes.buttonContent}  />
+        <div className={classes.treeName}>{getParams()?.originDescription ?? ''}</div>
+      
       </IconButton>
+
+
+     
+ 
 
       <TextField className={classes.yearBox} id="yearStart" label="Year From"
         value={yearStart}
@@ -91,11 +102,6 @@ const MappingToolbar = (props) => {
           setSurname(e.currentTarget.value);
         }}/>
 
-      <div  className = {classes.originOuter}>
-        <div className = {classes.originMiddle}>
-          <div className = {classes.originInner}>{selectedTreeData.originDescription}</div>
-        </div>
-      </div>
 
       <TableBox boxClick ={boxClick}/>
 

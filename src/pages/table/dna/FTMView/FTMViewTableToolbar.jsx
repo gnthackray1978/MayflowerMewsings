@@ -7,7 +7,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import TextField from '@material-ui/core/TextField';
 import {useToolbarStyles} from '../../styleFuncs.jsx';
 import TableBox from '../../../../features/Table/tableBox.jsx';
-import {setParams} from '../../../../features/Table/qryStringFuncs';
+import {getParams, setParams} from '../../../../features/Table/qryStringFuncs';
 
 import IconButton from '@material-ui/core/IconButton';
 
@@ -26,8 +26,10 @@ const FTMViewTableToolbar = (props) => {
   const [yearEnd, setyearEnd] = React.useState(String(filterParams.yearEnd));
   const [location, setLocation] = React.useState(filterParams.location);
 
-  const originDescription = selectedTreeData?.originDescription != '' ? selectedTreeData?.originDescription : filterParams.originDescription;
+  // always use the query string value is the ultimate source of truth.
+  // todo remove the tree selection from redux entirely.
 
+  
   const searchClick = ()=>{
 
     let params = {
@@ -35,7 +37,7 @@ const FTMViewTableToolbar = (props) => {
       yearEnd : Number(yearEnd),
       location : location,
       surname : surname,
-      origin: selectedTreeData.origin
+      origin: getParams().origin ?? ''
     };
 
     filterFieldChanged(params);
@@ -59,11 +61,13 @@ const FTMViewTableToolbar = (props) => {
           else
             treeSelectorDialogOpen();
         }}>
-        <SearchIcon />
+        <div className={classes.topLabel}>Tree Name(s)</div>
+        <SearchIcon className ={classes.buttonContent}/>
+        <hr className ={classes.treeSearchLine}/>
       </IconButton>
       <div  className = {classes.originOuter}>
         <div className = {classes.originMiddle}>
-          <div className = {classes.originInner}>{originDescription}</div>
+          <div className = {classes.originInner}>{getParams()?.originDescription ?? ''}</div>
         </div>
       </div>
       <TextField className={classes.filter} id="yearStart" label="Year From"

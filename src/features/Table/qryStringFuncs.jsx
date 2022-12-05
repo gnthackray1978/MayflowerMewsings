@@ -32,7 +32,7 @@ export const getParams = (defaults) =>{
     let search = document.location.search.substring(1);
     
     if(search.length === 0){
-        return defaults;
+        return defaults ?? {};
     }
 
     search = JSON.parse('{"' + search.replace(/&/g, '","').replace(/=/g,'":"') + '"}', function(key, value) { return key===""?value:decodeURIComponent(value) });

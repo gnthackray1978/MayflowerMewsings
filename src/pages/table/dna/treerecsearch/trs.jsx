@@ -15,14 +15,14 @@ function Trs() {
      $offset : Int!,
      $sortColumn: String!,
      $sortOrder : String!,
-     $origin : String!
+     $treeName : String!
    ){
     dna{
       treerecsearch(limit : $limit,
              offset : $offset,
              sortColumn: $sortColumn,
              sortOrder : $sortOrder,
-             origin : $origin
+             treeName : $treeName
            ) {
        page
        totalResults
@@ -41,10 +41,10 @@ function Trs() {
 
     const headCells = [
         { id: 'Name', numeric: false, disablePadding: true, label: 'Name' },
-        { id: 'PersonCount', numeric: false, disablePadding: true, label: 'Person Count' },
+        { id: 'PersonCount', numeric: false, disablePadding: true, label: 'Persons' },
         { id: 'CM', numeric: false, disablePadding: true, label: 'CM' },
         { id: 'Located', numeric: false, disablePadding: true, label: 'Located' },
-        { id: 'Origin', numeric: false, disablePadding: true, label: 'Origin' }
+        { id: 'Counties', numeric: false, disablePadding: true, label: 'Counties' }
     ];
 
     var defaultValues = {
@@ -52,7 +52,7 @@ function Trs() {
       sortOrder : 'desc',
       limit : 0,
       offset :0,
-      origin : ''
+      treeName : ''
     };
 
     var params = getParams(defaultValues);

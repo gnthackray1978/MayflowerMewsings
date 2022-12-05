@@ -17,10 +17,10 @@ export const setTreePerson = (state) =>{
 };
 
 export const setTree = (state) =>{
-  //
+    console.log('setTree action');
 
     return async (dispatch, getState)  => {
-//        console.log('applicationSelected action');  /
+//          /
       var tp = getState();
 
       if(tp.ux.selectedTreeData.originDescription != state.originDescription 

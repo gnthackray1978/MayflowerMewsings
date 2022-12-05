@@ -78,14 +78,59 @@ export const useStyles = makeStyles((theme) => ({
 
 
 export const useToolbarStyles = makeStyles((theme) => ({
+  
+  // buttonContent:{
+  //   marginLeft : '-13px',
+  //   marginRight: '10px'
+  // },
+  treeName :{
+    fontSize: "1rem",
+    fontFamily: "Roboto",
+    fontWeight: "400",
+  },
+
+  topLabel: {
+    fontSize: "0.8rem",
+    fontFamily: "Roboto",
+    fontWeight: "400",
+    position: "absolute",
+    top: "-1.03rem",
+    left: "0px",
+    border: "none",
+    textAlign: "left",
+    minWidth: "220px",
+    background: "none",
+     '&:focus': {
+      boxShadow: 'none',
+      backgroundColor: 'red',
+      borderColor: 'red',
+    }
+  },
+
+  treeSearchLine :{
+    minWidth: '200px',
+    position: 'absolute',
+    top: '1.46rem',
+    left: '3px',
+    color: 'black',
+    backgroundColor: 'black',
+    border: 'none',
+    height: '0.08rem',
+  },
+  
   root: {
     paddingLeft: theme.spacing(2),
     paddingRight: theme.spacing(1),
     height: '25px',
   },
   menuButton: {
-    marginTop: 12,
-    marginRight: 20,
+    marginTop: 12, 
+    width : '15px',
+    '&:focus': {
+      backgroundColor: 'white',
+      borderColor: 'white',
+      outline: 'none'
+    }
   },
   highlight:
     theme.palette.type === 'light'
@@ -107,6 +152,7 @@ export const useToolbarStyles = makeStyles((theme) => ({
     flex: "1 1 100%",
     border: "0",
     margin: "0",
+    marginBottom : '5px',
     display: "inline-flex",
     padding: "0",
     position: "relative",
@@ -146,6 +192,8 @@ export const useToolbarStyles = makeStyles((theme) => ({
     animationName: "mui-auto-fill-cancel",
     letterSpacing: "inherit",
     animationDuration: "10ms",
-    WebkitTapHighlightColor: "transparent"
+    WebkitTapHighlightColor: "transparent",
+    textAlign: "left",
+    justifyContent: "left",
   }
 }));

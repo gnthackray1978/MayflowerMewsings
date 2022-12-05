@@ -15,9 +15,9 @@ export  function useMapState(qry) {
     
    // console.log('filterFieldChanged');
    
-    if(filterObj.origin == undefined || filterObj.origin == ''){
-      filterObj.origin ='_21_Alan!Douglas';
-    }
+    // if(filterObj.origin == undefined || filterObj.origin == ''){
+    //   filterObj.origin ='_21_Alan!Douglas';
+    // }
 
     getMapData({ 
         notifyOnNetworkStatusChange: true, 

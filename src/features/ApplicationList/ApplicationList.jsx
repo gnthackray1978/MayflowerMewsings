@@ -71,7 +71,7 @@ function ApplicationList(props) {
 
                <Button color="inherit" className ={classes.tolowerBtn}>
                  <Typography variant="h6" color="inherit" >
-                   Select Item
+                   Select Tree
                  </Typography>
                </Button>
 

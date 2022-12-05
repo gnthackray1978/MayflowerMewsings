@@ -1,4 +1,4 @@
-import {lighten, makeStyles} from '@material-ui/core/styles';
+import {lighten, makeStyles} from '@material-ui/core';
 // export const theme = createMuiTheme({
 //   overrides: {
 //     MuiTableCell: {
@@ -110,9 +110,58 @@ export const useStyles = makeStyles((theme) => ({
 
 
 export const useToolbarStyles = makeStyles((theme) => ({
+  buttonContent:{
+    marginLeft : '-13px',
+    marginRight: '10px'
+  },
+  treeName :{
+    fontSize: "1rem",
+    fontFamily: "Roboto",
+    fontWeight: "400",
+  },
+
+  topLabel: {
+    fontSize: "0.8rem",
+    fontFamily: "Roboto",
+    fontWeight: "400",
+    position: "absolute",
+    top: "-18px",
+    left: "0px",
+    border: "none",
+    background: "none",
+     '&:focus': {
+      boxShadow: 'none',
+      backgroundColor: 'red',
+      borderColor: 'red',
+    }
+  },
+
   menuButton: {
-    marginTop: 12,
-    marginRight: 20,
+    marginRight: 20,    
+    marginTop: '15px',
+    borderRadius: 0,
+    width: '500px',
+    justifyContent: 'left',    
+    //border: '2px solid #fff',
+    border: "none",
+    background: "none",
+    '&:hover': {
+    //  backgroundColor: 'green',
+    //  borderColor: '#0062cc',
+   //   boxShadow: 'none',
+    },
+    '&:active': {
+    //  boxShadow: 'none',
+   //   backgroundColor: 'blue',
+   //   borderColor: '#005cbf',
+    },
+    '&:focus': {
+     // boxShadow: 'none',
+      backgroundColor: 'white',
+      borderColor: 'white',
+      outline: 'none'
+    }
+
   },
   root: {
     paddingLeft: theme.spacing(2),
@@ -140,11 +189,11 @@ export const useToolbarStyles = makeStyles((theme) => ({
     maxWidth: '140px',
   },
   surname: {
-    maxWidth: '140px',
+    maxWidth: '540px',
   },
 
   originOuter: {
-    maxWidth: '538px',
+    maxWidth: '138px',
     flex: "1 1 100%",
     border: "0",
     margin: "0",

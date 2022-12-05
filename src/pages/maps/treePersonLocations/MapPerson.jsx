@@ -108,6 +108,13 @@ const parseLocations = (rawLocations) => {
 
   if (rawLocations) {
     for (let r of rawLocations) {
+
+      if(r.id === 13228) {
+        console.log('parseLocations: id = 0');
+        
+
+      }
+
       locations.push({
         id: r.id,
         birthLat: r.birthLat,
@@ -124,11 +131,11 @@ const parseLocations = (rawLocations) => {
 function MapPerson() {
 
     var defaultValues = {
-      yearStart : 1500,
-      yearEnd : 2000,
+      yearStart : 1700,
+      yearEnd : 1900,
       location : '',
       surname : '',
-      origin : '_21_Alan!Douglas'
+      origin : ''
     };
 
     var params = getParams(defaultValues);

@@ -234,7 +234,7 @@ export  function useAvTreesState(ReturnData,defaultParams, schema, subSchema) {
  
   const setSelection = function(){
     
-    console.log('setSelection called');
+   // console.log('setSelection called');
 
    // if(!originDescription || !origin) return;
 

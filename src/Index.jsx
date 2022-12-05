@@ -8,7 +8,9 @@ import TreeSelectionDrawer from './features/SideDrawer/TreeSelectionDrawer.jsx';
 
 import PageContainer from './pages/PageContainer.jsx';
 import {gql, useQuery } from '@apollo/client';
-import {metaDataLoaded,applicationSelected} from "./features/uxActions.jsx";
+import {metaDataLoaded,applicationSelected,setTree} from "./features/uxActions.jsx";
+import {getParams} from './features/Table/qryStringFuncs';
+ 
 
 const GET_Meta = gql`
 
@@ -133,15 +135,22 @@ function useTableState(qry, tokenExpiresAt) {
 
 function Index(props) {
 
-    const {metaDataLoaded,applicationSelected,tokenExpiresAt} = props;
+    const {metaDataLoaded,applicationSelected,tokenExpiresAt,setTree} = props;
     
     //console.log('Index: ' + tokenExpiresAt);
- 
+    
+    
+
     let state = useTableState(GET_Meta,tokenExpiresAt);    
 
     useEffect(() => { 
         if(state.stateObj)          
-          applicationSelected(state.stateObj.appId);      
+          applicationSelected(state.stateObj.appId); 
+          
+          let params = getParams();
+          if(params && params.origin && params.originDescription){
+            setTree({origin : params.origin, originDescription: params.originDescription});
+          }
     });
 
 
@@ -176,7 +185,9 @@ function Index(props) {
 const mapStateToProps = state => {
 
   return {
-    tokenExpiresAt : state.ids.tokenExpiresAt
+    tokenExpiresAt : state.ids.tokenExpiresAt,
+  //  selectedTreeData : state.ux.selectedTreeData
+
   };
 };
 
@@ -184,6 +195,8 @@ const mapDispatchToProps = dispatch => {
   return {
     applicationSelected: (selectedApp) => dispatch(applicationSelected(selectedApp)),
     metaDataLoaded: (data) => dispatch(metaDataLoaded(data)),
+    setTree: (data) => dispatch(setTree(data))
+
   };
 };
 
