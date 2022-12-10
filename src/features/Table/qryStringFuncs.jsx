@@ -66,7 +66,7 @@ export const setParams = (params) =>{
         returnedTarget = Object.assign(search, params);
     }
    
-    var queryString = Object.keys(returnedTarget).map(key => key + '=' + returnedTarget[key]).join('&');
+    var queryString = Object.keys(returnedTarget).map(key => key + '=' + encodeURIComponent(returnedTarget[key])).join('&');
 
     newurl += queryString;
 
