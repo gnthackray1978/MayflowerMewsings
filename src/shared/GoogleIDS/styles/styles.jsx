@@ -1,5 +1,5 @@
-import { makeStyles} from '@material-ui/core/styles';
-import blue from '@material-ui/core/colors/blue';
+import { makeStyles} from '@mui/styles';
+import blue from '@mui/material/colors/blue';
 
 export const styles = makeStyles((theme) => 
     (
@@ -137,7 +137,7 @@ export const imageButton = makeStyles((theme) => (
       position: "relative",
       height: 40,
 
-      [theme.breakpoints.down("xs")]: {
+      [theme.breakpoints.down('sm')]: {
         width: "42", // Overrides inline-style
         height: 40
       },
@@ -191,7 +191,7 @@ export const imageButton = makeStyles((theme) => (
     },
     imageTitle: {
       position: "relative",
-      padding: `${theme.spacing(1) * 2}px ${theme.spacing(1) * 4}px ${theme.spacing(1) + 6}px`
+      padding: `calc(${theme.spacing(1)} * 2) calc(${theme.spacing(1)} * 4) calc(${theme.spacing(1)} + 6px)`
     },
     imageMarked: {
       height: 3,

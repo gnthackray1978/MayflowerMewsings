@@ -24,7 +24,7 @@ function Header(props) {
         >
           {title}
         </Typography>
-        <IconButton>
+        <IconButton size="large">
           <SearchIcon />
         </IconButton>
         <Button variant="outlined" size="small">

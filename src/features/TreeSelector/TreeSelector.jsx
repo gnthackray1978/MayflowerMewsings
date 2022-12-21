@@ -1,18 +1,18 @@
 import  React, { useState, useEffect }  from 'react';
 import PropTypes from 'prop-types';
-import AppBar from '@material-ui/core/AppBar';
-import IconButton from '@material-ui/core/IconButton';
-import SearchIcon from '@material-ui/icons/Search';
-import PlayArrow from '@material-ui/icons/PlayArrow';
-import MenuIcon from '@material-ui/icons/Menu';
-import Button from '@material-ui/core/Button';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
+import AppBar from '@mui/material/AppBar';
+import IconButton from '@mui/material/IconButton';
+import SearchIcon from '@mui/icons-material/Search';
+import PlayArrow from '@mui/icons-material/PlayArrow';
+import MenuIcon from '@mui/icons-material/Menu';
+import Button from '@mui/material/Button';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
 import AvailableTrees from './Tables/AvailableTrees/AvailableTrees.jsx'
 import TreePeople from './Tables/TreePeople/TreePeople.jsx'
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import { useTheme } from '@material-ui/core/styles';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import { useTheme } from '@mui/material/styles';
 
 import {treeSelector} from '../styleFuncs.jsx';
 
@@ -126,57 +126,67 @@ function TreeSelector(props) {
     }
 
     return (
-        <div className = "inner">
-          <AppBar position="static">
-            <Toolbar>
-                <IconButton className={classes.menuButton} color="inherit" aria-label="Menu" onClick={()=>{
+      <div className = "inner">
+        <AppBar position="static">
+          <Toolbar>
+              <IconButton
+                className={classes.menuButton}
+                color="inherit"
+                aria-label="Menu"
+                onClick={()=>{
                       treeSelectorDialogClose(); //hopefully this is open when it's being cliucked on
-                  }} >
-                  <SearchIcon/>
-                </IconButton>
+                  }}
+                size="large">
+                <SearchIcon/>
+              </IconButton>
 
 
 
 
-                <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
-                  <Tab label= {treeName} {...a11yProps(0)} />
-                  <Tab label= {personName}{...a11yProps(1)} />
+              <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
+                <Tab label= {treeName} {...a11yProps(0)} />
+                <Tab label= {personName}{...a11yProps(1)} />
 
-                </Tabs>
-
-
-            </Toolbar>
-          </AppBar>
+              </Tabs>
 
 
+          </Toolbar>
+        </AppBar>
 
-          <TabPanel value={value} index={0}>
-            <AvailableTrees></AvailableTrees>
-          </TabPanel>
-          <TabPanel value={value} index={1}>
-            <TreePeople></TreePeople>
-             
-            <Toolbar>
-              <div className={classes.toolbarButtons}>
-                  <Button color="inherit" className ={classes.tolowerBtn}>
-                    <Typography variant="h6" color="inherit" >
-                      Run
-                    </Typography>
-                  </Button>
 
-                  <IconButton className={classes.menuButton} color="inherit" aria-label="Menu" onClick={()=>{
+
+        <TabPanel value={value} index={0}>
+          <AvailableTrees></AvailableTrees>
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+          <TreePeople></TreePeople>
+           
+          <Toolbar>
+            <div className={classes.toolbarButtons}>
+                <Button color="inherit" className ={classes.tolowerBtn}>
+                  <Typography variant="h6" color="inherit" >
+                    Run
+                  </Typography>
+                </Button>
+
+                <IconButton
+                  className={classes.menuButton}
+                  color="inherit"
+                  aria-label="Menu"
+                  onClick={()=>{
                       alert(treeName + ' ' +personId);
-                  }} >
-                  <PlayArrow/>
-                </IconButton>
-                </div>
-            </Toolbar>
+                  }}
+                  size="large">
+                <PlayArrow/>
+              </IconButton>
+              </div>
+          </Toolbar>
 
-          </TabPanel>
+        </TabPanel>
 
 
 
-        </div>
+      </div>
     );
 
 }

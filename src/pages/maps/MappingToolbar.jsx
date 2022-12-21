@@ -2,14 +2,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import Toolbar from '@material-ui/core/Toolbar';
-import TextField from '@material-ui/core/TextField';
+import Toolbar from '@mui/material/Toolbar';
+import TextField from '@mui/material/TextField';
 import { connect } from "react-redux";
-import { useTheme } from '@material-ui/core/styles';
+import { useTheme } from '@mui/material/styles';
 import {useToolbarStyles} from './styleFuncs.jsx';
 import TableBox from './tableBox.jsx';
-import IconButton from '@material-ui/core/IconButton';
-import SearchIcon from '@material-ui/icons/Search';
+import IconButton from '@mui/material/IconButton';
+import SearchIcon from '@mui/icons-material/Search';
 import {treeSelectorDialogOpen,treeSelectorDialogClose} from "../../features/uxActions.jsx";
 import {getParams, setParams} from '../../features/Table/qryStringFuncs';
  
@@ -55,15 +55,20 @@ const MappingToolbar = (props) => {
       })}
     >
       
-      <IconButton  variant="text" className={classes.menuButton} aria-label="Menu"  label="Year From"
-       onClick= {()=>
-        {
-          console.log('onclick');
-          if(showTreeSelectorDialog)
-            treeSelectorDialogClose();
-          else
-            treeSelectorDialogOpen();
-        }}>
+      <IconButton
+        variant="text"
+        className={classes.menuButton}
+        aria-label="Menu"
+        label="Year From"
+        onClick= {()=>
+         {
+           console.log('onclick');
+           if(showTreeSelectorDialog)
+             treeSelectorDialogClose();
+           else
+             treeSelectorDialogOpen();
+         }}
+        size="large">
        
         <div className={classes.topLabel}>Tree Name(s)</div>
         <SearchIcon className ={classes.buttonContent}  />

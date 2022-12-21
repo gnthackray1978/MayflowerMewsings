@@ -2,11 +2,11 @@
 import React, { Component,useEffect } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import Toolbar from '@material-ui/core/Toolbar';
-import TextField from '@material-ui/core/TextField';
+import Toolbar from '@mui/material/Toolbar';
+import TextField from '@mui/material/TextField';
 import {useToolbarStyles} from '../../../../pages/table/styleFuncs.jsx';
 import TableBox from '../../../Table/tableBox.jsx';
-import { useTheme } from '@material-ui/core/styles';
+import { useTheme } from '@mui/material/styles';
 
 const AvailableTreesToolbar = (props) => {
 //  console.log('rendered: TrsTableToolbar' );

@@ -5,7 +5,7 @@ import Container from '@mui/material/Container';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import TwitterIcon from '@mui/icons-material/Twitter';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { createTheme, ThemeProvider, StyledEngineProvider } from '@mui/material/styles';
 
 import Header from './Header';
 import MainFeaturedPost from './MainFeaturedPost';
@@ -88,32 +88,34 @@ const theme = createTheme();
 
 export default function Blog() {
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Container maxWidth="lg">
-        <Header title="Blog" sections={sections} />
-        <main>
-          <MainFeaturedPost post={mainFeaturedPost} />
-          <Grid container spacing={4}>
-            {featuredPosts.map((post) => (
-              <FeaturedPost key={post.title} post={post} />
-            ))}
-          </Grid>
-          <Grid container spacing={5} sx={{ mt: 3 }}>
-            <Main title="From the firehose" posts={posts} />
-            <Sidebar
-              title={sidebar.title}
-              description={sidebar.description}
-              archives={sidebar.archives}
-              social={sidebar.social}
-            />
-          </Grid>
-        </main>
-      </Container>
-      <Footer
-        title="Footer"
-        description="Something here to give the footer a purpose!"
-      />
-    </ThemeProvider>
+    <StyledEngineProvider injectFirst>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Container maxWidth="lg">
+          <Header title="Blog" sections={sections} />
+          <main>
+            <MainFeaturedPost post={mainFeaturedPost} />
+            <Grid container spacing={4}>
+              {featuredPosts.map((post) => (
+                <FeaturedPost key={post.title} post={post} />
+              ))}
+            </Grid>
+            <Grid container spacing={5} sx={{ mt: 3 }}>
+              <Main title="From the firehose" posts={posts} />
+              <Sidebar
+                title={sidebar.title}
+                description={sidebar.description}
+                archives={sidebar.archives}
+                social={sidebar.social}
+              />
+            </Grid>
+          </main>
+        </Container>
+        <Footer
+          title="Footer"
+          description="Something here to give the footer a purpose!"
+        />
+      </ThemeProvider>
+    </StyledEngineProvider>
   );
 }

@@ -2,7 +2,7 @@ import ButtonContent from './ButtonContent'
 import IconGoogle from './icon';
 import React from 'react';
 import {googleButton, defaultStyle} from './styles/styles.jsx';
-import { useTheme } from '@material-ui/core/styles';
+import { useTheme } from '@mui/material/styles';
  
 
 function GoogleButton(props){

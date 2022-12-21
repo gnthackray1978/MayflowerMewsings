@@ -1,5 +1,5 @@
 import React from "react";
-import ButtonBase from "@material-ui/core/ButtonBase";
+import ButtonBase from "@mui/material/ButtonBase";
 import {imageButton} from './styles/styles.jsx';
 
 function ImageButton(props) {

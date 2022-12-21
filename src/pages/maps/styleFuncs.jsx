@@ -1,4 +1,5 @@
-import {lighten, makeStyles} from '@material-ui/core';
+import {lighten, makeStyles} from '@mui/styles';
+
 // export const theme = createMuiTheme({
 //   overrides: {
 //     MuiTableCell: {
@@ -169,7 +170,7 @@ export const useToolbarStyles = makeStyles((theme) => ({
     height: '25px',
   },
   highlight:
-    theme.palette.type === 'light'
+    theme.palette.mode === 'light'
       ? {
           color: theme.palette.secondary.main,
           backgroundColor: lighten(theme.palette.secondary.light, 0.85),

@@ -1,4 +1,4 @@
-import {lighten, makeStyles} from '@material-ui/core/styles';
+import {lighten, makeStyles} from '@mui/styles';
 
  
 export const useSideBarStyles = makeStyles((theme) => ({
@@ -133,7 +133,7 @@ export const useToolbarStyles = makeStyles((theme) => ({
     }
   },
   highlight:
-    theme.palette.type === 'light'
+    theme.palette.mode === 'light'
       ? {
           color: theme.palette.secondary.main,
           backgroundColor: lighten(theme.palette.secondary.light, 0.85),

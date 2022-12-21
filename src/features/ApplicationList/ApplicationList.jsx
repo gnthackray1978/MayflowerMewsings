@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import AppBar from '@material-ui/core/AppBar';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import Button from '@material-ui/core/Button';
-import List from '@material-ui/core/List';
-import { ListItem, ListItemText } from '@material-ui/core';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import { useTheme } from '@material-ui/core/styles';
+import AppBar from '@mui/material/AppBar';
+import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
+import Button from '@mui/material/Button';
+import List from '@mui/material/List';
+import { ListItem, ListItemText } from '@mui/material';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import { useTheme } from '@mui/material/styles';
 import {funcSelected, funcDialogOpen , funcDialogClose} from "../uxActions.jsx";
 import { BrowserRouter as Router,  useHistory } from "react-router-dom";
 import {applicationListStyles} from '../styleFuncs.jsx';
@@ -60,27 +60,32 @@ function ApplicationList(props) {
   var items = GetFunctionList(appName,funcList,funcSelected,funcDialogClose,history);
 
   return (
-      <div  className={classes.inner}>
-         <AppBar position="static">
-           <Toolbar>
-               <IconButton className={classes.menuButton} color="inherit" aria-label="Menu" onClick={()=>{
+    <div  className={classes.inner}>
+       <AppBar position="static">
+         <Toolbar>
+             <IconButton
+               className={classes.menuButton}
+               color="inherit"
+               aria-label="Menu"
+               onClick={()=>{
                     funcDialogClose(); //hopefully this is open when it's being cliucked on
-                 }} >
-                 <MenuIcon/>
-               </IconButton>
+                 }}
+               size="large">
+               <MenuIcon/>
+             </IconButton>
 
-               <Button color="inherit" className ={classes.tolowerBtn}>
-                 <Typography variant="h6" color="inherit" >
-                   Select Tree
-                 </Typography>
-               </Button>
+             <Button color="inherit" className ={classes.tolowerBtn}>
+               <Typography variant="h6" color="inherit" >
+                 Select Tree
+               </Typography>
+             </Button>
 
-           </Toolbar>
-         </AppBar>
+         </Toolbar>
+       </AppBar>
 
-         {items}
+       {items}
 
-      </div>
+    </div>
   );
 
 }

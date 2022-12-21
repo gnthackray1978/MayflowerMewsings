@@ -2,7 +2,7 @@
 import {MiddleParents, createFamilyCountArray, GetPrev, GetFirst, GetParentXs, CreateArray} from '../drawinglib/graphDiagFuncs.jsx';
 
 
-import { ThreeDRotationSharp } from "@material-ui/icons";
+import { ThreeDRotationSharp } from "@mui/icons-material";
 
 
 export function GraphBoundary(){

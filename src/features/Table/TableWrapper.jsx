@@ -1,7 +1,7 @@
 import React from 'react'; 
-import TablePagination from '@material-ui/core/TablePagination'; 
-import {MuiThemeProvider } from "@material-ui/core/styles"; 
-import { useTheme } from '@material-ui/core/styles';
+import TablePagination from '@mui/material/TablePagination'; 
+import { MuiThemeProvider, StyledEngineProvider } from "@mui/material/styles"; 
+import { useTheme } from '@mui/material/styles';
 import {useStyles} from '../../pages/table/styleFuncs.jsx';
  
 
@@ -54,27 +54,29 @@ export default function TableWrapper(props) {
     state.handleChangeRowsPerPage = ()=>{};
 
   return (
-    <MuiThemeProvider theme={theme}>
-      <div className={classes.root}>
-          {children.length > 1 && children[0]}
+    <StyledEngineProvider injectFirst>
+      <MuiThemeProvider theme={theme}>
+        <div className={classes.root}>
+            {children.length > 1 && children[0]}
 
-          {loadingMessage(state.loading)}
+            {loadingMessage(state.loading)}
 
-          <TablePagination
-            labelRowsPerPage={'Page Rows'}
-            rowsPerPageOptions={[5, 10, 25,50]}
-            component="div"
-            count={state.totalRecordCount || 0} 
-            rowsPerPage={state.rowsPerPage}
-            page={state.page}
-        //    onChangePage={state.handleChangePage}
-            //onChangeRowsPerPage={state.handleChangeRowsPerPage}
-            onRowsPerPageChange = {state.handleChangeRowsPerPage}
-            onPageChange = {state.handleChangePage}
+            <TablePagination
+              labelRowsPerPage={'Page Rows'}
+              rowsPerPageOptions={[5, 10, 25,50]}
+              component="div"
+              count={state.totalRecordCount || 0} 
+              rowsPerPage={state.rowsPerPage}
+              page={state.page}
+          //    onChangePage={state.handleChangePage}
+              //onChangeRowsPerPage={state.handleChangeRowsPerPage}
+              onRowsPerPageChange = {state.handleChangeRowsPerPage}
+              onPageChange = {state.handleChangePage}
 
-          />
+            />
 
-      </div>
-    </MuiThemeProvider>
+        </div>
+      </MuiThemeProvider>
+    </StyledEngineProvider>
   );
 }

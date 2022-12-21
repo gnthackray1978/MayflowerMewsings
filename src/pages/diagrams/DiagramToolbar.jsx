@@ -1,25 +1,25 @@
 
 import React, { Component , useState} from 'react'; 
 import { connect } from "react-redux";
-import { useTheme } from '@material-ui/core/styles';
+import { useTheme } from '@mui/material/styles';
 import {useToolbarStyles} from './styleFuncs.jsx';
-import IconButton from '@material-ui/core/IconButton';
-import ArrowBack from '@material-ui/icons/ArrowBack';
-import ArrowForward from '@material-ui/icons/ArrowForward';
-import ArrowUpward from '@material-ui/icons/ArrowUpward';
-import ArrowDownward from '@material-ui/icons/ArrowDownward';
-import AddCircleOutline from '@material-ui/icons/AddCircleOutline';
-import RemoveCircleOutline from '@material-ui/icons/RemoveCircleOutline';
+import IconButton from '@mui/material/IconButton';
+import ArrowBack from '@mui/icons-material/ArrowBack';
+import ArrowForward from '@mui/icons-material/ArrowForward';
+import ArrowUpward from '@mui/icons-material/ArrowUpward';
+import ArrowDownward from '@mui/icons-material/ArrowDownward';
+import AddCircleOutline from '@mui/icons-material/AddCircleOutline';
+import RemoveCircleOutline from '@mui/icons-material/RemoveCircleOutline';
 
 
 // treeSelectorDialogClose
 import {hideDiagramControls} from "../../features/uxActions.jsx"; 
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Paper from '@material-ui/core/Paper';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Paper from '@mui/material/Paper';
 import Draggable from 'react-draggable';
 
 function PaperComponent(props) {
@@ -61,83 +61,98 @@ const DiagramToolbar = (props) => {
         </DialogTitle>
         <DialogContent>
          
-           <IconButton color="inherit" 
-                  onMouseDown={e => {
-                    graph.movementy = -1;
-                    e.stopPropagation();
-                  }
-                  }   
-
-                  onMouseUp={e => {
-                    graph.movementy = 0;
-                    e.stopPropagation();
-                  }
-                  } 
-
-                  style={{ position :'absolute', left : '32px', top : '35px' }} 
-                  aria-label="Menu"  onClick= {()=>{}}><ArrowUpward/></IconButton>
+           <IconButton
+             color="inherit"
+             onMouseDown={e => {
+               graph.movementy = -1;
+               e.stopPropagation();
+             }
+             }
+             onMouseUp={e => {
+               graph.movementy = 0;
+               e.stopPropagation();
+             }
+             }
+             style={{ position :'absolute', left : '32px', top : '35px' }}
+             aria-label="Menu"
+             onClick= {()=>{}}
+             size="large"><ArrowUpward/></IconButton>
          
 
-                      <IconButton color="inherit" 
+                      <IconButton
+                        color="inherit"
                         onMouseDown={e => {
                           graph.movementx = -1 ;
                           e.stopPropagation();
                         }
-                        }   
-
+                        }
                         onMouseUp={e => {
                           graph.movementx = 0;
                           e.stopPropagation();
                         }
-                        } 
-          style={{ position :'absolute', left : '0px', top : '65px' }} 
-          aria-label="Menu"  onClick= {()=>{}}><ArrowBack/></IconButton>
+                        }
+                        style={{ position :'absolute', left : '0px', top : '65px' }}
+                        aria-label="Menu"
+                        onClick= {()=>{}}
+                        size="large"><ArrowBack/></IconButton>
       
-          <IconButton color="inherit" 
-                  onMouseDown={e => {
-                    graph.movementx = 1 ;
-                    e.stopPropagation();
-                  }
-                  }   
-
-                  onMouseUp={e => {
-                    graph.movementx = 0;
-                    e.stopPropagation();
-                  }
-                  } 
-          style={{ position :'absolute', left : '65px', top : '65px' }} 
-          aria-label="Menu"  onClick= {()=>{}}><ArrowForward/></IconButton>
-          
-          <IconButton color="inherit" 
-             onMouseDown={e => {
-              graph.movementy = 1;
+          <IconButton
+            color="inherit"
+            onMouseDown={e => {
+              graph.movementx = 1 ;
               e.stopPropagation();
             }
-            }   
-
+            }
+            onMouseUp={e => {
+              graph.movementx = 0;
+              e.stopPropagation();
+            }
+            }
+            style={{ position :'absolute', left : '65px', top : '65px' }}
+            aria-label="Menu"
+            onClick= {()=>{}}
+            size="large"><ArrowForward/></IconButton>
+          
+          <IconButton
+            color="inherit"
+            onMouseDown={e => {
+             graph.movementy = 1;
+             e.stopPropagation();
+           }
+           }
             onMouseUp={e => {
               graph.movementy = 0;
               e.stopPropagation();
             }
-            } 
-          style={{ position :'absolute', left : '32px', top : '100px' }}
-           aria-label="Menu"  onClick= {()=>{}}><ArrowDownward/></IconButton>
+            }
+            style={{ position :'absolute', left : '32px', top : '100px' }}
+            aria-label="Menu"
+            onClick= {()=>{}}
+            size="large"><ArrowDownward/></IconButton>
       
-          <IconButton color="inherit" onMouseDown={e => {
-              graph.ZoomIn();
-              e.stopPropagation();
-            }
-            }
-          style={{ position :'absolute', left : '34px', top : '135px' }} 
-          aria-label="Menu"  onClick= {()=>{}}><AddCircleOutline/></IconButton>
+          <IconButton
+            color="inherit"
+            onMouseDown={e => {
+                graph.ZoomIn();
+                e.stopPropagation();
+              }
+              }
+            style={{ position :'absolute', left : '34px', top : '135px' }}
+            aria-label="Menu"
+            onClick= {()=>{}}
+            size="large"><AddCircleOutline/></IconButton>
           
-          <IconButton color="inherit" onMouseDown={e => {
-              graph.ZoomOut();
-              e.stopPropagation();
-            }
-            }
-          style={{ position :'absolute', left : '65px', top : '135px' }} 
-          aria-label="Menu"  onClick= {()=>{}}><RemoveCircleOutline/></IconButton>
+          <IconButton
+            color="inherit"
+            onMouseDown={e => {
+                graph.ZoomOut();
+                e.stopPropagation();
+              }
+              }
+            style={{ position :'absolute', left : '65px', top : '135px' }}
+            aria-label="Menu"
+            onClick= {()=>{}}
+            size="large"><RemoveCircleOutline/></IconButton>
 
         </DialogContent>
        

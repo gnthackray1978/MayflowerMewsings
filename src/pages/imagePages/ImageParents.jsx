@@ -1,7 +1,7 @@
 import React from 'react';
- import Paper from '@material-ui/core/Paper'; 
+ import Paper from '@mui/material/Paper'; 
 import ChildImages from './ChildImages.jsx';
-import { useTheme } from '@material-ui/core/styles';
+import { useTheme } from '@mui/material/styles';
 import {styles} from './styleFuncs.jsx';
 
  

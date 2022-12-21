@@ -1,20 +1,20 @@
 import React, { Component } from 'react';
-import Toolbar from '@material-ui/core/Toolbar';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import GamepadIcon from '@material-ui/icons/Gamepad';
-import Typography from '@material-ui/core/Typography';
+import Toolbar from '@mui/material/Toolbar';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
+import GamepadIcon from '@mui/icons-material/Gamepad';
+import Typography from '@mui/material/Typography';
 import { connect } from "react-redux";
 import GoogleIDSConnect   from "../../shared/GoogleIDS/GoogleIDX.jsx";
 
 import {siteDialogOpen, siteDialogClose,funcDialogOpen,funcDialogClose,
           treeSelectorDialogOpen,treeSelectorDialogClose, toggleDiagramControls} from "../uxActions.jsx";
-import AppsIcon from '@material-ui/icons/Apps';
+import AppsIcon from '@mui/icons-material/Apps';
 import {topButtonStyles} from '../styleFuncs.jsx';
-import { useTheme } from '@material-ui/core/styles';
+import { useTheme } from '@mui/material/styles';
 
-import SearchIcon from '@material-ui/icons/Search';
+import SearchIcon from '@mui/icons-material/Search';
 
 /*
 Buttons that go accross the top of the screen
@@ -83,61 +83,77 @@ function TopButtons(props) {
       showDiagramControls =true;
     
     return (
-         <Toolbar>
-             <IconButton className={classes.menuButton} color="inherit"
-                aria-label="Menu" onClick= { ()=>
-                    {
-                      if(ShowFuncListDialog)
-                        funcDialogClose();
-                      else
-                        funcDialogOpen();
-                    }
-                  }>
-                 <MenuIcon />
-             </IconButton>
+      <Toolbar>
+          <IconButton
+            className={classes.menuButton}
+            color="inherit"
+            aria-label="Menu"
+            onClick= { ()=>
+                   {
+                     if(ShowFuncListDialog)
+                       funcDialogClose();
+                     else
+                       funcDialogOpen();
+                   }
+                 }
+            size="large">
+              <MenuIcon />
+          </IconButton>
 
-             {showDiagramControls && <IconButton className={classes.menuButton} color="inherit" aria-label="Menu"
-                  onClick= {()=>
-                    {
-                      console.log('onclick');
-                      if(showTreeSelectorDialog)
-                        treeSelectorDialogClose();
-                      else
-                        treeSelectorDialogOpen();
-                    }}>
-              <SearchIcon />
-            </IconButton>}
+          {showDiagramControls && <IconButton
+            className={classes.menuButton}
+            color="inherit"
+            aria-label="Menu"
+            onClick= {()=>
+              {
+                console.log('onclick');
+                if(showTreeSelectorDialog)
+                  treeSelectorDialogClose();
+                else
+                  treeSelectorDialogOpen();
+              }}
+            size="large">
+           <SearchIcon />
+         </IconButton>}
 
-             <Button color="inherit"  className={classes.grow}>
-                 <Typography variant="h6" color="inherit"  className ={classes.tolowerBtn}>
-                     {selection.title}
-                 </Typography>
-             </Button>
-             
-             {showDiagramControls && 
-              <IconButton className={classes.menuButton} color="inherit" aria-label="Menu"
-                    onClick= {()=>
-                      {
-                        toggleDiagramControls();
-                      }}>
-                <GamepadIcon />
-              </IconButton>
-             }
+          <Button color="inherit"  className={classes.grow}>
+              <Typography variant="h6" color="inherit"  className ={classes.tolowerBtn}>
+                  {selection.title}
+              </Typography>
+          </Button>
+          
+          {showDiagramControls && 
+           <IconButton
+             className={classes.menuButton}
+             color="inherit"
+             aria-label="Menu"
+             onClick= {()=>
+               {
+                 toggleDiagramControls();
+               }}
+             size="large">
+             <GamepadIcon />
+           </IconButton>
+          }
 
-             <IconButton className={classes.menuButton} color="inherit"
-               aria-label="Menu"  onClick={()=>{
-                  if(showAppListDialog)
-                    siteDialogClose();
-                  else
-                    siteDialogOpen();
-                  }}>
-                 <AppsIcon />
-             </IconButton>
-             
-             <GoogleIDSConnect/>
+          <IconButton
+            className={classes.menuButton}
+            color="inherit"
+            aria-label="Menu"
+            onClick={()=>{
+                 if(showAppListDialog)
+                   siteDialogClose();
+                 else
+                   siteDialogOpen();
+                 }}
+            size="large">
+              <AppsIcon />
+          </IconButton>
+          
+          <GoogleIDSConnect/>
 
-         </Toolbar>
-     )
+      </Toolbar>
+    );
    
 
 }

@@ -1,8 +1,8 @@
 //todo clone off maps mapwrapper !! merge them together 
 
 import React, { Component } from 'react'; 
-import { MuiThemeProvider } from "@material-ui/core/styles";
-import { useTheme } from '@material-ui/core/styles';
+import { MuiThemeProvider, StyledEngineProvider } from "@mui/material/styles";
+import { useTheme } from '@mui/material/styles';
 import {useStyles} from './styleFuncs.jsx';
  
 
@@ -54,13 +54,15 @@ export default function DiagramWrapper(props) {
   };
 
   return (
-    <MuiThemeProvider theme={theme}>
-      <div className={classes.root}>
-          {children.length > 1 && children[0]}
+    <StyledEngineProvider injectFirst>
+      <MuiThemeProvider theme={theme}>
+        <div className={classes.root}>
+            {children.length > 1 && children[0]}
 
-          {tp(state.loading)}
- 
-      </div>
-    </MuiThemeProvider>
+            {tp(state.loading)}
+   
+        </div>
+      </MuiThemeProvider>
+    </StyledEngineProvider>
   );
 }

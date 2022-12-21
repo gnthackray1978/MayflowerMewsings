@@ -1,15 +1,15 @@
 import React from 'react';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableRow from '@material-ui/core/TableRow';
-import Link from '@material-ui/core/Link';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableRow from '@mui/material/TableRow';
+import Link from '@mui/material/Link';
 import { connect } from "react-redux";
  import {useSideBarStyles} from '../../../../pages/table/styleFuncs.jsx';
 import TableHeaderFromState  from '../../../Table/TableHeaderFromState.jsx';
 import {setTreePerson} from "../../../uxActions.jsx";
-import { useTheme } from '@material-ui/core/styles';
+import { useTheme } from '@mui/material/styles';
 
 
 function TreePeopleTable(props){

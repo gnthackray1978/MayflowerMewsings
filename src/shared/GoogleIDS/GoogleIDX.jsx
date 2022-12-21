@@ -10,7 +10,7 @@ import GoogleButton from "./GoogleButton.jsx";
 
 import {setIdsLoginScreenVisible, setTokenExpiration} from "./redux/idsActions.jsx";
 
-import { useTheme } from '@material-ui/core/styles';
+import { useTheme } from '@mui/material/styles';
 
 import {styles} from "./styles/styles.jsx";
 

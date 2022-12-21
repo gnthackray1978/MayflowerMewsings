@@ -1,9 +1,9 @@
-import Dialog from '@material-ui/core/Dialog';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
+import Dialog from '@mui/material/Dialog';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
 import React, { Component , useEffect} from 'react'; 
-import { useTheme } from '@material-ui/core/styles';
+import { useTheme } from '@mui/material/styles';
 import {siteDialog} from '../styleFuncs.jsx';
 import {PropTypes,func} from 'prop-types';
 import {applicationSelected, siteDialogOpen, siteDialogClose} from "../uxActions.jsx";

@@ -3,15 +3,15 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import Toolbar from '@material-ui/core/Toolbar';
-import TextField from '@material-ui/core/TextField';
+import Toolbar from '@mui/material/Toolbar';
+import TextField from '@mui/material/TextField';
 import {useToolbarStyles} from '../../styleFuncs.jsx';
 import TableBox from '../../../../features/Table/tableBox.jsx';
 import {getParams, setParams} from '../../../../features/Table/qryStringFuncs';
 
-import IconButton from '@material-ui/core/IconButton';
+import IconButton from '@mui/material/IconButton';
 
-import SearchIcon from '@material-ui/icons/Search';
+import SearchIcon from '@mui/icons-material/Search';
 import {treeSelectorDialogOpen,treeSelectorDialogClose} from "../../../../features/uxActions.jsx";
 
 
@@ -52,15 +52,19 @@ const FTMViewTableToolbar = (props) => {
         [classes.highlight]: numSelected > 0,
       })}
     >
-      <IconButton className={classes.menuButton} color="inherit" aria-label="Menu"
-       onClick= {()=>
-        {
-          console.log('onclick');
-          if(showTreeSelectorDialog)
-            treeSelectorDialogClose();
-          else
-            treeSelectorDialogOpen();
-        }}>
+      <IconButton
+        className={classes.menuButton}
+        color="inherit"
+        aria-label="Menu"
+        onClick= {()=>
+         {
+           console.log('onclick');
+           if(showTreeSelectorDialog)
+             treeSelectorDialogClose();
+           else
+             treeSelectorDialogOpen();
+         }}
+        size="large">
         <div className={classes.topLabel}>Tree Name(s)</div>
         <SearchIcon className ={classes.buttonContent}/>
         <hr className ={classes.treeSearchLine}/>

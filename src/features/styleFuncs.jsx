@@ -1,5 +1,5 @@
-import { makeStyles} from '@material-ui/core/styles';
-import blue from '@material-ui/core/colors/blue';
+import { makeStyles} from '@mui/styles';
+import blue from '@mui/material/colors/blue';
 
 export const topButtonStyles = makeStyles((theme) => 
     (
@@ -18,7 +18,8 @@ export const topButtonStyles = makeStyles((theme) =>
                 flexGrow: 1,
             },
             menuButton: {
-                marginLeft: -12,        
+                marginLeft: -12,     
+                zIndex: 10000,   
             },
             tolowerBtn : {
                 textTransform: 'none'

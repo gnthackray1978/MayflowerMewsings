@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { ThemeProvider, createTheme ,makeStyles} from '@material-ui/core/styles';
+import { ThemeProvider, StyledEngineProvider, createTheme, makeStyles, adaptV4Theme } from '@mui/material/styles';
 import { BrowserRouter as Router } from "react-router-dom";
-import purple from '@material-ui/core/colors/purple';
-import green from '@material-ui/core/colors/green';
+import purple from '@mui/material/colors/purple';
+import green from '@mui/material/colors/green';
 import Index from './Index.jsx';
  
-const theme = createTheme({
+const theme = createTheme(adaptV4Theme({
   palette: {
       
     primary: {
@@ -54,17 +54,19 @@ const theme = createTheme({
 
   }
 
-});
+}));
  
 function App(){
 
     
     return (
-      <ThemeProvider theme={theme}>        
-        <Router>
-            <Index/>
-        </Router>
-      </ThemeProvider>
+      <StyledEngineProvider injectFirst>
+        <ThemeProvider theme={theme}>        
+          <Router>
+              <Index/>
+          </Router>
+        </ThemeProvider>
+      </StyledEngineProvider>
     );
 }
 
