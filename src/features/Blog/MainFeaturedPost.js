@@ -5,6 +5,8 @@ import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Link from '@mui/material/Link';
 import Box from '@mui/material/Box';
+import Markdown from './Markdown';
+
 
 function MainFeaturedPost(props) {
   const { post } = props;
@@ -19,11 +21,12 @@ function MainFeaturedPost(props) {
         backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',
-        backgroundImage: `url(${post.image})`,
+        backgroundImage: `url(${post.imageURL})`,
       }}
     >
+      +
       {/* Increase the priority of the hero background image */}
-      {<img style={{ display: 'none' }} src={post.image} alt={post.imageText} />}
+      {<img style={{ display: 'none' }} src={post.imageURL} alt={post.imageText} />}
       <Box
         sx={{
           position: 'absolute',
@@ -43,15 +46,9 @@ function MainFeaturedPost(props) {
               pr: { md: 0 },
             }}
           >
-            <Typography component="h1" variant="h3" color="inherit" gutterBottom>
-              {post.title}
-            </Typography>
-            <Typography variant="h5" color="inherit" paragraph>
-              {post.description}
-            </Typography>
-            <Link variant="subtitle1" href="#">
-              {post.linkText}
-            </Link>
+          <Markdown className="markdown" key={post.text.substring(0, 40)}>
+            {post.text}
+          </Markdown>
           </Box>
         </Grid>
       </Grid>
@@ -61,12 +58,24 @@ function MainFeaturedPost(props) {
 
 MainFeaturedPost.propTypes = {
   post: PropTypes.shape({
-    description: PropTypes.string.isRequired,
-    image: PropTypes.string.isRequired,
-    imageText: PropTypes.string.isRequired,
-    linkText: PropTypes.string.isRequired,
+    text: PropTypes.string.isRequired,
+    //description: PropTypes.string.isRequired,
+    imageURL: PropTypes.string.isRequired,
+    //image: PropTypes.string.isRequired,
+    imageDescription: PropTypes.string.isRequired,
+    //imageText: PropTypes.string.isRequired,
+    linkURL: PropTypes.string.isRequired,
+    //linkText: PropTypes.string.isRequired,
+
     title: PropTypes.string.isRequired,
   }).isRequired,
 };
-
+//  string Text { get; set; }
+//  int Level { get; set; }
+//  string Title { get; set; }
+//  string linkURL { get; set; }
+//  string LinkDescription { get; set; }
+//  string imageURL { get; set; }
+//  string ImageDescription { get; set; }
+//  DateTime DateLastEdit { get; set; }
 export default MainFeaturedPost;

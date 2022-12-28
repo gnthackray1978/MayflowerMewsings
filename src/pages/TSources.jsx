@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Sources from './table/adb/sources/Source.jsx'
+import Sources from './sources/Source.jsx'
 
 function TSources(props) {
 

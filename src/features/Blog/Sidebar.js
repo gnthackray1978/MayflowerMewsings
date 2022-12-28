@@ -21,7 +21,18 @@ function Sidebar(props) {
         Archives
       </Typography>
       {archives.map((archive) => (
-        <Link display="block" variant="body1" href={archive.url} key={archive.title}>
+        <Link display="block" variant="body1" href={archive.url} key={archive.title} onClick ={(e)=>{
+          e.preventDefault();
+          e.stopPropagation();
+          let monthKey = archive.monthKey;
+          let element = document.querySelector('[data-month="'+monthKey+'"]');
+          
+          if(element)
+            element.scrollIntoView();
+
+
+          console.log('archive.url', archive.url);
+        }}>
           {archive.title}
         </Link>
       ))}

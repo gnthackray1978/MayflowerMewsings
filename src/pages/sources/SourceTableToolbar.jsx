@@ -4,9 +4,9 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import Toolbar from '@mui/material/Toolbar';
 import TextField from '@mui/material/TextField';
-import {useToolbarStyles} from '../../styleFuncs.jsx';
-import TableBox from '../../../../features/Table/tableBox.jsx';
-import {setParams} from '../../../../features/Table/qryStringFuncs';
+import {useToolbarStyles} from '../table/styleFuncs.jsx';
+import TableBox from '../../features/Table/tableBox.jsx';
+import {setParams} from '../../features/Table/qryStringFuncs';
 
 const SourceTableToolbar = (props) => {
 //  console.log('rendered: DupeTableToolbar' );

@@ -5,8 +5,8 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
 import { useTheme } from '@mui/material/styles';
-import {useStyles} from '../../styleFuncs.jsx';
-import TableHeaderFromState  from '../../../../features/Table/TableHeaderFromState.jsx';
+import {useStyles} from '../table/styleFuncs.jsx';
+import TableHeaderFromState  from '../../features/Table/TableHeaderFromState.jsx';
 
 export default function SourceTable(props) {
 

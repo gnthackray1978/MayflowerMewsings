@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import SourceTable from './SourceTable.jsx'
 import { gql} from '@apollo/client';
-import {getParams} from '../../../../features/Table/qryStringFuncs';
+import {getParams} from '../../features/Table/qryStringFuncs';
 import SourceTableToolbar from './SourceTableToolbar.jsx'
-import TableWrapper from '../../../../features/Table/TableWrapper.jsx'
-import {useTableState} from '../../../../features/Table/useTable';
+import TableWrapper from '../../features/Table/TableWrapper.jsx'
+import {useTableState} from '../../features/Table/useTable';
 
 function Sources() {
 
