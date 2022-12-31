@@ -18,18 +18,18 @@ import TSources from './TSources.jsx';
 import WLincolnshire from './WLincolnshire.jsx';  
 import WNorfolk from './WNorfolk.jsx';
 import Ancestrymatches from './Ancestrymatches.jsx';  
-import MapPerson from './maps/treePersonLocations/MapPerson'
-import HeatMap from './maps/treePersonHeatMaps/HeatMap'
-
-import Ancestors from './diagrams/ancestors/Ancestors'
-import Descendants from './diagrams/descendants/Descendants'
-import FDDescendants from './diagrams/fddescendants/FDDescendants'
-
+import MapPerson from './maps/treePersonLocations/MapPerson';
+import HeatMap from './maps/treePersonHeatMaps/HeatMap';
+import GroupPlotter from './maps/groupPlotter/GroupPlotter';
+import Ancestors from './diagrams/ancestors/Ancestors';
+import Descendants from './diagrams/descendants/Descendants';
+import FDDescendants from './diagrams/fddescendants/FDDescendants';
+import Tools from './tools/Tools.jsx';
 
 import {
   Switch,
   Route,
-    BrowserRouter as Router,
+  BrowserRouter as Router,
 
 } from "react-router-dom";
 
@@ -59,10 +59,11 @@ function PageContainer(props) {
           <Route exact path="/deeds" component= {()=><Deeds/>}/>
           <Route exact path="/marriages" component= {()=><Marriages/>}/>
           <Route exact path="/trees" component= {()=><Trees/>}/>
-
+          <Route exact path="/tools" component= {()=><Tools/>}/>
           <Route exact path="/maps" component= {()=><MapPerson/>}/>
           <Route exact path="/heatmaps" component= {()=><HeatMap/>}/>
-          
+          <Route exact path="/groupplotter" component= {()=><GroupPlotter/>}/>
+
           <Route exact path="/ancestors" component= {()=><Ancestors/>}/>
           <Route exact path="/descendants" component= {()=><Descendants/>}/>
           <Route exact path="/fddescendants" component= {()=><FDDescendants/>}/>

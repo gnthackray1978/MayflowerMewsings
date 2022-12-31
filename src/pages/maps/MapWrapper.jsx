@@ -52,15 +52,11 @@ export default function MapWrapper(props) {
   };
 
   return (
-    <StyledEngineProvider injectFirst>
-      <MuiThemeProvider theme={theme}>
         <div className={classes.root}>
             {children.length > 1 && children[0]}
 
             {tp(state.loading)}
    
         </div>
-      </MuiThemeProvider>
-    </StyledEngineProvider>
   );
 }

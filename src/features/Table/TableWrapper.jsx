@@ -54,29 +54,25 @@ export default function TableWrapper(props) {
     state.handleChangeRowsPerPage = ()=>{};
 
   return (
-    <StyledEngineProvider injectFirst>
-      <MuiThemeProvider theme={theme}>
-        <div className={classes.root}>
-            {children.length > 1 && children[0]}
+    <div className={classes.root}>
+      {children.length > 1 && children[0]}
 
-            {loadingMessage(state.loading)}
+      {loadingMessage(state.loading)}
 
-            <TablePagination
-              labelRowsPerPage={'Page Rows'}
-              rowsPerPageOptions={[5, 10, 25,50]}
-              component="div"
-              count={state.totalRecordCount || 0} 
-              rowsPerPage={state.rowsPerPage}
-              page={state.page}
-          //    onChangePage={state.handleChangePage}
-              //onChangeRowsPerPage={state.handleChangeRowsPerPage}
-              onRowsPerPageChange = {state.handleChangeRowsPerPage}
-              onPageChange = {state.handleChangePage}
+      <TablePagination
+        labelRowsPerPage={'Page Rows'}
+        rowsPerPageOptions={[5, 10, 25,50]}
+        component="div"
+        count={state.totalRecordCount || 0} 
+        rowsPerPage={state.rowsPerPage}
+        page={state.page}
+    //    onChangePage={state.handleChangePage}
+        //onChangeRowsPerPage={state.handleChangeRowsPerPage}
+        onRowsPerPageChange = {state.handleChangeRowsPerPage}
+        onPageChange = {state.handleChangePage}
 
-            />
+      />
 
-        </div>
-      </MuiThemeProvider>
-    </StyledEngineProvider>
+    </div>
   );
 }

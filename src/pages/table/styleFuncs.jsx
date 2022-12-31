@@ -136,7 +136,7 @@ export const useToolbarStyles = makeStyles((theme) => ({
     theme.palette.mode === 'light'
       ? {
           color: theme.palette.secondary.main,
-          backgroundColor: lighten(theme.palette.secondary.light, 0.85),
+          backgroundColor: theme.palette.secondary.light,
         }
       : {
           color: theme.palette.text.primary,

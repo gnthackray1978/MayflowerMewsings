@@ -1,47 +1,49 @@
 import React, { Component } from 'react';
 import { useQuery } from '@apollo/client';
 
+const makeData = function(data, schema, subSchema){
+
+  let rows = [];
+
+  if(!data) return rows;
+
+  if(!data[schema][subSchema]) return rows;
+
+  let idx =0;
+
+  while(idx < data[schema][subSchema].results.length){
+    let tp = data[schema][subSchema].results[idx];
+
+    rows.push(tp);
+
+    idx++;
+  }
+
+  let totalRecordCount =0;
+  let loginInfo = '';
+  let errorMessage = '';
+  if(data && data[schema]){
+   totalRecordCount =  data[schema][subSchema].totalResults;
+   loginInfo =  data[schema][subSchema].loginInfo;
+   errorMessage = data[schema][subSchema].error;
+  }
+
+  return {
+    rows,
+    totalRecordCount,
+    errorMessage,
+    loginInfo
+  };
+
+}
+
 export  function useTableState(ReturnData,defaultParams, schema, subSchema) {
 
-
-  const [order, setOrder] = React.useState(defaultParams.sortOrder);
-  const [sortColumn, setSortColumn] = React.useState(defaultParams.sortColumn);
-  const [selected, setSelected] = React.useState([]);
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(50); 
   const [filterParams, setFilterParams] = React.useState(defaultParams);
   const monthNames = ["January", "February", "March", "April", "May", "June","July", "August", "September", "October", "November", "December"];
   
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
-      );
-    }
-
-    setSelected(newSelected);
-  };
-
-  const isSelected = (name) => selected.indexOf(name) !== -1;
-
- 
   const filterFieldChanged = (filterObj) => {
     //console.log('called filterFieldChanged');
-
-    filterObj.limit =rowsPerPage;
-    filterObj.offset = (page* rowsPerPage);
-    filterObj.sortColumn = sortColumn;
-    filterObj.sortOrder = order;
 
     setFilterParams(filterObj);
 
@@ -52,48 +54,7 @@ export  function useTableState(ReturnData,defaultParams, schema, subSchema) {
     );
 
   };
-
-  const makeData = function(data, schema, subSchema){
-
-    let rows = [];
-
-    if(!data) return rows;
-
-    if(!data[schema][subSchema]) return rows;
-
-    let idx =0;
-
-    while(idx < data[schema][subSchema].results.length){
-      let tp = data[schema][subSchema].results[idx];
-
-      rows.push(tp);
-
-      idx++;
-    }
-
-    let totalRecordCount =0;
-    let loginInfo = '';
-    let errorMessage = '';
-    if(data && data[schema]){
-     totalRecordCount =  data[schema][subSchema].totalResults;
-     loginInfo =  data[schema][subSchema].loginInfo;
-     errorMessage = data[schema][subSchema].error;
-    }
-
-    return {
-      rows,
-      totalRecordCount,
-      errorMessage,
-      loginInfo
-    };
-
-  }
-
-  filterParams.limit =rowsPerPage;
-  filterParams.offset = (page* rowsPerPage) ;
-  filterParams.sortColumn = sortColumn;
-  filterParams.sortOrder = order;
-
+ 
   const  { loading, networkStatus,error, data, refetch } = useQuery(ReturnData, {
     // errorPolicy: 'all' ,
      variables: filterParams,
@@ -190,7 +151,7 @@ export  function useTableState(ReturnData,defaultParams, schema, subSchema) {
           if(!found){
               months.push(
                 {
-                  
+
                   title: monthNames[month] + ' ' + year,
                   url: '#',
                   month,
@@ -203,32 +164,25 @@ export  function useTableState(ReturnData,defaultParams, schema, subSchema) {
 
   }
 
-
-  var rows = parsedData.rows;
-
   var totalRecordCount = parsedData.totalRecordCount;
   
   var loginInfo = parsedData.loginInfo;
   var errorMessage = parsedData.errorMessage;
 
   return {
-  //  initialLoad,setInitialLoad,
-    order,
-    sortColumn,
-    selected,
-    page,
-    rowsPerPage,
     filterParams, 
-    handleClick,
-    isSelected,
     filterFieldChanged,
 
-    loading, error, data,
+    loading, 
+    error, 
+    data,
     mainFeaturedPost,
     featuredPosts,
     posts,
     months,
-    totalRecordCount,loginInfo,errorMessage
+    totalRecordCount,
+    loginInfo,
+    errorMessage
   };
 }
 

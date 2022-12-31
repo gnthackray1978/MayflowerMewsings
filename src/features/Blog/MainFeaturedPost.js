@@ -24,7 +24,7 @@ function MainFeaturedPost(props) {
         backgroundImage: `url(${post.imageURL})`,
       }}
     >
-      +
+      
       {/* Increase the priority of the hero background image */}
       {<img style={{ display: 'none' }} src={post.imageURL} alt={post.imageText} />}
       <Box

@@ -84,7 +84,7 @@ function TopButtons(props) {
     
     return (
       <Toolbar>
-          <IconButton
+          {selection.appId != 1 && <IconButton
             className={classes.menuButton}
             color="inherit"
             aria-label="Menu"
@@ -98,7 +98,7 @@ function TopButtons(props) {
                  }
             size="large">
               <MenuIcon />
-          </IconButton>
+          </IconButton>}
 
           {showDiagramControls && <IconButton
             className={classes.menuButton}
