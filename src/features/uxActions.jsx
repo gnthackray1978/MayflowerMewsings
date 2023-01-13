@@ -2,8 +2,18 @@ import { METADATALOADED, APPLICATIONSELECTED,
   FUNCTIONSELECTED, APPDIALOGOPEN ,APPDIALOGCLOSED,FUNCDIALOGOPEN,
   FUNCDIALOGCLOSED, TREESELECTED ,TREEPERSONSELECTED,DIAGRAMSELECTED,
   TREESELECTORDIALOGOPEN,TREESELECTORDIALOGCLOSED,
-  DISPLAYDIAGRAMCONTROLS,HIDEDIAGRAMCONTROLS, TOGGLEDIAGRAMCONTROLS} from './actionTypes.jsx';
+  DISPLAYDIAGRAMCONTROLS,HIDEDIAGRAMCONTROLS, TOGGLEDIAGRAMCONTROLS, NEWLOCATIONS} from './actionTypes.jsx';
  
+  export const setLocations = (state) =>{
+    //console.log('applicationSelected action');
+  
+      return async (dispatch, getState)  => {
+          dispatch({
+            type: NEWLOCATIONS,
+            payload : state
+          });
+        }    
+  };
 
 export const setTreePerson = (state) =>{
   //console.log('applicationSelected action');

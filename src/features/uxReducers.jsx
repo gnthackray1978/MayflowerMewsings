@@ -2,12 +2,13 @@ import { APPLICATIONLISTLOADED, APPLICATIONSELECTED, FUNCTIONLISTLOADED,METADATA
   FUNCTIONSELECTED,APPDIALOGOPEN,APPDIALOGCLOSED,FUNCDIALOGOPEN,FUNCDIALOGCLOSED,
    TREESELECTED ,TREEPERSONSELECTED,DIAGRAMSELECTED,
     TREESELECTORDIALOGCLOSED,TREESELECTORDIALOGOPEN,
-    DISPLAYDIAGRAMCONTROLS,HIDEDIAGRAMCONTROLS,TOGGLEDIAGRAMCONTROLS} from './actionTypes.jsx';
+    DISPLAYDIAGRAMCONTROLS,HIDEDIAGRAMCONTROLS,TOGGLEDIAGRAMCONTROLS, NEWLOCATIONS} from './actionTypes.jsx';
 
 
 
 export default (state = {
   appName :1,
+  locations : [],
   ancestorConfig :{
     backgroundcolour : 'white', 
     linecolour : 'black',
@@ -41,6 +42,11 @@ export default (state = {
 
   switch (action.type) {
   
+    case NEWLOCATIONS:
+      return {
+        ...state,
+        locations : action.payload
+      };
     case TOGGLEDIAGRAMCONTROLS:
       return {
         ...state,
