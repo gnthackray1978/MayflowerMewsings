@@ -8,21 +8,10 @@ import GroupPlotterBody from './GroupPlotterBody.jsx';
 
 function GroupPlotter() {
     const [locations, setLocations] = React.useState([]);
-
-    const headCells = [
-      { id: 'YearFrom', numeric: false, disablePadding: true, label: 'YearFrom' },
-      { id: 'YearTo', numeric: false, disablePadding: true, label: 'YearTo' },
-      { id: 'FirstName', numeric: false, disablePadding: true, label: 'FirstName' },
-      { id: 'Surname', numeric: false, disablePadding: true, label: 'Surname' },
-      { id: 'BirthLocation', numeric: false, disablePadding: true, label: 'BirthLocation' },
-      { id: 'Origin', numeric: false, disablePadding: true, label: 'Origin' }
-    ];
-
+   
     var state = {    
-      headCells : headCells,
       title : 'Map View'
     };
-
    
     return (
         <div>
