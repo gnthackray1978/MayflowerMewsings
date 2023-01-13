@@ -5,25 +5,10 @@ import MapWrapper from '../MapWrapper.jsx'
 import GroupPlotterBody from './GroupPlotterBody.jsx';
  
 
-const parseLocations = (rawLocations) => {
-  let locations = [];
-
-  if (rawLocations) {
-    for (let r of rawLocations) {
-      locations.push({
-        id: r.id,
-        birthLat: r.birthLat,
-        birthLong: r.birthLong,
-        show: r.show,
-        locationData: { trees: r.trees, ftmPersonSummary: r.ftmPersonSummary }
-      });
-    }
-  }
-
-  return locations;
-} 
 
 function GroupPlotter() {
+    const [locations, setLocations] = React.useState([]);
+
     const headCells = [
       { id: 'YearFrom', numeric: false, disablePadding: true, label: 'YearFrom' },
       { id: 'YearTo', numeric: false, disablePadding: true, label: 'YearTo' },
@@ -38,13 +23,12 @@ function GroupPlotter() {
       title : 'Map View'
     };
 
-    let tp = parseLocations();
-
+   
     return (
         <div>
           <MapWrapper state = {state} >
             <GroupToolBar state ={state}/>
-            <GroupPlotterBody locations ={tp} treeColours = {state.treeColours}/>
+            <GroupPlotterBody locations ={locations} treeColours = {state.treeColours}/>
           </MapWrapper>
         </div>
     );

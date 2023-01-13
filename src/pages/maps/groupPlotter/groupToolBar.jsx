@@ -1,44 +1,130 @@
 
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import Toolbar from '@mui/material/Toolbar';
 import TextField from '@mui/material/TextField';
 import { connect } from "react-redux";
 import { useTheme } from '@mui/material/styles';
-import IconButton from '@mui/material/IconButton';
-import SearchIcon from '@mui/icons-material/Search';
-
-import {getParams, setParams} from '../../../features/Table/qryStringFuncs'
+import {setLocations} from "../../../features/uxActions.jsx";
 import {useToolbarStyles} from '../styleFuncs.jsx';
 import TableBox from '../tableBox.jsx';
+
+var outputCollection = function (maxNum,searchComplete) {
+	this.maxNum = maxNum;   
+	this.results = [];
+  this.searchComplete = searchComplete;
+};
+
+outputCollection.prototype.addEntry = function (entry) { 
+    
+    this.results.push(entry);
+    
+    if(this.results.length == this.maxNum){
+    	this.searchComplete(this.results);
+    }
+};
+
 
 
 const GroupToolBar = (props) => {
 //  console.log('rendered: FTMViewTableToolbar' );
 
   
- 
-  const { numSelected, filterFieldChanged} = props.state;
+  const {setLocations} = props;
+  const { numSelected} = props.state;
   
   const theme = useTheme();
   const classes = useToolbarStyles(theme);
   
   const [county, setCounty] = React.useState('');
-  const [locations, setLocations] = React.useState('');
+  const [rawLocations, setRawLocations] = React.useState('');
+  // var results =[];
+  // var idx = 0;
 
+  var searchAddress = (geocoder, idx, lRawLocations, output) => {
+
+    
+
+    let d = lRawLocations[idx];
+
+    if (!d)
+        return;
  
+
+    geocoder.geocode({
+        address: d
+    }, (results, status) => {
+
+       
+        var result = {
+            placeformatted: d,
+            success : false,
+        };
+
+        switch (status) {
+            case "OVER_QUERY_LIMIT":
+               
+                setTimeout(function () {
+                    console.log('re-search');
+                    searchAddress(geocoder, idx, lRawLocations, output);
+                }, 15000);
+
+                break;
+            case "INVALID_REQUEST":
+                // code block
+                
+                setTimeout(function () {
+                    console.log('skip');
+                   
+                    output.addEntry(result);
+                    idx++; 
+                    if (lRawLocations.length > idx)
+                        searchAddress(geocoder, idx, lRawLocations, output);
+                }, 3000);
+                break;
+
+            default:
+                console.log('saving');
+                result.results = JSON.stringify(results);
+                result.success = true;
+                output.addEntry(result);
+               
+                setTimeout(function () {
+                    idx++;
+                    searchAddress(geocoder, idx, lRawLocations, output);
+                }, 500);
+        }
+         
+    });
+
+};
+
+
 
   const boxClick = ()=>{
   
-    let params = {    
-      county : county,
-      locations : locations 
-    };
+    var idx =0;
+    
+    if(rawLocations.length == 0)
+      return;
 
-    setParams(params);
+    if(county.length == 0)
+      return;
 
-    filterFieldChanged(params);
+
+    var locations = rawLocations.split('.').map((r) => {
+      return r + ',' + county;
+    });
+
+    var output = new outputCollection(locations.length, (r) =>{       
+      //console.log('output:' + r.length);
+      setLocations(r);
+    });
+
+    var geocoder = new google.maps.Geocoder();
+
+    searchAddress(geocoder, idx, locations, output);
+
   };
 
   return (
@@ -57,10 +143,11 @@ const GroupToolBar = (props) => {
         }}/>
     
       <TextField className={classes.surname} id="locations" label="Location"
-        value={locations}
+        value={rawLocations}
         variant="standard"  size="small"
         onChange = {(e)=>{
-          setLocations(e.currentTarget.value);
+
+          setRawLocations(e.currentTarget.value);
         }}/>
 
 
@@ -70,4 +157,17 @@ const GroupToolBar = (props) => {
   );
 };
 
-export default GroupToolBar;
+//export default ;
+const mapStateToProps = state => {
+  return { 
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setLocations: (p) => dispatch(setLocations(p))
+  };
+};
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(GroupToolBar);
