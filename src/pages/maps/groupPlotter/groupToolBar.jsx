@@ -8,6 +8,9 @@ import { useTheme } from '@mui/material/styles';
 import {setLocations} from "../../../features/uxActions.jsx";
 import {useToolbarStyles} from '../styleFuncs.jsx';
 import TableBox from '../tableBox.jsx';
+import {setParams} from '../../../features/Table/qryStringFuncs';
+import {getParams} from '../../../features/Table/qryStringFuncs';
+
 
 var outputCollection = function (maxNum,searchComplete) {
 	this.maxNum = maxNum;   
@@ -36,10 +39,20 @@ const GroupToolBar = (props) => {
   const theme = useTheme();
   const classes = useToolbarStyles(theme);
   
-  const [county, setCounty] = React.useState('');
-  const [rawLocations, setRawLocations] = React.useState('');
+
   // var results =[];
   // var idx = 0;
+
+  var defaultValues = {
+    county : 'lincolnshire',
+    rawLocations : 'grantham.sleaford.bourne',
+  };
+
+  var params = getParams(defaultValues);
+
+  const [county, setCounty] = React.useState(params.county);
+  const [rawLocations, setRawLocations] = React.useState(params.rawLocations);
+
 
   var searchAddress = (geocoder, idx, lRawLocations, output) => {
 
@@ -97,7 +110,7 @@ const GroupToolBar = (props) => {
          
     });
 
-};
+  };
 
 
 
@@ -112,7 +125,15 @@ const GroupToolBar = (props) => {
       return;
 
 
-    var locations = rawLocations.split('.').map((r) => {
+      var defaultValues = {
+        county : county,
+        rawLocations : rawLocations,
+      };
+    
+      setParams(defaultValues);
+
+    
+      var locations = rawLocations.split('.').map((r) => {
       return r + ',' + county;
     });
 
