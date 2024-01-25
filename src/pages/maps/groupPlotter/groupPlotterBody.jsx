@@ -90,27 +90,15 @@ function GroupPlotterBody(props) {
           setLocations([...tpRows]);
         }
     };
-
-      var markers =  locations.filter(f=>f.success).map((location) => {
-        var unparsed= JSON.parse(location.results)[0];
-              
-        var gLocat = unparsed.geometry.location;
-
-        var label = unparsed.address_components[0].long_name + ' ' + unparsed.address_components[1].long_name;
-
-        var place_id = unparsed.place_id;
-
-        return {lat: gLocat.lat, lng: gLocat.lng, label: label, place_id: place_id} 
-      });
-
-      if(mapRef && markers.length > 0){
+      
+      if(mapRef && locations.length > 0){
         var bounds = new google.maps.LatLngBounds();
 
-        for(var i=0;i<markers.length;i++) {
-          bounds.extend(new google.maps.LatLng(markers[i].lat, markers[i].lng));
+        for(var i=0;i<locations.length;i++) {
+          bounds.extend(new google.maps.LatLng(locations[i].lat, locations[i].lng));
         }
 
-        //center the map to the geometric center of all markers
+        //center the map to the geometric center of all locations
         mapRef.setCenter(bounds.getCenter());
 
         mapRef.fitBounds(bounds);
@@ -131,7 +119,7 @@ function GroupPlotterBody(props) {
             heatmapLibrary={true}  
             onChildClick={onChildClickCallback}
           >
-            {markers && markers.length >0 && markers.map((m) =>                           
+            {locations && locations.length >0 && locations.map((m) =>                           
                <Marker key={m.place_id} lat={m.lat} lng={m.lng} place={m.label} />
             )}
           </GoogleMapReact>

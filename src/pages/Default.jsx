@@ -32,11 +32,10 @@ const GET_BLOGS = gql`
 query blog(
    $level: Int!
  ){
-  blog{
-    search(level : $level) {
+    searchBlog(pobj : {levelId : $level}) {
      page
-     totalResults
-     results {
+     totalRows
+     rows {
                 id
                 text
                 level
@@ -48,7 +47,6 @@ query blog(
                 dateLastEdit            
      }
    }
-  }
 }
 `;
 
@@ -67,7 +65,7 @@ function Default(props) {
 
     var params = getParams(defaultValues);
     
-    var state = useTableState(GET_BLOGS,params,'blog','search');
+    var state = useTableState(GET_BLOGS,params,'searchBlog');
 
     return (
         <div>     

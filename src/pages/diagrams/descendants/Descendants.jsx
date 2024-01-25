@@ -30,8 +30,8 @@ function Descendants(props) {
             ) {
         generationsCount
         maxGenerationLength
-        totalResults
-        results {        
+        totalRows
+        rows {        
           id
           generationIdx
           index

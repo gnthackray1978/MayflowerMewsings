@@ -99,7 +99,6 @@ const WillTableToolbar = (props) => {
 };
 
 WillTableToolbar.propTypes = {
-  numSelected: PropTypes.number.isRequired,
   filterFieldChanged : PropTypes.func
 };
 

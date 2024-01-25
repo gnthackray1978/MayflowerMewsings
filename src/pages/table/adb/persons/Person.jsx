@@ -10,7 +10,7 @@ function Persons() {
 
 
   const GET_PersonS = gql`
-  query Adb(
+  query Query(
      $limit: Int!,
      $offset : Int!,
      $sortColumn: String!,
@@ -23,25 +23,25 @@ function Persons() {
      $fatherChristianName : String!,
      $fatherSurname : String!,
      $motherChristianName : String!
-   ){
-    adb{
-      personsearch(
+   ){    
+      personsearch( pobj : {
                      limit : $limit,
                      offset : $offset,
                      sortColumn: $sortColumn,
                      sortOrder : $sortOrder,
-                     yearStart : $yearStart,
-                     yearEnd: $yearEnd,
+                     yearFrom : $yearStart,
+                     yearTo: $yearEnd,
                      firstName :$firstName,
                      surname : $surname,
                      birthLocation : $birthLocation,
                      fatherChristianName : $fatherChristianName,
                      fatherSurname :$fatherSurname,
                      motherChristianName : $motherChristianName
-           ) {
+                          }
+                    ) {
        page
-       totalResults
-       results {
+       totalRows
+       rows {
                   id
                   christianName
                   surname
@@ -62,7 +62,7 @@ function Persons() {
                   estBirthYearInt
        }
      }
-    }
+    
   }
   `;
 
@@ -105,7 +105,7 @@ function Persons() {
 
     var params = getParams(defaultValues);
 
-    var state = useTableState(GET_PersonS,params,'adb','personsearch');
+    var state = useTableState(GET_PersonS,params,'personsearch');
 
     state.headCells = headCells;
     state.title = 'Person Search';

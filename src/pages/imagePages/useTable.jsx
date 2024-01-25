@@ -14,7 +14,7 @@ export function useTableState() {
         page
          error
         loginInfo
-        results {
+        rows {
           id
           path
           title
@@ -27,7 +27,7 @@ export function useTableState() {
         page
          error
          
-        results {
+        rows {
           id
           title
           to
@@ -47,11 +47,11 @@ export function useTableState() {
  
    const makeData = function(data){
  
-     if(data && data.image.imagesearch.results.length>0){
+     if(data && data.image.imagesearch.rows.length>0){
     
        let stateObj = {
-          imagesearch: data.image.imagesearch.results,
-          imageparentsearch :data.image.imageparentsearch.results
+          imagesearch: data.image.imagesearch.rows,
+          imageparentsearch :data.image.imageparentsearch.rows
        };
  
        return stateObj;

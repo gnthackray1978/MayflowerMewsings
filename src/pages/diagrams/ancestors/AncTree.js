@@ -204,6 +204,36 @@ export function AncTree() {
 
 AncTree.prototype = {
 
+    CreateWithDefaultValues: function (personId, data) {
+         
+      if(data.length === 0){
+        console.log('no data to set up ancestor tree');
+        return;
+      }
+
+      var _zoomLevel = 100;
+      
+      this.selectedPersonId = personId;
+      this.selectedPersonX = 0;
+      this.selectedPersonY = 0;
+
+      this.SetInitialValues(Number(_zoomLevel), 30.0, 170.0, 70.0, 
+                      70.0, 100.0, 20.0, 40.0, 20.0, screen.width, screen.height);
+
+      //    var _personId = '913501a6-1216-4764-be8c-ae11fd3a0a8b';
+      //    var _zoomLevel = 100;
+      //    var _xpos = 750.0;
+      //    var _ypos = 100.0;
+      
+      this.generations = data;
+ 
+      this.SetCentrePoint(0, 0);
+    
+      this.RelocateToSelectedPerson();
+    
+      this.bt_refreshData = false;
+
+    },
 
     SetInitialValues: function (zoomPerc,
         dist_bet_box,
@@ -721,6 +751,11 @@ AncTree.prototype = {
     },
 
     DrawTreeInner :function () {
+
+        if(this.generations.length === 0){
+            console.log('Anc Tree not supplied with generations data- cant draw');
+            return;
+        }
 
         //    var canvas = document.getElementById("myCanvas");
         //    var context = canvas.getContext("2d");

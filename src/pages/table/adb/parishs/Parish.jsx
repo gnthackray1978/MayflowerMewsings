@@ -1,39 +1,35 @@
 import React, { Component } from 'react';
 import ParishTable from './ParishTable.jsx'
 import { gql} from '@apollo/client';
-
 import {getParams} from '../../../../features/Table/qryStringFuncs';
 import ParishTableToolbar from './ParishTableToolbar.jsx'
 import TableWrapper from '../../../../features/Table/TableWrapper.jsx'
 import {useTableState} from '../../../../features/Table/useTable';
 
-
-
-
 function Parishs() {
 
 
   const GET_Parishs = gql`
-  query Adb(
+  query Query(
      $limit: Int!,
      $offset : Int!,
      $sortColumn: String!,
      $sortOrder : String!,
      $county: String!,
      $parishName : String!
-   ){
-    adb{
-      parishsearch(
+   ){    
+      parishsearch(pobj: {
                      limit : $limit,
                      offset : $offset,
                      sortColumn: $sortColumn,
                      sortOrder : $sortOrder,
                      county: $county,
                      parishName : $parishName
-           ) {
+                        }
+                  ) {
                  page
-                 totalResults
-                 results {
+                 totalRows
+                 rows {
                             id
                             parishName
                             parishRegistersDeposited
@@ -44,9 +40,8 @@ function Parishs() {
                             parishCounty
                             parishX
                             parishY
-                          }
-             }
-    }
+                          }             
+                      }
   }
   `;
   
@@ -73,7 +68,7 @@ function Parishs() {
 
     var params = getParams(defaultValues);
 
-    var state = useTableState(GET_Parishs,params,'adb','parishsearch');
+    var state = useTableState(GET_Parishs,params,'parishsearch');
 
     state.headCells = headCells;
     state.title = 'Parish Search';

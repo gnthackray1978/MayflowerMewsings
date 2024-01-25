@@ -15,8 +15,6 @@ export default function WillTable(props) {
   const theme = useTheme();
   const classes = useStyles(theme);
 
-  console.log(state.loginInfo);
-
   return (
     <TableContainer>
             <Table

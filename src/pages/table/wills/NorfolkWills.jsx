@@ -13,7 +13,7 @@ function NorfolkWills() {
 
 
   const GET_WILLS = gql`
-  query Will(
+  query Query(
      $limit: Int!,
      $offset : Int!,
      $sortColumn: String!,
@@ -25,23 +25,25 @@ function NorfolkWills() {
      $place: String!,
      $surname : String!
    ){
-    will{
-      norfolksearch(limit : $limit,
-             offset : $offset,
-             sortColumn: $sortColumn,
-             sortOrder : $sortOrder,
-             yearStart: $yearStart,
-             yearEnd : $yearEnd,
-             ref: $ref,
-             desc : $desc,
-             place: $place,
-             surname : $surname
-           ) {
+    
+      norfolksearch( pobj: {
+                              limit : $limit,
+                              offset : $offset,
+                              sortColumn: $sortColumn,
+                              sortOrder : $sortOrder,
+                              yearFrom: $yearStart,
+                              yearTo : $yearEnd,
+                              refArg: $ref,
+                              desc : $desc,
+                              place: $place,
+                              surname : $surname
+                           }
+                    ) {
        page
-       totalResults
+       totalRows
        loginInfo
        error
-       results {
+       rows {
             id
            description
            collection
@@ -55,7 +57,7 @@ function NorfolkWills() {
            aliases
        }
      }
-    }
+    
   }
   `;
 
@@ -84,7 +86,7 @@ function NorfolkWills() {
 
   var params = getParams(defaultValues);
 
-  var state = useTableState(GET_WILLS,params,'will','norfolksearch');
+  var state = useTableState(GET_WILLS,params,'norfolksearch');
 
   state.headCells = headCells;
   state.title = 'Norfolk will search';

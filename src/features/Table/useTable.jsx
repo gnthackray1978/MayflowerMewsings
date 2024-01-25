@@ -1,17 +1,15 @@
 import React, { Component } from 'react';
 import { useQuery } from '@apollo/client';
 
-export  function useTableState(ReturnData,defaultParams, schema, subSchema) {
 
-  const [initialLoad, setInitialLoad] = React.useState(false);
+
+export  function useTableState(ReturnData,defaultParams, subSchema) {
+
   const [order, setOrder] = React.useState(defaultParams.sortOrder);
   const [sortColumn, setSortColumn] = React.useState(defaultParams.sortColumn);
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(50);
-
-  const [totalRecords, setTotalRecords] = React.useState(0);
-
   const [filterParams, setFilterParams] = React.useState(defaultParams);
 
   const handleRequestSort = (event, property) => {
@@ -86,64 +84,37 @@ export  function useTableState(ReturnData,defaultParams, schema, subSchema) {
 
     setFilterParams(filterObj);
 
-
-    //let tp =
     refetch(
       {
         variables: filterObj
       }
     );
-
-    // tp.then(
-    //   function(value) {
-    //
-    //     console.log('prom val: ' + value);
-    //   },
-    //   function(error) {
-    //
-    //     console.log('prom error: ' + error);
-    //   }
-    // );
-
-
   };
 
+  const errorMessages = (loading, error, internalServerError) => {
+    console.log('called errorMessages');
 
-  const makeData = function(data, schema, subSchema){
+    let errorArray =[];
 
-    let rows = [];
+    if(loading)
+      return [];
 
-    if(!data) return rows;
-
-    if(!data[schema][subSchema]) return rows;
-
-    let idx =0;
-
-    while(idx < data[schema][subSchema].results.length){
-      let tp = data[schema][subSchema].results[idx];
-
-      rows.push(tp);
-
-      idx++;
+    if(error && error.message){
+      errorArray.push(error.message);
     }
 
-    let totalRecordCount =0;
-    let loginInfo = '';
-    let errorMessage = '';
-    if(data && data[schema]){
-     totalRecordCount =  data[schema][subSchema].totalResults;
-     loginInfo =  data[schema][subSchema].loginInfo;
-     errorMessage = data[schema][subSchema].error;
+    if(error && error.graphQLErrors && error.graphQLErrors.length >0){
+      errorArray.push(...error.graphQLErrors);
     }
 
-    return {
-      rows,
-      totalRecordCount,
-      errorMessage,
-      loginInfo
-    };
+    if(internalServerError!='')
+    {
+      errorArray.push(internalServerError);
+    }
 
-  }
+    return errorArray;
+
+  };
 
   filterParams.limit =rowsPerPage;
   filterParams.offset = (page* rowsPerPage) ;
@@ -151,7 +122,7 @@ export  function useTableState(ReturnData,defaultParams, schema, subSchema) {
   filterParams.sortOrder = order;
 
   const  { loading, networkStatus,error, data, refetch } = useQuery(ReturnData, {
-    // errorPolicy: 'all' ,
+     errorPolicy: 'all' ,
      variables: filterParams,
      notifyOnNetworkStatusChange: true,
      fetchPolicy:"cache-and-network"
@@ -162,33 +133,46 @@ export  function useTableState(ReturnData,defaultParams, schema, subSchema) {
 
 
 
-  //console.log('useQuer : ' + loading +  networkStatus );
+  console.log('loading : ' + loading + ' network status: ' +  networkStatus + ' error:' + error + ' data: ' + data);
 
-  var parsedData = makeData(data,schema, subSchema);
+  //loading : false network status: 8 
+  // error:Error: Response not successful: Received status code 400 data: undefined
+ // var parsedData = makeData(data, subSchema);
 
-  var rows = parsedData.rows;
 
-  var totalRecordCount = parsedData.totalRecordCount;
-  
-  var loginInfo = parsedData.loginInfo;
-  var errorMessage = parsedData.errorMessage;
+  var rows = [];
+  var totalRows = 0;  
+  var loginInfo = '';
+  var internalServerError = '';
+
+
+  if(data && data[subSchema]) 
+  {
+    rows = data[subSchema].rows;
+    totalRows =  data[subSchema].totalRows;
+    loginInfo =  data[subSchema].loginInfo;
+    internalServerError = data[subSchema].error?.trim() ?? ''; //bit of a hack
+  }
+ 
+  let errors = errorMessages(loading,error, internalServerError);
 
   return {
-  //  initialLoad,setInitialLoad,
     order,
     sortColumn,
     selected,
     page,
     rowsPerPage,
     filterParams,
+    errors,
+    loading,
+    rows,
+    totalRows,
     handleRequestSort,
     handleSelectAllClick,
     handleClick,
     handleChangePage,
     handleChangeRowsPerPage,
     isSelected,
-    filterFieldChanged,
-
-    loading, error, data,rows,totalRecordCount,loginInfo,errorMessage
+    filterFieldChanged    
   };
 }

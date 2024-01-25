@@ -41,8 +41,8 @@ function TreePeople(props) {
                    origin : $origin
              ) {
          page
-         totalResults
-         results {
+         totalRows
+         rows {
              id
              firstName
              surname

@@ -182,22 +182,22 @@ export  function useAvTreesState(ReturnData,defaultParams, schema, subSchema) {
 
     let idx =0;
 
-    while(idx < data[schema][subSchema].results.length){
-      let tp = data[schema][subSchema].results[idx];
+    while(idx < data[schema][subSchema].rows.length){
+      let tp = data[schema][subSchema].rows[idx];
 
       rows.push(tp);
 
       idx++;
     }
 
-    let totalRecordCount =0;
+    let totalRows =0;
 
     if(data && data[schema])
-     totalRecordCount =  data[schema][subSchema].totalResults;
+     totalRows =  data[schema][subSchema].totalRows;
 
     return {
       rows,
-      totalRecordCount
+      totalRows
     };
 
   }
@@ -226,9 +226,9 @@ export  function useAvTreesState(ReturnData,defaultParams, schema, subSchema) {
 
   var rows = parsedData.rows;
 
-  var totalRecordCount = parsedData.totalRecordCount;
+  var totalRows = parsedData.totalRows;
 
-  if(!totalRecordCount) totalRecordCount =0;
+  if(!totalRows) totalRows =0;
 
 
  
@@ -280,7 +280,7 @@ export  function useAvTreesState(ReturnData,defaultParams, schema, subSchema) {
     isSelected,
     filterFieldChanged,
 
-    loading, error, data,rows,totalRecordCount,setSelected,origin,originDescription,setSelection,setTreeSelectionState
+    loading, error, data,rows,totalRows,setSelected,origin,originDescription,setSelection,setTreeSelectionState
 
   };
 }

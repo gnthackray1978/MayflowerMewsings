@@ -1,12 +1,29 @@
 import React from 'react'; 
 import TablePagination from '@mui/material/TablePagination'; 
-import { MuiThemeProvider, StyledEngineProvider } from "@mui/material/styles"; 
 import { useTheme } from '@mui/material/styles';
 import {useStyles} from '../../pages/table/styleFuncs.jsx';
  
 
-export default function TableWrapper(props) {
+function displayErrors(errors){
 
+  if(errors && errors.length >0){
+    return (<div>
+      <h5><span style={{color: "red", padding: "20px"} } >Errors</span></h5>
+      <ul>  
+      {
+       state.errors.map((row, index) => {return(<li>{row}</li>);})        
+      }
+      </ul>  
+    </div>);
+  }
+  else{
+    return (<div></div>);
+  }
+}
+
+export default function TableWrapper(props) {
+ 
+  console.log('TableWrapper called');
 
   const {state, children} = props;
 
@@ -14,15 +31,8 @@ export default function TableWrapper(props) {
 
   const classes = useStyles(theme);
 
-  if(!state.loading && state.error && state.error.graphQLErrors && state.error.graphQLErrors.length >0){
-    return (
-      <div>
-        <pre>Bad: {state.error.graphQLErrors.map(({ message }, i) => (
-          <span key={i}>{message}</span>
-        ))}
-        </pre>
-      </div>
-    );
+  if(state.errors.length >0){
+    return(displayErrors(state.errors));
   }
 
   let loadingMessage = (loading) => {
@@ -63,7 +73,7 @@ export default function TableWrapper(props) {
         labelRowsPerPage={'Page Rows'}
         rowsPerPageOptions={[5, 10, 25,50]}
         component="div"
-        count={state.totalRecordCount || 0} 
+        count={state.totalRows || 0} 
         rowsPerPage={state.rowsPerPage}
         page={state.page}
     //    onChangePage={state.handleChangePage}

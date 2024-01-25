@@ -28,8 +28,8 @@ function AvailableTrees(props) {
              treeName : $treeName
            ) {
        page
-       totalResults
-       results {
+       totalRows
+       rows {
            id
            cM
            personCount

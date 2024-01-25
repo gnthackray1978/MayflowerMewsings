@@ -12,7 +12,7 @@ function LincsWills() {
 
 
     const GET_WILLS = gql`
-    query Will(
+    query Query(
        $limit: Int!,
        $offset : Int!,
        $sortColumn: String!,
@@ -23,22 +23,23 @@ function LincsWills() {
        $desc : String!,
        $place: String!,
        $surname : String!
-     ){
-      will{
-        lincssearch(limit : $limit,
-               offset : $offset,
-               sortColumn: $sortColumn,
-               sortOrder : $sortOrder,
-               yearStart: $yearStart,
-               yearEnd : $yearEnd,
-               ref: $ref,
-               desc : $desc,
-               place: $place,
-               surname : $surname
-             ) {
+     ){      
+        lincssearch(pobj: {
+                            limit : $limit,
+                            offset : $offset,
+                            sortColumn: $sortColumn,
+                            sortOrder : $sortOrder,
+                            yearFrom: $yearStart,
+                            yearTo : $yearEnd,
+                            refArg: $ref,
+                            desc : $desc,
+                            place: $place,
+                            surname : $surname
+                         }
+                    ) {
          page
-         totalResults
-         results {
+         totalRows
+         rows {
               id
              description
              collection
@@ -51,8 +52,7 @@ function LincsWills() {
              occupation
              aliases
          }
-       }
-      }
+       }      
     }
     `;
 
@@ -82,7 +82,7 @@ function LincsWills() {
 
     var params = getParams(defaultValues);
 
-    var state = useTableState(GET_WILLS,params,'will','lincssearch');
+    var state = useTableState(GET_WILLS,params,'lincssearch');
 
     state.headCells = headCells;
     state.title = 'Lincolnshire will search';

@@ -9,7 +9,9 @@ import {gql} from '@apollo/client';
 
 import { connect } from "react-redux";
 import {useMapState} from '../useMap';
- 
+
+
+
 function Ancestors(props) {
 
   const {selectedTreeData,selectedTreePersonData} = props;
@@ -21,14 +23,15 @@ function Ancestors(props) {
     $origin : String!
   ){
     diagram{
-      ancestorsearch(
+      ancestorsearch( pobj : {
                 personId : $personId,
                 origin : $origin
+              }
           ) {
               generationsCount
               maxGenerationLength
-              totalResults
-              results {        
+              totalRows
+              rows {        
                         id
                         generationIdx
                         index
@@ -62,6 +65,7 @@ function Ancestors(props) {
       }
   }
   `;
+  console.log('setup query');
 
   var state = useMapState(GET_FTMView,{
     personId : selectedTreePersonData,     
@@ -69,63 +73,26 @@ function Ancestors(props) {
   });
 
   state = {
-    ... state,
-   
+    ... state,   
     title : 'Ancestor View'
   };
 
-  let data = transformData(state.data,'diagram','ancestorsearch', populateAncestryObjects);
+  console.log('api returned: ' + state.errors);
 
+  let data = transformData(state.data, populateAncestryObjects);
  
   const graph = new AncTree();
- 
-  let Body = ()=>{return(<div>loading</div>)};
 
-  if(data.newRows && data.newRows.length >0){
-       
-      //console.log('Diagrams load with new anc tree ' + a );
- 
-      var _zoomLevel = 100;
-      
+  graph.CreateWithDefaultValues(1,data.newRows);
 
-      graph.selectedPersonId = 3217;
-      graph.selectedPersonX = 0;
-      graph.selectedPersonY = 0;
-
-      graph.SetInitialValues(Number(_zoomLevel), 30.0, 170.0, 70.0, 
-                      70.0, 100.0, 20.0, 40.0, 20.0, screen.width, screen.height);
-
-      //    var _personId = '913501a6-1216-4764-be8c-ae11fd3a0a8b';
-      //    var _zoomLevel = 100;
-      //    var _xpos = 750.0;
-      //    var _ypos = 100.0;
-      
-
-      graph.generations = data.newRows;
- 
-      graph.SetCentrePoint(0, 0);
-    
-      graph.RelocateToSelectedPerson();
-    
-      graph.bt_refreshData = false;
-
-    
-      Body = ()=>{ return(<div>
+  return ( 
+      <div>
+        <DiagramWrapper state = {state} >
           <DiagramToolbar graph ={graph} state ={state}/>
           <AncestorsBody graph ={graph} />
-      </div>)};
-  }
-
-
-
-
-    return ( 
-        <div>
-          <DiagramWrapper state = {state} >
-            <Body/>
-          </DiagramWrapper>
-        </div>
-    );
+        </DiagramWrapper>
+      </div>
+  );
 
 }
 

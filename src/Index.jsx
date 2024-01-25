@@ -12,36 +12,29 @@ import {metaDataLoaded,applicationSelected,setTree} from "./features/uxActions.j
 import {getParams} from './features/Table/qryStringFuncs';
  
 
-const GET_Meta = gql`
-
-
-query Site($query : String!) {
-  function
-  {
-    search(appid: 0) {
-      page
-      results {
-        id
-        name
-        pageName
-        pageTitle
-        applicationId
-      }
+const GETQL_Meta = gql`
+query Query($appId:Int!) { 
+  searchSiteFunction(appId: $appId) {
+    page
+    rows {
+      id
+      name
+      pageName
+      pageTitle
+      applicationId
+    }
+  }   
+  searchSite(appId: 0) {
+    page
+    rows {
+      id,
+      name,
+      defaultPageName,
+      defaultPageTitle
     }
   }
-  site {
-    search(query: $query) {
-      page
-      results {
-        id,
-        name,
-        defaultPageName,
-        defaultPageTitle
-      }
-    }
-  }
+
 }
-
 `;
 
 function getPageName(pagePath, funcList){
@@ -74,16 +67,16 @@ function getPageName(pagePath, funcList){
 
 function useTableState(qry, tokenExpiresAt) {
 
- // console.log('useTableState');
+  console.log('index');
 
   const makeData = function(data){
 
-    if(data && data.site.search.results.length>0){
-      var selection = getPageName(location.pathname, data.function.search.results);
+    if(data && data.searchSite.rows.length>0){
+      var selection = getPageName(location.pathname, data.searchSiteFunction.rows);
 
       let stateObj = {
-        sites: data.site.search.results,
-        funcs :data.function.search.results,
+        sites: data.searchSite.rows,
+        funcs :data.searchSiteFunction.rows,
         pageId : selection.pageId,
         appId : selection.appId
       };
@@ -111,7 +104,7 @@ function useTableState(qry, tokenExpiresAt) {
   }
 
   var filterParams = {
-    query: tokenExpiresAt
+    appId : 0
   };
 
   const  { loading, networkStatus,error, data, refetch } = useQuery(qry, {
@@ -141,7 +134,7 @@ function Index(props) {
     
     
 
-    let state = useTableState(GET_Meta,tokenExpiresAt);    
+    let state = useTableState(GETQL_Meta,tokenExpiresAt);    
 
     useEffect(() => { 
         if(state.stateObj)          

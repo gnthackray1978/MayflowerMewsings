@@ -10,7 +10,7 @@ function Sources() {
 
 
   const GET_SOURCES = gql`
-  query Adb(
+  query Query(
      $limit: Int!,
      $offset : Int!,
      $sortColumn: String!,
@@ -19,10 +19,9 @@ function Sources() {
      $sourceRef : String!,
      $yearStart : Int!,
      $yearEnd : Int!
-
-   ){
-    adb{
-      sourcesearch(
+   ){    
+      sourcesearch(pobj :
+                  {
                      limit : $limit,
                      offset : $offset,
                      sortColumn: $sortColumn,
@@ -31,24 +30,24 @@ function Sources() {
                      sourceRef : $sourceRef,
                      yearStart : $yearStart,
                      yearEnd: $yearEnd
-
-           ) {
-       page
-       totalResults
-       results {
-                  id
-                  sourceRef
-                  sourceDate
-                  sourceDateTo
-                  sourceDescription
-                  originalLocation
-                  isCopyHeld
-                  isViewed
-                  isThackrayFound
-       }
-     }
+                  }
+                    )
+                  {
+                  page
+                  totalRows
+                  rows {
+                              id
+                              sourceRef
+                              sourceDate
+                              sourceDateTo
+                              sourceDescription
+                              originalLocation
+                              isCopyHeld
+                              isViewed
+                              isThackrayFound
+                            }
+                    }    
     }
-  }
   `;
 
 
@@ -72,7 +71,7 @@ function Sources() {
       yearEnd: 1800,
       location :'',
       sourceRef : ''
-    },'adb','sourcesearch');
+    },'sourcesearch');
 
     state.headCells = headCells;
     state.title = 'Source Search';

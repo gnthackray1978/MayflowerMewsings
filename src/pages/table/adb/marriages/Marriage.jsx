@@ -11,7 +11,7 @@ function Marriages() {
 
 
   const GET_MARRIAGES = gql`
-  query Adb(
+  query Query(
      $limit: Int!,
      $offset : Int!,
      $sortColumn: String!,
@@ -21,22 +21,23 @@ function Marriages() {
      $maleSurname : String!,
      $femaleSurname : String!,
      $location : String!
-   ){
-    adb{
-      marriagesearch(
-                     limit : $limit,
-                     offset : $offset,
-                     sortColumn: $sortColumn,
-                     sortOrder : $sortOrder,
-                     yearStart : $yearStart,
-                     yearEnd: $yearEnd,
-                     maleSurname : $maleSurname,
-                     femaleSurname: $femaleSurname,
-                     location : $location
-           ) {
+   ){    
+      marriagesearch(pobj : {
+                              limit : $limit,
+                              offset : $offset,
+                              sortColumn: $sortColumn,
+                              sortOrder : $sortOrder,
+                              yearFrom : $yearStart,
+                              yearTo: $yearEnd,
+                              maleSurname : $maleSurname,
+                              femaleSurname: $femaleSurname,
+                              location : $location
+                            }
+                    ) {
        page
-       totalResults
-       results {
+       totalRows
+       error
+       rows {
                   id
                   maleCname
                   maleSname
@@ -52,8 +53,7 @@ function Marriages() {
                   isLicence
                   totalEvents
        }
-     }
-    }
+     }    
   }
   `;
 
@@ -88,7 +88,7 @@ function Marriages() {
 
     var params = getParams(defaultValues);
    
-    var state = useTableState(GET_MARRIAGES,params,'adb','marriagesearch');
+    var state = useTableState(GET_MARRIAGES,params,'marriagesearch');
 
     state.headCells = headCells;
     state.title = 'Marriage Search';

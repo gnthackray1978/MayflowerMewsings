@@ -10,23 +10,36 @@ function Dupes() {
 
 
   const GET_DUPES = gql`
-  query Dna(
+  query Query(
      $limit: Int!,
      $offset : Int!,
      $sortColumn: String!,
      $sortOrder : String!,
-     $surname : String!
-   ){
-    dna{
-      dupesearch(limit : $limit,
-             offset : $offset,
-             sortColumn: $sortColumn,
-             sortOrder : $sortOrder,
-             surname : $surname
+     $surname : String!,
+     $yearStart : Int!,
+     $yearEnd : Int!,
+     $location : String!,
+     $origin : String!,
+     $minCM : Int!
+   ){    
+      dupesearch(pobj :{  
+                  limit : $limit,
+                  offset : $offset,
+                  sortColumn: $sortColumn,
+                  sortOrder : $sortOrder,
+                  surname : $surname,
+                  yearFrom : $yearStart,
+                  yearTo : $yearEnd,
+                  location : $location,
+                  origin : $origin,
+                  minCM : $minCM
+
+                       }
            ) {
        page
-       totalResults
-       results {
+       totalRows
+       error
+       rows {
            id
            firstName
            surname
@@ -36,7 +49,7 @@ function Dupes() {
            origin
        }
      }
-    }
+    
   }
   `;
 
@@ -53,14 +66,19 @@ function Dupes() {
     var defaultValues = {
       sortColumn : 'surname',
       sortOrder : 'asc',
-      limit : 0,
+      limit : 50,
       offset :0,
-      surname : ''
+      yearStart : 1500,
+      yearEnd : 2000,
+      location : '',
+      surname : '',
+      origin : '',
+      minCM : 0
     };
 
     var params = getParams(defaultValues);
 
-    var state = useTableState(GET_DUPES,params,'dna','dupesearch');
+    var state = useTableState(GET_DUPES,params,'dupesearch');
 
     state.headCells = headCells;
     state.title = 'Dupes';

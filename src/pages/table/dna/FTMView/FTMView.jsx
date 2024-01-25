@@ -12,7 +12,7 @@ import {getParams} from '../../../../features/Table/qryStringFuncs';
 function FTMView() {
 
     const GET_FTMView = gql`
-    query Dna(
+    query Query(
        $limit: Int!,
        $offset : Int!,
        $sortColumn: String!,
@@ -21,22 +21,27 @@ function FTMView() {
        $yearStart : Int!,
        $yearEnd : Int!,
        $location : String!,
-       $origin : String!
+       $origin : String!,
+       $minCM : Int!
      ){
-      dna{
-        ftmviewsearch(limit : $limit,
-                   offset : $offset,
-                   sortColumn: $sortColumn,
-                   sortOrder : $sortOrder,
-                   surname : $surname,
-                   yearStart : $yearStart,
-                   yearEnd : $yearEnd,
-                   location : $location,
-                   origin : $origin
+      
+        ftmviewsearch(pobj :{ 
+                        limit : $limit,
+                        offset : $offset,
+                        sortColumn: $sortColumn,
+                        sortOrder : $sortOrder,
+                        surname : $surname,
+                        yearFrom : $yearStart,
+                        yearTo : $yearEnd,
+                        location : $location,
+                        origin : $origin,
+                        minCM : $minCM
+                    }
              ) {
          page
-         totalResults
-         results {
+         totalRows
+         error
+         rows {
              id
              firstName
              surname
@@ -45,11 +50,10 @@ function FTMView() {
              yearTo
              origin
              birthLat
-             birthLong
-       
+             birthLong                   
          }
        }
-      }
+      
     }
     `;
 
@@ -66,18 +70,19 @@ function FTMView() {
     var defaultValues = {
       sortColumn : 'surname',
       sortOrder : 'asc',
-      limit : 0,
+      limit : 50,
       offset :0,
       yearStart : 1500,
       yearEnd : 2000,
       location : '',
       surname : '',
-      origin : ''
+      origin : '',
+      minCM : 0
     };
 
     var params = getParams(defaultValues);
 
-    var state = useTableState(GET_FTMView,params,'dna','ftmviewsearch');
+    var state = useTableState(GET_FTMView,params,'ftmviewsearch');
 
     state.headCells = headCells;
     state.title = 'FTM View';

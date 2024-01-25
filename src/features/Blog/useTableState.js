@@ -1,43 +1,43 @@
 import React, { Component } from 'react';
 import { useQuery } from '@apollo/client';
 
-const makeData = function(data, schema, subSchema){
+const makeData = function(data, subSchema){
 
   let rows = [];
 
   if(!data) return rows;
 
-  if(!data[schema][subSchema]) return rows;
+  if(!data[subSchema]) return rows;
 
   let idx =0;
 
-  while(idx < data[schema][subSchema].results.length){
-    let tp = data[schema][subSchema].results[idx];
+  while(idx < data[subSchema].rows.length){
+    let tp = data[subSchema].rows[idx];
 
     rows.push(tp);
 
     idx++;
   }
 
-  let totalRecordCount =0;
+  let totalRows =0;
   let loginInfo = '';
   let errorMessage = '';
-  if(data && data[schema]){
-   totalRecordCount =  data[schema][subSchema].totalResults;
-   loginInfo =  data[schema][subSchema].loginInfo;
-   errorMessage = data[schema][subSchema].error;
+  if(data ){
+   totalRows =  data[subSchema].totalRows;
+   loginInfo =  data[subSchema].loginInfo;
+   errorMessage = data[subSchema].error;
   }
 
   return {
     rows,
-    totalRecordCount,
+    totalRows,
     errorMessage,
     loginInfo
   };
 
 }
 
-export  function useTableState(ReturnData,defaultParams, schema, subSchema) {
+export  function useTableState(ReturnData,defaultParams, subSchema) {
 
   const [filterParams, setFilterParams] = React.useState(defaultParams);
   const monthNames = ["January", "February", "March", "April", "May", "June","July", "August", "September", "October", "November", "December"];
@@ -67,9 +67,9 @@ export  function useTableState(ReturnData,defaultParams, schema, subSchema) {
 
 
 
-  //console.log('useQuer : ' + loading +  networkStatus );
+  console.log('makeData :  ');
 
-  var parsedData = makeData(data,schema, subSchema);
+  var parsedData = makeData(data, subSchema);
 
   var mainFeaturedPost= {
     title: 'Loading..',
@@ -164,7 +164,7 @@ export  function useTableState(ReturnData,defaultParams, schema, subSchema) {
 
   }
 
-  var totalRecordCount = parsedData.totalRecordCount;
+  var totalRows = parsedData.totalRows;
   
   var loginInfo = parsedData.loginInfo;
   var errorMessage = parsedData.errorMessage;
@@ -180,7 +180,7 @@ export  function useTableState(ReturnData,defaultParams, schema, subSchema) {
     featuredPosts,
     posts,
     months,
-    totalRecordCount,
+    totalRows,
     loginInfo,
     errorMessage
   };

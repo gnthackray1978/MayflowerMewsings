@@ -8,35 +8,38 @@ import {getParams} from '../../../../features/Table/qryStringFuncs';
 
 function Poi() {
     const GET_Poi = gql`
-    query Dna(
-       $limit: Int!,
-       $offset : Int!,
-       $sortColumn: String!,
-       $sortOrder : String!,
-       $surname : String!,
-        $country : String!,
-        $mincm : Int!,
-        $location : String!,
-        $yearStart : Int!,
-        $yearEnd : Int!,
-        $name: String!
+    query Query(
+      $limit: Int!,
+      $offset : Int!,
+      $sortColumn: String!,
+      $sortOrder : String!,
+      $name : String!,
+      $yearStart :Int!,
+      $yearEnd : Int!,
+      $mincm : Int!,
+      $country : String!,
+      $location : String!
+      $surname : String!
      ){
-      dna{
-        poisearch(limit : $limit,
-               offset : $offset,
-               sortColumn: $sortColumn,
-               sortOrder : $sortOrder,
-               surname : $surname,
-                country : $country,
-                mincm : $mincm,
-                location : $location,
-                yearStart : $yearStart,
-                yearEnd : $yearEnd,
-                name : $name
-             ) {
+      
+        poisearch( pobj : {
+                              limit : $limit,
+                              offset : $offset,
+                              sortColumn: $sortColumn,
+                              sortOrder : $sortOrder,
+                              name : $name,
+                              yearFrom : $yearStart,
+                              yearTo : $yearEnd,
+                              minCM : $mincm,
+                              country : $country,
+                              location : $location,
+                              surname : $surname
+                          }
+                 ) {
          page
-         totalResults
-         results {
+         totalRows
+         error
+         rows {
              id
              christianName
              surname
@@ -52,7 +55,7 @@ function Poi() {
              name
          }
        }
-      }
+      
     }
     `;
 
@@ -70,10 +73,10 @@ function Poi() {
     var defaultValues = {
       sortColumn : 'yearStart',
       sortOrder : 'asc',
-      limit : 0,
+      limit : 50,
       offset :0,
-       yearStart :1700,
-       yearEnd :1840,
+       yearStart :1750,
+       yearEnd :1775,
        mincm :9,
        surname :'',
        location :'',
@@ -83,7 +86,7 @@ function Poi() {
 
     var params = getParams(defaultValues);
 
-    var state = useTableState(GET_Poi,params,'dna','poisearch');
+    var state = useTableState(GET_Poi,params,'poisearch');
 
     state.headCells = headCells;
     state.title = 'POI';

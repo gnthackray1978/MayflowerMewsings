@@ -28,8 +28,8 @@ function makeData(data, schema, subSchema){
   }
 
   let allTrees = [];
-  while(idx < data[schema][subSchema].results.length){
-    let tp = data[schema][subSchema].results[idx];
+  while(idx < data[schema][subSchema].rows.length){
+    let tp = data[schema][subSchema].rows[idx];
    
     rows.push( {
                    ...tp, 
@@ -40,15 +40,15 @@ function makeData(data, schema, subSchema){
 
 
 
-  let totalRecordCount =0;
+  let totalRows =0;
 
   if(data && data[schema])
-   totalRecordCount =  data[schema][subSchema].totalResults;
+   totalRows =  data[schema][subSchema].totalRows;
 
    
   // var rows = parsedData.rows;
 
-  // var totalRecordCount = parsedData.totalRecordCount;
+  // var totalRows = parsedData.totalRows;
   // var treeColours = parsedData.allTrees;
  
    var rowsPerPage = 1000;
@@ -56,7 +56,7 @@ function makeData(data, schema, subSchema){
 
   return {
     rows,
-    totalRecordCount,
+    totalRows,
     treeColours : allTrees,
     rowsPerPage,
     page
@@ -91,8 +91,8 @@ function HeatMap() {
                    origin : $origin
              ) {
          page
-         totalResults
-         results {
+         totalRows
+         rows {
         	id
         	lat
           long

@@ -14,8 +14,6 @@ function Diagrams(props) {
     
       if(graph){
       
-      
-
         graph.centrePoint += graph.movementx ;
         graph.centreVerticalPoint += graph.movementy ;
 

@@ -14,20 +14,51 @@ import {getParams} from '../../../features/Table/qryStringFuncs';
 
 var outputCollection = function (maxNum,searchComplete) {
 	this.maxNum = maxNum;   
-	this.results = [];
+  this.newResults =[];
   this.searchComplete = searchComplete;
 };
 
 outputCollection.prototype.addEntry = function (entry) { 
     
-    this.results.push(entry);
-    
-    if(this.results.length == this.maxNum){
-    	this.searchComplete(this.results);
+  console.log('addEntry');
+  
+  var unparsed= JSON.parse(entry.rows)[0];
+              
+  var gLocat = unparsed.geometry.location;
+
+  var label = unparsed.address_components[0].long_name + ' ' + unparsed.address_components[1].long_name;
+
+  var place_id = unparsed.place_id;
+
+  // return {lat: gLocat.lat, lng: gLocat.lng, label: label, place_id: place_id} 
+
+  this.newResults.push({lat: gLocat.lat, lng: gLocat.lng, label: label, place_id: place_id, searchTerm : entry.placeformatted});
+
+  let key = entry.placeformatted +  '|'+ Date.now();
+
+ //   this.newResults.push(entry);
+ // key should be combination of placeformatted and date
+ //localStorage.setItem(key, value);   
+
+    if(this.newResults.length == this.maxNum){
+    	this.searchComplete(this.newResults);
     }
 };
 
+outputCollection.prototype.addLocalStorageEntry = function (entry) { 
+    
+  console.log('addLocalStorageEntry');
+  
+  const myArr = JSON.parse(entry);
+ 
+  this.newResults.push(myArr);
 
+  let key = entry.placeformatted +  '|'+ Date.now();
+ 
+    if(this.newResults.length == this.maxNum){
+    	this.searchComplete(this.newResults);
+    }
+};
 
 const GroupToolBar = (props) => {
 //  console.log('rendered: FTMViewTableToolbar' );
@@ -63,6 +94,13 @@ const GroupToolBar = (props) => {
     if (!d)
         return;
  
+    //look in local storage for this address here
+   
+    setTimeout(function () {
+        idx++;
+        searchAddress(geocoder, idx, lRawLocations, output);
+    }, 500);
+
 
     geocoder.geocode({
         address: d
@@ -98,7 +136,7 @@ const GroupToolBar = (props) => {
 
             default:
                 console.log('saving');
-                result.results = JSON.stringify(results);
+                result.rows = JSON.stringify(results);
                 result.success = true;
                 output.addEntry(result);
                
@@ -132,19 +170,20 @@ const GroupToolBar = (props) => {
     
       setParams(defaultValues);
 
-    
-      var locations = rawLocations.split('.').map((r) => {
+    //append county to each location
+    var locationsToGeoCode = rawLocations.split('.').map((r) => {
       return r + ',' + county;
     });
 
-    var output = new outputCollection(locations.length, (r) =>{       
+    //initialise output collection
+    var output = new outputCollection(locationsToGeoCode.length, (r) =>{       
       //console.log('output:' + r.length);
       setLocations(r);
     });
 
     var geocoder = new google.maps.Geocoder();
 
-    searchAddress(geocoder, idx, locations, output);
+    searchAddress(geocoder, idx, locationsToGeoCode, output);
 
   };
 

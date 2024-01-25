@@ -6,6 +6,24 @@ import { useTheme } from '@mui/material/styles';
 import {useStyles} from './styleFuncs.jsx';
  
 
+function displayErrors(errors){
+  console.log('displayErrors called');
+
+  if(errors && errors.length >0){
+    return (<div>
+      <h5><span style={{color: "red", padding: "20px"} } >Errors</span></h5>
+      <ul>  
+      {
+       errors.map((row, index) => {return(<li>{row}</li>);})        
+      }
+      </ul>  
+    </div>);
+  }
+  else{
+    return (<div></div>);
+  }
+}
+
 export default function DiagramWrapper(props) {
 
 
@@ -14,16 +32,11 @@ export default function DiagramWrapper(props) {
   const theme = useTheme();
   const classes = useStyles(theme);
 
-  if(!state.loading && state.error && state.error.graphQLErrors && state.error.graphQLErrors.length >0){
-    return (
-      <div>
-        <pre>Bad: {state.error.graphQLErrors.map(({ message }, i) => (
-          <span key={i}>{message}</span>
-        ))}
-        </pre>
-      </div>
-    );
+
+  if(state.errors.length >0){
+    return(displayErrors(state.errors));
   }
+
 
   let tp = (loading) => {
 
@@ -54,15 +67,11 @@ export default function DiagramWrapper(props) {
   };
 
   return (
-    <StyledEngineProvider injectFirst>
-      <MuiThemeProvider theme={theme}>
-        <div className={classes.root}>
-            {children.length > 1 && children[0]}
+    <div className={classes.root}>
+        {children.length > 1 && children[0]}
 
-            {tp(state.loading)}
-   
-        </div>
-      </MuiThemeProvider>
-    </StyledEngineProvider>
+        {tp(state.loading)}
+
+    </div>
   );
 }

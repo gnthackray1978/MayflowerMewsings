@@ -18,10 +18,7 @@ import {
 import { connect } from "react-redux";
 
 function GetSiteList(results, applicationSelected, siteDialogClose,history){
-//site.search.results[0].name
 
-
-  
   if(results){
 
 

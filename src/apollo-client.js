@@ -3,7 +3,7 @@ import { setContext } from '@apollo/client/link/context';
 import {getToken} from './shared/GoogleIDS/libs/googleFuncs.jsx';
 
 const httpLink = createHttpLink({
-  uri: "https://msgapigen01.azurewebsites.net/graphql/",
+  uri: "http://localhost:5001/graphql/",
 });
 
 const authLink = setContext((_, { headers }) => {

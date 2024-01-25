@@ -30,7 +30,7 @@ export const getPersonFromId = (id, rows)=>{
    
     while(idx < rawData.generationsCount){
 
-        let gen = rawData.results.filter(f=>f.generationIdx == idx);
+        let gen = rawData.rows.filter(f=>f.generationIdx == idx);
         let sorted =gen.sort((a,b)=>{
             return a.index > b.index
         });
@@ -157,32 +157,25 @@ export const getPersonFromId = (id, rows)=>{
     return newRows;
   };
 
- 
 
-  export const transformData = (data, schema, subSchema, populateObjectsFunc) => {
 
-    console.log('make data desc' );
+  
+  export const transformData = (data, populateObjectsFunc) => {
     
-    if(!data) return [];
-    
-    if(!data[schema][subSchema]){
-      console.log('usemap makedata: ' + schema + ' ' + subSchema + ' schema not loaded');
-      return [];
+    var newRows = [];
+
+    console.log('transformData' );
+     
+    if(data) 
+    {
+      let rows = shapeData(data);  
+      newRows = formatData(rows);         
+      newRows = populateObjectsFunc(newRows);
     }
-  
-    if(data[schema][subSchema].results == null){
-      console.log('usemap makedata: ' + schema + ' ' + subSchema + ' results were null');
-      return [];
+    else{
+      console.log('data undefined');      
     }
-   
-  
-    let rows = shapeData(data[schema][subSchema]);
-  
-    let newRows = formatData(rows);
-  
-   
-    newRows = populateObjectsFunc(newRows);
-  
+
     return {
       newRows
     };

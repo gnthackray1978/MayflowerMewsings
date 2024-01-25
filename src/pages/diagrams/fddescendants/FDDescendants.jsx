@@ -32,13 +32,13 @@ function makeData(data, schema, subSchema){
     return rows;
   }
 
-  if(data[schema][subSchema].results == null){
+  if(data[schema][subSchema].rows == null){
     console.log('usemap makedata: ' + schema + ' ' + subSchema + ' results were null');
     return rows;
   }
 
-  while(idx < data[schema][subSchema].results.length){
-    let tp = data[schema][subSchema].results[idx];
+  while(idx < data[schema][subSchema].rows.length){
+    let tp = data[schema][subSchema].rows[idx];
 
     rows.push( {
                    ...tp
@@ -74,8 +74,8 @@ function FDDescendants(props) {
           ) {
       generationsCount
       maxGenerationLength
-      totalResults
-      results {        
+      totalRows
+      rows {        
         id
         generationIdx
         index

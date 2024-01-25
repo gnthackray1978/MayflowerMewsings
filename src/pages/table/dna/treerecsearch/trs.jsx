@@ -10,32 +10,38 @@ function Trs() {
 
 
   const GET_Trs = gql`
-  query Dna(
+  query Query(
      $limit: Int!,
      $offset : Int!,
      $sortColumn: String!,
      $sortOrder : String!,
-     $treeName : String!
-   ){
-    dna{
-      treerecsearch(limit : $limit,
-             offset : $offset,
-             sortColumn: $sortColumn,
-             sortOrder : $sortOrder,
-             treeName : $treeName
-           ) {
+     $treeName : String!,
+     $yearFrom :Int!,
+     $yearTo : Int!,
+     $minCM : Int!
+   ){    
+      treerecsearch(pobj: {
+                            limit : $limit,
+                            offset : $offset,
+                            sortColumn: $sortColumn,
+                            sortOrder : $sortOrder,
+                            treeName : $treeName,
+                            yearFrom : $yearFrom,
+                            yearTo : $yearTo,
+                            minCM : $minCM
+                          }
+                  ) {
        page
-       totalResults
-       results {
+       totalRows
+       rows {
            id
-           cM
+           cm
            located
            origin
            personCount
            name
        }
-     }
-    }
+     }    
   }
   `;
 
@@ -52,12 +58,15 @@ function Trs() {
       sortOrder : 'desc',
       limit : 0,
       offset :0,
-      treeName : ''
+      treeName : '',
+      yearFrom : 0,
+      yearTo : 2000,
+      minCM : 0
     };
 
     var params = getParams(defaultValues);
 
-    var state = useTableState(GET_Trs,params,'dna','treerecsearch');
+    var state = useTableState(GET_Trs,params,'treerecsearch');
 
     state.headCells = headCells;
     state.title = 'Trees Over View';
