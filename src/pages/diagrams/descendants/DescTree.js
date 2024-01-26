@@ -15,6 +15,8 @@ export function GraphBoundary(){
 }
 GraphBoundary.prototype = {
 
+
+
     GetPercDistances: function (mousePoint) {
         let _distanceFromX1 = 0.0;
         let _distanceFromY1 = 0.0;
@@ -152,6 +154,27 @@ export function DescTree() {
 
 
 DescTree.prototype = {
+
+    CreateWithDefaultValues: function (personId, data) {
+         
+        if(data.length === 0){
+            console.log('no data to set up ancestor tree');
+            return;
+          }
+
+        var _zoomLevel = 100;
+        this.selectedPersonId = personId;
+        this.selectedPersonX = 0;
+        this.selectedPersonY = 0;
+        this.SetInitialValues(Number(_zoomLevel), 30.0, 170.0, 70.0, 
+                        70.0, 100.0, 20.0, 40.0, 20.0, screen.width, screen.height);
+
+        this.generations = data.newRows;
+        this.UpdateGenerationState();
+        this.SetCentrePoint(0, 0);
+        this.RelocateToSelectedPerson();
+        this.bt_refreshData = false;
+      },
 
     SetInitialValues: function (zoomPerc,
         dist_bet_box,
@@ -665,7 +688,9 @@ DescTree.prototype = {
 
     },
 
- 
+    IsValid :function () {
+        return this.generations.length>0;
+    },
 
     DrawTree: function () {
      //  requestAnimationFrame($.proxy(this.DrawTreeInner, this) );

@@ -16,14 +16,11 @@ function Descendants(props) {
     console.log('Descendants');
     const {selectedTreeData,selectedTreePersonData} = props;
 
-
-
     const GET_FTMView = gql`
     query Diagram(      
       $personId : Int!,
       $origin : String!
-    ){
-      diagram{
+    ){      
         descendantsearch(
                   personId : $personId,
                   origin : $origin
@@ -57,9 +54,9 @@ function Descendants(props) {
           birthLocation
           christianName
           surname
-          dOB  
+          dob  
         }
-      }
+      
       }
     }
     `;
@@ -69,7 +66,7 @@ function Descendants(props) {
 
     console.log(params.origin + ' ' + params.personId);
 
-    var state = useMapState(GET_FTMView,{
+    var state = useMapState(GET_FTMView,'descendantsearch',{
       personId : selectedTreePersonData,     
       origin : selectedTreeData
     });
@@ -80,54 +77,17 @@ function Descendants(props) {
       title : 'Map View'
     };
 
-    let data = transformData(state.data,'diagram','descendantsearch', populateDescendantObjects);
+    let data = transformData(state.data,populateDescendantObjects);
 
-
-    
     const graph = new DescTree();
   
-    let Body = ()=>{return(<div>loading</div>)};
-
-    if(data.newRows && data.newRows.length >0){
-        
-        //console.log('Diagrams load with new anc tree ' + a );
-  
-        var _zoomLevel = 100;
-        
-
-        graph.selectedPersonId = 3217;
-        graph.selectedPersonX = 0;
-        graph.selectedPersonY = 0;
-
-        graph.SetInitialValues(Number(_zoomLevel), 30.0, 170.0, 70.0, 
-                        70.0, 100.0, 20.0, 40.0, 20.0, screen.width, screen.height);
-
-        //    var _personId = '913501a6-1216-4764-be8c-ae11fd3a0a8b';
-        //    var _zoomLevel = 100;
-        //    var _xpos = 750.0;
-        //    var _ypos = 100.0;
-        
-
-        graph.generations = data.newRows;
-        graph.UpdateGenerationState();
-        graph.SetCentrePoint(0, 0);
-      
-        graph.RelocateToSelectedPerson();
-      
-        graph.bt_refreshData = false;
-
-        
-          Body = ()=>{ return(<div>
-            <DiagramToolbar  graph ={graph} state ={state}/>
-            <DescendantsBody  graph ={graph} />
-        </div>)};
-    }
-
+    graph.CreateWithDefaultValues(1,data.newRows);
 
     return ( 
         <div>
           <DiagramWrapper state = {state} >
-            <Body/>
+              <DiagramToolbar  graph ={graph} state ={state}/>
+              <DescendantsBody  graph ={graph} />
           </DiagramWrapper>
         </div>
     );

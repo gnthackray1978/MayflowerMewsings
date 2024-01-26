@@ -34,7 +34,7 @@ export default (state = {
   showTreeSelectorDialog :false,
   showDiagramControls : false,
   selectedTreeData : {origin : '',originDescription : ''},
-  selectedTreePersonData : {personId:0},
+  selectedTreePersonData : {personId:1},
   diagramId : 0,
   error: undefined
 }, action) => {

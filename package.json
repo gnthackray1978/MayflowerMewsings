@@ -48,7 +48,8 @@
     "react-router-dom": "5.1.2",
     "redux": "^4.0.1",
     "redux-api-middleware": "^3.2.1",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "shared": "^0.2.0"
   },
   "postcss": {
     "modules": false,

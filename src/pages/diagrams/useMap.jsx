@@ -1,45 +1,16 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import clsx from 'clsx';
+import { errorFormatter } from '../../shared/common';
 import { ApolloClient, InMemoryCache, ApolloProvider, gql, useQuery ,useLazyQuery} from '@apollo/client';
-import { connect } from "react-redux";
-
-const errorMessages = (loading, error, internalServerError) => {
-  console.log('called errorMessages');
-
-  let errorArray =[];
-
-  if(loading)
-    return [];
-
-  if(error && error.message){
-    errorArray.push(error.message);
-  }
-
-  if(error && error.graphQLErrors && error.graphQLErrors.length >0){
-    errorArray.push(...error.graphQLErrors);
-  }
-
-  if(internalServerError!='')
-  {
-    errorArray.push(internalServerError);
-  }
-
-  return errorArray;
-
-};
 
 
-
-export  function useMapState(qry,defaultParams) {
+export function useMapState(qry,schema,defaultParams) {
 
  // console.log('useMapState ');
  // const [filterParams, setFilterParams] = React.useState(defaultParams);
  
  console.log('useMapState' );
 
-  const  { loading, networkStatus,error, data, refetch } = useQuery(qry, {
-    // errorPolicy: 'all' ,
+  const  { loading, networkStatus,error, data,refetch } = useQuery(qry, {
+     errorPolicy: 'all' ,
      variables: defaultParams,
      notifyOnNetworkStatusChange: true,
      fetchPolicy:"cache-and-network"
@@ -47,28 +18,28 @@ export  function useMapState(qry,defaultParams) {
      //   console.log('finished fetching');
      // }
   });
-
+  console.log('useMapState result' );
  // var newRows = [];
   var totalRows = 0;  
   var loginInfo = '';
   var internalServerError = '';
-  var subSchema;
+  var subSchemaData;
 
-  if(!loading && data && data[subSchema]) 
+  if(!loading && data && data[schema]) 
   {   
-    totalRows = data[subSchema].totalRows;
-    loginInfo =  data[subSchema].loginInfo;
-    internalServerError = data[subSchema].error?.trim() ?? ''; //bit of a hack 
-    subSchema = data[subSchema];
+    totalRows = data[schema].totalRows;
+    loginInfo =  data[schema].loginInfo;
+    internalServerError = data[schema].error?.trim() ?? ''; //bit of a hack 
+    subSchemaData = data[schema];
   }
 
   var errors = [];
 
   if(!loading)
-    errors = errorMessages(loading,error, internalServerError);
+    errors = errorFormatter(loading,error, internalServerError);
  
   return {  
-    data : subSchema,
+    data : subSchemaData,
     totalRows,
     loading, 
     errors ,

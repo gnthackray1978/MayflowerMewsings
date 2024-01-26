@@ -29,10 +29,12 @@ const useCanvas = (draw,graph, options={}) => {
 
       frameCounty += yMove;
 
-
-      draw(context,graph, frameCountx, frameCounty)
-      
-      animationFrameId = window.requestAnimationFrame(render)
+      if(graph.IsValid())
+      {
+        draw(context,graph, frameCountx, frameCounty);
+        
+        animationFrameId = window.requestAnimationFrame(render);
+      }
     }
 
     options.predraw(context,canvas);

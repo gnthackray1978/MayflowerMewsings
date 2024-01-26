@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { useQuery } from '@apollo/client';
+import { errorFormatter } from '../../shared/common';
 
 
 
@@ -91,30 +92,6 @@ export  function useTableState(ReturnData,defaultParams, subSchema) {
     );
   };
 
-  const errorMessages = (loading, error, internalServerError) => {
-    console.log('called errorMessages');
-
-    let errorArray =[];
-
-    if(loading)
-      return [];
-
-    if(error && error.message){
-      errorArray.push(error.message);
-    }
-
-    if(error && error.graphQLErrors && error.graphQLErrors.length >0){
-      errorArray.push(...error.graphQLErrors);
-    }
-
-    if(internalServerError!='')
-    {
-      errorArray.push(internalServerError);
-    }
-
-    return errorArray;
-
-  };
 
   filterParams.limit =rowsPerPage;
   filterParams.offset = (page* rowsPerPage) ;
@@ -154,7 +131,7 @@ export  function useTableState(ReturnData,defaultParams, subSchema) {
     internalServerError = data[subSchema].error?.trim() ?? ''; //bit of a hack
   }
  
-  let errors = errorMessages(loading,error, internalServerError);
+  let errors = errorFormatter(loading,error, internalServerError);
 
   return {
     order,

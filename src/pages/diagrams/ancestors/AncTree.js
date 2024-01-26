@@ -750,6 +750,10 @@ AncTree.prototype = {
    //     requestAnimationFrame($.proxy(this.DrawTreeInner, this) );
     },
 
+    IsValid :function () {
+        return this.generations.length>0;
+    },
+
     DrawTreeInner :function () {
 
         if(this.generations.length === 0){

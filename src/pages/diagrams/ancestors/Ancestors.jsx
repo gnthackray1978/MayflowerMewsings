@@ -21,8 +21,7 @@ function Ancestors(props) {
   query Diagram(      
     $personId : Int!,
     $origin : String!
-  ){
-    diagram{
+  ){    
       ancestorsearch( pobj : {
                 personId : $personId,
                 origin : $origin
@@ -59,17 +58,17 @@ function Ancestors(props) {
                         birthLocation
                         christianName
                         surname
-                        dOB  
+                        dob  
                       }
            }
-      }
+      
   }
   `;
   console.log('setup query');
 
-  var state = useMapState(GET_FTMView,{
+  var state = useMapState(GET_FTMView,'ancestorsearch',{
     personId : selectedTreePersonData,     
-    origin : selectedTreeData
+    origin : selectedTreeData.origin
   });
 
   state = {
