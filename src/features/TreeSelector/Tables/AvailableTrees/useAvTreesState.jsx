@@ -1,9 +1,9 @@
 import React  from 'react';
 import { useQuery } from '@apollo/client';
 import {getParams,setParams} from '../../../Table/qryStringFuncs';
+import { errorFormatter } from '../../../../shared/common';
 
-
-export  function useAvTreesState(ReturnData,defaultParams, schema, subSchema) {
+export  function useAvTreesState(ReturnData,defaultParams, subSchema) {
 
   //const [initialLoad, setInitialLoad] = React.useState(false);
   const [order, setOrder] = React.useState(defaultParams.sortOrder);
@@ -33,7 +33,6 @@ export  function useAvTreesState(ReturnData,defaultParams, schema, subSchema) {
     }
     setSelected([]);
   };
-
 
   const setTreeSelectionState = (event, rows, row, singleSelect) => {
 
@@ -173,34 +172,42 @@ export  function useAvTreesState(ReturnData,defaultParams, schema, subSchema) {
 
   };
 
+  const setSelection = ()=>{
+    
+     console.log('setSelection called');
+ 
+    // if(!originDescription || !origin) return;
+ 
+     //set the query string
+ 
+    // setParams({'origin': treeSelectionState.origin});
+     setParams({'origin': origin, 'originDescription': originDescription});
+ 
+     //break out if selection is already set, we don't want to get 
+     //as into an infinite loop which is what happens if selected is repeatdly set
+     //if(originDescription != '') return;    
+     if(selected.length != 0) return;
+    // if(!rows || rows.length==0) return;
+ 
+     //tidy up the origin string
+     let strOrigin = String(origin);
+ 
+     if(strOrigin != ""){
 
-  const makeData = function(data, schema, subSchema){
+      // strOrigin.replace('NaN',',');
 
-    let rows = [];
-
-    if(!data) return rows;
-
-    let idx =0;
-
-    while(idx < data[schema][subSchema].rows.length){
-      let tp = data[schema][subSchema].rows[idx];
-
-      rows.push(tp);
-
-      idx++;
-    }
-
-    let totalRows =0;
-
-    if(data && data[schema])
-     totalRows =  data[schema][subSchema].totalRows;
-
-    return {
-      rows,
-      totalRows
-    };
-
-  }
+       strOrigin.replace(',,',',');
+ 
+       let idList = String(strOrigin).split(',').map(Number);
+     
+       if(idList.length >0)
+         setSelected(idList);
+     
+     }
+     
+ 
+  };
+ 
 
   filterParams.limit =rowsPerPage;
   filterParams.offset = (page* rowsPerPage) ;
@@ -218,52 +225,26 @@ export  function useAvTreesState(ReturnData,defaultParams, schema, subSchema) {
      // }
   });
 
-  //console.log('network stat: ' + networkStatus + ' ' + loading);
+  console.log('loading : ' + loading + ' network status: ' 
+                           + networkStatus + ' error:' 
+                           + error + ' data: ' 
+                           + data);
 
-  //console.log('useQuer : ' + loading +  networkStatus );
-
-  var parsedData = makeData(data,schema, subSchema);
-
-  var rows = parsedData.rows;
-
-  var totalRows = parsedData.totalRows;
-
-  if(!totalRows) totalRows =0;
+  var rows = [];
+  var totalRows = 0;  
+  var loginInfo = '';
+  var internalServerError = '';
 
 
- 
-  const setSelection = function(){
-    
-   // console.log('setSelection called');
-
-   // if(!originDescription || !origin) return;
-
-    //set the query string
-
-   // setParams({'origin': treeSelectionState.origin});
-    setParams({'origin': origin, 'originDescription': originDescription});
-
-    //break out if selection is already set, we don't want to get 
-    //as into an infinite loop which is what happens if selected is repeatdly set
-    //if(originDescription != '') return;    
-    if(selected.length != 0) return;
-   // if(!rows || rows.length==0) return;
-
-    //tidy up the origin string
-    let strOrigin = String(origin);
-
-    if(strOrigin != ""){
-      strOrigin.replace(',,',',');
-
-      let idList = String(strOrigin).split(',').map(Number);
-    
-      if(idList.length >0)
-        setSelected(idList);
-    
-    }
-    
-
+  if(data && data[subSchema]) 
+  {
+    rows = data[subSchema].rows;
+    totalRows =  data[subSchema].totalRows;
+    loginInfo =  data[subSchema].loginInfo;
+    internalServerError = data[subSchema].error?.trim() ?? ''; //bit of a hack
   }
+ 
+  let errors = errorFormatter(loading,error, internalServerError);
 
   return {
   //  initialLoad,setInitialLoad,
@@ -279,8 +260,15 @@ export  function useAvTreesState(ReturnData,defaultParams, schema, subSchema) {
     handleChangeRowsPerPage,
     isSelected,
     filterFieldChanged,
-
-    loading, error, data,rows,totalRows,setSelected,origin,originDescription,setSelection,setTreeSelectionState
-
+    setSelected,
+    setSelection,
+    setTreeSelectionState,
+    loading, 
+    errors, 
+    data,
+    rows,
+    totalRows,
+    origin,
+    originDescription
   };
 }

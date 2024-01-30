@@ -114,7 +114,7 @@ export const MiddleParents = (generation, fatIdx, motIdx) =>{
             middleParents = (generation[fatIdx].X1 + generation[motIdx].X2) / 2;
         }
         catch(e){
-            console.log('middle parents failed: ' +genidx + ' '+ fatIdx+ ' '+ motIdx );
+            console.log('middle parents failed: ' + fatIdx+ ' '+ motIdx );
         }
     }
 
@@ -322,6 +322,9 @@ export const CreateChildPositionFromParent = (parentGeneration, movePerson, boxW
         x1 : 0.0,
         x2 : 0.0
     };
+
+    if(!parentGeneration)
+        return result;
 
     if (movePerson.FatherIdx == -1)
     {

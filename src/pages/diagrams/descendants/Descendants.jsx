@@ -21,9 +21,10 @@ function Descendants(props) {
       $personId : Int!,
       $origin : String!
     ){      
-        descendantsearch(
-                  personId : $personId,
-                  origin : $origin
+        descendantsearch( pobj : {
+                            personId : $personId,
+                            origin : $origin
+                          }
             ) {
         generationsCount
         maxGenerationLength
@@ -68,7 +69,9 @@ function Descendants(props) {
 
     var state = useMapState(GET_FTMView,'descendantsearch',{
       personId : selectedTreePersonData,     
-      origin : selectedTreeData
+      origin : selectedTreeData.originDescription
+      // originally this was written to use tree id, changed to use
+      // origindescription because we now can have multiple trees.
     });
 
     state = {

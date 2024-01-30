@@ -169,7 +169,7 @@ DescTree.prototype = {
         this.SetInitialValues(Number(_zoomLevel), 30.0, 170.0, 70.0, 
                         70.0, 100.0, 20.0, 40.0, 20.0, screen.width, screen.height);
 
-        this.generations = data.newRows;
+        this.generations = data;
         this.UpdateGenerationState();
         this.SetCentrePoint(0, 0);
         this.RelocateToSelectedPerson();
@@ -980,7 +980,11 @@ DescTree.prototype = {
                         
                             //there should always be a father and mother at this point
                             //as we are never in generation zero
-                            let parentXs = GetParentXs( genPerson.Father.X1,  genPerson.Mother.X1, this.halfBox);
+                            if(genPerson.Father == undefined || genPerson.Mother == undefined){
+                                console.log('error - father or mother undefined. All parental links should have a mother or a father. Info: ' + genPerson.Id + ' ' + genPerson.PersonId);
+                            }
+
+                            let parentXs = GetParentXs( genPerson.Father?.X1 ?? 0,  genPerson.Mother?.X1 ?? 0, this.halfBox);
 
                             var incSize = 0;
 

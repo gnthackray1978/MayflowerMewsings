@@ -16,7 +16,7 @@ import { METADATALOADED, APPLICATIONSELECTED,
   };
 
 export const setTreePerson = (state) =>{
-  //console.log('applicationSelected action');
+  console.log('setTreePerson action');
 
     return async (dispatch, getState)  => {
         dispatch({

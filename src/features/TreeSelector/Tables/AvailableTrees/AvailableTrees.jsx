@@ -7,9 +7,12 @@ import {useAvTreesState} from './useAvTreesState';
 import {gql} from '@apollo/client';
 import {setTree} from "../../../uxActions.jsx";
 import { connect } from "react-redux";
+import {useSearchParamsState} from '../../../../shared/useSearchParamsState.jsx';
 
 function AvailableTrees(props) {
   
+  const [greeting, setGreeting] = useSearchParamsState("greeting", "hello");
+
   const {setTree,selectedTreeData} = props;
 
   const get_availableTrees = gql`
@@ -19,24 +22,39 @@ function AvailableTrees(props) {
      $sortColumn: String!,
      $sortOrder : String!,
      $treeName : String!
+     $surname : String!,
+     $yearStart : Int!,
+     $yearEnd : Int!,
+     $location : String!,
+     $origin : String!,
+     $minCM : Int!
    ){
-    dna{
-      treerecsearch(limit : $limit,
-             offset : $offset,
-             sortColumn: $sortColumn,
-             sortOrder : $sortOrder,
-             treeName : $treeName
+    
+      treerecsearch(pobj : {
+                            limit : $limit,
+                            offset : $offset,
+                            sortColumn: $sortColumn,
+                            sortOrder : $sortOrder,
+                            treeName : $treeName,
+                            surname : $surname,
+                            yearFrom : $yearStart,
+                            yearTo : $yearEnd,
+                            location : $location,
+                            origin : $origin,
+                            minCM : $minCM
+                          }
            ) {
        page
+       error
        totalRows
        rows {
            id
-           cM
+           cm
            personCount
            name
        }
      }
-    }
+    
   }
   `;
 
@@ -47,23 +65,29 @@ function AvailableTrees(props) {
     ];
 
     let queryString = getParams({
-         sortColumn : 'cM',
+         sortColumn : 'cm',
          sortOrder : 'desc',
          limit : 0,
          offset :0,
-         origin :selectedTreeData?.origin ?? '',
-         originDescription :selectedTreeData?.originDescription ?? '',
-         treeName : ''
+         origin :selectedTreeData?.originDescription ?? '',
+        // originDescription :selectedTreeData?.originDescription ?? '',
+         treeName : '',
+         yearStart : 1500,
+         yearEnd : 2000,
+         location : '',
+         surname : '',
+         minCM : 0
     });
 
     
 
-    var state = useAvTreesState(get_availableTrees,queryString,'dna','treerecsearch');
+    var state = useAvTreesState(get_availableTrees,queryString,'treerecsearch');
 
     state.headCells = headCells;
     state.title = 'Available Trees';
     state.setSelection();
 
+    setGreeting('hello2');
     //console.log('updated available trees ' + state.treeSelectionState);
 
 

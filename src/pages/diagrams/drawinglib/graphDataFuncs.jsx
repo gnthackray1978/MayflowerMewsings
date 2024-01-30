@@ -185,6 +185,8 @@ export const getPersonFromId = (id, rows)=>{
 
   export const populateDescendantObjects = (newRows)=>{
 
+    console.log('populateDescendantObjects'); 
+
     let generationIdx =0;
    
     while(generationIdx < newRows.length){

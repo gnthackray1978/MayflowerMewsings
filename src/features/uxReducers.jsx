@@ -33,8 +33,8 @@ export default (state = {
   showFuncListDialog :false,
   showTreeSelectorDialog :false,
   showDiagramControls : false,
-  selectedTreeData : {origin : '',originDescription : ''},
-  selectedTreePersonData : {personId:1},
+  selectedTreeData : {origin : 93, originDescription : '|21|Alan!Douglas'},
+  selectedTreePersonData : {personId:96},
   diagramId : 0,
   error: undefined
 }, action) => {

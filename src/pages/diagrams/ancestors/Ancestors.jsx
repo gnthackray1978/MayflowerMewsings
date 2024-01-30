@@ -68,7 +68,7 @@ function Ancestors(props) {
 
   var state = useMapState(GET_FTMView,'ancestorsearch',{
     personId : selectedTreePersonData,     
-    origin : selectedTreeData.origin
+    origin : selectedTreeData.originDescription // originally this was written to use tree id, changed to use origindescription because we now can have multiple trees.
   });
 
   state = {

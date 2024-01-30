@@ -4,7 +4,7 @@ import TreePeopleTable from './TreePeopleTable.jsx';
 import TreePeopleTableToolbar from './TreePeopleTableToolbar.jsx';
 import { connect } from "react-redux";
 import TableWrapper from '../../../Table/TableWrapper.jsx';
-import {useAvTreesState} from '../../../Table/useTable';
+import {useAvTreesState} from '../../../TreeSelector/Tables/AvailableTrees/useAvTreesState';
 
 import {gql} from '@apollo/client';
 
@@ -12,7 +12,7 @@ function TreePeople(props) {
 
     const {selectedTreeData} = props;
 
-    let origin ='';
+    let origin = {origin : 0, originDescription : ''};
 
     if(selectedTreeData)
       origin  = selectedTreeData;
@@ -27,20 +27,24 @@ function TreePeople(props) {
        $yearStart : Int!,
        $yearEnd : Int!,
        $location : String!,
-       $origin : String!
-     ){
-      dna{
-        ftmviewsearch(limit : $limit,
+       $origin : String!,
+       $minCM : Int!
+     ){      
+        ftmviewsearch(pobj : {
+                   limit : $limit,
                    offset : $offset,
                    sortColumn: $sortColumn,
                    sortOrder : $sortOrder,
                    surname : $surname,
-                   yearStart : $yearStart,
-                   yearEnd : $yearEnd,
+                   yearFrom : $yearStart,
+                   yearTo : $yearEnd,
                    location : $location,
-                   origin : $origin
+                   origin : $origin,
+                   minCM : $minCM
+              }
              ) {
          page
+         error
          totalRows
          rows {
              id
@@ -52,7 +56,7 @@ function TreePeople(props) {
              personId
          }
        }
-      }
+      
     }
     `;
 
@@ -72,8 +76,10 @@ function TreePeople(props) {
       yearEnd : 2000,
       location : '',
       surname : '',
-      origin : origin
-    },'dna','ftmviewsearch');
+      origin : origin.originDescription,
+     // originDescription : origin.originDescription,
+      minCM : 0
+    },'ftmviewsearch');
 
     state.headCells = headCells;
     state.title = 'Tree People';
