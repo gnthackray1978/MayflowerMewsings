@@ -9,14 +9,14 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
 import {funcSelected, funcDialogOpen , funcDialogClose} from "../uxActions.jsx";
-import { BrowserRouter as Router,  useHistory } from "react-router-dom";
+import { useNavigate  } from "react-router-dom";
 import {applicationListStyles} from '../styleFuncs.jsx';
 
 
 import { connect } from "react-redux";
  
 
-function GetFunctionList(appName, functions, funcSelected, closeFuncListDialog,history, funcName){
+function GetFunctionList(appName, functions, funcSelected, closeFuncListDialog,navigate, funcName){
 
 
   if(functions){
@@ -31,7 +31,7 @@ function GetFunctionList(appName, functions, funcSelected, closeFuncListDialog,h
 
                                 funcSelected(ev.currentTarget.dataset.id);
                                 closeFuncListDialog();
-                                history.push('/'+ev.currentTarget.dataset.page);
+                                navigate.push('/'+ev.currentTarget.dataset.page);
                             }}>
              <ListItemText primary={site.name} />
            </ListItem>);
@@ -55,9 +55,9 @@ function ApplicationList(props) {
   let funcList = props.stateObj.funcs;
   
 
-  let history = useHistory();
+  let navigate = useNavigate();
 
-  var items = GetFunctionList(appName,funcList,funcSelected,funcDialogClose,history);
+  var items = GetFunctionList(appName,funcList,funcSelected,funcDialogClose,navigate);
 
   return (
     <div  className={classes.inner}>
