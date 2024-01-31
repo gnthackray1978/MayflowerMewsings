@@ -26,52 +26,47 @@ import Descendants from './diagrams/descendants/Descendants';
 import FDDescendants from './diagrams/fddescendants/FDDescendants';
 import Tools from './tools/Tools.jsx';
 
-import {
-  Switch,
-  Route,
-  BrowserRouter as Router,
-
-} from "react-router-dom";
+import {Routes,Route} from "react-router-dom";
 
  
 
 function PageContainer(props) {
  
     return (
-      <Switch>
-          <Route exact path="/ftmpersons" render = {()=><FTMPersons/>}/>
-          <Route exact path="/ancestrymatches" component= {()=><Ancestrymatches/>}/>
-          <Route exact path="/ftmtrees" component= {()=><FTMTrees/>}/>
-          <Route exact path="/ftmdupes" component= {()=><FTMDupes/>}/>
+      <Routes>
+          <Route  path="/ftmpersons" render = {()=><FTMPersons/>}/>
+          <Route  path="/ancestrymatches" component= {()=><Ancestrymatches/>}/>
+          <Route  path="/ftmtrees" component= {()=><FTMTrees/>}/>
+          <Route  path="/ftmdupes" component= {()=><FTMDupes/>}/>
 
          
-          <Route exact path="/wnorfolk" component= {()=><WNorfolk/>}/>
-          <Route exact path="/wlincolnshire" component= {()=><WLincolnshire/>}/>
+          <Route  path="/wnorfolk" component= {()=><WNorfolk/>}/>
+          <Route  path="/wlincolnshire" component= {()=><WLincolnshire/>}/>
 
-          <Route exact path="/tsources" component= {()=><TSources/>}/>
-          <Route exact path="/tmarriages" component= {()=><TMarriages/>}/>
-          <Route exact path="/tbirths" component= {()=><TBirths/>}/>
+          <Route  path="/tsources" component= {()=><TSources/>}/>
+          <Route  path="/tmarriages" component= {()=><TMarriages/>}/>
+          <Route  path="/tbirths" component= {()=><TBirths/>}/>
 
-          <Route exact path="/huntswills" component= {()=><HuntsWills/>}/>
-          <Route exact path="/ptombstones" component= {()=><PTombstones/>}/>
-          <Route exact path="/yorkswills" component= {()=><YorksWills/>}/>
-          <Route exact path="/bmds" component= {()=><BMDs/>}/>
-          <Route exact path="/deeds" component= {()=><Deeds/>}/>
-          <Route exact path="/marriages" component= {()=><Marriages/>}/>
-          <Route exact path="/trees" component= {()=><Trees/>}/>
-          <Route exact path="/tools" component= {()=><Tools/>}/>
-          <Route exact path="/maps" component= {()=><MapPerson/>}/>
-          <Route exact path="/heatmaps" component= {()=><HeatMap/>}/>
-          <Route exact path="/groupplotter" component= {()=><GroupPlotter/>}/>
+          <Route  path="/huntswills" component= {()=><HuntsWills/>}/>
+          <Route  path="/ptombstones" component= {()=><PTombstones/>}/>
+          <Route  path="/yorkswills" component= {()=><YorksWills/>}/>
+          <Route  path="/bmds" component= {()=><BMDs/>}/>
+          <Route  path="/deeds" component= {()=><Deeds/>}/>
+          <Route  path="/marriages" component= {()=><Marriages/>}/>
+          <Route  path="/trees" component= {()=><Trees/>}/>
+          <Route  path="/tools" component= {()=><Tools/>}/>
+          <Route  path="/maps" component= {()=><MapPerson/>}/>
+          <Route  path="/heatmaps" component= {()=><HeatMap/>}/>
+          <Route  path="/groupplotter" component= {()=><GroupPlotter/>}/>
 
-          <Route exact path="/ancestors" component= {()=><Ancestors/>}/>
-          <Route exact path="/descendants" component= {()=><Descendants/>}/>
-          <Route exact path="/fddescendants" component= {()=><FDDescendants/>}/>
+          <Route  path="/ancestors" component= {()=><Ancestors/>}/>
+          <Route  path="/descendants" component= {()=><Descendants/>}/>
+          <Route  path="/fddescendants" component= {()=><FDDescendants/>}/>
           
 
           <Route path="/" component= {()=><Default/>}/>
 
-        </Switch>
+        </Routes>
       );
 
 

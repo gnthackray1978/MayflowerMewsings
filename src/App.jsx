@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { ThemeProvider, StyledEngineProvider, createTheme, makeStyles, adaptV4Theme } from '@mui/material/styles';
-import { BrowserRouter as Router } from "react-router-dom";
+import { BrowserRouter  } from "react-router-dom";
 import purple from '@mui/material/colors/purple';
 import green from '@mui/material/colors/green';
 import Index from './Index.jsx';
@@ -62,9 +62,8 @@ function App(){
     return (
       <StyledEngineProvider injectFirst>
         <ThemeProvider theme={theme}>        
-          <Router>
+       
               <Index/>
-          </Router>
         </ThemeProvider>
       </StyledEngineProvider>
     );

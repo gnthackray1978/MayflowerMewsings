@@ -7,17 +7,11 @@ import { useTheme } from '@mui/material/styles';
 import {siteDialog} from '../styleFuncs.jsx';
 import {PropTypes,func} from 'prop-types';
 import {applicationSelected, siteDialogOpen, siteDialogClose} from "../uxActions.jsx";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  useHistory
-} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
 import { connect } from "react-redux";
 
-function GetSiteList(results, applicationSelected, siteDialogClose,history){
+function GetSiteList(results, applicationSelected, siteDialogClose,navigate){
 
   if(results){
 
@@ -32,7 +26,7 @@ function GetSiteList(results, applicationSelected, siteDialogClose,history){
                             onClick ={(ev)=>{
                                 applicationSelected(ev.currentTarget.dataset.id);
                                 siteDialogClose();
-                                history.push('/'+ev.currentTarget.dataset.default);
+                                navigate.push('/'+ev.currentTarget.dataset.default);
                              //   console.log(`Button ${ev.currentTarget.dataset.default} clicked`);
                             }}>
              <ListItemText primary={site.name} />
@@ -60,10 +54,10 @@ function SiteDialog(props) {
     const classes = siteDialog(theme);
 
     let AppList = props.stateObj.sites;
-    let history = useHistory();
+    let navigate = useNavigate();
 
 
-    var items = GetSiteList(AppList, applicationSelected, siteDialogClose,history);
+    var items = GetSiteList(AppList, applicationSelected, siteDialogClose,navigate);
 
     return (
       <Dialog onClose={siteDialogClose} aria-labelledby="simple-dialog-title" open = {ShowAppListDialog}>
