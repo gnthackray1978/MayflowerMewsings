@@ -8,13 +8,12 @@ import Link from '@mui/material/Link';
 import { connect } from "react-redux";
  import {useSideBarStyles} from '../../../../pages/table/styleFuncs.jsx';
 import TableHeaderFromState  from '../../../Table/TableHeaderFromState.jsx';
-import {setTreePerson} from "../../../uxActions.jsx";
 import { useTheme } from '@mui/material/styles';
 
 
 function TreePeopleTable(props){
 
-  const {state, setTreePerson} = props;
+  const {state} = props;
 
   const theme = useTheme();
   
@@ -43,7 +42,9 @@ function TreePeopleTable(props){
               return (
                 <TableRow
                   hover
-                  onClick={(event) => setTreePerson(row)}
+                  onClick={(event) => 
+                    state.setTreePerson(row)
+                  }
                   role="checkbox"
                   aria-checked={isItemSelected}
                   tabIndex={-1}
@@ -77,13 +78,13 @@ function TreePeopleTable(props){
 
 const mapStateToProps = state => {
   return {
-    treeId : state.ux.treeId
+  //  treeId : state.ux.treeId
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    setTreePerson: (person) => dispatch(setTreePerson(person)),
+  //  setTreePerson: (person) => dispatch(setTreePerson(person)),
   };
 };
 

@@ -50,7 +50,7 @@ function AvailableTreesTable(props) {
                       <TableRow
                         hover 
                         onClick={(event) => {                        
-                          state.setTreeSelectionState(event,state.rows, row, false);
+                          state.setTreeSelectionState(row.id);
                         }}
                         role="checkbox"
                         aria-checked={isItemSelected}

@@ -1,6 +1,6 @@
 import React  from 'react';
 import { useQuery } from '@apollo/client';
-import {getParams,setParams} from '../../../Table/qryStringFuncs';
+import {useSearchParamsState} from '../../../../shared/useSearchParamsState.jsx';
 import { errorFormatter } from '../../../../shared/common';
 
 export  function useAvTreesState(ReturnData,defaultParams, subSchema) {
@@ -8,14 +8,17 @@ export  function useAvTreesState(ReturnData,defaultParams, subSchema) {
   //const [initialLoad, setInitialLoad] = React.useState(false);
   const [order, setOrder] = React.useState(defaultParams.sortOrder);
   const [sortColumn, setSortColumn] = React.useState(defaultParams.sortColumn);
-  const [selected, setSelected] = React.useState([]);
-  const [origin, setOrigin] = React.useState(defaultParams.origin);
-  const [originDescription, setOriginDescription] = React.useState(defaultParams.originDescription);
-  //const [treeSelectionState, setTreeState] = React.useState(defaultParams.treeSelectionState);
+//  const [selected, setSelected] = React.useState([]);
+  //const [origin, setOrigin] = React.useState(defaultParams.origin);
+  //const [originDescription, setOriginDescription] = React.useState(defaultParams.originDescription);
+  
+  const [origins, setOrigin] = useSearchParamsState("origins", defaultParams.origin);
+  const [persons, setPerson] = useSearchParamsState("persons", 0);
+
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(50);
 
-  const [totalRecords, setTotalRecords] = React.useState(0);
+  //const [totalRecords, setTotalRecords] = React.useState(0);
 
   const [filterParams, setFilterParams] = React.useState(defaultParams);
 
@@ -33,80 +36,6 @@ export  function useAvTreesState(ReturnData,defaultParams, subSchema) {
     }
     setSelected([]);
   };
-
-  const setTreeSelectionState = (event, rows, row, singleSelect) => {
-
-    let name = row.id;
-
-    const makeOriginString = (rows, previouslySelectedIds)=>{
-
-      //console.log('makeOriginString..');
-   
-       let origins =[];
-   
-       if(!previouslySelectedIds){
-         return '';
-       }
-   
-       rows.forEach(row => {
-         previouslySelectedIds.forEach(prevSelId => {
-           if(row.id == prevSelId){
-             if(!origins.includes(row.name))
-               origins.push(row.name);
-           }
-         });
-   
-       });
-   
-       var newString = origins.join(' ');
-   
-       //console.log(newString);
-   
-       return newString;
-   
-    };
-   
-
-    //console.log('handleclick');
-    if(singleSelect){
-      
-      selected.splice(0, selected.length);
-      selected.push(name);
-      setSelected(selected);
-      return selected;
-    }
-    else{
-      const selectedIndex = selected.indexOf(name);
-      let newSelected = [];
-
-      if (selectedIndex === -1) {
-        newSelected = newSelected.concat(selected, name);
-      } else if (selectedIndex === 0) {
-        newSelected = newSelected.concat(selected.slice(1));
-      } else if (selectedIndex === selected.length - 1) {
-        newSelected = newSelected.concat(selected.slice(0, -1));
-      } else if (selectedIndex > 0) {
-        newSelected = newSelected.concat(
-          selected.slice(0, selectedIndex),
-          selected.slice(selectedIndex + 1),
-        );
-      }
-
-   //   let originString = makeOriginString(rows,newSelected, row);
-
-    //  let treeState = {origin : newSelected.join(','),originDescription : originString};
-
-      setSelected(newSelected);
-      //setTreeState(treeState);
-      setOrigin(newSelected.join(','));
-      setOriginDescription(makeOriginString(rows,newSelected, row));
-
-      console.log('newSelected',newSelected);
-    }
-
-  };
-  
-  const isSelected = (name) => selected.indexOf(name) !== -1;
 
   const handleChangePage = (event, newPage) => {
 
@@ -172,48 +101,87 @@ export  function useAvTreesState(ReturnData,defaultParams, subSchema) {
 
   };
 
-  const setSelection = ()=>{
-    
-     console.log('setSelection called');
- 
-    // if(!originDescription || !origin) return;
- 
-     //set the query string
- 
-    // setParams({'origin': treeSelectionState.origin});
-     setParams({'origin': origin, 'originDescription': originDescription});
- 
-     //break out if selection is already set, we don't want to get 
-     //as into an infinite loop which is what happens if selected is repeatdly set
-     //if(originDescription != '') return;    
-     if(selected.length != 0) return;
-    // if(!rows || rows.length==0) return;
- 
-     //tidy up the origin string
-     let strOrigin = String(origin);
- 
-     if(strOrigin != ""){
 
-      // strOrigin.replace('NaN',',');
+  const isSelected = (treeId) =>{ 
 
-       strOrigin.replace(',,',',');
+    //let newSelected = [];
+
+    let selected = origins?.split(',') ??[];
+
+    const selectedIndex = selected.indexOf(String(treeId));
+
+    return selectedIndex !== -1;
+
+  }
+
+  const makeIdString = (ids, previouslySelectedIds)=>{
+
+    //console.log('makeOriginString..');
  
-       let idList = String(strOrigin).split(',').map(Number);
-     
-       if(idList.length >0)
-         setSelected(idList);
-     
+     let origins =[];
+ 
+     if(!previouslySelectedIds){
+       return '';
      }
-     
+ 
+     ids.forEach(row => {
+       previouslySelectedIds.forEach(prevSelId => {
+         if(id == prevSelId){
+           if(!origins.includes(id))
+             origins.push(id);
+         }
+       });
+ 
+     });
+ 
+     var newString = origins.join(' ');
+ 
+     //console.log(newString);
+ 
+     return newString;
  
   };
+
+  const setTreeSelectionState = (treeId) => {
+    
+    treeId = String(treeId);
+    let newSelected = [];
+    let selected = origins?.split(',') ??[];
+
+    const selectedIndex = selected.indexOf(treeId);
+    
+
+    if (selectedIndex === -1) {
+      newSelected = newSelected.concat(selected, treeId);
+    } else if (selectedIndex === 0) {
+      newSelected = newSelected.concat(selected.slice(1));
+    } else if (selectedIndex === selected.length - 1) {
+      newSelected = newSelected.concat(selected.slice(0, -1));
+    } else if (selectedIndex > 0) {
+      newSelected = newSelected.concat(
+        selected.slice(0, selectedIndex),
+        selected.slice(selectedIndex + 1),
+      );
+    }
+
+    setOrigin(newSelected.join(','));
+    
+    console.log('newSelected',newSelected);
+  };
+
+  const setTreePerson = (row) => {
+    console.log('setTreePerson called');
+    console.log(person);
+  };
+
  
+  console.log('origin set to: ' + origins);
 
   filterParams.limit =rowsPerPage;
   filterParams.offset = (page* rowsPerPage) ;
   filterParams.sortColumn = sortColumn;
   filterParams.sortOrder = order;
-  
+  filterParams.origin = origins;
 
   const  { loading, networkStatus,error, data, refetch } = useQuery(ReturnData, {
     // errorPolicy: 'all' ,
@@ -247,10 +215,8 @@ export  function useAvTreesState(ReturnData,defaultParams, subSchema) {
   let errors = errorFormatter(loading,error, internalServerError);
 
   return {
-  //  initialLoad,setInitialLoad,
     order,
     sortColumn,
-    selected,
     page,
     rowsPerPage,
     filterParams,
@@ -260,15 +226,12 @@ export  function useAvTreesState(ReturnData,defaultParams, subSchema) {
     handleChangeRowsPerPage,
     isSelected,
     filterFieldChanged,
-    setSelected,
-    setSelection,
     setTreeSelectionState,
     loading, 
     errors, 
     data,
     rows,
     totalRows,
-    origin,
-    originDescription
+    origin
   };
 }

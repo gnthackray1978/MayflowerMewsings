@@ -2,18 +2,13 @@ import React, { Component , useEffect} from 'react';
 import AvailableTreesTable from './AvailableTreesTable.jsx'
 import AvailableTreesToolbar from './AvailableTreesToolbar.jsx'
 import TableWrapper from '../../../../features/Table/TableWrapper.jsx'
-import {getParams} from '../../../../features/Table/qryStringFuncs.jsx';
 import {useAvTreesState} from './useAvTreesState';
 import {gql} from '@apollo/client';
 import {setTree} from "../../../uxActions.jsx";
 import { connect } from "react-redux";
-import {useSearchParamsState} from '../../../../shared/useSearchParamsState.jsx';
+
 
 function AvailableTrees(props) {
-  
-  const [greeting, setGreeting] = useSearchParamsState("greeting", "hello");
-
-  const {setTree,selectedTreeData} = props;
 
   const get_availableTrees = gql`
   query Dna(
@@ -63,13 +58,13 @@ function AvailableTrees(props) {
         { id: 'PersonCount', numeric: false, disablePadding: true, label: 'Person Count' },
         { id: 'CM', numeric: false, disablePadding: true, label: 'CM' }
     ];
-
-    let queryString = getParams({
+// selectedTreeData : {origin : 93, originDescription : '|21|Alan!Douglas'},
+    let queryString = {
          sortColumn : 'cm',
          sortOrder : 'desc',
          limit : 0,
          offset :0,
-         origin :selectedTreeData?.originDescription ?? '',
+         origin :"93",
         // originDescription :selectedTreeData?.originDescription ?? '',
          treeName : '',
          yearStart : 1500,
@@ -77,7 +72,7 @@ function AvailableTrees(props) {
          location : '',
          surname : '',
          minCM : 0
-    });
+    };
 
     
 
@@ -85,18 +80,6 @@ function AvailableTrees(props) {
 
     state.headCells = headCells;
     state.title = 'Available Trees';
-    state.setSelection();
-
-    setGreeting('hello2');
-    //console.log('updated available trees ' + state.treeSelectionState);
-
-
-
-    useEffect(() => {      
-      //console.log('updated available trees useffect');
-      setTree({origin : state.origin, 
-        originDescription: state.originDescription});
-    }, [state, setTree]);
 
     return (
         <div>
