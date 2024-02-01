@@ -10,12 +10,12 @@ import {gql} from '@apollo/client';
 
 function TreePeople(props) {
 
-    const {selectedTreeData} = props;
+ //   const {selectedTreeData} = props;
 
-    let origin = {origin : 0, originDescription : ''};
+   // let origin = {origin : 0, originDescription : ''};
 
-    if(selectedTreeData)
-      origin  = selectedTreeData;
+   // if(selectedTreeData)
+   //   origin  = selectedTreeData;
 
     const GET_FTMView = gql`
     query Dna(
@@ -76,8 +76,8 @@ function TreePeople(props) {
       yearEnd : 2000,
       location : '',
       surname : '',
-      origin : origin.originDescription,
-     // originDescription : origin.originDescription,
+      origin : '', // origin id is basically the tree id - todo rename!
+      originDescription : '', //string representation of the origin id
       minCM : 0
     },'ftmviewsearch');
 
@@ -97,7 +97,7 @@ function TreePeople(props) {
 
 const mapStateToProps = state => {
   return {
-    selectedTreeData : state.ux.selectedTreeData
+   // selectedTreeData : state.ux.selectedTreeData
   };
 };
 

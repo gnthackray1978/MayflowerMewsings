@@ -13,7 +13,7 @@ export  function useAvTreesState(ReturnData,defaultParams, subSchema) {
   //const [originDescription, setOriginDescription] = React.useState(defaultParams.originDescription);
   
   const [origins, setOrigin] = useSearchParamsState("origins", defaultParams.origin);
-  const [persons, setPerson] = useSearchParamsState("persons", 0);
+  const [persons, setPerson] = useSearchParamsState("persons", '');
 
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(50);
@@ -102,6 +102,18 @@ export  function useAvTreesState(ReturnData,defaultParams, subSchema) {
   };
 
 
+  const isPersonSelected = (personId) =>{ 
+
+    //we dont have multiple selection for persons yet 
+    //but perhaps we will in the future
+    let selected = persons?.split(',') ??[];
+
+    const selectedIndex = selected.indexOf(String(personId));
+
+    return selectedIndex !== -1;
+
+  }
+
   const isSelected = (treeId) =>{ 
 
     //let newSelected = [];
@@ -142,8 +154,8 @@ export  function useAvTreesState(ReturnData,defaultParams, subSchema) {
  
   };
 
-  const setTreeSelectionState = (treeId) => {
-    
+  const setTree = (treeId) => {
+    console.log('setTree called');
     treeId = String(treeId);
     let newSelected = [];
     let selected = origins?.split(',') ??[];
@@ -166,12 +178,32 @@ export  function useAvTreesState(ReturnData,defaultParams, subSchema) {
 
     setOrigin(newSelected.join(','));
     
-    console.log('newSelected',newSelected);
+    //console.log('newSelected',newSelected);
   };
 
-  const setTreePerson = (row) => {
-    console.log('setTreePerson called');
-    console.log(person);
+  const setTreePerson = (personId) => {
+    // this is used by diagram generating code.
+    personId = String(personId);
+    let newSelected = [];
+    let selected = persons?.split(',') ??[];
+
+    const selectedIndex = selected.indexOf(personId);
+    
+
+    if (selectedIndex === -1) {
+      newSelected = newSelected.concat(selected, personId);
+    } else if (selectedIndex === 0) {
+      newSelected = newSelected.concat(selected.slice(1));
+    } else if (selectedIndex === selected.length - 1) {
+      newSelected = newSelected.concat(selected.slice(0, -1));
+    } else if (selectedIndex > 0) {
+      newSelected = newSelected.concat(
+        selected.slice(0, selectedIndex),
+        selected.slice(selectedIndex + 1),
+      );
+    }
+
+    setPerson(newSelected.join(','));
   };
 
  
@@ -193,10 +225,7 @@ export  function useAvTreesState(ReturnData,defaultParams, subSchema) {
      // }
   });
 
-  console.log('loading : ' + loading + ' network status: ' 
-                           + networkStatus + ' error:' 
-                           + error + ' data: ' 
-                           + data);
+  //console.log('loading : ' + loading + ' network status: '   + data);
 
   var rows = [];
   var totalRows = 0;  
@@ -225,8 +254,10 @@ export  function useAvTreesState(ReturnData,defaultParams, subSchema) {
     handleChangePage,
     handleChangeRowsPerPage,
     isSelected,
+    isPersonSelected,
     filterFieldChanged,
-    setTreeSelectionState,
+    setTree,
+    setTreePerson,
     loading, 
     errors, 
     data,

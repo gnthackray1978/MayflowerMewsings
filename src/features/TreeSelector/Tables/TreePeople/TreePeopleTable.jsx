@@ -35,21 +35,27 @@ function TreePeopleTable(props){
 
             state.rows.map((row, index) => {
           //    console.log(row.id);
-              const isItemSelected = state.isSelected(row.id);
+              const isItemSelected = state.isPersonSelected(row.id);
               const labelId = `treepeople-table-checkbox-${index}`;
+
+              const rowStyle = {                     
+                backgroundColor: isItemSelected ? 'blue' : '',                      
+              };
+
               const avgYear = (Number(row.yearTo) + Number(row.yearFrom)) /2;
               const name = row.firstName + ' ' + row.surname;
               return (
                 <TableRow
                   hover
                   onClick={(event) => 
-                    state.setTreePerson(row)
+                    state.setTreePerson(row.id)
                   }
                   role="checkbox"
                   aria-checked={isItemSelected}
                   tabIndex={-1}
                   key={row.id}
                   selected={isItemSelected}
+                  style = {rowStyle} 
                 >
                   <TableCell padding="none">{avgYear}</TableCell>
 

@@ -50,16 +50,14 @@ function AvailableTreesTable(props) {
                       <TableRow
                         hover 
                         onClick={(event) => {                        
-                          state.setTreeSelectionState(row.id);
+                          state.setTree(row.id);
                         }}
                         role="checkbox"
                         aria-checked={isItemSelected}
                         tabIndex={-1}
                         key={row.id}
                         selected={isItemSelected}
-                        style = {rowStyle}
-                        
-                      >
+                        style = {rowStyle} >
 
                         <TableCell  padding="none">
                             <Link href= 'https://uk.yahoo.com/?guccounter=1' onClick={ (event) =>
