@@ -17,7 +17,7 @@ function Ancestors(props) {
 
   //const {selectedTreeData,selectedTreePersonData} = props;
   const [origins, setOrigin] = useSearchParamsState("origins", '93');
-  const [persons, setPerson] = useSearchParamsState("persons", '116');
+  const [persons, setPerson] = useSearchParamsState("persons", '6513'); //147 = 3x 
   
   const GET_FTMView = gql`
   query Diagram(      

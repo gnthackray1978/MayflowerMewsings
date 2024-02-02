@@ -1149,88 +1149,58 @@ AncTree.prototype = {
             while (personIdx < this.generations[genidx].length) {
                 var _family0 = this.familySpanLines[genidx][personIdx];
 
-              
                 _family0 = [];
-              
+                           
+                if (this.generations.length <= (genidx + 1) 
+                    || this.generations[genidx][personIdx].Parents.length == 0) {
+                        this.familySpanLines[genidx][personIdx] = _family0;
+                        personIdx++;
+                    continue;
+                }
+
+
+                // top middle of child
                 middleTopChild = this.generations[genidx][personIdx].Y1;// + 10
-                if (this.generations.length > (genidx + 1)) {
-                    parentHeight = (this.generations[genidx + 1][0].Y2 - this.generations[genidx + 1][0].Y1);
-                    bottomParent = this.generations[genidx + 1][0].Y1 + parentHeight;// + 10
-                    distanceBetweenGens = (this.generations[genidx][personIdx].Y1 - this.generations[genidx + 1][0].Y2);
 
-                    if (this.generations[genidx][personIdx].FatherIdx >-1 || this.generations[genidx][personIdx].MotherIdx > -1) {
-                        // top middle of child
-                        middleXChild = (this.generations[genidx][personIdx].X1 + this.generations[genidx][personIdx].X2) / 2;
-                        middleGeneration = this.generations[genidx][personIdx].Y1 - (distanceBetweenGens / 2) + 10;
-                        // move to top and middle of child
-                        
-                        _family0[_family0.length] = new Array(middleXChild, middleTopChild);
-
-                        // move to middle of generations about child
-                        
-                        _family0[_family0.length] = new Array(middleXChild, middleGeneration);
-
-                        var patIdx = this.generations[genidx][personIdx].FatherIdx;
-                        if (patIdx != -1) {
-                            // move to middle generation under parent
-                            middleParent = (this.generations[genidx + 1][patIdx].X1 + this.generations[genidx + 1][patIdx].X2) / 2;
+                parentHeight = (this.generations[genidx + 1][0].Y2 - this.generations[genidx + 1][0].Y1);
+                bottomParent = this.generations[genidx + 1][0].Y1 + parentHeight;// + 10
+                distanceBetweenGens = (this.generations[genidx][personIdx].Y1 - this.generations[genidx + 1][0].Y2);
 
 
-                        
-                            _family0[_family0.length] = new Array(middleParent, middleGeneration);
+                middleXChild = (this.generations[genidx][personIdx].X1 + this.generations[genidx][personIdx].X2) / 2;
+                middleGeneration = this.generations[genidx][personIdx].Y1 - (distanceBetweenGens / 2) + 10;
+                // move to top and middle of child
+                
+                _family0[_family0.length] = new Array(middleXChild, middleTopChild);
 
-                            if (this.drawingHeight > 200 || this.generations.length == 2) {
-                                // move to bottom of parent
-                        
-                                _family0[_family0.length] = new Array(middleParent, bottomParent);
-                            }
-                            else {
-                        
-                                _family0[_family0.length] = new Array(middleParent, middleGeneration - 4);
-                            }
-                            // move to middle generation under parent
-                        
-                            _family0[_family0.length] = new Array(middleParent, middleGeneration);
-                            // move to middle of child
-                        
-                            _family0[_family0.length] = new Array(middleXChild, middleGeneration);
-                            // move to top and middle of child
-                        
-                            _family0[_family0.length] = new Array(middleXChild, middleTopChild);
-                        }
-                        patIdx = this.generations[genidx][personIdx].MotherIdx;
-                        if (patIdx != -1) {
-                            middleParent = (this.generations[genidx + 1][patIdx].X1 + this.generations[genidx + 1][patIdx].X2) / 2;
-                            // move to middle of generations about child
-                        
-                            _family0[_family0.length] = new Array(middleXChild, middleGeneration);
+                // move to middle of generations about child
+                
+                _family0[_family0.length] = new Array(middleXChild, middleGeneration);
 
-                        
-                            _family0[_family0.length] = new Array(middleParent, middleGeneration);
+                for(var parent of this.generations[genidx][personIdx].Parents){
+                    middleParent = (parent.X1 + parent.X2) / 2;
+                
+                    _family0[_family0.length] = new Array(middleParent, middleGeneration);
 
-                            if (this.drawingHeight > 200 || this.generations.length == 2) {
-                                // move to bottom of parent
-                        
-                                _family0[_family0.length] = new Array(middleParent, bottomParent);
-                            }
-                            else {
-                        
-                                _family0[_family0.length] = new Array(middleParent, middleGeneration - 4);
-                            }
-                            // move to middle generation under parent
-                        
-                            _family0[_family0.length] = new Array(middleParent, middleGeneration);
-                            // move to middle of child
-                        
-                            _family0[_family0.length] = new Array(middleXChild, middleGeneration);
-                            // move to top and middle of child
-
-                        
-                            _family0[_family0.length] = new Array(middleXChild, middleTopChild);
-                        } 
-                    } 
-                } 
-
+                    if (this.drawingHeight > 200 || this.generations.length == 2) {
+                        // move to bottom of parent
+                
+                        _family0[_family0.length] = new Array(middleParent, bottomParent);
+                    }
+                    else {
+                
+                        _family0[_family0.length] = new Array(middleParent, middleGeneration - 4);
+                    }
+                    // move to middle generation under parent
+                
+                    _family0[_family0.length] = new Array(middleParent, middleGeneration);
+                    // move to middle of child
+                
+                    _family0[_family0.length] = new Array(middleXChild, middleGeneration);
+                    // move to top and middle of child
+                
+                    //_family0[_family0.length] = new Array(middleXChild, middleTopChild-10);
+                }
 
                 this.familySpanLines[genidx][personIdx] = _family0;
 

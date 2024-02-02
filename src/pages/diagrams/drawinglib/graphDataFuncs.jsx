@@ -128,7 +128,8 @@ export const getPersonFromId = (id, rows)=>{
 
     for(var gen of newRows){
         for(var person of gen){
-
+              person.Parents = [];
+              
               for(var childIndex of person.ChildIdxLst.filter(f=>f.childIndex)){           
                 let child = newRows[person.GenerationIdx-1][childIndex];
     
@@ -138,17 +139,23 @@ export const getPersonFromId = (id, rows)=>{
     
               var father = getPersonFromId(person.FatherId, newRows);
       
-              if(father)
+              if(father){
                 person.Father = father;
-              else
+                person.Parents.push(father);  
+              }
+              else{
                 person.FatherIdx = -1;
-
+              }
               var mother = getPersonFromId(person.MotherId, newRows);
       
-              if(mother)
+              if(mother){
                 person.Mother = mother;
-              else
+                person.Parents.push(mother);  
+              }
+              else{
                 person.MotherIdx = -1;
+              }
+                
 
         }
 
