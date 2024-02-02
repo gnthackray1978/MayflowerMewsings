@@ -34,37 +34,37 @@ function PageContainer(props) {
  
     return (
       <Routes>
-          <Route  path="/ftmpersons" render = {()=><FTMPersons/>}/>
-          <Route  path="/ancestrymatches" component= {()=><Ancestrymatches/>}/>
-          <Route  path="/ftmtrees" component= {()=><FTMTrees/>}/>
-          <Route  path="/ftmdupes" component= {()=><FTMDupes/>}/>
+          <Route  path="/ftmpersons" element = {<FTMPersons/>}/>
+          <Route  path="/ancestrymatches" element= {<Ancestrymatches/>}/>
+          <Route  path="/ftmtrees" element= {<FTMTrees/>}/>
+          <Route  path="/ftmdupes" element= {<FTMDupes/>}/>
 
          
-          <Route  path="/wnorfolk" component= {()=><WNorfolk/>}/>
-          <Route  path="/wlincolnshire" component= {()=><WLincolnshire/>}/>
+          <Route  path="/wnorfolk" element= {<WNorfolk/>}/>
+          <Route  path="/wlincolnshire" element= {<WLincolnshire/>}/>
 
-          <Route  path="/tsources" component= {()=><TSources/>}/>
-          <Route  path="/tmarriages" component= {()=><TMarriages/>}/>
-          <Route  path="/tbirths" component= {()=><TBirths/>}/>
+          <Route  path="/tsources" element= {<TSources/>}/>
+          <Route  path="/tmarriages" element= {<TMarriages/>}/>
+          <Route  path="/tbirths" element= {<TBirths/>}/>
 
-          <Route  path="/huntswills" component= {()=><HuntsWills/>}/>
-          <Route  path="/ptombstones" component= {()=><PTombstones/>}/>
-          <Route  path="/yorkswills" component= {()=><YorksWills/>}/>
-          <Route  path="/bmds" component= {()=><BMDs/>}/>
-          <Route  path="/deeds" component= {()=><Deeds/>}/>
-          <Route  path="/marriages" component= {()=><Marriages/>}/>
-          <Route  path="/trees" component= {()=><Trees/>}/>
-          <Route  path="/tools" component= {()=><Tools/>}/>
-          <Route  path="/maps" component= {()=><MapPerson/>}/>
-          <Route  path="/heatmaps" component= {()=><HeatMap/>}/>
-          <Route  path="/groupplotter" component= {()=><GroupPlotter/>}/>
+          <Route  path="/huntswills" element= {<HuntsWills/>}/>
+          <Route  path="/ptombstones" element= {<PTombstones/>}/>
+          <Route  path="/yorkswills" element= {<YorksWills/>}/>
+          <Route  path="/bmds" element= {<BMDs/>}/>
+          <Route  path="/deeds" element= {<Deeds/>}/>
+          <Route  path="/marriages" element= {<Marriages/>}/>
+          <Route  path="/trees" element= {<Trees/>}/>
+          <Route  path="/tools" element= {<Tools/>}/>
+          <Route  path="/maps" element= {<MapPerson/>}/>
+          <Route  path="/heatmaps" element= {<HeatMap/>}/>
+          <Route  path="/groupplotter" element= {<GroupPlotter/>}/>
 
-          <Route  path="/ancestors" component= {()=><Ancestors/>}/>
-          <Route  path="/descendants" component= {()=><Descendants/>}/>
-          <Route  path="/fddescendants" component= {()=><FDDescendants/>}/>
+          <Route  path="/ancestors" element= {<Ancestors/>}/>
+          <Route  path="/descendants" element= {<Descendants/>}/>
+          <Route  path="/fddescendants" element= {<FDDescendants/>}/>
           
 
-          <Route path="/" component= {()=><Default/>}/>
+          <Route path="/" element= {<Default/>}/>
 
         </Routes>
       );

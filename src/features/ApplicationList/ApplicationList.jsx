@@ -31,7 +31,7 @@ function GetFunctionList(appName, functions, funcSelected, closeFuncListDialog,n
 
                                 funcSelected(ev.currentTarget.dataset.id);
                                 closeFuncListDialog();
-                                navigate.push('/'+ev.currentTarget.dataset.page);
+                                navigate('/'+ev.currentTarget.dataset.page);
                             }}>
              <ListItemText primary={site.name} />
            </ListItem>);
