@@ -323,8 +323,22 @@ AncTree.prototype = {
     SetZoom: function (percentage) {
 
 
+        var x = this.bt_screenWidth / 2;
+        var y = this.bt_screenHeight / 2;
+
+        this.SetMouse(x, y);
+
+ 
+        this.GetPercDistances();
+        this.mouseXPercLocat = this.percX1;
+        this.mouseYPercLocat = this.percY1;
+        
+
+
         if (percentage !== 0.0) {
         
+            console.log('centre vertical point1: ' + this.centreVerticalPoint + ' centre point: ' + this.centrePoint);
+
             var _percLocal_x = 0.0;
             var _percLocal_y = 0.0;
 
@@ -332,7 +346,7 @@ AncTree.prototype = {
             this.zoomPercentage += percentage;
             this.zoomLevel += percentage;
 
-            this.layout.zoomLayoutProps(percentage);
+            this.layout.zoomLayoutProps(this.zoomPercentage);
 
             this.ComputeLocations();
 
@@ -344,6 +358,8 @@ AncTree.prototype = {
             this.centreVerticalPoint += (this.drawingHeight / 100) * (_percLocal_y - this.mouseYPercLocat);
 
             this.centrePoint += (this.drawingWidth / 100) * (_percLocal_x - this.mouseXPercLocat);
+
+            console.log('centre vertical point2: ' + this.centreVerticalPoint + ' centre point: ' + this.centrePoint);
 
             this.ComputeLocations();
         } //end percentage ==0.0)
@@ -357,6 +373,8 @@ AncTree.prototype = {
         this.GetPercDistances();
         this.mouseXPercLocat = this.percX1;
         this.mouseYPercLocat = this.percY1;
+
+        console.log('setzoomstart: ' + this.mouseXPercLocat + ' ' + this.mouseYPercLocat);
     },
     GetPercDistances: function () {
 
@@ -544,8 +562,8 @@ AncTree.prototype = {
         if (this.zoomAmount > 7)
             this.zoomAmount--;
 
-        this.SetZoom(this.zoomAmount - (this.zoomAmount * 2));
-        //  SetZoom(zoomAmount - (zoomAmount * 2));
+       this.SetZoom(this.zoomAmount - (this.zoomAmount * 2));
+      
     },
     CalcZoomLevel: function (zoomPercentage) {
         var _retVal = 0;
@@ -1163,7 +1181,7 @@ AncTree.prototype = {
                             //familySpanLines[genidx][personIdx].Add(new TreePoint(middleParent, middleGeneration));
                             _family0[_family0.length] = new Array(middleParent, middleGeneration);
 
-                            if (this.drawingHeight > 200) {
+                            if (this.drawingHeight > 200 || this.generations.length == 2) {
                                 // move to bottom of parent
                                 //familySpanLines[genidx][personIdx].Add(new TreePoint(middleParent, bottomParent));
                                 _family0[_family0.length] = new Array(middleParent, bottomParent);
@@ -1192,7 +1210,7 @@ AncTree.prototype = {
                             //familySpanLines[genidx][personIdx].Add(new TreePoint(middleParent, middleGeneration));
                             _family0[_family0.length] = new Array(middleParent, middleGeneration);
 
-                            if (this.drawingHeight > 200) {
+                            if (this.drawingHeight > 200 || this.generations.length == 2) {
                                 // move to bottom of parent
                                 //familySpanLines[genidx][personIdx].Add(new TreePoint(middleParent, bottomParent));
                                 _family0[_family0.length] = new Array(middleParent, bottomParent);

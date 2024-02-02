@@ -308,7 +308,7 @@ DescTree.prototype = {
 
         if (percentage !== 0.0) {
             var _workingtp = 0.0; 
-
+            console.log('centre vertical point1: ' + this.centreVerticalPoint + ' centre point: ' + this.centrePoint);
             //zoom drawing components
             this.zoomPercentage += percentage;
             this.zoomLevel += percentage;
@@ -336,6 +336,8 @@ DescTree.prototype = {
             this.centreVerticalPoint += (drawingHeight / 100) * (percentages.percY1 - this.mouseYPercLocat);
 
             this.centrePoint += (drawingWidth / 100) * (percentages.percX1 - this.mouseXPercLocat);
+
+            console.log('centre vertical point2: ' + this.centreVerticalPoint + ' centre point: ' + this.centrePoint);
 
             this.ComputeLocations();
         } //end percentage ==0.0)
@@ -645,6 +647,8 @@ DescTree.prototype = {
 
             this.mouseXPercLocat = percentages.percX1;
             this.mouseYPercLocat = percentages.percY1;
+
+            console.log('setzoomstart: ' + this.mouseXPercLocat + ' ' + this.mouseYPercLocat);
 
             this.DrawTree();
         }

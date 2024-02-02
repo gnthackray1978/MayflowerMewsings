@@ -9,17 +9,19 @@ import {gql} from '@apollo/client';
 
 import { connect } from "react-redux";
 import {useMapState} from '../useMap';
+import {useSearchParamsState} from '../useSearchParamsState.jsx';
 
 
 
 function Ancestors(props) {
 
-  const {selectedTreeData,selectedTreePersonData} = props;
-
+  //const {selectedTreeData,selectedTreePersonData} = props;
+  const [origins, setOrigin] = useSearchParamsState("origins", '93');
+  const [persons, setPerson] = useSearchParamsState("persons", '116');
   
   const GET_FTMView = gql`
   query Diagram(      
-    $personId : Int!,
+    $personId : String!,
     $origin : String!
   ){    
       ancestorsearch( pobj : {
@@ -67,8 +69,8 @@ function Ancestors(props) {
   console.log('setup query');
 
   var state = useMapState(GET_FTMView,'ancestorsearch',{
-    personId : selectedTreePersonData,     
-    origin : selectedTreeData.originDescription // originally this was written to use tree id, changed to use origindescription because we now can have multiple trees.
+    personId : persons,     
+    origin : origins
   });
 
   state = {
@@ -82,7 +84,7 @@ function Ancestors(props) {
  
   const graph = new AncTree();
 
-  graph.CreateWithDefaultValues(1,data.newRows);
+  graph.CreateWithDefaultValues(Number(persons),data.newRows);
 
   return ( 
       <div>
@@ -99,8 +101,8 @@ function Ancestors(props) {
 const mapStateToProps = state => {
   return { 
 
-    selectedTreePersonData : state.ux.selectedTreePersonData.personId != 0 ? state.ux.selectedTreePersonData.personId :3217,
-    selectedTreeData : state.ux.selectedTreeData != '' ? state.ux.selectedTreeData : '_34_Kennington'
+   // selectedTreePersonData : state.ux.selectedTreePersonData.personId != 0 ? state.ux.selectedTreePersonData.personId :3217,
+   // selectedTreeData : state.ux.selectedTreeData != '' ? state.ux.selectedTreeData : '_34_Kennington'
   };
 };
 

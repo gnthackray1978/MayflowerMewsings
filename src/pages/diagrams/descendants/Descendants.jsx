@@ -6,19 +6,21 @@ import DiagramWrapper from '../DiagramWrapper.jsx'
 import {transformData, populateDescendantObjects} from '../drawinglib/graphDataFuncs.jsx';
 import {gql} from '@apollo/client';
 import { connect } from "react-redux";
-import {getParams} from '../queryParams';
+//import {getParams} from '../queryParams';
 import {useMapState} from '../useMap';
 import {DescTree} from './DescTree';
-
+import {useSearchParamsState} from '../useSearchParamsState.jsx';
 
 function Descendants(props) {
  
     console.log('Descendants');
-    const {selectedTreeData,selectedTreePersonData} = props;
+
+    const [origins, setOrigin] = useSearchParamsState("origins", '93');
+    const [persons, setPerson] = useSearchParamsState("persons", '96');
 
     const GET_FTMView = gql`
     query Diagram(      
-      $personId : Int!,
+      $personId : String!,
       $origin : String!
     ){      
         descendantsearch( pobj : {
@@ -63,13 +65,13 @@ function Descendants(props) {
     `;
 
     
-    var params = getParams();
+   // var params = getParams();
 
-    console.log(params.origin + ' ' + params.personId);
+    console.log(origins + ' ' + persons);
 
     var state = useMapState(GET_FTMView,'descendantsearch',{
-      personId : selectedTreePersonData,     
-      origin : selectedTreeData.originDescription
+      personId : persons,     
+      origin : origins
       // originally this was written to use tree id, changed to use
       // origindescription because we now can have multiple trees.
     });
@@ -84,7 +86,7 @@ function Descendants(props) {
 
     const graph = new DescTree();
   
-    graph.CreateWithDefaultValues(1,data.newRows);
+    graph.CreateWithDefaultValues(Number(persons),data.newRows);
 
     return ( 
         <div>
@@ -101,8 +103,8 @@ function Descendants(props) {
 const mapStateToProps = state => {
   return { 
 
-    selectedTreePersonData : state.ux.selectedTreePersonData.personId != 0 ? state.ux.selectedTreePersonData.personId :3217,
-    selectedTreeData : state.ux.selectedTreeData != '' ? state.ux.selectedTreeData : '_34_Kennington'
+  //  selectedTreePersonData : state.ux.selectedTreePersonData.personId != 0 ? state.ux.selectedTreePersonData.personId :3217,
+  //  selectedTreeData : state.ux.selectedTreeData != '' ? state.ux.selectedTreeData : '_34_Kennington'
   };
 };
 
