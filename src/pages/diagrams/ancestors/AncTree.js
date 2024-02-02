@@ -1149,11 +1149,9 @@ AncTree.prototype = {
             while (personIdx < this.generations[genidx].length) {
                 var _family0 = this.familySpanLines[genidx][personIdx];
 
-                //_family0[_family0.length] = new Array(_secondStorkX, _firstRow);
-
+              
                 _family0 = [];
-                //familySpanLines[genidx][personIdx].Clear();
-
+              
                 middleTopChild = this.generations[genidx][personIdx].Y1;// + 10
                 if (this.generations.length > (genidx + 1)) {
                     parentHeight = (this.generations[genidx + 1][0].Y2 - this.generations[genidx + 1][0].Y1);
@@ -1165,11 +1163,11 @@ AncTree.prototype = {
                         middleXChild = (this.generations[genidx][personIdx].X1 + this.generations[genidx][personIdx].X2) / 2;
                         middleGeneration = this.generations[genidx][personIdx].Y1 - (distanceBetweenGens / 2) + 10;
                         // move to top and middle of child
-                        // familySpanLines[genidx][personIdx].Add(new TreePoint(middleXChild, middleTopChild));
+                        
                         _family0[_family0.length] = new Array(middleXChild, middleTopChild);
 
                         // move to middle of generations about child
-                        // familySpanLines[genidx][personIdx].Add(new TreePoint(middleXChild, middleGeneration));
+                        
                         _family0[_family0.length] = new Array(middleXChild, middleGeneration);
 
                         var patIdx = this.generations[genidx][personIdx].FatherIdx;
@@ -1178,60 +1176,60 @@ AncTree.prototype = {
                             middleParent = (this.generations[genidx + 1][patIdx].X1 + this.generations[genidx + 1][patIdx].X2) / 2;
 
 
-                            //familySpanLines[genidx][personIdx].Add(new TreePoint(middleParent, middleGeneration));
+                        
                             _family0[_family0.length] = new Array(middleParent, middleGeneration);
 
                             if (this.drawingHeight > 200 || this.generations.length == 2) {
                                 // move to bottom of parent
-                                //familySpanLines[genidx][personIdx].Add(new TreePoint(middleParent, bottomParent));
+                        
                                 _family0[_family0.length] = new Array(middleParent, bottomParent);
                             }
                             else {
-                                //familySpanLines[genidx][personIdx].Add(new TreePoint(middleParent, middleGeneration - 4));
+                        
                                 _family0[_family0.length] = new Array(middleParent, middleGeneration - 4);
                             }
                             // move to middle generation under parent
-                            //familySpanLines[genidx][personIdx].Add(new TreePoint(middleParent, middleGeneration));
+                        
                             _family0[_family0.length] = new Array(middleParent, middleGeneration);
                             // move to middle of child
-                            // familySpanLines[genidx][personIdx].Add(new TreePoint(middleXChild, middleGeneration));
+                        
                             _family0[_family0.length] = new Array(middleXChild, middleGeneration);
                             // move to top and middle of child
-                            // familySpanLines[genidx][personIdx].Add(new TreePoint(middleXChild, middleTopChild));
+                        
                             _family0[_family0.length] = new Array(middleXChild, middleTopChild);
                         }
                         patIdx = this.generations[genidx][personIdx].MotherIdx;
                         if (patIdx != -1) {
                             middleParent = (this.generations[genidx + 1][patIdx].X1 + this.generations[genidx + 1][patIdx].X2) / 2;
                             // move to middle of generations about child
-                            // familySpanLines[genidx][personIdx].Add(new TreePoint(middleXChild, middleGeneration));
+                        
                             _family0[_family0.length] = new Array(middleXChild, middleGeneration);
 
-                            //familySpanLines[genidx][personIdx].Add(new TreePoint(middleParent, middleGeneration));
+                        
                             _family0[_family0.length] = new Array(middleParent, middleGeneration);
 
                             if (this.drawingHeight > 200 || this.generations.length == 2) {
                                 // move to bottom of parent
-                                //familySpanLines[genidx][personIdx].Add(new TreePoint(middleParent, bottomParent));
+                        
                                 _family0[_family0.length] = new Array(middleParent, bottomParent);
                             }
                             else {
-                                //familySpanLines[genidx][personIdx].Add(new TreePoint(middleParent, middleGeneration - 4));
+                        
                                 _family0[_family0.length] = new Array(middleParent, middleGeneration - 4);
                             }
                             // move to middle generation under parent
-                            // familySpanLines[genidx][personIdx].Add(new TreePoint(middleParent, middleGeneration));
+                        
                             _family0[_family0.length] = new Array(middleParent, middleGeneration);
                             // move to middle of child
-                            // familySpanLines[genidx][personIdx].Add(new TreePoint(middleXChild, middleGeneration));
+                        
                             _family0[_family0.length] = new Array(middleXChild, middleGeneration);
                             // move to top and middle of child
 
-                            //familySpanLines[genidx][personIdx].Add(new TreePoint(middleXChild, middleTopChild));
+                        
                             _family0[_family0.length] = new Array(middleXChild, middleTopChild);
-                        } //end (patIdx != -1)
-                    } //end  if (this.generations[genidx][personIdx].FatherIdx > 0 || this.generations[genidx][personIdx].MotherIdx > 0)
-                } //if (this.generations.length > (genidx + 1))
+                        } 
+                    } 
+                } 
 
 
                 this.familySpanLines[genidx][personIdx] = _family0;
