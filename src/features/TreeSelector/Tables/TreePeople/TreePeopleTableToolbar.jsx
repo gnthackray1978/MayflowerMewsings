@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx'; 
 import Toolbar from '@mui/material/Toolbar';
 import TextField from '@mui/material/TextField'; 
-import {useToolbarStyles} from '../../../../pages/table/styleFuncs.jsx';
-import TableBox from '../../../Table/tableBox.jsx';
+import {useToolbarStyles} from '../../styleFuncs.jsx';
+import TableBox from '../../tableBox.jsx';
 
 const TreePeopleTableToolbar = (props) => {
 //  console.log('rendered: FTMViewTableToolbar' );
@@ -17,13 +17,11 @@ const TreePeopleTableToolbar = (props) => {
   const [surname, setSurname] = React.useState(filterParams.surname);
   const [yearStart, setyearStart] = React.useState(String(filterParams.yearStart));
   const [yearEnd, setyearEnd] = React.useState(String(filterParams.yearEnd));
-  const [location, setLocation] = React.useState(filterParams.location);
 
   const boxClick = ()=>{
     filterFieldChanged({
       yearStart : Number(yearStart),
       yearEnd : Number(yearEnd),
-      location : location,
       surname : surname
     });
   };
@@ -36,33 +34,32 @@ const TreePeopleTableToolbar = (props) => {
       })}
     >
 
-      <TextField className={classes.filter} id="yearStart" label="Year From"
+      <TextField 
+     
+        className={classes.filter} id="yearStart" label="From"
         value={yearStart}
         variant="standard"  size="small"
         onChange = {(e)=>{
             setyearStart(e.currentTarget.value);
-        }}/>
+        }}
+         
+        />
 
-      <TextField className={classes.filter} id="yearEnd" label="Year To"
+      <TextField className={classes.filter} id="yearEnd" label="To"
         value={yearEnd}
         variant="standard"  size="small"
         onChange = {(e)=>{
            setyearEnd(e.currentTarget.value);
         }}/>
-      <TextField className={classes.filter} id="location" label="Location"
-        value={location}
-        variant="standard"  size="small"
-        onChange = {(e)=>{
-          setLocation(e.currentTarget.value);
-        }}/>
-      <TextField className={classes.filter} id="surname" label="Surname"
+     
+      <TextField className={classes.filterName} id="surname" label="Surname"
         value={surname}
         variant="standard"  size="small"
         onChange = {(e)=>{
           setSurname(e.currentTarget.value);
         }}/>
 
-      <TableBox boxClick ={boxClick}/>
+      <TableBox endButton ={classes.endButton} boxClick ={boxClick} />
 
     </Toolbar>
   );

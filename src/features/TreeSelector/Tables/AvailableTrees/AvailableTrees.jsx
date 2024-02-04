@@ -4,7 +4,7 @@ import AvailableTreesToolbar from './AvailableTreesToolbar.jsx'
 import TableWrapper from '../../../../features/Table/TableWrapper.jsx'
 import {useAvTreesState} from './useAvTreesState';
 import {gql} from '@apollo/client';
-import {setTree} from "../../../uxActions.jsx";
+//import {setTree} from "../../../uxActions.jsx";
 import { connect } from "react-redux";
 
 
@@ -55,7 +55,7 @@ function AvailableTrees(props) {
 
     const headCells = [
         { id: 'Name', numeric: false, disablePadding: true, label: 'Name' },
-        { id: 'PersonCount', numeric: false, disablePadding: true, label: 'Person Count' },
+        { id: 'PersonCount', numeric: false, disablePadding: true, label: 'Persons' },
         { id: 'CM', numeric: false, disablePadding: true, label: 'CM' }
     ];
 // selectedTreeData : {origin : 93, originDescription : '|21|Alan!Douglas'},
@@ -64,8 +64,7 @@ function AvailableTrees(props) {
          sortOrder : 'desc',
          limit : 0,
          offset :0,
-         origin :"93",
-        // originDescription :selectedTreeData?.originDescription ?? '',
+         origin :'', 
          treeName : '',
          yearStart : 1500,
          yearEnd : 2000,
@@ -94,13 +93,13 @@ function AvailableTrees(props) {
 
 const mapStateToProps = state => {
   return { 
-    selectedTreeData : state.ux.selectedTreeData
+ //   selectedTreeData : state.ux.selectedTreeData
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    setTree: (selectedTrees) => dispatch(setTree(selectedTrees)),
+   // setTree: (selectedTrees) => dispatch(setTree(selectedTrees)),
   };
 };
 

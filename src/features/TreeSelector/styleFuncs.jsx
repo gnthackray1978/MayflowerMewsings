@@ -12,7 +12,7 @@ export const useSideBarStyles = makeStyles((theme) => ({
   table: {
     minWidth: 250,
     marginLeft: '15px',
-    //marginRight: '25px'
+    marginRight: '25px'
   },
   // overrides: {
   //   MuiTableCell: {
@@ -79,10 +79,54 @@ export const useStyles = makeStyles((theme) => ({
 
 export const useToolbarStyles = makeStyles((theme) => ({
   
-  // buttonContent:{
-  //   marginLeft : '-13px',
-  //   marginRight: '10px'
-  // },
+  root: {
+    width: '95%',
+  },
+  endButton :{    
+    flex : '1',
+    width: '6rem', 
+    height: '2rem',
+    marginTop: '18px'
+  },
+
+  avTreeEndButton :{
+    flex : '1',
+    width: '6rem', 
+    height: '2rem',
+    marginTop: '17px'
+  },
+
+  filter :{
+    maxWidth: '70px',
+    flex : '1'
+  },
+  filterName :{
+    maxWidth: '135px',
+    flex : '1'
+  },
+  treeNameFilter: {
+    minWidth: '300px',
+    flex : '1'
+  },
+
+  paper :{
+    margin: '10px',
+    paddingBottom : '5px'
+  },
+  documentHeader :{
+    margin: '5px',
+    marginTop: '10px',
+    marginBottom : '10px',
+    fontWeight: '400'
+
+  },
+  documentBody :{
+    margin: '5px',
+    marginTop: '10px',
+    marginBottom : '10px',
+    fontWeight: '400'
+  },
+
   treeName :{
     fontSize: "1rem",
     fontFamily: "Roboto",

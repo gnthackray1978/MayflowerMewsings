@@ -4,15 +4,16 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import Toolbar from '@mui/material/Toolbar';
 import TextField from '@mui/material/TextField';
-import {useToolbarStyles} from '../../../../pages/table/styleFuncs.jsx';
-import TableBox from '../../../Table/tableBox.jsx';
+import {useToolbarStyles} from '../../styleFuncs.jsx';
+import TableBox from '../../tableBox.jsx';
+
 import { useTheme } from '@mui/material/styles';
 
 const AvailableTreesToolbar = (props) => {
 //  console.log('rendered: TrsTableToolbar' );
 
   
-  const { numSelected, title, filterFieldChanged, filterParams , setSelected} = props.state;
+  const { numSelected, title, filterFieldChanged, filterParams } = props.state;
   
   const theme = useTheme();
 
@@ -21,10 +22,20 @@ const AvailableTreesToolbar = (props) => {
   const [treeName, setTreeName] = React.useState(filterParams.treeName);
 
   const searchAvailableTreesClicked = ()=>{      
-    setSelected([]);
+   // setSelected([]);
    
     filterFieldChanged({
-      treeName : treeName
+      treeName : treeName,
+      sortColumn : 'cm',
+      sortOrder : 'desc',
+      limit : 0,
+      offset :0,
+      origin :'',     
+      yearStart : 1500,
+      yearEnd : 2000,
+      location : '',
+      surname : '',
+      minCM : 0
     });
 
     // var newurl = window.location.protocol + "//" 
@@ -38,7 +49,7 @@ const AvailableTreesToolbar = (props) => {
                           [classes.highlight]: numSelected > 0,
                        })}>
 
-         <TextField className={classes.filter} id="origin" label="Tree Name"
+         <TextField className={classes.treeNameFilter} id="origin" label="Tree Name"
                      value={treeName}
                      variant="standard"  size="small"
                      onChange = {(e)=>{
@@ -46,7 +57,7 @@ const AvailableTreesToolbar = (props) => {
                         setTreeName(e.currentTarget.value);
                      }}/>
 
-        <TableBox boxClick ={searchAvailableTreesClicked}/>
+        <TableBox  endButton ={classes.avTreeEndButton} boxClick ={searchAvailableTreesClicked}/>
     </Toolbar>
   );
 };

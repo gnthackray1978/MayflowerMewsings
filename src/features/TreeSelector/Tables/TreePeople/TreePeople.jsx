@@ -87,6 +87,7 @@ function TreePeople(props) {
     return (
         <div>
           <TableWrapper state = {state} >
+            <TreePeopleTableToolbar state ={state}/>
             <TreePeopleTable state ={state}/>
           </TableWrapper>
         </div>

@@ -73,7 +73,7 @@ function AvailableTreesTable(props) {
 
                           </TableCell>
                         <TableCell  padding="none">{row.personCount}</TableCell>
-                        <TableCell  padding="none">{row.cM}</TableCell>
+                        <TableCell  padding="none">{row.cm}</TableCell>
                   
                       </TableRow>
                     );
