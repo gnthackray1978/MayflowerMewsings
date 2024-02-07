@@ -106,7 +106,7 @@ function TopButtons(props) {
             aria-label="Menu"
             onClick= {()=>
               {
-                console.log('onclick');
+            //    console.log('onclick');
                 if(showTreeSelectorDialog)
                   treeSelectorDialogClose();
                 else

@@ -20,7 +20,7 @@ var outputCollection = function (maxNum,searchComplete) {
 
 outputCollection.prototype.addEntry = function (entry) { 
     
-  console.log('addEntry');
+//  console.log('addEntry');
   
   var unparsed= JSON.parse(entry.rows)[0];
               
@@ -47,7 +47,7 @@ outputCollection.prototype.addEntry = function (entry) {
 
 outputCollection.prototype.addLocalStorageEntry = function (entry) { 
     
-  console.log('addLocalStorageEntry');
+//  console.log('addLocalStorageEntry');
   
   const myArr = JSON.parse(entry);
  
@@ -116,7 +116,7 @@ const GroupToolBar = (props) => {
             case "OVER_QUERY_LIMIT":
                
                 setTimeout(function () {
-                    console.log('re-search');
+                 //  console.log('re-search');
                     searchAddress(geocoder, idx, lRawLocations, output);
                 }, 15000);
 
@@ -125,7 +125,7 @@ const GroupToolBar = (props) => {
                 // code block
                 
                 setTimeout(function () {
-                    console.log('skip');
+             //       console.log('skip');
                    
                     output.addEntry(result);
                     idx++; 
@@ -135,7 +135,7 @@ const GroupToolBar = (props) => {
                 break;
 
             default:
-                console.log('saving');
+           //     console.log('saving');
                 result.rows = JSON.stringify(results);
                 result.success = true;
                 output.addEntry(result);

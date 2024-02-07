@@ -22,7 +22,7 @@ export const getToken = ()=>{
         }
       }
       else{
-        console.log('no token present in cache');
+     //   console.log('no token present in cache');
       }
 
     } 

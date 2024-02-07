@@ -30,7 +30,7 @@ function makeData(data, schema, subSchema){
   
 
   if(!data[schema][subSchema]){
-    console.log('usemap makedata: ' + schema + ' ' + subSchema + ' schema not loaded');
+ //   console.log('usemap makedata: ' + schema + ' ' + subSchema + ' schema not loaded');
     return rows;
   }
 
@@ -110,7 +110,7 @@ const parseLocations = (rawLocations) => {
     for (let r of rawLocations) {
 
       if(r.id === 13228) {
-        console.log('parseLocations: id = 0');
+    //    console.log('parseLocations: id = 0');
         
 
       }

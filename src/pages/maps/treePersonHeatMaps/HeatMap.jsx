@@ -141,7 +141,7 @@ function HeatMap() {
       idx++;
     }
 
-    console.log('HeatMap: ' + tpRows.length );
+   // console.log('HeatMap: ' + tpRows.length );
 
    } 
 

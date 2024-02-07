@@ -24,7 +24,7 @@ export  function useMapState(qry) {
         variables: filterObj,
         fetchPolicy: 'network-only',
         onCompleted: (data) => {
-          console.log('onCompleted');
+    //      console.log('onCompleted');
         }
       }
       );

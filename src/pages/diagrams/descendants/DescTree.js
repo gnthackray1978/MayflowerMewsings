@@ -61,7 +61,7 @@ GraphBoundary.prototype = {
 
 
 export function DescTree() {
-    console.log('tree created');
+    //console.log('tree created');
 
 
     this._qryString = '';
@@ -158,7 +158,7 @@ DescTree.prototype = {
     CreateWithDefaultValues: function (personId, data) {
          
         if(data.length === 0){
-            console.log('no data to set up ancestor tree');
+            //console.log('no data to set up ancestor tree');
             return;
           }
 
@@ -308,7 +308,7 @@ DescTree.prototype = {
 
         if (percentage !== 0.0) {
             var _workingtp = 0.0; 
-            console.log('centre vertical point1: ' + this.centreVerticalPoint + ' centre point: ' + this.centrePoint);
+            //console.log('centre vertical point1: ' + this.centreVerticalPoint + ' centre point: ' + this.centrePoint);
             //zoom drawing components
             this.zoomPercentage += percentage;
             this.zoomLevel += percentage;
@@ -337,7 +337,7 @@ DescTree.prototype = {
 
             this.centrePoint += (drawingWidth / 100) * (percentages.percX1 - this.mouseXPercLocat);
 
-            console.log('centre vertical point2: ' + this.centreVerticalPoint + ' centre point: ' + this.centrePoint);
+            //console.log('centre vertical point2: ' + this.centreVerticalPoint + ' centre point: ' + this.centrePoint);
 
             this.ComputeLocations();
         } //end percentage ==0.0)
@@ -350,7 +350,7 @@ DescTree.prototype = {
      
     
     SetMouse: function (x, y, mousestate) {
-        //    console.log('mouse set: ' + x + ' , ' + y);
+        //    //console.log('mouse set: ' + x + ' , ' + y);
        
 
         this.mouse = {
@@ -369,7 +369,7 @@ DescTree.prototype = {
 
         if (mouseLink !== null || buttonLink !== null) {
             document.body.style.cursor = 'pointer';
-            //   console.log(mouseLink.action);
+            //   //console.log(mouseLink.action);
         }
         else {
             if (mousestate == false)
@@ -471,7 +471,7 @@ DescTree.prototype = {
 
         // }
 
-    // console.log('setcentrepoint: '+ this.centrePointXOffset + ' ' + this.centrePoint);
+    // //console.log('setcentrepoint: '+ this.centrePointXOffset + ' ' + this.centrePoint);
     }, //end set centre point
     ResetOffset: function () {
 
@@ -648,7 +648,7 @@ DescTree.prototype = {
             this.mouseXPercLocat = percentages.percX1;
             this.mouseYPercLocat = percentages.percY1;
 
-            console.log('setzoomstart: ' + this.mouseXPercLocat + ' ' + this.mouseYPercLocat);
+            //console.log('setzoomstart: ' + this.mouseXPercLocat + ' ' + this.mouseYPercLocat);
 
             this.DrawTree();
         }
@@ -656,7 +656,7 @@ DescTree.prototype = {
 
 
     Debug: function () {
-        console.log('debugging');
+        //console.log('debugging');
 
         var idx = 0;
 
@@ -672,16 +672,16 @@ DescTree.prototype = {
             while (this.generations[idx].length > personidx) {
 
             if (this.generations[idx][personidx].RecordLink.Name == "Jane Thackray") {
-                console.log("Jane Thackray X1 Y2");
-                console.log(this.generations[idx][personidx].X1);
-                console.log(this.generations[idx][personidx].Y1);
+                //console.log("Jane Thackray X1 Y2");
+                //console.log(this.generations[idx][personidx].X1);
+                //console.log(this.generations[idx][personidx].Y1);
 
             }
 
             if (this.generations[idx][personidx].RecordLink.Name == "William Talbot") {
-                console.log("William Talbot X1 Y2");
-                console.log(this.generations[idx][personidx].X1);
-                console.log(this.generations[idx][personidx].Y1);
+                //console.log("William Talbot X1 Y2");
+                //console.log(this.generations[idx][personidx].X1);
+                //console.log(this.generations[idx][personidx].Y1);
             }
 
             personidx++;
@@ -727,7 +727,7 @@ DescTree.prototype = {
         // try {
         //     this.treeUI.UpdateUI(this.bt_screenWidth, this.bt_screenHeight, this.boxWidth, this.boxHeight);
         // } catch(e) {
-        //     console.log('error UpdateUI ' + e);
+        //     //console.log('error UpdateUI ' + e);
         // }
 
 
@@ -770,7 +770,7 @@ DescTree.prototype = {
 
         //
         // } catch (e) {
-        //     console.log('error drawing person or button: idx ' + _genidx + ' ' + _personIdx);
+        //     //console.log('error drawing person or button: idx ' + _genidx + ' ' + _personIdx);
         // }
 
 
@@ -801,7 +801,7 @@ DescTree.prototype = {
 
 
         } catch (e) {
-            console.log('error drawing familyEdges: familyEdges idx ' + _fslOuter + ' ' + _fslInner);
+            //console.log('error drawing familyEdges: familyEdges idx ' + _fslOuter + ' ' + _fslInner);
         }
 
 
@@ -816,7 +816,7 @@ DescTree.prototype = {
                 _fslOuter++;
             }
         } catch (e) {
-            console.log('error drawing childless marriages: marriage idx ' + _fslOuter);
+            //console.log('error drawing childless marriages: marriage idx ' + _fslOuter);
         }
 
 
@@ -864,7 +864,7 @@ DescTree.prototype = {
             //IsGenerationDisplayed
       //      var tp = this.IsGenerationDisplayed(_genIdx);
         //    if (tp != this.generations[_genIdx].GenerationVisible) {
-         //       console.log('gen visible wrong');
+         //       //console.log('gen visible wrong');
         //    }
 
 
@@ -901,7 +901,7 @@ DescTree.prototype = {
 
 
                     if (genPerson.IsDisplayed) {
-                        //  console.log('displaying: ' + genPerson.Name);
+                        //  //console.log('displaying: ' + genPerson.Name);
 
                         genPerson.X2 = genPerson.X1 + this.boxWidth;
 
@@ -943,7 +943,7 @@ DescTree.prototype = {
 
                         if (_genIdx > 0){
                             if( this.generations[_genIdx - 1][genPerson.FatherIdx] == undefined){
-                              console.log('error');
+                              //console.log('error');
                             }
                             _parent_gen_lower_y = this.generations[_genIdx - 1][genPerson.FatherIdx].Y2;
                         }
@@ -954,13 +954,13 @@ DescTree.prototype = {
 
                         if ((!(genPerson.IsFamilyEnd && _isSpouse)) && _genIdx > 0) {
                             if (!genPerson.DoubleSpouseEnd) {
-                                // console.log('needed: ' + _genIdx + '  - ' + 
+                                // //console.log('needed: ' + _genIdx + '  - ' + 
                                 // _familyIdx + ' ' + genPerson.FamilyIdx + ' '  
                                 // +this.familyEdges[_genIdx].length);
                                 var _family = this.familyEdges[_genIdx][genPerson.FamilyIdx];
 
                                 
-                                //  console.log(genPerson.Name);
+                                //  //console.log(genPerson.Name);
 
                                 _family.push(new Array((genPerson.X1 + this.halfBox), _firstRow));
 
@@ -985,7 +985,7 @@ DescTree.prototype = {
                             //there should always be a father and mother at this point
                             //as we are never in generation zero
                             if(genPerson.Father == undefined || genPerson.Mother == undefined){
-                                console.log('error - father or mother undefined. All parental links should have a mother or a father. Info: ' + genPerson.Id + ' ' + genPerson.PersonId);
+                                //console.log('error - father or mother undefined. All parental links should have a mother or a father. Info: ' + genPerson.Id + ' ' + genPerson.PersonId);
                             }
 
                             let parentXs = GetParentXs( genPerson.Father?.X1 ?? 0,  genPerson.Mother?.X1 ?? 0, this.halfBox);
@@ -1164,7 +1164,7 @@ DescTree.prototype = {
     //run when visibility changed
     UpdateGenerationState: function () {
 
-        //console.log('DescTree.UpdateGenerationState');
+        ////console.log('DescTree.UpdateGenerationState');
 
         var familyCount = 0;
         var personCount = 0;
@@ -1203,7 +1203,7 @@ DescTree.prototype = {
 
                     if (this.generations[genIdx][personIdx].IsFamilyStart) {
                         _familyIdx++; 
-                        //console.log('added:' + genIdx + ' ' + personIdx);
+                        ////console.log('added:' + genIdx + ' ' + personIdx);
                         
                         this.familyEdges[genIdx].push([]);
                     }
@@ -1306,14 +1306,14 @@ DescTree.prototype = {
             }
 
         } catch (e) {
-            console.log('SetScheduleVars: ' + genidx + ' exception: ' + e);
+            //console.log('SetScheduleVars: ' + genidx + ' exception: ' + e);
 
             if (this.generations.length > genidx - 1) {
-                console.log('SetScheduleVars ffidx: ' + this.generations[genidx - 1].FirstFamilyIdx + ' lfidx: ' + this.generations[genidx - 1].LastFamilyIdx);
+                //console.log('SetScheduleVars ffidx: ' + this.generations[genidx - 1].FirstFamilyIdx + ' lfidx: ' + this.generations[genidx - 1].LastFamilyIdx);
             }
         }
 
-      //  console.log('SetScheduleVars:' + (currentRowX1-tp) + ' ' + tp + ' ' + currentRowX1);
+      //  //console.log('SetScheduleVars:' + (currentRowX1-tp) + ' ' + tp + ' ' + currentRowX1);
         return currentRowX1;
 
     },
@@ -1325,7 +1325,7 @@ DescTree.prototype = {
         var innerIdx = 0;
         var prevPerson = null;
 
-       // console.log('moved diagram to: ' + this.startx1 + ' from ' + this.generations[genidx][idx].X1 + ' (' + (this.generations[genidx][idx].X1 - this.startx1) + ')');
+       // //console.log('moved diagram to: ' + this.startx1 + ' from ' + this.generations[genidx][idx].X1 + ' (' + (this.generations[genidx][idx].X1 - this.startx1) + ')');
 
         while (idx < this.generations[genidx].length) {
 

@@ -9,7 +9,7 @@ function PTombstones(props) {
   
     var state = useTableState();
 
-    console.log('PTombstones');
+  //console.log('PTombstones');
   
     return (
         <div>

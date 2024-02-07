@@ -46,7 +46,7 @@ const MappingToolbar = (props) => {
 
     filterFieldChanged(params);
   };
-  console.log('mapping toolbar');
+// console.log('mapping toolbar');
   return (
     <Toolbar
       className={clsx(classes.root, {
@@ -62,7 +62,7 @@ const MappingToolbar = (props) => {
         label="Year From"
         onClick= {()=>
          {
-           console.log('onclick');
+       //    console.log('onclick');
            if(showTreeSelectorDialog)
              treeSelectorDialogClose();
            else

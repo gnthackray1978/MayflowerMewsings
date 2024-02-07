@@ -66,12 +66,12 @@ VisControlsUI.prototype.InitEvents = function () {
 
 
     this._channel.on("nodeSelected", function(data, envelope) {
-        console.log('ui node selected caught');
+   //     console.log('ui node selected caught');
         that.NodeSelected(data.value);
     });
 
     this._channel.on("nodeHighlighted", function(data, envelope) {
-        console.log('ui node highlighted event caught');
+     //   console.log('ui node highlighted event caught');
     });
 
     //  //  $('#nodes').html(that.layouts[0].layout._cameraView.countOnscreenNodes());

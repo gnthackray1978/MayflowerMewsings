@@ -171,7 +171,7 @@ export const getPersonFromId = (id, rows)=>{
     
     var newRows = [];
 
-    console.log('transformData' );
+  //  console.log('transformData' );
      
     if(data) 
     {
@@ -180,7 +180,7 @@ export const getPersonFromId = (id, rows)=>{
       newRows = populateObjectsFunc(newRows);
     }
     else{
-      console.log('data undefined');      
+   //   console.log('data undefined');      
     }
 
     return {
@@ -192,7 +192,7 @@ export const getPersonFromId = (id, rows)=>{
 
   export const populateDescendantObjects = (newRows)=>{
 
-    console.log('populateDescendantObjects'); 
+//    console.log('populateDescendantObjects'); 
 
     let generationIdx =0;
    
@@ -212,7 +212,7 @@ export const getPersonFromId = (id, rows)=>{
                 person.Children.push(child);
             }
             else{
-              console.log('missing child');
+            //  console.log('missing child');
             }
           }
         //}

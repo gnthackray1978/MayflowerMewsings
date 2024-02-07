@@ -54,7 +54,7 @@ function HeatMapBody(props) {
     };
 
 
-    console.log('HeatMapBody: '+rows);
+    //console.log('HeatMapBody: '+rows);
     if(!rows)
     {
       return (<div className={classes.noData}>No Data</div>);

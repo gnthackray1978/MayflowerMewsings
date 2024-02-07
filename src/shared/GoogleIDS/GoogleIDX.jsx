@@ -72,14 +72,14 @@ function GoogleIDSConnect(props) {
     var LoggedOut = () => {
       /* global google */
       setIdsLoginScreenVisible(false);
-      console.log('attempting to log out: ' +google.accounts.id);
+    //  console.log('attempting to log out: ' +google.accounts.id);
       
       let email = localStorage.getItem("email");
     
       if(email){
         google.accounts.id.disableAutoSelect();
         google.accounts.id.revoke(email, done => {
-            console.log('consent revoked');
+        //    console.log('consent revoked');
             setUser(undefined);
             setTokenExpiration();
             localStorage.clear();
@@ -91,7 +91,7 @@ function GoogleIDSConnect(props) {
     
     
     var TestLogin = () =>{
-      console.log("get");
+   //   console.log("get");
                     
       var token = localStorage.getItem("token");
     
@@ -104,7 +104,7 @@ function GoogleIDSConnect(props) {
       })
       .then( r=> r.json() )
       .then( resp =>{
-          console.log(resp ) 
+      //    console.log(resp ) 
       })
       .catch( console.warn )
     };

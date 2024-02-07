@@ -7,7 +7,7 @@ export function useMapState(qry,schema,defaultParams) {
  // console.log('useMapState ');
  // const [filterParams, setFilterParams] = React.useState(defaultParams);
  
- console.log('useMapState' );
+ //console.log('useMapState' );
 
   const  { loading, networkStatus,error, data,refetch } = useQuery(qry, {
      errorPolicy: 'all' ,
@@ -18,7 +18,7 @@ export function useMapState(qry,schema,defaultParams) {
      //   console.log('finished fetching');
      // }
   });
-  console.log('useMapState result' );
+  //console.log('useMapState result' );
  // var newRows = [];
   var totalRows = 0;  
   var loginInfo = '';

@@ -9,7 +9,7 @@ function Deeds(props) {
   
     var state = useTableState();
 
-    console.log('Deeds');
+   // console.log('Deeds');
   
     return (
         <div>

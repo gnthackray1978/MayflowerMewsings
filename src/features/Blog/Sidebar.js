@@ -31,7 +31,7 @@ function Sidebar(props) {
             element.scrollIntoView();
 
 
-          console.log('archive.url', archive.url);
+          //console.log('archive.url', archive.url);
         }}>
           {archive.title}
         </Link>

@@ -6,7 +6,7 @@ import { displayLoadingScreen, displayErrors } from '../../shared/common';
 
 export default function TableWrapper(props) {
  
-  console.log('TableWrapper called');
+ // console.log('TableWrapper called');
 
   const {state, children} = props;
 
