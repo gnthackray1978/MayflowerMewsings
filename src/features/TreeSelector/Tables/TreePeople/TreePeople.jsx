@@ -67,18 +67,21 @@ function TreePeople(props) {
       { id: 'BirthLocation', numeric: false, disablePadding: true, label: 'BirthLocation' }
     ];
 
+    console.log('TreePeople');
+
     var state = useAvTreesState(GET_FTMView,{
-      sortColumn : 'surname',
-      sortOrder : 'asc',
-      limit : 0,
-      offset :0,
-      yearStart : 1500,
-      yearEnd : 2000,
-      location : '',
-      surname : '',
-      origin : '', // origin id is basically the tree id - todo rename!
-      originDescription : '', //string representation of the origin id
-      minCM : 0
+                        page: 0,
+                        limit : 15, 
+                        sortColumn : 'cm',
+                        sortOrder : 'desc',
+                        offset :0,
+                        origin :'', 
+                        treeName : '',
+                        yearStart : 1500,
+                        yearEnd : 2000,
+                        location : '',
+                        surname : '',
+                        minCM : 0
     },'ftmviewsearch');
 
     state.headCells = headCells;

@@ -42,7 +42,7 @@ function TreePeopleTable(props){
                 backgroundColor: isItemSelected ? 'blue' : '',                      
               };
 
-              const avgYear = (Number(row.yearTo) + Number(row.yearFrom)) /2;
+              const avgYear =  Number(row.yearFrom);//(Number(row.yearTo) + Number(row.yearFrom)) /2;
               const name = row.firstName + ' ' + row.surname;
               return (
                 <TableRow

@@ -21,48 +21,6 @@ import {funcSelected, funcDialogOpen , funcDialogClose,treeSelectorDialogClose} 
 
 import { connect } from "react-redux";
 
-// const styles = theme => ({
-
-//   toolbarButtons: {
-//     marginLeft: 'auto',
-//   },
-
-//   root: {
-//     paddingRight: theme.spacing(1),
-//     minHeight : window.innerHeight -10
-//   },
-
-//   list: {
-//     width: 420,
-//   },
-
-//   fullList: {
-//     width: 'auto',
-//   },
-//   mygrid:{
-//     margin:'0px'
-//   },
-//   input:{
-//     width: '100px'
-//   },
-//   label: {
-
-//     textAlign: 'center',
-
-//   },
-//   toolBar: {
-//     paddingLeft :'12px',
-//     minHeight: '0px'
-//   },
-//   menuButton: {
-//     marginLeft: -12,
-//     marginRight: 20,
-//   },
-//   appBar: {
-//      top: 'auto',
-//      bottom: 0,
-//    },
-// });
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -139,53 +97,18 @@ function TreeSelector(props) {
                 size="large">
                 <SearchIcon/>
               </IconButton>
-
-
-
-
               <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
                 <Tab label= {treeName} {...a11yProps(0)} />
                 <Tab label= {personName}{...a11yProps(1)} />
-
               </Tabs>
-
-
           </Toolbar>
         </AppBar>
-
-
-
         <TabPanel value={value} index={0}>
           <AvailableTrees></AvailableTrees>
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <TreePeople></TreePeople>
-           
-          <Toolbar>
-            <div className={classes.toolbarButtons}>
-                <Button color="inherit" className ={classes.tolowerBtn}>
-                  <Typography variant="h6" color="inherit" >
-                    Run
-                  </Typography>
-                </Button>
-
-                <IconButton
-                  className={classes.menuButton}
-                  color="inherit"
-                  aria-label="Menu"
-                  onClick={()=>{
-                      alert(treeName + ' ' +personId);
-                  }}
-                  size="large">
-                <PlayArrow/>
-              </IconButton>
-              </div>
-          </Toolbar>
-
+          <TreePeople></TreePeople>      
         </TabPanel>
-
-
-
       </div>
     );
 

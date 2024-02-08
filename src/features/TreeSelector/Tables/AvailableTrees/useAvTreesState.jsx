@@ -1,105 +1,85 @@
 import React  from 'react';
 import { useQuery } from '@apollo/client';
-import {useSearchParamsState} from '../../../../shared/useSearchParamsState.jsx';
 import { errorFormatter } from '../../../../shared/common';
+import{setParams, getParams} from '../../../Table/qryStringFuncs.jsx';
 
 export  function useAvTreesState(ReturnData,defaultParams, subSchema) {
 
-  //const [initialLoad, setInitialLoad] = React.useState(false);
-  const [order, setOrder] = React.useState(defaultParams.sortOrder);
-  const [sortColumn, setSortColumn] = React.useState(defaultParams.sortColumn);
-//  const [selected, setSelected] = React.useState([]);
-  //const [origin, setOrigin] = React.useState(defaultParams.origin);
-  //const [originDescription, setOriginDescription] = React.useState(defaultParams.originDescription);
+  console.log('useAvTreesState called');
   
-  const [origins, setOrigin] = useSearchParamsState("origins", defaultParams.origin);
-  const [persons, setPerson] = useSearchParamsState("persons", '');
+  let qryStrObj = getParams();
 
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(50);
+  //we need to make sure this is a string if someone has been editting the query string!!!
+  //then it can be set as a number
 
-  //const [totalRecords, setTotalRecords] = React.useState(0);
+  qryStrObj.origin = String(qryStrObj.origin ?? '');
+  qryStrObj.persons = String(qryStrObj.persons ?? '');
+ 
+  const [filterParams, setFilterParams] = React.useState({...defaultParams,...qryStrObj});
 
-  const [filterParams, setFilterParams] = React.useState(defaultParams);
+  // a bit of a hack because I don't want to change the way the filterParams are set
+  // as this will trigger another call to the api to refresh the data
+  // and I do need to cause a rerender when the persons/origins are changed.
+  // so origin & persons are stored in 2 places (hmmmm).
 
-  const handleRequestSort = (event, property) => {
-    const isAsc = sortColumn === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
-    setSortColumn(property);
-  };
+  const [persons, setPersons] = React.useState(String(qryStrObj.persons?? ''));
+  const [origin, setOrigin] = React.useState(String(qryStrObj.origin ?? ''));
 
-  const handleSelectAllClick = (event) => {
-    if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.name);
-      setSelected(newSelecteds);
-      return;
-    }
-    setSelected([]);
+
+  const handleRequestSort = (event, property) => { 
+    setFilterParams({...filterParams, ...{
+      sortOrder : isAsc ? 'desc' : 'asc',
+      sortColumn : property
+    }});
   };
 
   const handleChangePage = (event, newPage) => {
 
-    setPage(newPage);
-    console.log('called handleChangePage');
-
-  //  var tp = {};
-
-    var tp = (newPage * rowsPerPage);
+    setFilterParams({...filterParams, ...{
+      page : newPage,
+      offset : (newPage * filterParams.limit)
+    }});
 
     refetch(
       {
-        offset: tp
+        offset: (newPage * filterParams.limit)
       }
     );
   };
 
-  const handleChangeRowsPerPage = (event) => {
-    console.log('called handleChangeRowsPerPage');
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
+  const handleChangeRowsPerPage = (event) => { 
+    setFilterParams({...filterParams, ...{
+      page : 0,
+      limit : parseInt(event.target.value, 10),
+    }});
+
     refetch({
         variables: filterParams
     });
   };
 
-  const filterFieldChanged = (filterObj) => {
+  const treeNameFilterChanged = (treeName) => {     
     
-    
+    setFilterParams({...filterParams, ... {
+      treeName : treeName,
+    }});
 
-     
-
-   // console.log('filterFieldChanged');
-    filterObj.limit =rowsPerPage;
-    filterObj.offset = (page* rowsPerPage);
-    filterObj.sortColumn = sortColumn;
-    filterObj.sortOrder = order;
-
-    setFilterParams(filterObj);
-
-
-    //let tp =
     refetch(
       {
-        variables: filterObj
+        variables: filterParams
       }
     );
 
-   
-
-
-    // tp.then(
-    //   function(value) {
-    //
-    //     console.log('prom val: ' + value);
-    //   },
-    //   function(error) {
-    //
-    //     console.log('prom error: ' + error);
-    //   }
-    // );
-
-
   };
+
+  const treePersonFilterChanged = (params) => {     
+    //todo replace with splice
+    setParams(params);
+    
+    setFilterParams({...filterParams, ... params});
+ 
+    refetch(filterParams);
+};
 
 
   const isPersonSelected = (personId) =>{ 
@@ -118,7 +98,7 @@ export  function useAvTreesState(ReturnData,defaultParams, subSchema) {
 
     //let newSelected = [];
 
-    let selected = origins?.split(',') ??[];
+    let selected = origin.split(',') ??[];
 
     const selectedIndex = selected.indexOf(String(treeId));
 
@@ -126,39 +106,17 @@ export  function useAvTreesState(ReturnData,defaultParams, subSchema) {
 
   }
 
-  const makeIdString = (ids, previouslySelectedIds)=>{
-
-    //console.log('makeOriginString..');
- 
-     let origins =[];
- 
-     if(!previouslySelectedIds){
-       return '';
-     }
- 
-     ids.forEach(row => {
-       previouslySelectedIds.forEach(prevSelId => {
-         if(id == prevSelId){
-           if(!origins.includes(id))
-             origins.push(id);
-         }
-       });
- 
-     });
- 
-     var newString = origins.join(' ');
- 
-     //console.log(newString);
- 
-     return newString;
- 
-  };
-
   const setTree = (treeId) => {
-    console.log('setTree called');
+   // console.log('setTree called');
+
+  //  let qryStrObj = getParams(); 
+
     treeId = String(treeId);
     let newSelected = [];
-    let selected = origins?.split(',') ??[];
+
+    //let tpOrigin = String(qryStrObj?.origin ?? '');
+
+    let selected = origin.split(',') ??[];
 
     const selectedIndex = selected.indexOf(treeId);
     
@@ -176,18 +134,29 @@ export  function useAvTreesState(ReturnData,defaultParams, subSchema) {
       );
     }
 
-    setOrigin(newSelected.join(','));
-    
-    //console.log('newSelected',newSelected);
+    let params ={
+      origin : newSelected.join(','),      
+    }
+  
+    setParams(params);
+   
+   // setFilterParams({...filterParams, ... params});
+
+    setOrigin(params.origin);
   };
 
   const setTreePerson = (personId) => {
+   // let qryStrObj = getParams(); 
+    
     // this is used by diagram generating code.
-    personId = String(personId);
+  
     let newSelected = [];
-    let selected = persons?.split(',') ??[];
 
-    const selectedIndex = selected.indexOf(personId);
+   // let p =qryStrObj?.persons ?? '';
+
+    let selected = persons.split(',');
+
+    const selectedIndex = selected.indexOf(String(personId));
     
 
     if (selectedIndex === -1) {
@@ -203,23 +172,26 @@ export  function useAvTreesState(ReturnData,defaultParams, subSchema) {
       );
     }
 
-    setPerson(newSelected.join(','));
+    let params ={
+      persons : newSelected.join(','),
+    };
+
+    setParams(params);
+
+   // setFilterParams({...filterParams, ... params});
+
+    
+    setPersons(params.persons);
   };
 
  
-  console.log('origin set to: ' + origins);
-
-  filterParams.limit =rowsPerPage;
-  filterParams.offset = (page* rowsPerPage) ;
-  filterParams.sortColumn = sortColumn;
-  filterParams.sortOrder = order;
-  filterParams.origin = origins;
+  console.log('filter param: ' + filterParams);
 
   const  { loading, networkStatus,error, data, refetch } = useQuery(ReturnData, {
-    // errorPolicy: 'all' ,
+     errorPolicy: 'all' ,
      variables: filterParams,
      notifyOnNetworkStatusChange: true,
-     fetchPolicy:"cache-and-network"
+     fetchPolicy:"cache-and-network",
      // onCompleted : (data)=>{
      //   console.log('finished fetching');
      // }
@@ -241,21 +213,21 @@ export  function useAvTreesState(ReturnData,defaultParams, subSchema) {
     internalServerError = data[subSchema].error?.trim() ?? ''; //bit of a hack
   }
  
-  let errors = errorFormatter(loading,error, internalServerError);
+  let errors = errorFormatter(loading,error, internalServerError, networkStatus);
 
   return {
-    order,
-    sortColumn,
-    page,
-    rowsPerPage,
+     order :  filterParams.sortOrder,
+     sortColumn : filterParams.sortColumn,
+     page : filterParams.page,
+    rowsPerPage : filterParams.limit,
     filterParams,
     handleRequestSort,
-    handleSelectAllClick,
     handleChangePage,
     handleChangeRowsPerPage,
     isSelected,
     isPersonSelected,
-    filterFieldChanged,
+    treeNameFilterChanged,
+    treePersonFilterChanged,
     setTree,
     setTreePerson,
     loading, 

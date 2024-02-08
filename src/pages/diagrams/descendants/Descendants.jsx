@@ -9,11 +9,11 @@ import { connect } from "react-redux";
 //import {getParams} from '../queryParams';
 import {useMapState} from '../useMap';
 import {DescTree} from './DescTree';
-import {useSearchParamsState} from '../useSearchParamsState.jsx';
+import {useSearchParamsState} from '../../../shared/useSearchParamsState.jsx';
 
 function Descendants(props) {
  
-    console.log('Descendants');
+   // console.log('Descendants');
 
     const [origins, setOrigin] = useSearchParamsState("origins", '93');
     const [persons, setPerson] = useSearchParamsState("persons", '96');
@@ -67,7 +67,7 @@ function Descendants(props) {
     
    // var params = getParams();
 
-    console.log(origins + ' ' + persons);
+   // console.log(origins + ' ' + persons);
 
     var state = useMapState(GET_FTMView,'descendantsearch',{
       personId : persons,     

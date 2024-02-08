@@ -59,23 +59,24 @@ function AvailableTrees(props) {
         { id: 'CM', numeric: false, disablePadding: true, label: 'CM' }
     ];
 // selectedTreeData : {origin : 93, originDescription : '|21|Alan!Douglas'},
-    let queryString = {
-         sortColumn : 'cm',
-         sortOrder : 'desc',
-         limit : 0,
-         offset :0,
-         origin :'', 
-         treeName : '',
-         yearStart : 1500,
-         yearEnd : 2000,
-         location : '',
-         surname : '',
-         minCM : 0
-    };
+    let defaults = {
+                      page: 0,
+                      limit : 15, 
+                      sortColumn : 'cm',
+                      sortOrder : 'desc',
+                      offset :0,
+                      origin :'', 
+                      treeName : '',
+                      yearStart : 1500,
+                      yearEnd : 2000,
+                      location : '',
+                      surname : '',
+                      minCM : 0
+                   };
 
     
 
-    var state = useAvTreesState(get_availableTrees,queryString,'treerecsearch');
+    var state = useAvTreesState(get_availableTrees,defaults,'treerecsearch');
 
     state.headCells = headCells;
     state.title = 'Available Trees';

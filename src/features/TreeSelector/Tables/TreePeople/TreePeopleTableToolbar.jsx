@@ -11,7 +11,7 @@ const TreePeopleTableToolbar = (props) => {
 //  console.log('rendered: FTMViewTableToolbar' );
 
   
-  const { numSelected, title, filterFieldChanged, filterParams } = props.state;
+  const { numSelected, title, treePersonFilterChanged, filterParams } = props.state;
   const classes = useToolbarStyles(props.theme);
   
   const [surname, setSurname] = React.useState(filterParams.surname);
@@ -19,7 +19,7 @@ const TreePeopleTableToolbar = (props) => {
   const [yearEnd, setyearEnd] = React.useState(String(filterParams.yearEnd));
 
   const boxClick = ()=>{
-    filterFieldChanged({
+    treePersonFilterChanged({
       yearStart : Number(yearStart),
       yearEnd : Number(yearEnd),
       surname : surname

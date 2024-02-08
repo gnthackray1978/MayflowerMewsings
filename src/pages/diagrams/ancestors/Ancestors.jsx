@@ -9,7 +9,7 @@ import {gql} from '@apollo/client';
 
 import { connect } from "react-redux";
 import {useMapState} from '../useMap';
-import {useSearchParamsState} from '../useSearchParamsState.jsx';
+import {useSearchParamsState} from '../../../shared/useSearchParamsState.jsx';
 
 
 
@@ -18,7 +18,8 @@ function Ancestors(props) {
   //const {selectedTreeData,selectedTreePersonData} = props;
   const [origins, setOrigin] = useSearchParamsState("origins", '93');
   const [persons, setPerson] = useSearchParamsState("persons", '6513'); //147 = 3x 
-  
+
+
   const GET_FTMView = gql`
   query Diagram(      
     $personId : String!,

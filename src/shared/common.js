@@ -1,13 +1,24 @@
 import React, { Component } from 'react';
+import { NetworkStatus } from '@apollo/client';
 
-export const errorFormatter = (loading, error, internalServerError) => {
-    console.log('called errorMessages');
-    //error.networkError.result.errors
-  
+
+export const errorFormatter = (loading, error, internalServerError, networkStatus) => {
+    
+    if (networkStatus === NetworkStatus.refetch) 
+    {
+      console.log('errorformatter: refetching');
+      return [];     
+    }
+
+    
+    
     let errorArray =[];
   
     if(loading)
+    {
+      console.log('errorformatter: loading');
       return [];
+    }
   
     if(error && error.message){
       errorArray.push(error.message);
