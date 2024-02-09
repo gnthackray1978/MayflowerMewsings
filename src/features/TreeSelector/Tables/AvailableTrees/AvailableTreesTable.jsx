@@ -12,10 +12,13 @@ import {useSideBarStyles} from '../../../../pages/table/styleFuncs.jsx';
 
 import TableHeaderFromState  from '../../../Table/TableHeaderFromState.jsx';
 
+import {setTree} from "../../../uxActions.jsx";
+import { connect } from "react-redux";
+
 
 function AvailableTreesTable(props) {
 
-  const {state} = props;
+  const {state, setTree} = props;
 
   const theme = useTheme();
 
@@ -50,7 +53,8 @@ function AvailableTreesTable(props) {
                       <TableRow
                         hover 
                         onClick={(event) => {                        
-                          state.setTree(row.id);
+                          state.setTree(state.rows, row.id);          
+                          setTree(row.id);               
                         }}
                         role="checkbox"
                         aria-checked={isItemSelected}
@@ -86,5 +90,18 @@ function AvailableTreesTable(props) {
 }
 
  
+ 
+const mapStateToProps = state => {
+  return { 
+ //   selectedTreeData : state.ux.selectedTreeData
+  };
+};
 
-export default AvailableTreesTable;
+const mapDispatchToProps = dispatch => {
+  return {
+    setTree: (selectedTrees) => dispatch(setTree(selectedTrees)),
+  };
+};
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(AvailableTreesTable);

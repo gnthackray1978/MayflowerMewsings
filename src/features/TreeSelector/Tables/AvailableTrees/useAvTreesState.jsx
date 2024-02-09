@@ -3,9 +3,9 @@ import { useQuery } from '@apollo/client';
 import { errorFormatter } from '../../../../shared/common';
 import{setParams, getParams} from '../../../Table/qryStringFuncs.jsx';
 
-export  function useAvTreesState(ReturnData,defaultParams, subSchema) {
+export  function useAvTreesState(ReturnData,defaultParams, subSchema, rdxSetTree) {
 
-  console.log('useAvTreesState called');
+  //console.log('useAvTreesState called');
   
   let qryStrObj = getParams();
 
@@ -24,6 +24,10 @@ export  function useAvTreesState(ReturnData,defaultParams, subSchema) {
 
   const [persons, setPersons] = React.useState(String(qryStrObj.persons?? ''));
   const [origin, setOrigin] = React.useState(String(qryStrObj.origin ?? ''));
+  let rows = [];
+  let totalRows = 0;  
+  let loginInfo = '';
+  let internalServerError = '';
 
 
   const handleRequestSort = (event, property) => { 
@@ -106,8 +110,8 @@ export  function useAvTreesState(ReturnData,defaultParams, subSchema) {
 
   }
 
-  const setTree = (treeId) => {
-   // console.log('setTree called');
+  const setTree = (rows, treeId) => {
+//    console.log('setTree called');
 
   //  let qryStrObj = getParams(); 
 
@@ -138,9 +142,14 @@ export  function useAvTreesState(ReturnData,defaultParams, subSchema) {
       origin : newSelected.join(','),      
     }
   
+    //ffs setting state in 3 places!!!!
+  
     setParams(params);
-   
-   // setFilterParams({...filterParams, ... params});
+     
+    //if(rdxSetTree)
+   //   rdxSetTree(params.origin);
+//selectedTreeData : [{treeId : 93, treeDescription : '|21|Alan!Douglas', personId : 96, personName : 'Alan Douglas' }],
+ //   makeReduxState(rows);
 
     setOrigin(params.origin);
   };
@@ -184,9 +193,10 @@ export  function useAvTreesState(ReturnData,defaultParams, subSchema) {
     setPersons(params.persons);
   };
 
- 
-  console.log('filter param: ' + filterParams);
-
+  
+ //the useAvTreesState hook might be called numerous times
+ //but it doesnt matter.
+ //the api only gets called when the filterParams is changed !
   const  { loading, networkStatus,error, data, refetch } = useQuery(ReturnData, {
      errorPolicy: 'all' ,
      variables: filterParams,
@@ -199,15 +209,13 @@ export  function useAvTreesState(ReturnData,defaultParams, subSchema) {
 
   //console.log('loading : ' + loading + ' network status: '   + data);
 
-  var rows = [];
-  var totalRows = 0;  
-  var loginInfo = '';
-  var internalServerError = '';
+
 
 
   if(data && data[subSchema]) 
   {
     rows = data[subSchema].rows;
+    
     totalRows =  data[subSchema].totalRows;
     loginInfo =  data[subSchema].loginInfo;
     internalServerError = data[subSchema].error?.trim() ?? ''; //bit of a hack

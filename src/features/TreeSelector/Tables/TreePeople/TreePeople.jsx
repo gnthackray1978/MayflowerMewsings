@@ -1,16 +1,16 @@
-import React, { Component } from 'react';
+import React, { Component ,useEffect} from 'react';
 
 import TreePeopleTable from './TreePeopleTable.jsx';
 import TreePeopleTableToolbar from './TreePeopleTableToolbar.jsx';
 import { connect } from "react-redux";
 import TableWrapper from '../../../Table/TableWrapper.jsx';
 import {useAvTreesState} from '../../../TreeSelector/Tables/AvailableTrees/useAvTreesState';
-
+import {addTreePersonToCache} from "../../../uxActions.jsx";
 import {gql} from '@apollo/client';
 
 function TreePeople(props) {
 
- //   const {selectedTreeData} = props;
+   const {addTreePersonToCache} = props;
 
    // let origin = {origin : 0, originDescription : ''};
 
@@ -86,6 +86,12 @@ function TreePeople(props) {
 
     state.headCells = headCells;
     state.title = 'Tree People';
+   
+    useEffect(() => {
+      if(!state.loading && state.errors.length ==0){
+        addTreePersonToCache(state.rows);      
+      }
+    }, [state.loading]);  
 
     return (
         <div>
@@ -106,7 +112,9 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return { };
+  return { 
+    addTreePersonToCache: (rows) => dispatch(addTreePersonToCache(rows)),
+  };
 };
 
 

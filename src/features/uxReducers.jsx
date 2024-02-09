@@ -1,6 +1,10 @@
 import { APPLICATIONLISTLOADED, APPLICATIONSELECTED, FUNCTIONLISTLOADED,METADATALOADED,
   FUNCTIONSELECTED,APPDIALOGOPEN,APPDIALOGCLOSED,FUNCDIALOGOPEN,FUNCDIALOGCLOSED,
-   TREESELECTED ,TREEPERSONSELECTED,DIAGRAMSELECTED,
+   TREESELECTED ,
+   TREEPERSONSELECTED,
+   ADDCACHETREE,
+   ADDCACHETREEPERSON,
+   DIAGRAMSELECTED,
     TREESELECTORDIALOGCLOSED,TREESELECTORDIALOGOPEN,
     DISPLAYDIAGRAMCONTROLS,HIDEDIAGRAMCONTROLS,TOGGLEDIAGRAMCONTROLS, NEWLOCATIONS} from './actionTypes.jsx';
 
@@ -33,8 +37,10 @@ export default (state = {
   showFuncListDialog :false,
   showTreeSelectorDialog :false,
   showDiagramControls : false,
-  selectedTreeData : {origin : 93, originDescription : '|21|Alan!Douglas'},
-  selectedTreePersonData : {personId:96},
+  selectedTree : '93',
+  selectedTreePerson : '96',
+  selectedTreeCache : [],
+  selectedPersonCache : [],
   diagramId : 0,
   error: undefined
 }, action) => {
@@ -68,18 +74,35 @@ export default (state = {
 
 
 
-    case TREEPERSONSELECTED:
-        //console.log('APPLICATIONSELECTED');
+    case ADDCACHETREE:
+        //console.log('ADDCACHETREE');
         return {
           ...state,
-           selectedTreePersonData : action.payload
+          selectedTreeCache : action.payload
         };
+        
+    case ADDCACHETREEPERSON:
+      //console.log('ADDCACHETREEPERSON');
+      return {
+        ...state,
+        selectedPersonCache : action.payload
+      };
+
+
     case TREESELECTED:
         //console.log('APPLICATIONSELECTED');
         return {
           ...state,
-           selectedTreeData : action.payload
+           selectedTree : action.payload
         };
+
+    case TREEPERSONSELECTED:
+      //console.log('APPLICATIONSELECTED');
+      return {
+        ...state,
+          selectedTreePerson : action.payload
+      };
+
     case DIAGRAMSELECTED:
         //console.log('APPLICATIONSELECTED');
         return {

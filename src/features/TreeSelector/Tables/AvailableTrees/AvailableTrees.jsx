@@ -4,11 +4,13 @@ import AvailableTreesToolbar from './AvailableTreesToolbar.jsx'
 import TableWrapper from '../../../../features/Table/TableWrapper.jsx'
 import {useAvTreesState} from './useAvTreesState';
 import {gql} from '@apollo/client';
-//import {setTree} from "../../../uxActions.jsx";
+import {addTreeToCache} from "../../../uxActions.jsx";
 import { connect } from "react-redux";
 
 
 function AvailableTrees(props) {
+
+  const {addTreeToCache} = props;
 
   const get_availableTrees = gql`
   query Dna(
@@ -81,6 +83,12 @@ function AvailableTrees(props) {
     state.headCells = headCells;
     state.title = 'Available Trees';
 
+    useEffect(() => {
+      if(!state.loading && state.errors.length ==0){
+          addTreeToCache(state.rows);      
+      }
+    }, [state.loading]);  
+
     return (
         <div>
           <TableWrapper state = {state} >
@@ -100,7 +108,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-   // setTree: (selectedTrees) => dispatch(setTree(selectedTrees)),
+    addTreeToCache: (rows) => dispatch(addTreeToCache(rows)),
   };
 };
 

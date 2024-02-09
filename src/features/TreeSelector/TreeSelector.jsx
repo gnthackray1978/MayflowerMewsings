@@ -20,6 +20,7 @@ import {funcSelected, funcDialogOpen , funcDialogClose,treeSelectorDialogClose} 
 
 
 import { connect } from "react-redux";
+import { getParams } from '../../features/Table/qryStringFuncs.jsx';
 
 
 function TabPanel(props) {
@@ -51,12 +52,15 @@ function a11yProps(index) {
 
 function TreeSelector(props) {
     //
-    const { treeSelectorDialogClose, selectedTreeData, selectedTreePersonData} = props;
+    const { treeSelectorDialogClose, selectedTreeCache, selectedPersonCache, selectedTree, selectedTreePerson} = props;
             
     const theme = useTheme();
     const classes = treeSelector(theme); 
-    
-    useEffect(() => console.log('TreeSelector loaded ' ), []);
+    console.log('TreeSelector loaded ' )
+
+    let qs = getParams();
+
+   // useEffect(() => console.log('TreeSelector loaded effected ' ), []);
 
     const [value, setValue] = React.useState(0);
 
@@ -69,19 +73,58 @@ function TreeSelector(props) {
     
     let personId =0;
 
-    if(selectedTreeData && selectedTreeData.origin){
-      let count =String(selectedTreeData.origin).split(',').length-1;
-      if(count > 0)
-        treeName = String(count+1) + ' trees selected';
-      else
-        treeName  = selectedTreeData.originDescription; 
+    let personNames =[];
+
+    if(qs.persons && qs.persons.length > 0){
+      let person = qs.persons.replace(/^,/, '');
+
+      let persons = person.split(',');
+
+      if(selectedPersonCache){
+        for(var o of persons)  {
+          let tperson = selectedPersonCache.find(x => x.id == o);
+          if(tperson){
+            personNames.push(tperson.name);
+          }
+        }
+      }
     }
 
-    if(selectedTreePersonData && selectedTreePersonData.firstName && selectedTreePersonData.surname)
-    {
-      personName  = selectedTreePersonData.firstName + ' ' + selectedTreePersonData.surname;
-      personId = selectedTreePersonData.id;
+    let treeNames =[];
+    if(qs.origin && qs.origin.length > 0){
+      let origin = qs.origin.replace(/^,/, '');
+      
+      let origins = origin.split(',');
+
+      if(selectedTreeCache){
+        for(var o of origins)  {
+          let tree = selectedTreeCache.find(x => x.id == o);
+          if(tree){
+            treeNames.push(tree.name);
+          }
+        }
+      }
     }
+
+    console.log('trees ' + treeNames);
+
+  
+    if(treeNames.length > 0)  {
+      let count = treeNames.length;
+      if(count > 1)
+        treeName = String(count) + ' trees selected';
+      else
+        treeName  = treeNames[0]; 
+    }
+
+    if(personNames.length > 0)  {
+      let count2 = personNames.length;
+      if(count2 > 1)
+        personName = String(count2) + ' persons selected';
+      else
+        personName  = personNames[0]; 
+    }
+
 
     return (
       <div className = "inner">
@@ -97,9 +140,9 @@ function TreeSelector(props) {
                 size="large">
                 <SearchIcon/>
               </IconButton>
-              <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
-                <Tab label= {treeName} {...a11yProps(0)} />
-                <Tab label= {personName}{...a11yProps(1)} />
+              <Tabs value={value} onChange={handleChange}>
+                <Tab id = 'simple-tab-0' aria-controls = 'simple-tabpanel-0' label= {treeName} style={{color: 'black'}} />
+                <Tab id = 'simple-tab-1' aria-controls = 'simple-tabpanel-1' label= {personName}  style={{color: 'black'}} />
               </Tabs>
           </Toolbar>
         </AppBar>
@@ -118,8 +161,10 @@ function TreeSelector(props) {
 
 const mapStateToProps = state => {
   return {
-    selectedTreeData : state.ux.selectedTreeData,
-    selectedTreePersonData : state.ux.selectedTreePersonData
+    selectedTreeCache : state.ux.selectedTreeCache,
+    selectedPersonCache : state.ux.selectedPersonCache,
+    selectedTree : state.ux.selectedTree,
+    selectedTreePerson : state.ux.selectedTreePerson,
   };
 };
 

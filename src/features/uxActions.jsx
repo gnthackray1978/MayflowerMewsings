@@ -2,6 +2,8 @@ import { METADATALOADED, APPLICATIONSELECTED,
   FUNCTIONSELECTED, APPDIALOGOPEN ,APPDIALOGCLOSED,FUNCDIALOGOPEN,
   FUNCDIALOGCLOSED, TREESELECTED ,TREEPERSONSELECTED,DIAGRAMSELECTED,
   TREESELECTORDIALOGOPEN,TREESELECTORDIALOGCLOSED,
+  ADDCACHETREE,
+  ADDCACHETREEPERSON,
   DISPLAYDIAGRAMCONTROLS,HIDEDIAGRAMCONTROLS, TOGGLEDIAGRAMCONTROLS, NEWLOCATIONS} from './actionTypes.jsx';
  
   export const setLocations = (state) =>{
@@ -15,34 +17,100 @@ import { METADATALOADED, APPLICATIONSELECTED,
         }    
   };
 
-export const setTreePerson = (state) =>{
-  console.log('setTreePerson action');
+export const addTreePersonToCache = (state) =>{
+ // console.log('setTreePerson action');
 
     return async (dispatch, getState)  => {
-        dispatch({
-          type: TREEPERSONSELECTED,
-          payload : state
-        });
+
+        var tp = getState();
+
+        let isFound  = tp.ux.selectedPersonCache.length == 0 ? false : true;
+        
+        for(var rec of tp.ux.selectedPersonCache){                  
+          if(!state.find((r) => r.id == rec.id)){
+            isFound = false;
+            break;
+          }
+        }
+
+        if(!isFound){ 
+          let newRows =[];
+          for(var rec of state){
+            newRows.push({
+              id : rec.id,
+              name : rec.firstName + ' ' + rec.surname              
+            });
+          }
+
+          dispatch({
+            type: ADDCACHETREEPERSON,
+            payload : newRows
+          });        
+        }
+      }    
+};
+
+export const addTreeToCache = (state) =>{
+ // console.log('setTreePerson action');
+
+    return async (dispatch, getState)  => {
+
+        var tp = getState();
+
+        let isFound  =tp.ux.selectedTreeCache.length == 0 ? false : true;
+        
+        for(var rec of tp.ux.selectedTreeCache){                  
+          if(!state.find((r) => r.id == rec.id)){
+            isFound = false;
+            break;
+          }
+        }
+
+        if(!isFound){         
+          let newRows =[];
+          for(var rec of state){
+            newRows.push({
+              id : rec.id,
+              name : rec.name           
+            });
+          }
+
+          dispatch({
+            type: ADDCACHETREE,
+            payload : [...tp.ux.selectedTreeCache, ...newRows]
+          });
+        }
       }    
 };
 
 export const setTree = (state) =>{
-    console.log('setTree action');
+  // console.log('setTree action');
+  return async (dispatch, getState)  => {
+    var tp = getState();
+    if(tp.ux.selectedTree == state)
+      state = '';
 
-    return async (dispatch, getState)  => {
-//          /
-      var tp = getState();
-
-      if(tp.ux.selectedTreeData.originDescription != state.originDescription 
-        || tp.ux.selectedTreeData.origin != state.origin)
-      {
-        dispatch({
-          type: TREESELECTED,
-          payload : state
-        });
-      }
-    }
+    dispatch({
+      type: TREESELECTED,
+      payload : state
+    });
+  }
   
+};
+
+export const setPerson = (state) =>{
+  // console.log('setTree action');
+  return async (dispatch, getState)  => {
+    var tp = getState();
+    if(tp.ux.selectedTreePerson == state )
+      state = '';
+
+      dispatch({
+        type: TREEPERSONSELECTED,
+        payload : state
+      });
+    
+  } 
 };
 
 export const setDiagram = (state) =>{

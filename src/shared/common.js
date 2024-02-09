@@ -16,7 +16,7 @@ export const errorFormatter = (loading, error, internalServerError, networkStatu
   
     if(loading)
     {
-      console.log('errorformatter: loading');
+     // console.log('errorformatter: loading');
       return [];
     }
   
