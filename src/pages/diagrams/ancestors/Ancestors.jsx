@@ -6,7 +6,7 @@ import {AncTree} from './AncTree';
 import DiagramWrapper from '../DiagramWrapper.jsx'
 import {transformData, populateAncestryObjects} from '../drawinglib/graphDataFuncs.jsx'
 import {gql} from '@apollo/client';
-
+import {getParams,csvToFirstNumber} from '../../../features/Table/qryStringFuncs.jsx';
 import { connect } from "react-redux";
 import {useMapState} from '../useMap';
 import {useSearchParamsState} from '../../../shared/useSearchParamsState.jsx';
@@ -15,9 +15,17 @@ import {useSearchParamsState} from '../../../shared/useSearchParamsState.jsx';
 
 function Ancestors(props) {
 
-  //const {selectedTreeData,selectedTreePersonData} = props;
-  const [origins, setOrigin] = useSearchParamsState("origins", '93');
-  const [persons, setPerson] = useSearchParamsState("persons", '6513'); //147 = 3x 
+  const {selectedTreePerson} = props;
+  
+  //use the query string if its been populated.
+  let params = getParams({persons : selectedTreePerson});
+
+  let persons = csvToFirstNumber(params.persons);
+
+  
+
+ // const [origins, setOrigin] = useSearchParamsState("origins", '93');
+  //const [persons, setPerson] = useSearchParamsState("persons", '6513'); //147 = 3x 
 
 
   const GET_FTMView = gql`
@@ -71,7 +79,7 @@ function Ancestors(props) {
 
   var state = useMapState(GET_FTMView,'ancestorsearch',{
     personId : persons,     
-    origin : origins
+    origin : ''
   });
 
   state = {
@@ -102,7 +110,7 @@ function Ancestors(props) {
 const mapStateToProps = state => {
   return { 
 
-   // selectedTreePersonData : state.ux.selectedTreePersonData.personId != 0 ? state.ux.selectedTreePersonData.personId :3217,
+    selectedTreePerson : state.ux.selectedTreePerson 
    // selectedTreeData : state.ux.selectedTreeData != '' ? state.ux.selectedTreeData : '_34_Kennington'
   };
 };

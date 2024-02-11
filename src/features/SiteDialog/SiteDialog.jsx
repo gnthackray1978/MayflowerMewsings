@@ -26,7 +26,7 @@ function GetSiteList(results, applicationSelected, siteDialogClose,navigate){
                             onClick ={(ev)=>{
                                 applicationSelected(ev.currentTarget.dataset.id);
                                 siteDialogClose();
-                                navigate.push('/'+ev.currentTarget.dataset.default);
+                                navigate('/'+ev.currentTarget.dataset.default);
                              //   console.log(`Button ${ev.currentTarget.dataset.default} clicked`);
                             }}>
              <ListItemText primary={site.name} />

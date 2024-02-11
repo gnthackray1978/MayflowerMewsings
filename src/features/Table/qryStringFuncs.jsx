@@ -74,6 +74,34 @@ export const setParams = (params) =>{
 };
 
 
-  
+export const csvToValidatedArr = (cache, csv) => {
+    let result = [];
+    
+    if(csv && csv.length > 0){
+      let components = csv.replace(/^,/, '').split(',');
+    
+      if(cache){
+        result = components
+          .map(o => cache.find(x => x.id == o))
+          .filter(Boolean)
+          .map(component => component.name);
+      }
+    }
+    
+    return result;
+};  
 
-  
+export const csvToFirstNumber = (csv) => {
+
+    csv = String(csv ?? '');
+    
+    if(csv && csv.length > 0){
+      let components = csv.replace(/^,/, '').split(',');
+
+      if(components.length > 0)
+        return String(components[0]);
+
+      return '0';
+    }
+    return '0';
+}

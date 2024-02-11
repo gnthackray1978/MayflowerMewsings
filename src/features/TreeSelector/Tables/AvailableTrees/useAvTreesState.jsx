@@ -90,11 +90,11 @@ export  function useAvTreesState(ReturnData,defaultParams, subSchema, rdxSetTree
 
     //we dont have multiple selection for persons yet 
     //but perhaps we will in the future
-    let selected = persons?.split(',') ??[];
+ //   let selected = persons?.split(',') ??[];
 
-    const selectedIndex = selected.indexOf(String(personId));
+    //const selectedIndex = selected.indexOf(String(personId));
 
-    return selectedIndex !== -1;
+    return personId == persons;
 
   }
 
@@ -159,30 +159,35 @@ export  function useAvTreesState(ReturnData,defaultParams, subSchema, rdxSetTree
     
     // this is used by diagram generating code.
   
-    let newSelected = [];
+   // let newSelected = [];
 
    // let p =qryStrObj?.persons ?? '';
 
-    let selected = persons.split(',');
-
-    const selectedIndex = selected.indexOf(String(personId));
-    
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, personId);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
-      );
+    let newSelected ='';
+    if(String(persons).search(personId) == -1){
+      newSelected = String(personId);
     }
 
+    //let selected = persons.split(',');
+
+    // const selectedIndex = selected.indexOf(String(personId));
+    
+
+    // if (selectedIndex === -1) {
+    //   newSelected = newSelected.concat(selected, personId);
+    // } else if (selectedIndex === 0) {
+    //   newSelected = newSelected.concat(selected.slice(1));
+    // } else if (selectedIndex === selected.length - 1) {
+    //   newSelected = newSelected.concat(selected.slice(0, -1));
+    // } else if (selectedIndex > 0) {
+    //   newSelected = newSelected.concat(
+    //     selected.slice(0, selectedIndex),
+    //     selected.slice(selectedIndex + 1),
+    //   );
+    // }
+
     let params ={
-      persons : newSelected.join(','),
+      persons : newSelected
     };
 
     setParams(params);

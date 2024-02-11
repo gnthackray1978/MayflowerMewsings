@@ -20,7 +20,7 @@ import {funcSelected, funcDialogOpen , funcDialogClose,treeSelectorDialogClose} 
 
 
 import { connect } from "react-redux";
-import { getParams } from '../../features/Table/qryStringFuncs.jsx';
+import { getParams, csvToValidatedArr } from '../../features/Table/qryStringFuncs.jsx';
 
 
 function TabPanel(props) {
@@ -43,16 +43,10 @@ function TabPanel(props) {
   );
 }
 
-function a11yProps(index) {
-  return {
-    id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
-  };
-}
 
 function TreeSelector(props) {
     //
-    const { treeSelectorDialogClose, selectedTreeCache, selectedPersonCache, selectedTree, selectedTreePerson} = props;
+    const { treeSelectorDialogClose, selectedTreeCache, selectedPersonCache, selectedTreePerson} = props;
             
     const theme = useTheme();
     const classes = treeSelector(theme); 
@@ -73,38 +67,9 @@ function TreeSelector(props) {
     
     let personId =0;
 
-    let personNames =[];
+    let personNames = csvToValidatedArr(selectedPersonCache,qs.persons);
 
-    if(qs.persons && qs.persons.length > 0){
-      let person = qs.persons.replace(/^,/, '');
-
-      let persons = person.split(',');
-
-      if(selectedPersonCache){
-        for(var o of persons)  {
-          let tperson = selectedPersonCache.find(x => x.id == o);
-          if(tperson){
-            personNames.push(tperson.name);
-          }
-        }
-      }
-    }
-
-    let treeNames =[];
-    if(qs.origin && qs.origin.length > 0){
-      let origin = qs.origin.replace(/^,/, '');
-      
-      let origins = origin.split(',');
-
-      if(selectedTreeCache){
-        for(var o of origins)  {
-          let tree = selectedTreeCache.find(x => x.id == o);
-          if(tree){
-            treeNames.push(tree.name);
-          }
-        }
-      }
-    }
+    let treeNames = csvToValidatedArr(selectedTreeCache,qs.origin);
 
     console.log('trees ' + treeNames);
 
@@ -131,6 +96,7 @@ function TreeSelector(props) {
         <AppBar position="static">
           <Toolbar>
               <IconButton
+                style = {{marginLeft: '25px'}}
                 className={classes.menuButton}
                 color="inherit"
                 aria-label="Menu"
