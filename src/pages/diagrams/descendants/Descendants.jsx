@@ -6,17 +6,20 @@ import DiagramWrapper from '../DiagramWrapper.jsx'
 import {transformData, populateDescendantObjects} from '../drawinglib/graphDataFuncs.jsx';
 import {gql} from '@apollo/client';
 import { connect } from "react-redux";
-//import {getParams} from '../queryParams';
+import {getParams,csvToFirstNumber} from '../../../features/Table/qryStringFuncs.jsx';
 import {useMapState} from '../useMap';
 import {DescTree} from './DescTree';
-import {useSearchParamsState} from '../../../shared/useSearchParamsState.jsx';
+
 
 function Descendants(props) {
  
    // console.log('Descendants');
-
-    const [origins, setOrigin] = useSearchParamsState("origins", '93');
-    const [persons, setPerson] = useSearchParamsState("persons", '96');
+   const {selectedTreePerson} = props;
+  
+   //use the query string if its been populated.
+   let params = getParams({persons : selectedTreePerson});
+ 
+   let persons = csvToFirstNumber(params.persons);
 
     const GET_FTMView = gql`
     query Diagram(      
@@ -64,14 +67,9 @@ function Descendants(props) {
     }
     `;
 
-    
-   // var params = getParams();
-
-   // console.log(origins + ' ' + persons);
-
     var state = useMapState(GET_FTMView,'descendantsearch',{
       personId : persons,     
-      origin : origins
+      origin : ''
       // originally this was written to use tree id, changed to use
       // origindescription because we now can have multiple trees.
     });
@@ -102,9 +100,7 @@ function Descendants(props) {
 
 const mapStateToProps = state => {
   return { 
-
-  //  selectedTreePersonData : state.ux.selectedTreePersonData.personId != 0 ? state.ux.selectedTreePersonData.personId :3217,
-  //  selectedTreeData : state.ux.selectedTreeData != '' ? state.ux.selectedTreeData : '_34_Kennington'
+    selectedTreePerson : state.ux.selectedTreePerson
   };
 };
 

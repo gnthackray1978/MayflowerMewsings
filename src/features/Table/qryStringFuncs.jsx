@@ -94,14 +94,8 @@ export const csvToValidatedArr = (cache, csv) => {
 export const csvToFirstNumber = (csv) => {
 
     csv = String(csv ?? '');
-    
-    if(csv && csv.length > 0){
-      let components = csv.replace(/^,/, '').split(',');
 
-      if(components.length > 0)
-        return String(components[0]);
+    let components = csv.replace(/^,/, '').split(',');
 
-      return '0';
-    }
-    return '0';
+    return components?.[0] ?? '0';
 }

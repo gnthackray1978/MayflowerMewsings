@@ -9,7 +9,6 @@ import {gql} from '@apollo/client';
 import {getParams,csvToFirstNumber} from '../../../features/Table/qryStringFuncs.jsx';
 import { connect } from "react-redux";
 import {useMapState} from '../useMap';
-import {useSearchParamsState} from '../../../shared/useSearchParamsState.jsx';
 
 
 
@@ -21,12 +20,6 @@ function Ancestors(props) {
   let params = getParams({persons : selectedTreePerson});
 
   let persons = csvToFirstNumber(params.persons);
-
-  
-
- // const [origins, setOrigin] = useSearchParamsState("origins", '93');
-  //const [persons, setPerson] = useSearchParamsState("persons", '6513'); //147 = 3x 
-
 
   const GET_FTMView = gql`
   query Diagram(      

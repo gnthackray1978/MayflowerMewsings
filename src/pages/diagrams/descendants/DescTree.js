@@ -943,7 +943,8 @@ DescTree.prototype = {
 
                         if (_genIdx > 0){
                             if( this.generations[_genIdx - 1][genPerson.FatherIdx] == undefined){
-                              //console.log('error');
+                              console.log('error');
+                              throw new Error('father undefined: ' + _genIdx + ' ' + genPerson.RecordLink.FirstName + ' ' + genPerson.RecordLink.Surname); 
                             }
                             _parent_gen_lower_y = this.generations[_genIdx - 1][genPerson.FatherIdx].Y2;
                         }
