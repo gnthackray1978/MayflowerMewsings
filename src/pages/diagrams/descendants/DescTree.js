@@ -545,12 +545,12 @@ DescTree.prototype = {
         return _returnVal;
     },
 
-    CalcTPZoom: function (genidx, personIdx) {
-        var _tp = this.generations[genidx][personIdx];
+    SetNodeZoomLevel: function (node) {
+     //   var node = this.generations[genidx][personIdx];
 
-        var _boxarea = (_tp.X2 - _tp.X1) * (_tp.Y2 - _tp.Y1);
+        var nodeArea = (node.X2 - node.X1) * (node.Y2 - node.Y1);
 
-        _tp.zoom = this.CalcAreaLevel(_boxarea);
+        node.zoom = this.CalcAreaLevel(nodeArea);
     },
 
     RelocateToSelectedPerson: function () {
@@ -837,318 +837,180 @@ DescTree.prototype = {
         this._graphBoundary.X2 = 0.0;
 
 
-      // this.familyEdges = [];
-
-
-        //initialize familyspan array
-     //   while (_genIdx < this.generations.length) {
-
-     //       this.familyEdges.push([]);
-
-     //       _genIdx++;
-     //   }
-
-
-
-
-
         _genIdx = 0;
 
         var lastPersonY2 = 0.0;
 
         this.familyEdges = CreateArray(this.generations);
+        
+        this.generations.filter(f=>f.GenerationVisible).forEach((genArray, _genIdx) => {
+            
+            let prevGenArray = _genIdx > 0 ? this.generations[_genIdx - 1] : null;
+        
+            _displayGenCount++;
 
-        while (_genIdx < this.generations.length) {
-           // this.familyEdges.push([]);
-           // this.familyEdges[_genIdx] =[];
-            //IsGenerationDisplayed
-      //      var tp = this.IsGenerationDisplayed(_genIdx);
-        //    if (tp != this.generations[_genIdx].GenerationVisible) {
-         //       //console.log('gen visible wrong');
-        //    }
+            this.startx1 = this.SetScheduleVars(_genIdx, this.startx1);
 
+            this.fillGenXs(genArray);
 
+            var _current_gen_upper_y = (_genIdx * this.boxHeight) + (_genIdx * this.distanceBetweenGens) + this.centreVerticalPoint;
 
-            if (this.generations[_genIdx].GenerationVisible) {
-                _displayGenCount++;
+            var _famIdx = 0;
 
-                this.startx1 = this.SetScheduleVars(_genIdx, this.startx1);
+            var familydirectionCounts = [];
+                
+            if(_genIdx>0)
+                familydirectionCounts = createFamilyCountArray(_genIdx, genArray, prevGenArray);
 
-                this.fillGenXs(_genIdx);
+            genArray.filter(f=>f.IsDisplayed).forEach((genPerson, _personIdx) => {
 
+                
+                genPerson.X2 = genPerson.X1 + this.boxWidth;
 
+                var _isSpouse = genPerson.IsHtmlLink;
 
-                var _current_gen_upper_y = (_genIdx * this.boxHeight) + (_genIdx * this.distanceBetweenGens) + this.centreVerticalPoint;
+                var _parent_gen_lower_y = 0.0;
+                
+                //childless marriages
+                if (genPerson.SpouseIdxLst.length > 0 && genPerson.ChildCount === 0 && !_isSpouse) {
+                    var spouseIdx = genPerson.SpouseIdxLst[0];
+                    var tp = genArray[spouseIdx].X1;
+                
+                    if (Math.abs(spouseIdx - _personIdx) <= 2 && genArray[spouseIdx].ChildCount === 0) {
+                        var marriagePoints = [
+                            [(genPerson.X1 + this.halfBox), (_current_gen_upper_y + this.boxHeight)],
+                            [(genPerson.X1 + this.halfBox), (_current_gen_upper_y + this.boxHeight + this.topSpan)],
+                            [(tp + this.halfBox), (_current_gen_upper_y + this.boxHeight + this.topSpan)],
+                            [(tp + this.halfBox), (_current_gen_upper_y + this.boxHeight)]
+                        ];
+                
+                        this.marriageEdges.push(marriagePoints);
+                    }
+                }
 
+                if (_genIdx > 0){
+                    if(prevGenArray[genPerson.FatherIdx] == undefined){
+                        console.log('error');
+                        throw new Error('father undefined: ' + _genIdx + ' ' + genPerson.RecordLink.FirstName + ' ' + genPerson.RecordLink.Surname); 
+                    }
+                    _parent_gen_lower_y = prevGenArray[genPerson.FatherIdx].Y2;
+                }
+                var _firstRow = _current_gen_upper_y - this.lowerSpan;
+                var _secondRow = _parent_gen_lower_y + this.middleSpan; // changed with increment later on - need to calculate the maximum and minimum this increment will be
+                var _thirdRow = _parent_gen_lower_y + this.middleSpan;
+                var _fourthRow = _parent_gen_lower_y + this.topSpan;
 
-
-                var _increment_temp = 0.0;
-
-                var _famIdx = 0;
-
-                var familydirectionCounts = [];
+                if ((!(genPerson.IsFamilyEnd && _isSpouse)) && _genIdx > 0 && !genPerson.DoubleSpouseEnd) {
+                    var _family = this.familyEdges[_genIdx][genPerson.FamilyIdx];
+                    var point = [(genPerson.X1 + this.halfBox), _firstRow];
+                
+                   
                     
-                if(_genIdx>0)
-                    familydirectionCounts = createFamilyCountArray(_genIdx, this.generations[_genIdx], this.generations[_genIdx-1]);
-
-            //    var _familyIdx = -1;
-                var _personIdx = 0;
-
-                while (_personIdx < this.generations[_genIdx].length) {
-
-                    var genPerson = this.generations[_genIdx][_personIdx];
-
-
-
-                    if (genPerson.IsDisplayed) {
-                        //  //console.log('displaying: ' + genPerson.Name);
-
-                        genPerson.X2 = genPerson.X1 + this.boxWidth;
-
-                        var _isSpouse = genPerson.IsHtmlLink;
-
-                        var _parent_gen_lower_y = 0.0;
-                     
-
-                        if (genPerson.SpouseIdxLst.length > 0 && genPerson.ChildCount === 0 && !_isSpouse) {
-                            var spouseIdx = genPerson.SpouseIdxLst[0];
-                            var tp = this.generations[_genIdx][spouseIdx].X1;
-
-                            if (Math.abs(spouseIdx - _personIdx) <= 2) {
-                                if (this.generations[_genIdx][spouseIdx].ChildCount === 0) {
-
-                                    var marriagePoints = new Array();
-
-                                    var myArray = new Array((genPerson.X1 + this.halfBox), (_current_gen_upper_y + this.boxHeight));
-                                    marriagePoints.push(myArray);
-                                    myArray = new Array((genPerson.X1 + this.halfBox), (_current_gen_upper_y + this.boxHeight + this.topSpan));
-                                    marriagePoints.push(myArray);
-                                    myArray = new Array((tp + this.halfBox), (_current_gen_upper_y + this.boxHeight + this.topSpan));
-                                    marriagePoints.push(myArray);
-                                    myArray = new Array((tp + this.halfBox), (_current_gen_upper_y + this.boxHeight));
-                                    marriagePoints.push(myArray);
-
-                                    this.marriageEdges.push(marriagePoints);
-                                }
-                            }
-
-                        } //end genPerson.SpouseIdxLst.length > 0 && genPerson.ChildCount
-
+                    //top of edge that comes out from the top of the node
+                    _family.push(point);
+                
+                    if (!_isSpouse) {                        
+                        //bottom of edge that comes out from the top of the node
+                        _family.push([(genPerson.X1 + this.halfBox), _current_gen_upper_y]);
+                    }
                     
-                        var _middleParents = 0.0;
-                        //   var firstPX = 0.0;
-                        //   var secondPX = 0.0;
+                    //move the 'cursor' to the top the created edge.   
+                    _family.push(point);
+                    
+                }
 
-                        var _thirdStorkX = 0.0;
+                if (genPerson.IsParentalLink && _genIdx > 0 ) {
 
-                        if (_genIdx > 0){
-                            if( this.generations[_genIdx - 1][genPerson.FatherIdx] == undefined){
-                              console.log('error');
-                              throw new Error('father undefined: ' + _genIdx + ' ' + genPerson.RecordLink.FirstName + ' ' + genPerson.RecordLink.Surname); 
-                            }
-                            _parent_gen_lower_y = this.generations[_genIdx - 1][genPerson.FatherIdx].Y2;
+
+
+                    let _middleParents = MiddleParents(prevGenArray, genPerson.FatherIdx, genPerson.MotherIdx);
+
+                    var _nextParentLink = GetFirst(prevGenArray, genPerson.FatherIdx, genPerson.MotherIdx);
+                    var _prevParentLink = GetPrev(prevGenArray, genPerson.FatherIdx, genPerson.MotherIdx);
+                
+                    //there should always be a father and mother at this point
+                    //as we are never in generation zero
+                    if(genPerson.Father == undefined || genPerson.Mother == undefined){
+                        //console.log('error - father or mother undefined. All parental links should have a mother or a father. Info: ' + genPerson.Id + ' ' + genPerson.PersonId);
+                    }
+
+
+                    let parentXs = GetParentXs(genPerson.Father?.X1 ?? 0, genPerson.Mother?.X1 ?? 0, this.halfBox);
+
+                    let incSize = (this.distanceBetweenGens - this.middleSpan - this.lowerSpan) / familydirectionCounts[_famIdx];
+                    let _increment_temp = (_famIdx === 0 && genPerson.X1 > _middleParents) ? this.distanceBetweenGens - this.middleSpan - this.lowerSpan : 0.0;
+                    
+                    let _thirdStorkX = genPerson.X1 > _middleParents ? Math.max(genPerson.X1, Math.min(_nextParentLink, genPerson.X2)) : Math.min(genPerson.X1, Math.max(_prevParentLink, genPerson.X1));
+                    
+                 //   _increment_temp += genPerson.X1 > _middleParents ? -incSize : incSize;
+                    _secondRow += _increment_temp;
+                    
+                    if (Math.abs(_firstRow - _secondRow) <= 1) {
+                        _secondRow -= (incSize / 2);
+                    }
+                    
+                    let _secondStorkX = genPerson.X1;
+                    
+                    if (genPerson.IsFamilyStart) {
+                        let _nextFamilyStart = genArray.Count > 1 ? genArray[_personIdx + 1].X1 : genArray[_personIdx].X2;
+                        let _sizeToAdd = genPerson.IsFamilyEnd ? this.halfBox : this.boxWidth;
+                    
+                        if (_middleParents < _nextFamilyStart && _middleParents > genArray[_personIdx].X1) {
+                            _secondStorkX = _middleParents;
+                            _thirdStorkX = _middleParents;
                         }
-                        var _firstRow = _current_gen_upper_y - this.lowerSpan;
-                        var _secondRow = _parent_gen_lower_y + this.middleSpan; // changed with increment later on - need to calculate the maximum and minimum this increment will be
-                        var _thirdRow = _parent_gen_lower_y + this.middleSpan;
-                        var _fourthRow = _parent_gen_lower_y + this.topSpan;
-
-                        if ((!(genPerson.IsFamilyEnd && _isSpouse)) && _genIdx > 0) {
-                            if (!genPerson.DoubleSpouseEnd) {
-                                // //console.log('needed: ' + _genIdx + '  - ' + 
-                                // _familyIdx + ' ' + genPerson.FamilyIdx + ' '  
-                                // +this.familyEdges[_genIdx].length);
-                                var _family = this.familyEdges[_genIdx][genPerson.FamilyIdx];
-
-                                
-                                //  //console.log(genPerson.Name);
-
-                                _family.push(new Array((genPerson.X1 + this.halfBox), _firstRow));
-
-                                if (!_isSpouse)
-                                    _family.push(new Array((genPerson.X1 + this.halfBox), _current_gen_upper_y));
-
-                                _family.push(new Array((genPerson.X1 + this.halfBox), _firstRow));
-                            }
+                    
+                        if (_secondStorkX == _thirdStorkX) {
+                            _thirdStorkX += _sizeToAdd;
                         }
+                    
+                        _secondStorkX += _sizeToAdd;
+                    }
 
+                    if(genPerson.RecordLink.Surname == 'Lutton'){
+                        //console.log('Lutton');
+                        _secondRow+=25;
+                    }
+                    //firstrow = top of the edge that comes out from the top of the node
 
-
-                        if (genPerson.IsParentalLink && _genIdx > 0 ) {
-
-
-
-                            _middleParents = MiddleParents(this.generations[_genIdx-1], genPerson.FatherIdx, genPerson.MotherIdx);
-
-                            var _nextParentLink = GetFirst(this.generations[_genIdx-1], genPerson.FatherIdx, genPerson.MotherIdx);
-                            var _prevParentLink = GetPrev(this.generations[_genIdx-1], genPerson.FatherIdx, genPerson.MotherIdx);
+                    //endregion
+                    const points = [
+                        [_secondStorkX, _firstRow],
+                        [_secondStorkX, _secondRow],
+                        [_thirdStorkX, _secondRow],
+                        [_thirdStorkX, _thirdRow],
+                        [_middleParents, _thirdRow],
+                        [_middleParents, _fourthRow],
+                        [parentXs.firstPX, _fourthRow],
+                        [parentXs.firstPX, _parent_gen_lower_y],
+                        [parentXs.firstPX, _fourthRow],
+                        [parentXs.secondPX, _fourthRow],
+                        [parentXs.secondPX, _parent_gen_lower_y],
+                        [parentXs.secondPX, _fourthRow],
+                        [_middleParents, _fourthRow],
+                        [_middleParents, _thirdRow],
+                        [_thirdStorkX, _thirdRow],
+                        [_thirdStorkX, _secondRow],
+                        [_secondStorkX, _secondRow],
+                        [_secondStorkX, _firstRow]
+                        ];
                         
-                            //there should always be a father and mother at this point
-                            //as we are never in generation zero
-                            if(genPerson.Father == undefined || genPerson.Mother == undefined){
-                                //console.log('error - father or mother undefined. All parental links should have a mother or a father. Info: ' + genPerson.Id + ' ' + genPerson.PersonId);
-                            }
+                        points.forEach(point => this.familyEdges[_genIdx][genPerson.FamilyIdx].push(new Array(...point)));
 
-                            let parentXs = GetParentXs( genPerson.Father?.X1 ?? 0,  genPerson.Mother?.X1 ?? 0, this.halfBox);
+                    _famIdx++;
+                } //end (genPerson.IsParentalLink && _genIdx > 0)
 
-                            var incSize = 0;
+                genPerson.Y1 = _current_gen_upper_y;
+                genPerson.Y2 = _current_gen_upper_y + this.boxHeight;
 
-                            incSize = this.distanceBetweenGens - this.middleSpan - this.lowerSpan;
-                            incSize = incSize / familydirectionCounts[_famIdx];
+                lastPersonY2 = genPerson.Y2;
 
+                this.SetNodeZoomLevel(genPerson);
 
-                            if (_famIdx === 0) {
-                                if (genPerson.X1 > _middleParents)
-                                    _increment_temp = this.distanceBetweenGens - this.middleSpan - this.lowerSpan;
-                                else
-                                    _increment_temp = 0.0;
-                            }
-
-
-                            if (genPerson.X1 > _middleParents) {
-                                _increment_temp -= incSize; //original
-
-                                if (_nextParentLink > genPerson.X2)
-                                    _thirdStorkX = genPerson.X2;
-                                else
-                                    _thirdStorkX = _nextParentLink;
-
-                                if ((genPerson.X1 > _middleParents) && (_thirdStorkX > genPerson.X1)) {
-                                    _thirdStorkX = genPerson.X1;
-                                }
-                            }
-                            else {
-                                _increment_temp += incSize; //original
-
-                                if (_prevParentLink < genPerson.X1)
-                                    _thirdStorkX = genPerson.X1;
-                                else
-                                    _thirdStorkX = _prevParentLink;
-
-                                if ((genPerson.X1 < _middleParents) && (_thirdStorkX < genPerson.X1)) {
-                                    _thirdStorkX = genPerson.X1;
-                                }
-                            }
-
-
-                            _secondRow += _increment_temp;
-
-
-                            //tweak start of rows
-                            //(Math.abs(double1 - double2) <= precision)
-
-                            if (Math.abs(_firstRow - _secondRow) <= 1) {
-                                _secondRow -= (incSize / 2);
-                            }
-
-
-
-
-
-                            var _secondStorkX = genPerson.X1;
-
-                            if (genPerson.IsFamilyStart && genPerson.IsFamilyEnd) {
-                                // only child with no spouses!
-                                if (_personIdx === 0) {
-                                    var _nextFamilyStart = 0;
-
-
-                                    if (this.generations[_genIdx].Count > 1) {
-                                        _nextFamilyStart = this.generations[_genIdx][_personIdx + 1].X1;
-                                    }
-                                    else {
-                                        _nextFamilyStart = this.generations[_genIdx][_personIdx].X2;
-                                    }
-
-                                    if (_middleParents < _nextFamilyStart && _middleParents > this.generations[_genIdx][_personIdx].X1) {
-                                        _secondStorkX = _middleParents;
-                                        _thirdStorkX = _middleParents;
-                                    }
-
-                                }
-                            }
-                            else {
-                                // handles situations where lines are overlapping the next or prev
-                                // family
-                                // happens when there are just 1 or 2 families
-                                // and one of them is unusually large or something like that.
-
-                                if (genPerson.IsFamilyStart) {
-                                    // tidy up the link to the parents
-
-                                    var _sizeToAdd = this.halfBox;
-
-                                    if (!genPerson.IsFamilyEnd) {
-                                        _sizeToAdd = this.boxWidth;
-                                    }
-
-                                    if (_secondStorkX == _thirdStorkX) {
-                                        _thirdStorkX += _sizeToAdd;
-                                    }
-
-
-                                    _secondStorkX += _sizeToAdd;
-
-
-                                }
-
-                            }
-
-                            
-                            //endregion
-                            var _family0 = this.familyEdges[_genIdx][genPerson.FamilyIdx];
-
-
-                            _family0.push(new Array(_secondStorkX, _firstRow));
-                            _family0.push(new Array(_secondStorkX, _secondRow));
-                            _family0.push(new Array(_thirdStorkX, _secondRow));
-                            _family0.push(new Array(_thirdStorkX, _thirdRow));
-                            _family0.push(new Array(_middleParents, _thirdRow));
-                            _family0.push(new Array(_middleParents, _fourthRow));
-                            _family0.push(new Array(parentXs.firstPX, _fourthRow));
-                            _family0.push(new Array(parentXs.firstPX, _parent_gen_lower_y));
-                            _family0.push(new Array(parentXs.firstPX, _fourthRow));
-
-                            _family0.push(new Array(parentXs.secondPX, _fourthRow));
-                            _family0.push(new Array(parentXs.secondPX, _parent_gen_lower_y));
-                            _family0.push(new Array(parentXs.secondPX, _fourthRow));
-                            _family0.push(new Array(_middleParents, _fourthRow));
-                            _family0.push(new Array(_middleParents, _thirdRow));
-
-                            _family0.push(new Array(_thirdStorkX, _thirdRow));
-                            _family0.push(new Array(_thirdStorkX, _secondRow));
-
-                            _family0.push(new Array(_secondStorkX, _secondRow));
-                            _family0.push(new Array(_secondStorkX, _firstRow));
-
-                            _famIdx++;
-                        } //end (genPerson.IsParentalLink && _genIdx > 0)
-
-
-                        genPerson.Y1 = _current_gen_upper_y;
-                        genPerson.Y2 = _current_gen_upper_y + this.boxHeight;
-
-                        lastPersonY2 = genPerson.Y2;
-
-                        this.CalcTPZoom(_genIdx, _personIdx);
-
-
-
-
-
-
-
-                    } // end (genPerson.IsDisplayed)
-
-
-                    _personIdx++;
-                } //end while
-
-            }
-
-
-            _genIdx++;
-        }
+            }); // end while personidx
+         
+            
+        });
 
         if (this.generations.length > 0) {
             this._graphBoundary.Y1 = this.generations[0][0].Y1;
@@ -1319,41 +1181,20 @@ DescTree.prototype = {
 
     },
 
-    fillGenXs: function (genidx) {
+    fillGenXs: function (gen) {
 
-        var idx = 0;
-        var _currentDistanceBetweenBoxes = 0.0;
-        var innerIdx = 0;
-        var prevPerson = null;
-
-       // //console.log('moved diagram to: ' + this.startx1 + ' from ' + this.generations[genidx][idx].X1 + ' (' + (this.generations[genidx][idx].X1 - this.startx1) + ')');
-
-        while (idx < this.generations[genidx].length) {
-
-            if (this.generations[genidx][idx].IsDisplayed) {
-
-                if (innerIdx === 0) {
-                    this.generations[genidx][idx].X1 = this.startx1;
-                    this.generations[genidx][idx].X2 = this.startx1 + this.boxWidth;
-                }
-                else {
-                    if (this.generations[genidx][idx].IsFamilyStart) {
-                        _currentDistanceBetweenBoxes = this.distancesbetfam;
-                    }
-                    else {
-                        _currentDistanceBetweenBoxes = this.distanceBetweenBoxs;
-                    }
-
-                    this.generations[genidx][idx].X1 = prevPerson.X1 + this.boxWidth + _currentDistanceBetweenBoxes;
-                    this.generations[genidx][idx].X2 = this.generations[genidx][idx].X1 + this.boxWidth;
-                }
-                prevPerson = this.generations[genidx][idx];
-                innerIdx++;
-
+        let prevPerson = null;
+        
+        gen.filter((p)=>p.IsDisplayed).forEach((node, idx) => {         
+            if (idx === 0) {
+                node.X1 = this.startx1;                
+            } else {
+                node.X1 = prevPerson.X1 + this.boxWidth + (node.IsFamilyStart ? this.distancesbetfam : this.distanceBetweenBoxs);
             }
+            node.X2 = node.X1 + this.boxWidth;
 
-            idx++;
-        }
+            prevPerson = node;              
+        });
     }
 
 
