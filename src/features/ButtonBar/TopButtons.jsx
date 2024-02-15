@@ -70,7 +70,7 @@ function TopButtons(props) {
     const {siteDialogOpen, siteDialogClose,
        showAppListDialog, ShowFuncListDialog, funcDialogOpen , 
        funcDialogClose, metaSubset,showTreeSelectorDialog, 
-       treeSelectorDialogOpen,treeSelectorDialogClose, toggleDiagramControls} = props;
+       treeSelectorDialogOpen,treeSelectorDialogClose, toggleDiagramControls, title} = props;
 
     const classes =  topButtonStyles(theme);
  
@@ -81,7 +81,21 @@ function TopButtons(props) {
 
     if(selection.appId ==2)
       showDiagramControls =true;
+  
     
+    if (selection.title == 'Descendants') {        
+        selection.title = 'Descendant Diagram for ' + title;
+    }
+    
+    if (selection.title == 'Ancestors') {        
+        selection.title = 'Ancestor Diagram for ' + title;
+    }
+    
+    if (selection.title == 'FDDescendants') {
+        selection.title = 'Force Directed Diagram for ' + title;
+    }
+
+
     return (
       <Toolbar>
           {selection.appId != 1 && <IconButton
@@ -166,11 +180,12 @@ const mapStateToProps = state => {
   let showFuncListDialog = state.ux.showFuncListDialog;
  
   return {
-    selectedTreeData : state.ux.selectedTreeData,
+    title : state.ux.title,
     showTreeSelectorDialog : state.ux.showTreeSelectorDialog,
     ShowAppListDialog :showAppListDialog,
-    ShowFuncListDialog :showFuncListDialog
-
+    ShowFuncListDialog :showFuncListDialog,
+   // selectedPersonCache: state.ux.selectedPersonCache,
+ //   selectedTreePerson: state.ux.selectedTreePerson
   };
 };
 

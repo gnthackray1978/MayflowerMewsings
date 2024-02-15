@@ -6,7 +6,7 @@ import { APPLICATIONLISTLOADED, APPLICATIONSELECTED, FUNCTIONLISTLOADED,METADATA
    ADDCACHETREEPERSON,
    DIAGRAMSELECTED,
     TREESELECTORDIALOGCLOSED,TREESELECTORDIALOGOPEN,
-    DISPLAYDIAGRAMCONTROLS,HIDEDIAGRAMCONTROLS,TOGGLEDIAGRAMCONTROLS, NEWLOCATIONS} from './actionTypes.jsx';
+    DISPLAYDIAGRAMCONTROLS,HIDEDIAGRAMCONTROLS,TOGGLEDIAGRAMCONTROLS, NEWLOCATIONS, SETTITLE} from './actionTypes.jsx';
 
 
 
@@ -41,13 +41,18 @@ export default (state = {
   selectedTreePerson : '96',
   selectedTreeCache : [],
   selectedPersonCache : [],
+  title : '',
   diagramId : 0,
   error: undefined
 }, action) => {
 
 
   switch (action.type) {
-  
+    case SETTITLE:
+      return {
+        ...state,
+        title : action.payload
+      };
     case NEWLOCATIONS:
       return {
         ...state,

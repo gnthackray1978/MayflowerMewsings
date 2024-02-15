@@ -4,8 +4,23 @@ import { METADATALOADED, APPLICATIONSELECTED,
   TREESELECTORDIALOGOPEN,TREESELECTORDIALOGCLOSED,
   ADDCACHETREE,
   ADDCACHETREEPERSON,
-  DISPLAYDIAGRAMCONTROLS,HIDEDIAGRAMCONTROLS, TOGGLEDIAGRAMCONTROLS, NEWLOCATIONS} from './actionTypes.jsx';
+  DISPLAYDIAGRAMCONTROLS,HIDEDIAGRAMCONTROLS, TOGGLEDIAGRAMCONTROLS, NEWLOCATIONS, SETTITLE} from './actionTypes.jsx';
  
+
+  
+  export const setTitle = (state) =>{
+    //console.log('applicationSelected action');
+  
+      return async (dispatch, getState)  => {
+          dispatch({
+            type: SETTITLE,
+            payload : state
+          });
+        }    
+  };
+
+
+
   export const setLocations = (state) =>{
     //console.log('applicationSelected action');
   

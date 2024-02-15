@@ -9,12 +9,12 @@ import {gql} from '@apollo/client';
 import {getParams,csvToFirstNumber} from '../../../features/Table/qryStringFuncs.jsx';
 import { connect } from "react-redux";
 import {useMapState} from '../useMap';
-
+import {setTitle} from "../../../features/uxActions.jsx";
 
 
 function Ancestors(props) {
 
-  const {selectedTreePerson} = props;
+  const {selectedTreePerson, setTitle} = props;
   
   //use the query string if its been populated.
   let params = getParams({persons : selectedTreePerson});
@@ -34,6 +34,7 @@ function Ancestors(props) {
               generationsCount
               maxGenerationLength
               totalRows
+              title
               rows {        
                         id
                         generationIdx
@@ -80,6 +81,11 @@ function Ancestors(props) {
     title : 'Ancestor View'
   };
 
+
+  if(!state.loading)
+    setTitle(state.data.title);
+
+
   console.log('api returned: ' + state.errors);
 
   let data = transformData(state.data, populateAncestryObjects);
@@ -109,7 +115,9 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return { };
+  return {    
+    setTitle: (title) => dispatch(setTitle(title))
+   };
 };
  
 export default connect(mapStateToProps, mapDispatchToProps)(Ancestors);

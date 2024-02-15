@@ -76,25 +76,27 @@ const DiagramToolbar = (props) => {
              style={{ position :'absolute', left : '32px', top : '35px' }}
              aria-label="Menu"
              onClick= {()=>{}}
-             size="large"><ArrowUpward/></IconButton>
+             size="large"><ArrowUpward/>
+           </IconButton>
          
 
-                      <IconButton
-                        color="inherit"
-                        onMouseDown={e => {
-                          graph.movementx = -1 ;
-                          e.stopPropagation();
-                        }
-                        }
-                        onMouseUp={e => {
-                          graph.movementx = 0;
-                          e.stopPropagation();
-                        }
-                        }
-                        style={{ position :'absolute', left : '0px', top : '65px' }}
-                        aria-label="Menu"
-                        onClick= {()=>{}}
-                        size="large"><ArrowBack/></IconButton>
+          <IconButton
+            color="inherit"
+            onMouseDown={e => {
+              graph.movementx = -1 ;
+              e.stopPropagation();
+            }
+            }
+            onMouseUp={e => {
+              graph.movementx = 0;
+              e.stopPropagation();
+            }
+            }
+            style={{ position :'absolute', left : '0px', top : '65px' }}
+            aria-label="Menu"
+            onClick= {()=>{}}
+            size="large"><ArrowBack/>
+          </IconButton>
       
           <IconButton
             color="inherit"

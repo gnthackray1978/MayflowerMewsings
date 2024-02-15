@@ -9,12 +9,12 @@ import { connect } from "react-redux";
 import {getParams,csvToFirstNumber} from '../../../features/Table/qryStringFuncs.jsx';
 import {useMapState} from '../useMap';
 import {DescTree} from './DescTree';
-
+import {setTitle} from "../../../features/uxActions.jsx";
 
 function Descendants(props) {
  
    // console.log('Descendants');
-   const {selectedTreePerson} = props;
+   const {selectedTreePerson, setTitle} = props;
   
    //use the query string if its been populated.
    let params = getParams({persons : selectedTreePerson});
@@ -34,6 +34,7 @@ function Descendants(props) {
         generationsCount
         maxGenerationLength
         totalRows
+        title
         rows {        
           id
           generationIdx
@@ -80,6 +81,9 @@ function Descendants(props) {
       title : 'Map View'
     };
 
+    if(!state.loading)
+      setTitle(state.data.title);
+
     let data = transformData(state.data,populateDescendantObjects);
 
     const graph = new DescTree();
@@ -105,7 +109,9 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return { };
+  return {    
+    setTitle: (title) => dispatch(setTitle(title))
+   };
 };
 
 
