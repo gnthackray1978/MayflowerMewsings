@@ -13,9 +13,17 @@ import SearchIcon from '@mui/icons-material/Search';
 import {treeSelectorDialogOpen,treeSelectorDialogClose} from "../../features/uxActions.jsx";
 import {getParams, setParams} from '../../features/Table/qryStringFuncs';
  
+// const MappingToolbar = (props) => {
+//   console.log('MappingToolbar' );
+//   const { numSelected, title, filterFieldChanged, filterParams} = props.state;
+
+//   return (
+//     <div>Hello toolbar</div>
+//   );
+// };
 
 const MappingToolbar = (props) => {
-//  console.log('rendered: FTMViewTableToolbar' );
+//  
 
   
   const {selectedTreeData,treeSelectorDialogClose ,showTreeSelectorDialog , treeSelectorDialogOpen} = props;
@@ -33,13 +41,17 @@ const MappingToolbar = (props) => {
  
 
   const boxClick = ()=>{
-  
+    console.log('boxClick');
+
     let params = {
-      yearStart : Number(yearStart),
-      yearEnd : Number(yearEnd),
+      yearFrom : Number(yearStart),
+      yearTo : Number(yearEnd),
       location : location,
       surname : surname ,
-      origin: getParams().origin
+      origin: getParams().origin,
+      limit: 0,
+      offset: 0,
+      minCM: 0
     };
 
     setParams(params);

@@ -3,106 +3,12 @@ import  React, { useState, useEffect }  from 'react';
 import MapPersonBody from './MapPersonBody.jsx';
 import MappingToolbar from '../MappingToolbar.jsx';
 import {getParams} from '../../../features/Table/qryStringFuncs';
-import MapWrapper from '../MapWrapper.jsx'
+import MapWrapper from '../MapWrapper'
 import {gql} from '@apollo/client';
 
 import {useMapState} from '../useMap';
 
  
-
-function makeData(data, schema, subSchema){
-
-  function getRandomColor() {
-    var letters = '0123456789ABCDEF';
-    var color = '#';
-    for (var i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-  }
-
-  let rows = [];
-
-  if(!data) return rows;
-
-  let idx =0;
-
-  
-
-  if(!data[schema][subSchema]){
- //   console.log('usemap makedata: ' + schema + ' ' + subSchema + ' schema not loaded');
-    return rows;
-  }
-
-  let allTrees = [];
-  let previousColours =[];
-  while(idx < data[schema][subSchema].rows.length){
-    let tp = data[schema][subSchema].rows[idx];
-    let trees = [];
-
-    if(tp.ftmPersonSummary.length >0){
-      tp.ftmPersonSummary.forEach(e => {
-        if(!trees.includes(e.treeName)){
-          trees.push(e.treeName);
-        }
-
-
-        if (!allTrees.filter(f => f.treeName === e.treeName).length > 0) {
-
-          let colour = getRandomColor();
-
-          while(previousColours.includes(colour))
-            colour = getRandomColor();
-
-          previousColours.push(colour);
-
-          allTrees.push({
-            'treeName': e.treeName,
-            'colour' : colour
-          });
-
-        }
-
-      });
-    }
-
-    rows.push( {
-                   ...tp,
-                    trees : trees,
-                    show :false
-                  });
-
-    idx++;
-  }
-
-
-
-  let totalRows =0;
-
-  if(data && data[schema])
-   totalRows =  data[schema][subSchema].totalRows;
-
-   
-  // var rows = parsedData.rows;
-
-  // var totalRows = parsedData.totalRows;
-  // var treeColours = parsedData.allTrees;
- 
-   var rowsPerPage = 1000;
-   var page =0;
-
-  return {
-    rows,
-    totalRows,
-    treeColours : allTrees,
-    rowsPerPage,
-    page
-  };
-
-
-
-}
-
 const parseLocations = (rawLocations) => {
   let locations = [];
 
@@ -144,23 +50,31 @@ function MapPerson() {
     const [filterParams, setFilterParams] = React.useState(params);
 
     const GET_FTMView = gql`
-    query Dna(      
+    query Query(      
        $surname : String!,
-       $yearStart : Int!,
-       $yearEnd : Int!,
+       $yearFrom : Int!,
+       $yearTo : Int!,
        $location : String!,
-       $origin : String!
+       $origin : String!,
+       $limit: Int!,
+       $offset: Int!,
+        $minCM: Int!
      ){
-      dna{
-        ftmlocsearch(
-                   surname : $surname,
-                   yearStart : $yearStart,
-                   yearEnd : $yearEnd,
-                   location : $location,
-                   origin : $origin
+      
+        ftmlocsearch(pobj:{
+                          surname : $surname,
+                          yearFrom : $yearFrom,
+                          yearTo : $yearTo,
+                          location : $location,
+                          origin : $origin,
+                          limit: $limit,
+                          offset: $offset,
+                          minCM: $minCM
+                  }
              ) {
          page
          totalRows
+         error
          rows {
           ftmPersonSummary {
             firstName
@@ -175,7 +89,7 @@ function MapPerson() {
           id
          }
        }
-      }
+      
     }
     `;
 
@@ -189,29 +103,30 @@ function MapPerson() {
       { id: 'Origin', numeric: false, disablePadding: true, label: 'Origin' }
     ];
 
-   // console.log('MapPerson' )
-
-    var state = useMapState(GET_FTMView);
-
-    state = {
-       filterParams,
-      ... state,
-      ... makeData(state.data,'dna','ftmlocsearch'),
-      headCells : headCells,
-      title : 'Map View'
+    
+    var state = {
+      rows: [],
+      treeColours: [],
+      filterParams: filterParams,
+      headCells: headCells,
+      title: 'Map View',
+      errors: [],
+      loading: true
     };
 
-    //useEffect(() => console.log('MapPerson componentDidMount' ), []);
- 
+    useMapState(GET_FTMView,'ftmlocsearch', state);
+      
     let tp = parseLocations(state.rows);
-
+       
+    console.log('MapPerson' );
     return (
         //rows treeColours
         <div>
-          <MapWrapper state = {state} >
-            <MappingToolbar state ={state}/>
-            <MapPersonBody locations ={tp} treeColours = {state.treeColours}/>
-          </MapWrapper>
+       <MapWrapper>  
+
+          <MappingToolbar state={{...state}}></MappingToolbar>
+          <MapPersonBody locations={tp} treeColours={[...state.treeColours]}></MapPersonBody>
+        </MapWrapper>
         </div>
     );
 

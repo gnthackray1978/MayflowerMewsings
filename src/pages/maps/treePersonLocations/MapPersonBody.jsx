@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import  React, { useState, useEffect }  from 'react';
 import GoogleMapReact from 'google-map-react';
 import {mapStyles} from '../styleFuncs.jsx';
 import { useTheme } from '@mui/material/styles';
@@ -171,6 +171,13 @@ function MapPersonBody(props) {
  
     const [locations, setLocations] = React.useState(props.locations);
     const [treeColours, setTreeColours] = React.useState(props.treeColours);
+
+    useEffect(() => {
+      setLocations(props.locations);
+      setTreeColours(props.treeColours);  
+    },[props.locations, props.treeColours]);
+
+    //const {locations, treeColours} = props;
 
     const theme = useTheme();
     const classes = mapStyles(theme);

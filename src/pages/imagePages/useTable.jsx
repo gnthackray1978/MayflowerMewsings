@@ -1,18 +1,16 @@
 import React  from 'react';
 import { ApolloClient, InMemoryCache, ApolloProvider, gql, useQuery ,useLazyQuery} from '@apollo/client';
-
+import { errorFormatter } from '../../shared/common';
 
 export function useTableState() {
    
   // console.log('useTableState');
   const GET_IMAGES = gql`
   
-  query Image($page : String!){
-    image
-    {
+  query Query($page : String!){
       imagesearch(page : $page) {
         page
-         error
+        error
         loginInfo
         rows {
           id
@@ -22,10 +20,9 @@ export function useTableState() {
           parentImageId
         }
       }
-      
       imageparentsearch(page : $page) {
         page
-         error
+        error
          
         rows {
           id
@@ -36,10 +33,6 @@ export function useTableState() {
           page
         }
       }
-      
-    }
-     
-    
   }
   `;
    
@@ -47,6 +40,8 @@ export function useTableState() {
  
    const makeData = function(data){
  
+
+    
      if(data && data.image.imagesearch.rows.length>0){
     
        let stateObj = {
@@ -76,14 +71,27 @@ export function useTableState() {
       fetchPolicy:"no-cache"  
    });
  
-   var stateObj = makeData(data);
+   console.log('loading : ' + loading + ' network status: ' +  networkStatus + ' error:' + error + ' data: ' + data);
+
+   //loading : false network status: 8 
+   // error:Error: Response not successful: Received status code 400 data: undefined
+  // var parsedData = makeData(data, subSchema);
+ 
+ 
+   var rows = [];
+   var totalRows = 0;  
+   var loginInfo = '';
+   var internalServerError = '';
+
+   
+   //var stateObj = makeData(data);
  
    let parents = [];
    
 
-   if(stateObj.imageparentsearch && stateObj.imagesearch){
-     parents = stateObj.imageparentsearch;
-     let tpimages = stateObj.imagesearch;
+   if(!loading && data.imageparentsearch && data.imagesearch){
+     parents = data.imageparentsearch.rows;
+     let tpimages = data.imagesearch.rows;
 
      parents.forEach(f=>{
        f.children = tpimages.filter(is=>is.parentImageId == f.id);
