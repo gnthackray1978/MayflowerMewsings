@@ -46,6 +46,7 @@ function TabPanel(props) {
 
 function TreeSelector(props) {
     //
+    //console.log('TreeSelector loaded ');
     const { treeSelectorDialogClose, selectedTreeCache, selectedPersonCache, selectedTreePerson} = props;
             
     const theme = useTheme();
@@ -53,8 +54,6 @@ function TreeSelector(props) {
     console.log('TreeSelector loaded ' )
 
     let qs = getParams();
-
-   // useEffect(() => console.log('TreeSelector loaded effected ' ), []);
 
     const [value, setValue] = React.useState(0);
 
