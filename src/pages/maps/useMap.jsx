@@ -5,7 +5,7 @@ import { ApolloClient, InMemoryCache, ApolloProvider, gql, useQuery ,useLazyQuer
 import { connect } from "react-redux";
 import { errorFormatter } from '../../shared/common';
 
-function makeData(data){
+function makeData(data,  subSchema){
 
   var result = {
     rows : [],
@@ -15,7 +15,44 @@ function makeData(data){
     page :0
   }
 
-  return result;
+  if(!data) return result;
+
+  if(!data[subSchema]){
+ //   console.log('usemap makedata: ' + schema + ' ' + subSchema + ' schema not loaded');
+    return result;
+  }
+
+  const rows = data[subSchema].rows.map(tp => ({ ...tp }));
+
+  let totalRows = data[subSchema].totalRows ?? 0;
+
+  var idx =0;
+  var tpRows =[];
+
+  if(rows.length >0){
+    while(idx < rows.length){
+      if( !isNaN(rows[idx].lat) &&
+          !isNaN(rows[idx].long) &&
+          !isNaN(rows[idx].weight) ){
+            tpRows.push({
+              lat: rows[idx].lat,
+              lng : rows[idx].long,
+              weight : rows[idx].weight
+            });
+      }
+      idx++;
+    }
+ 
+   } 
+
+  return {
+    rows : tpRows,
+    totalRows,
+    treeColours : [],
+    rowsPerPage : 1000,
+    page :0
+  };
+
 }
 
 
@@ -106,7 +143,9 @@ function makelocSearchData(data, subSchema){
 
 }
 
-export  function useMapState(qry, schema,state) {
+
+
+export  function useMapState(qry, schema, state) {
 
  // console.log('useMapState ');
  
@@ -149,7 +188,7 @@ export  function useMapState(qry, schema,state) {
 
 
   let errors = errorFormatter(loading,error, internalServerError);
-  console.log('errors: ' + errors);
+  //console.log('errors: ' + errors);
 
 
   var baseReturn = { 

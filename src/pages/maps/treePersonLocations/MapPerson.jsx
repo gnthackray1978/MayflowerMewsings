@@ -10,28 +10,15 @@ import {useMapState} from '../useMap';
 
  
 const parseLocations = (rawLocations) => {
-  let locations = [];
 
-  if (rawLocations) {
-    for (let r of rawLocations) {
+  return rawLocations ? rawLocations.map(r => ({
+    id: r.id,
+    birthLat: r.birthLat,
+    birthLong: r.birthLong,
+    show: r.show,
+    locationData: { trees: r.trees, ftmPersonSummary: r.ftmPersonSummary }
+  })) : [];
 
-      if(r.id === 13228) {
-    //    console.log('parseLocations: id = 0');
-        
-
-      }
-
-      locations.push({
-        id: r.id,
-        birthLat: r.birthLat,
-        birthLong: r.birthLong,
-        show: r.show,
-        locationData: { trees: r.trees, ftmPersonSummary: r.ftmPersonSummary }
-      });
-    }
-  }
-
-  return locations;
 } 
 
 function MapPerson() {
