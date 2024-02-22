@@ -184,7 +184,7 @@ export  function useMapState(qry, schema, state) {
  
    };
 
-  const internalServerError = (!loading && data && data['ftmlocsearch']) ? data['ftmlocsearch'].error?.trim() ?? '' : '';
+  const internalServerError = (!loading && data && data[schema]) ? data[schema].error?.trim() ?? '' : '';
 
 
   let errors = errorFormatter(loading,error, internalServerError);
@@ -203,7 +203,7 @@ export  function useMapState(qry, schema, state) {
   }
   
    
-  let dataObj = schema == 'ftmlocsearch' ? makelocSearchData(data,'ftmlocsearch') : makeData(data);
+  let dataObj = schema == 'ftmlocsearch' ? makelocSearchData(data,schema) : makeData(data,schema);
   
   var result = {
     ...dataObj,

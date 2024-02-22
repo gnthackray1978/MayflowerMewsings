@@ -3,6 +3,7 @@ import  React, { useState, useEffect }  from 'react';
 import HeatMapBody from './HeatMapBody.jsx';
 import MappingToolbar from '../MappingToolbar.jsx';
 
+import {getParams} from '../../../features/Table/qryStringFuncs';
 import MapWrapper from '../MapWrapper.jsx'
 import {gql} from '@apollo/client';
 
@@ -10,88 +11,53 @@ import {useMapState} from '../useMap';
 
  
 
-function makeData(data, schema, subSchema){
 
- 
-
-  let rows = [];
-
-  if(!data) return rows;
-
-  let idx =0;
-
-  
-
-  if(!data[schema][subSchema]){
-    console.log('usemap makedata: ' + schema + ' ' + subSchema + ' schema not loaded');
-    return rows;
-  }
-
-  let allTrees = [];
-  while(idx < data[schema][subSchema].rows.length){
-    let tp = data[schema][subSchema].rows[idx];
-   
-    rows.push( {
-                   ...tp, 
-                  });
-
-    idx++;
-  }
-
-
-
-  let totalRows =0;
-
-  if(data && data[schema])
-   totalRows =  data[schema][subSchema].totalRows;
-
-   
-  // var rows = parsedData.rows;
-
-  // var totalRows = parsedData.totalRows;
-  // var treeColours = parsedData.allTrees;
- 
-   var rowsPerPage = 1000;
-   var page =0;
-
-  return {
-    rows,
-    totalRows,
-    treeColours : allTrees,
-    rowsPerPage,
-    page
-  };
-
-
-
-}
 
 
 
 function HeatMap() {
 
-    const [filterParams, setFilterParams] = React.useState({   
-      yearStart : 1500,
-      yearEnd : 2000,
-      location : '',
-      surname : '',
-      origin : '_21_Alan!Douglas'
-    });
+  var defaultValues = {
+    yearStart : 1700,
+    yearEnd : 1900,
+    location : '',
+    surname : '',
+    origin : '',
+    minCM: 0
+  };
+
+  var params = getParams(defaultValues);
+  //console.log('params',params);
+
+  const [filterParams, setFilterParams] = React.useState(params);
+
 
     const GET_FTMView = gql`
-    query Dna(      
-       $yearStart : Int!,
-       $yearEnd : Int!,
-       $origin : String!
-     ){
-      dna{
-        ftmlatlngsearch(                  
-                   yearStart : $yearStart,
-                   yearEnd : $yearEnd,
-                   origin : $origin
+    query Query(      
+                  $surname : String!,
+                  $yearFrom : Int!,
+                  $yearTo : Int!,
+                  $location : String!,
+                  $origin : String!,
+                  $limit: Int!,
+                  $offset: Int!,
+                  $minCM: Int!
+              ){
+      
+        ftmlatlngsearch(pobj:{                 
+                        surname : $surname,
+                        yearFrom : $yearFrom,
+                        yearTo : $yearTo,
+                        location : $location,
+                        origin : $origin,
+                        limit: $limit,
+                        offset: $offset,
+                        minCM: $minCM
+                    }
              ) {
          page
          totalRows
+         error
          rows {
         	id
         	lat
@@ -99,7 +65,7 @@ function HeatMap() {
           weight
          }
        }
-      }
+      
     }
     `;
 
@@ -110,43 +76,21 @@ function HeatMap() {
       { id: 'Origin', numeric: false, disablePadding: true, label: 'Origin' }
     ];
 
-    
-
-    var state = useMapState(GET_FTMView);
-
-    state = {
-       filterParams,
-      ... state,
-      ... makeData(state.data,'dna','ftmlatlngsearch'),
-      headCells : headCells,
-      title : 'HeatMap View'
+    var state = {
+      rows: [],
+      treeColours: [],
+      filterParams: filterParams,
+      headCells: headCells,
+      title: 'HeatMap View',
+      errors: [],
+      loading: true, 
     };
- 
-   // console.log('HeatMap: ' + state.rows );
 
-   var idx =0;
-  var tpRows =[];
 
-  if(state.rows && state.rows.length >0){
-    while(idx < state.rows.length){
-      if( !isNaN(state.rows[idx].lat) &&
-          !isNaN(state.rows[idx].long) &&
-          !isNaN(state.rows[idx].weight) ){
-            tpRows.push({
-              lat: state.rows[idx].lat,
-              lng : state.rows[idx].long,
-              weight : state.rows[idx].weight
-            });
-      }
-      idx++;
-    }
-
-   // console.log('HeatMap: ' + tpRows.length );
-
-   } 
+  useMapState(GET_FTMView,'ftmlatlngsearch',state);
 
    var data =  {    
-     positions: tpRows,
+     positions: state.rows,
       options: {   
         radius: 20,   
         opacity: 0.6
@@ -157,7 +101,7 @@ function HeatMap() {
         <div>
           <MapWrapper state = {state} >
             <MappingToolbar state ={state}/>
-            <HeatMapBody rows ={data} />
+            <HeatMapBody rows = {data} />
           </MapWrapper>
         </div>
     );
