@@ -60,10 +60,10 @@ function AvailableTrees(props) {
         { id: 'PersonCount', numeric: false, disablePadding: true, label: 'Persons' },
         { id: 'CM', numeric: false, disablePadding: true, label: 'CM' }
     ];
-// selectedTreeData : {origin : 93, originDescription : '|21|Alan!Douglas'},
+
     let defaults = {
                       page: 0,
-                      limit : 15, 
+                      limit : 25, 
                       sortColumn : 'cm',
                       sortOrder : 'desc',
                       offset :0,
@@ -75,14 +75,12 @@ function AvailableTrees(props) {
                       surname : '',
                       minCM : 0
                    };
-
-    
-
+  
     var state = useAvTreesState(get_availableTrees,defaults,'treerecsearch');
-
+    
     state.headCells = headCells;
     state.title = 'Available Trees';
-
+                  
     useEffect(() => {
       if(!state.loading && state.errors.length ==0){
           addTreeToCache(state.rows);      
@@ -91,7 +89,7 @@ function AvailableTrees(props) {
 
     return (
         <div>
-          <TableWrapper state = {state} >
+          <TableWrapper state ={state} >
             <AvailableTreesToolbar state ={state}/>
             <AvailableTreesTable state ={state}/>
           </TableWrapper>

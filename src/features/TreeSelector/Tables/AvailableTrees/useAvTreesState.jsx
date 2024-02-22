@@ -15,6 +15,12 @@ export  function useAvTreesState(ReturnData,defaultParams, subSchema, rdxSetTree
   qryStrObj.origin = String(qryStrObj.origin ?? '');
   qryStrObj.persons = String(qryStrObj.persons ?? '');
  
+  //validate filterParams
+  //write a function that checks the filterParams has valid data
+  
+  //if its valid then set it as component state
+
+
   const [filterParams, setFilterParams] = React.useState({...defaultParams,...qryStrObj});
 
   // a bit of a hack because I don't want to change the way the filterParams are set
@@ -112,14 +118,10 @@ export  function useAvTreesState(ReturnData,defaultParams, subSchema, rdxSetTree
 
   const setTree = (rows, treeId) => {
 //    console.log('setTree called');
-
-  //  let qryStrObj = getParams(); 
-
+ 
     treeId = String(treeId);
     let newSelected = [];
-
-    //let tpOrigin = String(qryStrObj?.origin ?? '');
-
+ 
     let selected = origin.split(',') ??[];
 
     const selectedIndex = selected.indexOf(treeId);
@@ -138,53 +140,33 @@ export  function useAvTreesState(ReturnData,defaultParams, subSchema, rdxSetTree
       );
     }
 
+    let description = '';
+    for(let r of rows){
+      for(let originId of newSelected){
+        if(originId == r.id){
+          description += ' ' + r.name;
+        }
+      }
+    }
+
     let params ={
-      origin : newSelected.join(','),      
+      origin : newSelected.join(','),  
+      originDescription : description    
     }
   
     //ffs setting state in 3 places!!!!
   
     setParams(params);
-     
-    //if(rdxSetTree)
-   //   rdxSetTree(params.origin);
-//selectedTreeData : [{treeId : 93, treeDescription : '|21|Alan!Douglas', personId : 96, personName : 'Alan Douglas' }],
- //   makeReduxState(rows);
 
     setOrigin(params.origin);
   };
 
   const setTreePerson = (personId) => {
-   // let qryStrObj = getParams(); 
-    
-    // this is used by diagram generating code.
-  
-   // let newSelected = [];
-
-   // let p =qryStrObj?.persons ?? '';
-
+    // only set one person at a time
     let newSelected ='';
     if(String(persons).search(personId) == -1){
       newSelected = String(personId);
     }
-
-    //let selected = persons.split(',');
-
-    // const selectedIndex = selected.indexOf(String(personId));
-    
-
-    // if (selectedIndex === -1) {
-    //   newSelected = newSelected.concat(selected, personId);
-    // } else if (selectedIndex === 0) {
-    //   newSelected = newSelected.concat(selected.slice(1));
-    // } else if (selectedIndex === selected.length - 1) {
-    //   newSelected = newSelected.concat(selected.slice(0, -1));
-    // } else if (selectedIndex > 0) {
-    //   newSelected = newSelected.concat(
-    //     selected.slice(0, selectedIndex),
-    //     selected.slice(selectedIndex + 1),
-    //   );
-    // }
 
     let params ={
       persons : newSelected
@@ -192,13 +174,11 @@ export  function useAvTreesState(ReturnData,defaultParams, subSchema, rdxSetTree
 
     setParams(params);
 
-   // setFilterParams({...filterParams, ... params});
-
-    
     setPersons(params.persons);
   };
 
-  
+
+
  //the useAvTreesState hook might be called numerous times
  //but it doesnt matter.
  //the api only gets called when the filterParams is changed !

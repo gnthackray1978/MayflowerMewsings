@@ -15,55 +15,21 @@ export default function TableWrapper(props) {
   const classes = useStyles(theme);
 
   var displayComponent = () => {    
-    return(<div>{(children.length > 1) ? children[1] : children}</div>);
+    return(<div>{children}</div>);
   }
-
-  if(state.loading)
-    displayComponent = displayLoadingScreen;
-
-  if(state.errors.length >0)
-    displayComponent = () => {return (displayErrors(state.errors))}
-
-
-  if(!state.handleChangePage)
-    state.handleChangePage = ()=>{};
-
-  if(!state.handleChangeRowsPerPage)
-    state.handleChangeRowsPerPage = ()=>{};
+ 
+  if(state){
+   if(state.loading ?? false)
+     displayComponent = displayLoadingScreen;
+ 
+   if(state.errors?.length >0 ?? false)
+     displayComponent = () => {return (displayErrors(state.errors))}
+  }
+  
 
   return (
-    <div className={classes.root}>
-      {children.length > 1 && children[0]}
-
-      {displayComponent()}
-
-      <TablePagination
-         sx={{
-          ".MuiTablePagination-displayedRows": {
-            marginTop: "12px",
-           // color: "red",
-          },
-          ".MuiTablePagination-selectLabel": {
-           // color: "green",
-            marginTop: "12px",
-          },
-          ".MuiTablePagination-select": {
-           // color: "blue",
-            marginTop: "0px",
-          },
-        }}
-        labelRowsPerPage={'Page Rows'}
-        rowsPerPageOptions={[5, 10, 25,50]}
-        component="div"
-        count={state.totalRows || 0} 
-        rowsPerPage={state.rowsPerPage}
-        page={state.page}
-    //    onChangePage={state.handleChangePage}
-        //onChangeRowsPerPage={state.handleChangeRowsPerPage}
-        onRowsPerPageChange = {state.handleChangeRowsPerPage}
-        onPageChange = {state.handleChangePage}
-      />
-
+    <div >
+     {displayComponent()}
     </div>
   );
 }
