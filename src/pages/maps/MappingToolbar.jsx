@@ -41,7 +41,7 @@ const MappingToolbar = (props) => {
  
 
   const boxClick = ()=>{
-    console.log('boxClick');
+    //console.log('boxClick');
 
     let params = {
       yearFrom : Number(yearStart),
