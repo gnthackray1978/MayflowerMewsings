@@ -49,7 +49,7 @@ const MappingToolbar = (props) => {
       location : location,
       surname : surname ,
       origin: getParams().origin,
-      limit: 0,
+      limit: 25,
       offset: 0,
       minCM: 0
     };
