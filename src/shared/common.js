@@ -25,8 +25,13 @@ export const errorFormatter = (loading, error, internalServerError, networkStatu
     }
   
     if(error && error.graphQLErrors && error.graphQLErrors.length >0){
-      errorArray.push('GraphQLErrors Error(s)');
-      errorArray.push(...error.graphQLErrors);
+//      errorArray.push('GraphQLErrors Error(s)'); 
+      errorArray.push('Message: ' + error.graphQLErrors[0].message);
+      if(error.graphQLErrors[0].path && error.graphQLErrors[0].path.length >0)
+        errorArray.push('Path: '+error.graphQLErrors[0].path[0]);
+
+      errorArray.push('Extensions message: ' + error.graphQLErrors[0].extensions?.message ?? 'no message');
+      errorArray.push('Extensions stack trace: '+ error.graphQLErrors[0].extensions?.stackTrace ?? 'no stackTrace');
     }
   
     if(error && error.networkError 
