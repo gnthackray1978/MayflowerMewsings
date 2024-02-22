@@ -70,7 +70,7 @@ function LincsWills() {
     var defaultValues = {
       sortColumn : 'surname',
       sortOrder : 'asc',
-      limit : 0,
+      limit : 25,
       offset :0,
       yearStart : 1700,
       yearEnd : 2000,

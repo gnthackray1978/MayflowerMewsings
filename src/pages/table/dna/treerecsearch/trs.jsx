@@ -56,7 +56,7 @@ function Trs() {
     var defaultValues = {
       sortColumn : 'cM',
       sortOrder : 'desc',
-      limit : 0,
+      limit : 25,
       offset :0,
       treeName : '',
       yearFrom : 0,
