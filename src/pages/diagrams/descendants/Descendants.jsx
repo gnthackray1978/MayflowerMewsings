@@ -35,6 +35,7 @@ function Descendants(props) {
         maxGenerationLength
         totalRows
         title
+        error
         rows {        
           id
           generationIdx
@@ -81,8 +82,12 @@ function Descendants(props) {
       title : 'Map View'
     };
 
+    //if(!state.loading)
+    //  setTitle(state.data.title);
+
     if(!state.loading)
-      setTitle(state.data.title);
+      setTitle(state.data?.title ?? 'Descendant View');
+
 
     let data = transformData(state.data,populateDescendantObjects);
 

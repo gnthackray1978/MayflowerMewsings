@@ -74,11 +74,65 @@ export const displayErrors = (errors) => {
     }
   };
   
-  export const displayLoadingScreen = () =>{
+export const displayLoadingScreen = () =>{
+
+  return (
+    <div>
+      <h5><span style={{color: "blue", padding: "20px"} } >loading...</span></h5>
+    </div>
+  );
+}
+
+
+export const pobj = {
+
+  params : ` 
+      $limit: Int!,
+      $offset : Int!,
+      $sortColumn: String!,
+      $sortOrder : String!,
+      $treeName : String!
+      $surname : String!,
+      $yearStart : Int!,
+      $yearEnd : Int!,
+      $location : String!,
+      $origin : String!,
+      $minCM : Int!,
+      $name : String!`
+  ,
+      
+  pobj :`
+      pobj : {
+      limit : $limit,
+      offset : $offset,
+      sortColumn: $sortColumn,
+      sortOrder : $sortOrder,
+      treeName : $treeName,
+      surname : $surname,
+      yearStart : $yearStart,
+      yearEnd : $yearEnd,
+      location : $location,
+      origin : $origin,
+      minCM : $minCM,
+      name : $name
+      }
+  `, 
+
+  defaults  : {
+      page: 0,
+      limit : 25, 
+      sortColumn : 'cm',
+      sortOrder : 'desc',
+      offset :0,
+      origin :'', 
+      treeName : '',
+      yearStart : 1500,
+      yearEnd : 2000,
+      location : '',
+      surname : '',
+      minCM : 0,
+      name : '',
+  }                
+
+}
   
-    return (
-      <div>
-        <h5><span style={{color: "blue", padding: "20px"} } >loading...</span></h5>
-      </div>
-    );
-  }

@@ -149,7 +149,11 @@ export  function useMapState(qry, schema, state) {
 
  // console.log('useMapState ');
  
-  const [getMapData, {called, loading,networkStatus, error,data }] = useLazyQuery(qry,{fetchPolicy: 'network-only'},);
+  const [getMapData, {called, loading,networkStatus, error,data }] = useLazyQuery(qry,
+    {
+      fetchPolicy: 'network-only',
+      errorPolicy: 'all' 
+    },);
  
  
 //   const  { loading, networkStatus,error, data, refetch } = useQuery(ReturnData, {
@@ -175,6 +179,7 @@ export  function useMapState(qry, schema, state) {
     getMapData({ 
         notifyOnNetworkStatusChange: true, 
         variables: filterObj,
+        errorPolicy: 'all' ,
         fetchPolicy: 'network-only',
         onCompleted: (data) => {
     //      console.log('onCompleted');

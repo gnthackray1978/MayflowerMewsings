@@ -27,8 +27,8 @@ function Marriages() {
                               offset : $offset,
                               sortColumn: $sortColumn,
                               sortOrder : $sortOrder,
-                              yearFrom : $yearStart,
-                              yearTo: $yearEnd,
+                              yearStart : $yearStart,
+                              yearEnd: $yearEnd,
                               maleSurname : $maleSurname,
                               femaleSurname: $femaleSurname,
                               location : $location

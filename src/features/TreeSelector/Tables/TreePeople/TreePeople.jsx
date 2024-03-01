@@ -7,6 +7,7 @@ import TableWrapper from '../../../Table/TableWrapper.jsx';
 import {useAvTreesState} from '../../../TreeSelector/Tables/AvailableTrees/useAvTreesState';
 import {addTreePersonToCache} from "../../../uxActions.jsx";
 import {gql} from '@apollo/client';
+import { pobj } from '../../../../shared/common.js';
 
 function TreePeople(props) {
 
@@ -18,31 +19,8 @@ function TreePeople(props) {
    //   origin  = selectedTreeData;
 
     const GET_FTMView = gql`
-    query Dna(
-       $limit: Int!,
-       $offset : Int!,
-       $sortColumn: String!,
-       $sortOrder : String!,
-       $surname : String!,
-       $yearStart : Int!,
-       $yearEnd : Int!,
-       $location : String!,
-       $origin : String!,
-       $minCM : Int!
-     ){      
-        ftmviewsearch(pobj : {
-                   limit : $limit,
-                   offset : $offset,
-                   sortColumn: $sortColumn,
-                   sortOrder : $sortOrder,
-                   surname : $surname,
-                   yearFrom : $yearStart,
-                   yearTo : $yearEnd,
-                   location : $location,
-                   origin : $origin,
-                   minCM : $minCM
-              }
-             ) {
+    query Dna(${pobj.params}  ){
+        ftmviewsearch(${pobj.pobj}) {
          page
          error
          totalRows
@@ -51,8 +29,8 @@ function TreePeople(props) {
              firstName
              surname
              location
-             yearFrom
-             yearTo
+             yearStart
+             yearEnd
              personId
          }
        }
@@ -69,20 +47,7 @@ function TreePeople(props) {
 
     console.log('TreePeople');
 
-    var state = useAvTreesState(GET_FTMView,{
-                        page: 0,
-                        limit : 15, 
-                        sortColumn : 'cm',
-                        sortOrder : 'desc',
-                        offset :0,
-                        origin :'', 
-                        treeName : '',
-                        yearStart : 1500,
-                        yearEnd : 2000,
-                        location : '',
-                        surname : '',
-                        minCM : 0
-    },'ftmviewsearch');
+    var state = useAvTreesState(GET_FTMView,pobj.defaults,'ftmviewsearch');
 
     state.headCells = headCells;
     state.title = 'Tree People';

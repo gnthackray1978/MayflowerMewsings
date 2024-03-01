@@ -53,7 +53,7 @@ const InfoWindowTreeSection = (props) =>{
 
         <div  style= {{'color': 'black', 'fontWeight': 400, 'fontSize': '14px', 'marginLeft' : '2px'}}>
     
-          <span>{person.yearFrom + ' ' + person.yearTo + ' ' }</span>  
+          <span>{person.yearStart + ' ' + person.yearEnd + ' ' }</span>  
           <span>{person.firstName + ' ' + person.surname}</span>
         
         </div>

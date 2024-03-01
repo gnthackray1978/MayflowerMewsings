@@ -38,20 +38,26 @@ const MappingToolbar = (props) => {
   const [yearEnd, setyearEnd] = React.useState(String(filterParams.yearEnd));
   const [location, setLocation] = React.useState(filterParams.location);
  
- 
+ //todo get the default params
 
   const boxClick = ()=>{
-    //console.log('boxClick');
+    console.log('boxClick');
 
     let params = {
-      yearFrom : Number(yearStart),
-      yearTo : Number(yearEnd),
+      yearStart : Number(yearStart),
+      yearEnd : Number(yearEnd),
       location : location,
       surname : surname ,
       origin: getParams().origin,
-      limit: 25,
-      offset: 0,
-      minCM: 0
+      page: 0,
+      limit : 25, 
+      sortColumn : 'cm',
+      sortOrder : 'desc',
+      offset :0,
+      treeName : '',
+      minCM : 0,
+      name : '',
+
     };
 
     setParams(params);

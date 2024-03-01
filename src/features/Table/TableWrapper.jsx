@@ -6,7 +6,7 @@ import { displayLoadingScreen, displayErrors } from '../../shared/common';
 
 export default function TableWrapper(props) {
  
- // console.log('TableWrapper called');
+//  console.log('TableWrapper called');
 
   const {state, children} = props;
 
@@ -15,7 +15,7 @@ export default function TableWrapper(props) {
   const classes = useStyles(theme);
 
   var displayComponent = () => {    
-    return(<div>{children}</div>);
+    return(<div>{(children.length > 1) ? children[1] : children}</div>);
   }
  
   if(state){
@@ -29,7 +29,22 @@ export default function TableWrapper(props) {
 
   return (
     <div >
+     {children.length > 1 && children[0]}
+
      {displayComponent()}
+
+     <TablePagination
+        labelRowsPerPage={'Page Rows'}
+        rowsPerPageOptions={[5, 10, 25,50]}
+        component="div"
+        count={state.totalRows || 0} 
+        rowsPerPage={state.rowsPerPage}
+        page={state.page}
+        //onChangePage={state.handleChangePage}
+        //onChangeRowsPerPage={state.handleChangeRowsPerPage}
+        onRowsPerPageChange = {state.handleChangeRowsPerPage}
+        onPageChange = {state.handleChangePage}
+      />
     </div>
   );
 }

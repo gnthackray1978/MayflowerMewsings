@@ -18,7 +18,7 @@ export function useMapState(qry,schema,defaultParams) {
      //   console.log('finished fetching');
      // }
   });
-  //console.log('useMapState result' );
+  console.log('useMapState result' );
  // var newRows = [];
   var totalRows = 0;  
   var loginInfo = '';

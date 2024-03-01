@@ -7,6 +7,7 @@ import { displayLoadingScreen, displayErrors } from '../../shared/common';
 
 export default function DiagramWrapper(props) {
 
+  
   const {state, children} = props;
 
   const theme = useTheme();

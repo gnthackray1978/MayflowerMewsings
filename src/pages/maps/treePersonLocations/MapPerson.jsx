@@ -7,6 +7,7 @@ import MapWrapper from '../MapWrapper'
 import {gql} from '@apollo/client';
 
 import {useMapState} from '../useMap';
+import {pobj} from '../../../shared/common.js'
 
  
 const parseLocations = (rawLocations) => {
@@ -23,42 +24,22 @@ const parseLocations = (rawLocations) => {
 
 function MapPerson() {
 
-    var defaultValues = {
-      yearStart : 1700,
-      yearEnd : 1900,
-      location : '',
-      surname : '',
-      origin : ''
-    };
+    // var defaultValues = {
+    //   yearStart : 1700,
+    //   yearEnd : 1900,
+    //   location : '',
+    //   surname : '',
+    //   origin : ''
+    // };
 
-    var params = getParams(defaultValues);
+    var params = getParams(pobj.defaults);
 
   
     const [filterParams, setFilterParams] = React.useState(params);
 
     const GET_FTMView = gql`
-    query Query(      
-       $surname : String!,
-       $yearFrom : Int!,
-       $yearTo : Int!,
-       $location : String!,
-       $origin : String!,
-       $limit: Int!,
-       $offset: Int!,
-        $minCM: Int!
-     ){
-      
-        ftmlocsearch(pobj:{
-                          surname : $surname,
-                          yearFrom : $yearFrom,
-                          yearTo : $yearTo,
-                          location : $location,
-                          origin : $origin,
-                          limit: $limit,
-                          offset: $offset,
-                          minCM: $minCM
-                  }
-             ) {
+    query Query( ${pobj.params} ){      
+         ftmlocsearch(${pobj.pobj}) {
          page
          totalRows
          error
@@ -67,8 +48,8 @@ function MapPerson() {
             firstName
             surname
             treeName
-            yearFrom
-            yearTo
+            yearStart
+            yearEnd
           }
         	birthLat
         	birthLong
@@ -82,8 +63,8 @@ function MapPerson() {
 
     const headCells = [
 
-      { id: 'YearFrom', numeric: false, disablePadding: true, label: 'YearFrom' },
-      { id: 'YearTo', numeric: false, disablePadding: true, label: 'YearTo' },
+      { id: 'yearStart', numeric: false, disablePadding: true, label: 'yearStart' },
+      { id: 'yearEnd', numeric: false, disablePadding: true, label: 'yearEnd' },
       { id: 'FirstName', numeric: false, disablePadding: true, label: 'FirstName' },
       { id: 'Surname', numeric: false, disablePadding: true, label: 'Surname' },
       { id: 'BirthLocation', numeric: false, disablePadding: true, label: 'BirthLocation' },

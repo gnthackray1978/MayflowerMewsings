@@ -35,6 +35,7 @@ function Ancestors(props) {
               maxGenerationLength
               totalRows
               title
+              error
               rows {        
                         id
                         generationIdx
@@ -81,12 +82,13 @@ function Ancestors(props) {
     title : 'Ancestor View'
   };
 
+  console.log('api returned: ' + state.errors);
 
   if(!state.loading)
-    setTitle(state.data.title);
+    setTitle(state.data?.title ?? 'Ancestor View');
 
 
-  console.log('api returned: ' + state.errors);
+
 
   let data = transformData(state.data, populateAncestryObjects);
  

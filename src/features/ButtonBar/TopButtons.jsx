@@ -95,6 +95,7 @@ function TopButtons(props) {
         selection.title = 'Force Directed Diagram for ' + title;
     }
 
+    //console.log('top buttons: ', selection);
 
     return (
       <Toolbar>

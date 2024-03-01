@@ -6,41 +6,16 @@ import {useAvTreesState} from './useAvTreesState';
 import {gql} from '@apollo/client';
 import {addTreeToCache} from "../../../uxActions.jsx";
 import { connect } from "react-redux";
-
+import { pobj } from "../../../../shared/common.js";
 
 function AvailableTrees(props) {
 
   const {addTreeToCache} = props;
-
+          
   const get_availableTrees = gql`
-  query Dna(
-     $limit: Int!,
-     $offset : Int!,
-     $sortColumn: String!,
-     $sortOrder : String!,
-     $treeName : String!
-     $surname : String!,
-     $yearStart : Int!,
-     $yearEnd : Int!,
-     $location : String!,
-     $origin : String!,
-     $minCM : Int!
-   ){
-    
-      treerecsearch(pobj : {
-                            limit : $limit,
-                            offset : $offset,
-                            sortColumn: $sortColumn,
-                            sortOrder : $sortOrder,
-                            treeName : $treeName,
-                            surname : $surname,
-                            yearFrom : $yearStart,
-                            yearTo : $yearEnd,
-                            location : $location,
-                            origin : $origin,
-                            minCM : $minCM
-                          }
-           ) {
+  query Dna(${pobj.params}
+   ){    
+      treerecsearch(${pobj.pobj}) {
        page
        error
        totalRows
@@ -60,23 +35,8 @@ function AvailableTrees(props) {
         { id: 'PersonCount', numeric: false, disablePadding: true, label: 'Persons' },
         { id: 'CM', numeric: false, disablePadding: true, label: 'CM' }
     ];
-
-    let defaults = {
-                      page: 0,
-                      limit : 25, 
-                      sortColumn : 'cm',
-                      sortOrder : 'desc',
-                      offset :0,
-                      origin :'', 
-                      treeName : '',
-                      yearStart : 1500,
-                      yearEnd : 2000,
-                      location : '',
-                      surname : '',
-                      minCM : 0
-                   };
-  
-    var state = useAvTreesState(get_availableTrees,defaults,'treerecsearch');
+    
+    var state = useAvTreesState(get_availableTrees, pobj.defaults,'treerecsearch');
     
     state.headCells = headCells;
     state.title = 'Available Trees';

@@ -9,7 +9,7 @@ import {gql} from '@apollo/client';
 
 import {useMapState} from '../useMap';
 
- 
+import {pobj} from '../../../shared/common.js'
 
 
 
@@ -17,44 +17,24 @@ import {useMapState} from '../useMap';
 
 function HeatMap() {
 
-  var defaultValues = {
-    yearStart : 1700,
-    yearEnd : 1900,
-    location : '',
-    surname : '',
-    origin : '',
-    minCM: 0
-  };
+  // var defaultValues = {
+  //   yearStart : 1700,
+  //   yearEnd : 1900,
+  //   location : '',
+  //   surname : '',
+  //   origin : '',
+  //   minCM: 0
+  // };
 
-  var params = getParams(defaultValues);
+  var params = getParams(pobj.defaults);
   //console.log('params',params);
 
   const [filterParams, setFilterParams] = React.useState(params);
 
 
     const GET_FTMView = gql`
-    query Query(      
-                  $surname : String!,
-                  $yearFrom : Int!,
-                  $yearTo : Int!,
-                  $location : String!,
-                  $origin : String!,
-                  $limit: Int!,
-                  $offset: Int!,
-                  $minCM: Int!
-              ){
-      
-        ftmlatlngsearch(pobj:{                 
-                        surname : $surname,
-                        yearFrom : $yearFrom,
-                        yearTo : $yearTo,
-                        location : $location,
-                        origin : $origin,
-                        limit: $limit,
-                        offset: $offset,
-                        minCM: $minCM
-                    }
-             ) {
+    query Query( ${pobj.params}){
+         ftmlatlngsearch(${pobj.pobj}) {
          page
          totalRows
          error
@@ -71,8 +51,8 @@ function HeatMap() {
 
     const headCells = [
 
-      { id: 'YearFrom', numeric: false, disablePadding: true, label: 'YearFrom' },
-      { id: 'YearTo', numeric: false, disablePadding: true, label: 'YearTo' },
+      { id: 'yearStart', numeric: false, disablePadding: true, label: 'yearStart' },
+      { id: 'yearEnd', numeric: false, disablePadding: true, label: 'yearEnd' },
       { id: 'Origin', numeric: false, disablePadding: true, label: 'Origin' }
     ];
 

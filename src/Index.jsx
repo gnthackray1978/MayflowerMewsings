@@ -5,7 +5,7 @@ import TopButtons from './features/ButtonBar/TopButtons.jsx';
 import {AuthProvider} from './shared/GoogleIDS/AuthProvider.jsx'
 import SiteDialog from './features/SiteDialog/SiteDialog.jsx';
 import TreeSelectionDrawer from './features/SideDrawer/TreeSelectionDrawer.jsx';
-
+import { errorFormatter } from '../src/shared/common';
 import PageContainer from './pages/PageContainer.jsx';
 import {gql, useQuery } from '@apollo/client';
 import {metaDataLoaded,applicationSelected,setTree} from "./features/uxActions.jsx";
@@ -23,6 +23,7 @@ query Query($appId:Int!) {
       pageTitle
       applicationId
     }
+    error
   }   
   searchSite(appId: 0) {
     page
@@ -32,6 +33,7 @@ query Query($appId:Int!) {
       defaultPageName,
       defaultPageTitle
     }
+    error
   }
 
 }
@@ -77,6 +79,7 @@ function useTableState(qry, tokenExpiresAt) {
       let stateObj = {
         sites: data.searchSite.rows,
         funcs :data.searchSiteFunction.rows,
+        error : data.searchSite.error + data.searchSiteFunction.error,
         pageId : selection.pageId,
         appId : selection.appId
       };
@@ -96,9 +99,9 @@ function useTableState(qry, tokenExpiresAt) {
               defaultPageTitle :'Default',
               __typename: 'SiteType'
             }],
-  
-            pageId :0,
-            funcs : []
+        pageId :0,
+        funcs : [],
+        error : 'no data found'
       };
     }
   }
@@ -114,6 +117,12 @@ function useTableState(qry, tokenExpiresAt) {
   });
 
   var stateObj = makeData(data);
+
+  let errors = errorFormatter(loading,error, stateObj.error, networkStatus);
+  
+  if(errors.length>0){
+    console.log(errors);
+  }
 
   return {
     stateObj,

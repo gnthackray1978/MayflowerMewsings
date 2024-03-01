@@ -5,33 +5,16 @@ import TableWrapper from '../../../../features/Table/TableWrapper.jsx'
 import {gql} from '@apollo/client';
 import {useTableState} from '../../../../features/Table/useTable';
 import {getParams} from '../../../../features/Table/qryStringFuncs';
+import {pobj} from '../../../../shared/common.js'
 
 function Trs() {
 
 
   const GET_Trs = gql`
-  query Query(
-     $limit: Int!,
-     $offset : Int!,
-     $sortColumn: String!,
-     $sortOrder : String!,
-     $treeName : String!,
-     $yearFrom :Int!,
-     $yearTo : Int!,
-     $minCM : Int!
-   ){    
-      treerecsearch(pobj: {
-                            limit : $limit,
-                            offset : $offset,
-                            sortColumn: $sortColumn,
-                            sortOrder : $sortOrder,
-                            treeName : $treeName,
-                            yearFrom : $yearFrom,
-                            yearTo : $yearTo,
-                            minCM : $minCM
-                          }
-                  ) {
+  query Query(${pobj.params} ){    
+      treerecsearch(${pobj.pobj}) {
        page
+       error
        totalRows
        rows {
            id
@@ -53,18 +36,18 @@ function Trs() {
         { id: 'Counties', numeric: false, disablePadding: true, label: 'Counties' }
     ];
 
-    var defaultValues = {
-      sortColumn : 'cM',
-      sortOrder : 'desc',
-      limit : 25,
-      offset :0,
-      treeName : '',
-      yearFrom : 0,
-      yearTo : 2000,
-      minCM : 0
-    };
+    // var defaultValues = {
+    //   sortColumn : 'cM',
+    //   sortOrder : 'desc',
+    //   limit : 25,
+    //   offset :0,
+    //   treeName : '',
+    //   yearStart : 0,
+    //   yearEnd : 2000,
+    //   minCM : 0
+    // };
 
-    var params = getParams(defaultValues);
+    var params = getParams(pobj.defaults);
 
     var state = useTableState(GET_Trs,params,'treerecsearch');
 
