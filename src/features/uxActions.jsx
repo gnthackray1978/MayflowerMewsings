@@ -3,7 +3,9 @@ import { METADATALOADED, APPLICATIONSELECTED,
   FUNCDIALOGCLOSED, TREESELECTED ,TREEPERSONSELECTED,DIAGRAMSELECTED,
   TREESELECTORDIALOGOPEN,TREESELECTORDIALOGCLOSED,
   ADDCACHETREE,
-  ADDCACHETREEPERSON,
+  ADDCACHETREEPERSON,  
+  CONTROLPANELTOOLSDIALOGCLOSED,
+  CONTROLPANELTOOLSDIALOGOPEN,
   DISPLAYDIAGRAMCONTROLS,HIDEDIAGRAMCONTROLS, TOGGLEDIAGRAMCONTROLS, NEWLOCATIONS, SETTITLE} from './actionTypes.jsx';
  
 
@@ -228,6 +230,27 @@ export const treeSelectorDialogClose = () =>{
     }
 };
  
+
+export const controlPanelDialogOpen = () =>{
+  //console.log('siteDialogOpen action');
+
+  return async (dispatch, getState)  => {
+       dispatch({
+         type: CONTROLPANELTOOLSDIALOGOPEN
+       });
+    }
+};
+
+export const controlPanelDialogClose = () =>{
+  //console.log('siteDialogClose action');
+
+  return async (dispatch, getState)  => {
+       dispatch({
+         type: CONTROLPANELTOOLSDIALOGCLOSED
+       });
+    }
+};
+
 export const toggleDiagramControls = () =>{
   //console.log('siteDialogClose action');
 

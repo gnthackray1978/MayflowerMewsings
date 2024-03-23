@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 import { connect } from "react-redux";
 import GoogleIDSConnect   from "../../shared/GoogleIDS/GoogleIDX.jsx";
 
-import {siteDialogOpen, siteDialogClose,funcDialogOpen,funcDialogClose,
+import {siteDialogOpen, siteDialogClose,funcDialogOpen,funcDialogClose,controlPanelDialogClose,controlPanelDialogOpen,
           treeSelectorDialogOpen,treeSelectorDialogClose, toggleDiagramControls} from "../uxActions.jsx";
 import AppsIcon from '@mui/icons-material/Apps';
 import {topButtonStyles} from '../styleFuncs.jsx';
@@ -68,21 +68,18 @@ function TopButtons(props) {
     const theme = useTheme();
 
     const {siteDialogOpen, siteDialogClose,
-       showAppListDialog, ShowFuncListDialog, funcDialogOpen , 
-       funcDialogClose, metaSubset,showTreeSelectorDialog, 
+       showAppListDialog, ShowFuncListDialog, funcDialogOpen , showControlPanelDialog,
+       funcDialogClose, metaSubset,showTreeSelectorDialog, controlPanelDialogOpen,controlPanelDialogClose,
        treeSelectorDialogOpen,treeSelectorDialogClose, toggleDiagramControls, title} = props;
 
     const classes =  topButtonStyles(theme);
  
-    //console.log(props);
+      //console.log(props);
     var selection = getPageName(location.pathname, metaSubset.sites);
 
-    let showDiagramControls =false;
+    const showDiagramControls = selection.appId === 2;
+    const showControlPanelControls = selection.appId === 11;
 
-    if(selection.appId ==2)
-      showDiagramControls =true;
-  
-    
     if (selection.title == 'Descendants') {        
         selection.title = 'Descendant Diagram for ' + title;
     }
@@ -130,6 +127,24 @@ function TopButtons(props) {
             size="large">
            <SearchIcon />
          </IconButton>}
+
+          {showControlPanelControls && <IconButton
+            className={classes.menuButton}
+            color="inherit"
+            aria-label="Menu"
+            onClick= {()=>
+            {
+            //    console.log('onclick');
+                if(showControlPanelDialog)
+                  controlPanelDialogClose();
+                else
+                  controlPanelDialogOpen();
+            }}
+            size="large">
+           <SearchIcon />
+         </IconButton>}
+
+
 
           <Button color="inherit"  className={classes.grow}>
               <Typography variant="h6" color="inherit"  className ={classes.tolowerBtn}>
@@ -183,6 +198,7 @@ const mapStateToProps = state => {
   return {
     title : state.ux.title,
     showTreeSelectorDialog : state.ux.showTreeSelectorDialog,
+    showControlPanelDialog : state.ux.showControlPanelDialog,
     ShowAppListDialog :showAppListDialog,
     ShowFuncListDialog :showFuncListDialog,
    // selectedPersonCache: state.ux.selectedPersonCache,
@@ -199,8 +215,9 @@ const mapDispatchToProps = dispatch => {
     siteDialogClose: () => dispatch(siteDialogClose()),
     treeSelectorDialogOpen: () => dispatch(treeSelectorDialogOpen()),
     treeSelectorDialogClose: () => dispatch(treeSelectorDialogClose()),
-    toggleDiagramControls: ()=> dispatch(toggleDiagramControls())
-    
+    toggleDiagramControls: ()=> dispatch(toggleDiagramControls()),
+    controlPanelDialogOpen : () => dispatch(controlPanelDialogOpen()),
+    controlPanelDialogClose : () => dispatch(controlPanelDialogClose())
   };
 };
 

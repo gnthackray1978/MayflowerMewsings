@@ -5,6 +5,8 @@ import { APPLICATIONLISTLOADED, APPLICATIONSELECTED, FUNCTIONLISTLOADED,METADATA
    ADDCACHETREE,
    ADDCACHETREEPERSON,
    DIAGRAMSELECTED,
+   CONTROLPANELTOOLSDIALOGCLOSED,
+   CONTROLPANELTOOLSDIALOGOPEN,
     TREESELECTORDIALOGCLOSED,TREESELECTORDIALOGOPEN,
     DISPLAYDIAGRAMCONTROLS,HIDEDIAGRAMCONTROLS,TOGGLEDIAGRAMCONTROLS, NEWLOCATIONS, SETTITLE} from './actionTypes.jsx';
 
@@ -36,6 +38,7 @@ export default (state = {
   showAppListDialog :false,
   showFuncListDialog :false,
   showTreeSelectorDialog :false,
+  showControlPanelDialog :false,
   showDiagramControls : false,
   selectedTree : '93',
   selectedTreePerson : '96',
@@ -176,8 +179,7 @@ export default (state = {
             return {
               ...state,
                showFuncListDialog : false
-            };
-        //showTreeSelectorDialog TREESELECTORDIALOGCLOSED,TREESELECTORDIALOGOPEN
+            };       
         case TREESELECTORDIALOGOPEN:
             //console.log('TREESELECTORDIALOGOPEN');
             return {
@@ -191,7 +193,21 @@ export default (state = {
               ...state,
               showTreeSelectorDialog : false
             };
-//showTreeSelecto
+
+        case CONTROLPANELTOOLSDIALOGOPEN:
+            console.log('CONTROLPANELTOOLSDIALOGOPEN');
+            return {
+              ...state,
+              showControlPanelDialog : true
+            };
+
+        case CONTROLPANELTOOLSDIALOGCLOSED:
+            console.log('CONTROLPANELTOOLSDIALOGCLOSED');
+            return {
+              ...state,
+              showControlPanelDialog : false
+            };
+
 
       default:
           return state;

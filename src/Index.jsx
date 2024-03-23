@@ -10,6 +10,7 @@ import PageContainer from './pages/PageContainer.jsx';
 import {gql, useQuery } from '@apollo/client';
 import {metaDataLoaded,applicationSelected,setTree} from "./features/uxActions.jsx";
 import {getParams} from './features/Table/qryStringFuncs';
+import ControlPanelDrawer from './features/SideDrawer/ControlPanelDrawer.jsx';
  
 
 const GETQL_Meta = gql`
@@ -171,6 +172,8 @@ function Index(props) {
             <SideDrawer stateObj = {state.stateObj}/>
             
             <TreeSelectionDrawer stateObj = {state.stateObj}/>
+
+            <ControlPanelDrawer stateObj = {state.stateObj}/>
 
             <SiteDialog stateObj = {state.stateObj}/>
 

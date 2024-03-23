@@ -25,6 +25,7 @@ import Ancestors from './diagrams/ancestors/Ancestors';
 import Descendants from './diagrams/descendants/Descendants';
 import FDDescendants from './diagrams/fddescendants/FDDescendants';
 import Tools from './tools/Tools.jsx';
+import ControlPanel from './controlpanel/ControlPanel.jsx';
 
 import {Routes,Route} from "react-router-dom";
 
@@ -62,7 +63,7 @@ function PageContainer(props) {
           <Route  path="/ancestors" element= {<Ancestors/>}/>
           <Route  path="/descendants" element= {<Descendants/>}/>
           <Route  path="/fddescendants" element= {<FDDescendants/>}/>
-          
+          <Route  path="/controlpanel" element= {<ControlPanel/>}/>
 
           <Route path="/" element= {<Default/>}/>
 
