@@ -1,14 +1,13 @@
 import React, { Component, useState,useEffect } from 'react'; 
-import Link from '@mui/material/Link';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Unstable_Grid2';
 import GEDTable from './GEDTable';
 import { useTheme } from '@mui/material/styles';
-
 import {useStyles} from './styleFuncs.jsx';
-import {getPlaceInfo,getPeopleInfo, addGed} from './data.jsx';
-import { MuiFileInput } from 'mui-file-input';
-import {Button} from '@mui/material';
+import {getPlaceInfo,getPeopleInfo, selectGEDFile, deleteGEDFile} from './data.jsx';
+import GedOperations from './GedOperations.jsx';
+import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
+import MessageContainer from './signalr/MessageContainer.jsx';
 
 function PlaceStats(props){    
     const theme = useTheme();
@@ -23,9 +22,9 @@ function PlaceStats(props){
     });
 
     useEffect(() => {
-        getPlaceInfo().then((data) => {
-            if(data)
-                setPlaceStats(data);
+        getPlaceInfo((data)=>{
+            if(data && data.status === 'success')
+                setPlaceStats(data.data);
         });
     }, [timeStamp]);
 
@@ -58,9 +57,9 @@ function PersonStats(props){
 
     useEffect(() => {
         console.log('use effect person stats')
-        getPeopleInfo().then((data) => {
-            if(data)
-                setPeopleStats(data);
+        getPeopleInfo((data)=>{
+            if(data && data.status === 'success')
+                setPeopleStats(data.data);        
         });
     }, [timeStamp]);
 
@@ -84,96 +83,200 @@ function ControlPanel(props) {
     
     const theme = useTheme();
     const classes = useStyles(theme);
-    const [timeStamp,setTimeStamp] = React.useState(Date.now());
+    //const [timeStamp,setTimeStamp] = React.useState(Date.now());
     const [file, setFile] = React.useState(null);
+    const [connection, setConnection] = useState();
 
-    const importGEDClicked = (event,id) => {
-        console.log('import GED clicked');
-        addGed(()=>{
-            setTimeStamp(Date.now());
-            console.log('import GED clicked callback');
-        }, file);
-        //setTimeStamp(Date.now());
-        event.preventDefault() ;
+    const initSettingsState = {
+        timeStamp : Date.now(),
+        messages: [{ msgType: 'announce', message: 'starting up'}]
     };
 
-    const importPeopleClicked = (event,id) => {
-        console.log('import people clicked');
-        setTimeStamp(Date.now());
-        event.preventDefault() ;
-    };
-    const createDupeListClicked = (event,id) => {
-        console.log('create dupe list clicked');
-        setTimeStamp(Date.now());
-        event.preventDefault() ;
-    };
-    const addMissingLocationsClicked = (event,id) => {
-        console.log('add missing locations clicked');
-        setTimeStamp(Date.now());
-        event.preventDefault() ;
+    const [settingsState, setSettingsState] = useState(initSettingsState);
+
+    const handleResponse = (comment, response) => {
+        setSettingsState(prevState => ({
+            timeStamp: response.status === 'success' ? Date.now() : prevState.timeStamp,
+            messages: [
+                ...prevState.messages,
+                {
+                    msgType: response.status === 'success' ? 'success' : 'error',
+                    message:  comment + `${response.status !== 'success' ? ': ' + response.data : ''}`,
+                }
+            ]
+        }));
 
     };
-    const geoCodeLocationsClicked = (event,id) => {
-        console.log('geocode locations clicked');
-        setTimeStamp(Date.now());
-        event.preventDefault() ;
-    }   ;
-    const updatePlaceCacheClicked = (event,id) => {
-        console.log('update place cache clicked');
-        setTimeStamp(Date.now());
-        event.preventDefault() ;
-    };
-    const updateCountyCountryClicked = (event,id) => {
-        console.log('update county country clicked');
-        setTimeStamp(Date.now());
-        event.preventDefault() ;
-    };
-    
-    
+
+
 
     const handleChange = (newFile) => {
       setFile(newFile);
     };
 
 
+    const start = () => {
+        try {
+          const connection = new HubConnectionBuilder()
+                              //.withUrl("https://msgapiinput01.azurewebsites.net/hub/msgnotificationhub",
+                              .withUrl("http://localhost:5001/hub/msgnotificationhub",
+                                  { withCredentials: false })
+                              .configureLogging(LogLevel.Information)
+                              .build();
+        
+          connection.on("announce", function (message1, message2) {                            
+            //  console.log("Notify" + user + ' ' + message);     
+              let t = message1 + ' ' + message2;
+             
+             // setMessages( messages => [...messages, { msgType:'announce' , message: t }]);                 
+                setSettingsState(prevState => ({
+                    timeStamp: prevState.timeStamp,
+                    messages: [...prevState.messages, { msgType: 'announce', message: t }],
+                    locations: prevState.locations,
+                    location: prevState.location
+                }));
+          });
+          
+          connection.on("crud", function (message1, message2) {                            
+              //console.log("crud" + message1 + ' ' + message2 + ' ' + messages[0].message);     
+             //let t = [...messages, { msgType:'crud' , message: message1 }] ;
+             
+           //   setMessages(messages =>[...messages, { msgType:'crud' , message: message1 }] );                 
+                setSettingsState(prevState => ({
+                    timeStamp: prevState.timeStamp,
+                    messages: [...prevState.messages, { msgType: 'crud', message: message1 }],
+                    locations: prevState.locations,
+                    location: prevState.location
+                }));
+          });
+  
+          connection.on("refresh", function (message1, message2) {                            
+            //  console.log("Notify" + user + ' ' + message);     
+           //   let t = 'refresh: ' + message1;
+             
+         //     setMessages( messages => [...messages, { msgType:'refresh' , message: message1 }]);                 
+                setSettingsState(prevState => ({
+                    timeStamp: prevState.timeStamp,
+                    messages: [...prevState.messages, { msgType: 'refresh', message: message1 }],
+                    locations: prevState.locations,
+                    location: prevState.location
+                }));
+          });
+  
+          connection.onclose(e => {
+        //    setConnection();        
+          });
+    
+          try {
+              connection.start();
+              console.log("SignalR Connected."); 
+   
+          } catch (err) {
+              console.log(err);
+            //  setTimeout(start, 5000);
+          }
+  
+          setConnection(connection);
+  
+  
+        } catch (e) {
+          console.log(e);
+        }
+    }
+     
+    const clearClicked = (event) => {
+        console.log('clearClicked ');
+        
+       // setMessages([{ msgType: 'announce', message: 'cleared'}]);
+    
+        setSettingsState(prevState => ({
+            timeStamp: prevState.timeStamp,
+            messages: [{ msgType: 'announce', message: 'cleared'}]
+        }));
+        event.preventDefault() ;
+    };
+    
+
+    const selectGEDClick = (event, id) => {
+        // console.log('select clicked: ' + id);
+         
+         selectGEDFile(id, ()=>{
+             console.log('complete');
+             setSettingsState(prevState => ({
+                timeStamp: new Date(),// yes we need to refresh all the info screens
+                messages: [...prevState.messages, { msgType: 'crud', message: 'GED Selected' }]
+             }));
+         });
+     
+         event.preventDefault() ;
+    };
+     
+    const deleteGEDClick = (event, id) => {            
+        deleteGEDFile(id, (result)=>{
+            console.log('delete GED complete');
+        
+            if(result.status == 'success'){
+                setSettingsState(prevState => ({
+                    timeStamp: new Date(),// yes we need to refresh all the info screens
+                    messages: [...prevState.messages, { msgType: 'crud', message: 'GED deleted'}]
+                }));
+            }
+            else{
+                setSettingsState(prevState => ({
+                    timeStamp: prevState.timeStamp,
+                    messages: [...prevState.messages, { msgType: 'error', message: result.data}]
+                }));
+            }
+        
+        });
+    
+        event.preventDefault() ;
+    };
+     
+
+
+    const closeConnection = async () => {
+        try {
+            await connection.stop();
+        } catch (e) {
+            console.log(e);
+        }
+    }
+    
+    useEffect(() => {
+        
+        if(!connection && settingsState?.messages.length === 1) {
+            console.log('connect to hub');
+            start();
+        }        
+    }, [settingsState?.messages]);
 
         return (
             <Box sx={{ flexGrow: 1 }} style={{width: '98%', margin: 'auto', height : '450px'}}>
+                           
               <Grid container spacing={2}>
-                <Grid xs={5}>                   
+                <Grid xs={6}>                   
                     <div className={classes.sectionHeader}>Uploaded GED  Files</div>
-                    <GEDTable timeStamp = {timeStamp}></GEDTable>                    
-                </Grid>                
-                <Grid xs={3}>
-                    <div className={classes.sectionHeader}>GED Files</div>
-                    <MuiFileInput value={file} className= {classes.test}  placeholder="Upload image here..."  onChange={handleChange}>  </MuiFileInput>
-                    <div>spacer</div>
-                    {file &&  
-                        <div> <Link id ="test" href="#" onClick = {(event,id)=>{importGEDClicked(event,file)} } >1.Import</Link></div>
-                
-                    }   
-                
-                    <div className={classes.sectionHeader}>People and Events</div>
-                    <div><Link href="#" onClick = {(event,id)=>{importPeopleClicked(event,1)} } >1. Import Persons</Link></div>
-                    <div><Link href="#" onClick = {(event,id)=>{createDupeListClicked(event,1)} }>2. Create Dupe List</Link></div>
-                </Grid>
-                <Grid xs={4}>
-                    <div className={classes.sectionHeader}>Location Processing</div>
-                    <div><Link href="#"onClick = {(event,id)=>{addMissingLocationsClicked(event,1)} }>1. Adding missing locations</Link></div>
-                    <div><Link href="#"onClick = {(event,id)=>{geoCodeLocationsClicked(event,1)} }>2. GeoCode Location entries</Link></div>
-                    <div><Link href="#"onClick = {(event,id)=>{updatePlaceCacheClicked(event,1)} }>3. Update Place Cache county and lat long fields</Link></div>
-                    <div><Link href="#"onClick = {(event,id)=>{updateCountyCountryClicked(event,1)}}>4. Update County and Country fields of FTMPerson table</Link></div>
-                </Grid>
+                    <GEDTable timeStamp = {settingsState?.timeStamp} 
+                        selectGEDClick ={selectGEDClick} deleteGEDClick={deleteGEDClick} ></GEDTable>   
+                </Grid> 
 
-                <Grid xs={2}>
-                   <PersonStats timeStamp = {timeStamp}></PersonStats>
+                <Grid xs={3}>
+                   <PersonStats timeStamp = {settingsState?.timeStamp}></PersonStats>
                 </Grid>
                 <Grid xs={3}>                   
-                   <PlaceStats timeStamp = {timeStamp}></PlaceStats>
+                   <PlaceStats timeStamp = {settingsState?.timeStamp}></PlaceStats>
                 </Grid>
-                <Grid xs={7}>
-                    <div className={classes.sectionHeader}>Feedback</div>
 
+                <Grid xs={6}>
+                    <GedOperations timeStamp = {settingsState?.timeStamp} file ={file} 
+                        handleChange = {handleChange} 
+                        handleResponse = {handleResponse} ></GedOperations>
+                </Grid>
+               
+                <Grid xs={6}>
+                    <div className={classes.sectionHeader}>Feedback</div>
+                    <MessageContainer messages = {settingsState?.messages} clearClicked = {clearClicked}></MessageContainer>              
                 </Grid>
               </Grid>
             </Box>

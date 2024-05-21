@@ -9,7 +9,7 @@ import {pobj} from '../../../../shared/common.js'
 
 function Dupes() {
 
-
+  
   const GET_DUPES = gql`
   query Query(${pobj.params}){    
       dupesearch(${pobj.pobj}) {
@@ -34,12 +34,13 @@ function Dupes() {
     const headCells = [
       { id: 'yearStart', numeric: false, disablePadding: true, label: 'Year From' },
       { id: 'yearEnd', numeric: false, disablePadding: true, label: 'Year To' },
-      { id: 'Origin', numeric: false, disablePadding: true, label: 'Origin' },
+      { id: 'parentage', numeric: false, disablePadding: true, label: 'Parentage' },
       { id: 'Location', numeric: false, disablePadding: true, label: 'Location' },
-      { id: 'FirstName', numeric: false, disablePadding: true, label: 'FirstName' },
+      
       { id: 'Surname', numeric: false, disablePadding: true, label: 'Surname' }
     ];
 
+    
     var params = getParams(pobj.defaults);
 
     var state = useTableState(GET_DUPES,params,'dupesearch');

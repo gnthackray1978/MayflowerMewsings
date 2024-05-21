@@ -34,6 +34,16 @@ export default function TableWrapper(props) {
      {displayComponent()}
 
      <TablePagination
+      sx={{
+        '.MuiTablePagination-toolbar': {
+          //backgroundColor: '#a9aeb3',
+          //width: '950px',
+          color: 'rgb(41, 39, 39)',
+          //height: '35px',
+          marginRight: '20px',
+          alignItems: 'baseline',
+        },
+      }}
         labelRowsPerPage={'Page Rows'}
         rowsPerPageOptions={[5, 10, 25,50]}
         component="div"

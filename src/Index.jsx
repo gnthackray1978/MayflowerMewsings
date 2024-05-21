@@ -70,7 +70,7 @@ function getPageName(pagePath, funcList){
 
 function useTableState(qry, tokenExpiresAt) {
 
-  console.log('index');
+  //console.log('index');
 
   const makeData = function(data){
 

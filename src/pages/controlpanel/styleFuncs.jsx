@@ -12,14 +12,15 @@ export const useStyles = makeStyles((theme) => ({
     test:{
       "&.MuiFormControl-root": {
         padding: "2px",
+        width: "220px"
       },
       "&.MuiInputBase-root-MuiOutlinedInput-root" : {
         paddingLeft  : "0px",
         paddingRight : "0px",
       },
       "& input": {  
-        color: "red",
-        backgroundColor: "blue"
+        color: "black",
+        backgroundColor: "white"
       },
       "& label": {  
         color: "black",
@@ -28,20 +29,20 @@ export const useStyles = makeStyles((theme) => ({
       },
       
       "& input.MuiFileInput-TextField": {  
-        color: "red",
-        backgroundColor: "blue"
+        color: "black",
+        backgroundColor: "white"
       },
       "& MuiFileInput-Typography-size-text": {  
-        color: "green",
-        backgroundColor: "blue"
+        color: "black",
+        backgroundColor: "white"
       },
       "& MuiFileInput-ClearIconButton": {  
-        color: "green",
-        backgroundColor: "blue"
+        color: "black",
+        backgroundColor: "white"
       },
       "& span.MuiFileInput-placeholder ": {
-        color: "green",
-        backgroundColor: "blue"
+        color: "black",
+        backgroundColor: "white"
       },
     },
 

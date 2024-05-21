@@ -31,7 +31,7 @@ export default function GEDTable(props) {
         filterFieldChanged: (event, property) => {}    
       }
 
-  const {timeStamp} = props      
+  const {timeStamp, selectGEDClick,deleteGEDClick} = props;      
 
   const theme = useTheme();
   const classes = useStyles(theme);
@@ -49,42 +49,48 @@ export default function GEDTable(props) {
   };
 
 
-  const selectClick = (event, id) => {
-    console.log('select clicked: ' + id);
+  // const selectClick = (event, id) => {
+  //  // console.log('select clicked: ' + id);
     
-    selectGEDFile(id, ()=>{
-        console.log('complete');
-        getGEDFiles().then((data) => {
-            if(data)
-                setRows(data);
-        });
-    });
+  //   selectGEDFile(id, ()=>{
+  //       console.log('complete');
+  //       getGEDFiles().then((data) => {
+  //           if(data)
+  //               setRows(data);
+  //       });
+  //   });
 
-    event.preventDefault() ;
-  };
+  //   event.preventDefault() ;
+  // };
 
-  const deleteClick = (event, id) => {
-    console.log('delete clicked: ' + id);
+  // const deleteClick = (event, id) => {
+  // //  console.log('delete clicked: ' + id);
 
 
-    deleteGEDFile(id, ()=>{
-      console.log('complete');
-      getGEDFiles().then((data) => {
-          if(data)
-              setRows(data);
-      });
-  });
+  //   deleteGEDFile(id, (result)=>{
+  //     console.log('complete');
 
-    event.preventDefault() ;
-  };
+  //     if(result.status == 'success'){
+  //       getGEDFiles().then((data) => {
+  //           if(data)
+  //               setRows(data);
+  //       });
+  //     }
+
+
+  // });
+
+  //   event.preventDefault() ;
+  // };
 
     useEffect(() => {
-        console.log('use effect ged table')
-        getGEDFiles().then((data) => {
-            if(data.length != rows.length)
-                setRows(data);
-        });
-    }, [timeStamp,rows]);
+     //   console.log('use effect ged table')
+        getGEDFiles((data)=>{
+            if(data && data.status == 'success')
+                setRows(data.data);
+          }
+        );
+    }, [timeStamp]);
 
  
 
@@ -95,6 +101,7 @@ export default function GEDTable(props) {
         { id: 'user', numeric: false, disablePadding: true, label: 'User' },
         { id: 'select', numeric: false, disablePadding: true, label: 'Select' },
         { id: 'delete', numeric: false, disablePadding: true, label: 'Delete' },
+        { id: 'importStatus', numeric: false, disablePadding: true, label: 'Status' }, 
       ];
   
 
@@ -133,10 +140,10 @@ export default function GEDTable(props) {
                         <TableCell className= {classes.cell_short} padding="none">{row.dateImported}</TableCell>
                         <TableCell className= {classes.cell_short} padding="none">{row.user}</TableCell>
                         <TableCell className= {classes.cell_short} padding="none"><Link href="#" 
-                            onClick = {(event,id)=>{selectClick(event,row.id)} }  >Select</Link></TableCell>
+                            onClick = {(event,id)=>{selectGEDClick(event,row.id)} }  >Select</Link></TableCell>
                         <TableCell className= {classes.cell_short} padding="none"><Link href="#"
-                            onClick = {(event,id)=>{deleteClick(event,row.id)} }  >Delete</Link></TableCell>
-                        
+                            onClick = {(event,id)=>{deleteGEDClick(event,row.id)} }  >Delete</Link></TableCell>
+                        <TableCell className= {classes.cell_short} padding="none">{row.importStatus}</TableCell>
                       </TableRow>
                     );
                   })}

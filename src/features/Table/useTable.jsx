@@ -77,6 +77,9 @@ export  function useTableState(ReturnData,defaultParams, subSchema) {
 
   const filterFieldChanged = (filterObj) => {
     //console.log('called filterFieldChanged');
+    //merge in default params
+
+    filterObj = {...defaultParams, ...filterObj};
 
     filterObj.limit =rowsPerPage;
     filterObj.offset = (page* rowsPerPage);

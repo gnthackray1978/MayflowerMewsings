@@ -98,7 +98,10 @@ export const pobj = {
       $location : String!,
       $origin : String!,
       $minCM : Int!,
-      $name : String!`
+      $name : String!,
+      $isPaternal : Boolean!,
+      $isMaternal : Boolean!
+      `
   ,
       
   pobj :`
@@ -114,7 +117,9 @@ export const pobj = {
       location : $location,
       origin : $origin,
       minCM : $minCM,
-      name : $name
+      name : $name,
+      isPaternal : $isPaternal,
+      isMaternal : $isMaternal
       }
   `, 
 
@@ -132,6 +137,9 @@ export const pobj = {
       surname : '',
       minCM : 0,
       name : '',
+      isPaternal : false,
+      isMaternal : false, 
+      parentage : ''
   }                
 
 }
