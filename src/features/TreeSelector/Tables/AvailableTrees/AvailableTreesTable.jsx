@@ -64,7 +64,7 @@ function AvailableTreesTable(props) {
                         style = {rowStyle} >
 
                         <TableCell  padding="none">
-                            <Link href= 'https://uk.yahoo.com/?guccounter=1' onClick={ (event) =>
+                            <Link href= '#' onClick={ (event) =>
                                   {
                                     console.log('Clicked');
                                     event.preventDefault();

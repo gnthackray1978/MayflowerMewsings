@@ -95,7 +95,7 @@ function GoogleIDSConnect(props) {
                     
       var token = localStorage.getItem("token");
     
-      fetch('http://msgapigen01.azurewebsites.net/api/identity', {
+      fetch(config.identityEndpoint, {
         headers: {
             'Content-Type': 'application/json',
             'authorization': token ? `Bearer ${token}` : "",
@@ -114,7 +114,7 @@ function GoogleIDSConnect(props) {
     useEffect (()=>{
       /* global google */
       google.accounts.id.initialize({
-        client_id:  '40002111194-tidi50nrgmsk8vnqokjcvlni7g5lq6j5.apps.googleusercontent.com',
+        client_id:  config.client_id,
         callback : loggedIn,
         auto_select: true
       });

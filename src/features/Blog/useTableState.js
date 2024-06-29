@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { useQuery } from '@apollo/client';
+import { settings } from '../../shared/common.js';
 
 const makeData = function(data, subSchema){
 
@@ -75,9 +76,9 @@ export  function useTableState(ReturnData,defaultParams, subSchema) {
     title: 'Loading..',
     text:
       "We'll get there eventually. Dont give up hope!",
-      imageURL: 'https://source.unsplash.com/random',
+      imageURL: settings.forumImgUrl,
       imageDescription: 'main image description',
-      linkURL : 'http://localhost:1234',
+      linkURL : settings.forumUrl,
       linkDescription: 'Continue reading…',
   };
   
@@ -87,7 +88,7 @@ export  function useTableState(ReturnData,defaultParams, subSchema) {
       dateLastEdit: 'Nov 12',
       text:
         'This is a wider card with supporting text below as a natural lead-in to additional content.',
-      imageURL: 'https://source.unsplash.com/random',
+      imageURL: settings.forumImgUrl,
       
       imageDescription: 'Image Text',
     },
@@ -96,7 +97,7 @@ export  function useTableState(ReturnData,defaultParams, subSchema) {
       dateLastEdit: 'Nov 11',
       text:
         'This is a wider card with supporting text below as a natural lead-in to additional content.',
-      imageURL: 'https://source.unsplash.com/random',
+      imageURL:settings.forumImgUrl,
       imageDescription: 'Image Text',
     },
   ];

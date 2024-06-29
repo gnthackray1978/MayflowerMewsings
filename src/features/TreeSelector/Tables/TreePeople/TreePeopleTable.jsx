@@ -62,8 +62,8 @@ function TreePeopleTable(props){
                 >
                   <TableCell padding="none">{avgYear}</TableCell>
 
-                  <TableCell  padding="none">
-                    <Link id={labelId}  href= 'https://uk.yahoo.com/?guccounter=1' onClick={ (event) =>
+                  <TableCell padding="none">
+                    <Link id={labelId}  href= '#' onClick={ (event) =>
                           {
                             console.log('Clicked');
                             event.preventDefault();

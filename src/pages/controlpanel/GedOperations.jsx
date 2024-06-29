@@ -93,7 +93,7 @@ const GedOperations = ({ file, handleChange,handleResponse,timeStamp }) => {
     const classes = useStyles();
 
     return (
-        <Grid container spacing={2}>
+        <Grid container spacing={2} style = {{marginLeft : '5px'}}>
             <Grid xs={6}>
                 <div className={classes.sectionHeader}>Upload GED files here</div>
                 <MuiFileInput value={file} className={classes.test} placeholder="Upload image here..." onChange={handleChange} />
@@ -109,8 +109,8 @@ const GedOperations = ({ file, handleChange,handleResponse,timeStamp }) => {
             <Grid xs={6}>
                 <div></div>
             </Grid>
-            <Grid xs={12}>
-                <div className={classes.sectionHeader}>Operations</div>
+            <Grid xs={12} >
+                <div className={classes.sectionHeader} style ={{marginTop : '15px'}}>Operations</div>
                 {(oktoprocess(gedinfo) || oktodupe(gedinfo)) && <div className={classes.sectionHeader}>People and Events</div>}                
                 {oktoprocess(gedinfo) && <div><Link href="#" onClick={(event) => importPeopleClicked(event, 1)}>Import Persons</Link>
                     </div>}             

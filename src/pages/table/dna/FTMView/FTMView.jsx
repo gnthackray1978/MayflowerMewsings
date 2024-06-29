@@ -45,7 +45,7 @@ function FTMView() {
       { id: 'Origin', numeric: false, disablePadding: true, label: 'Origin' }
     ];
 
-    var params = getParams(pobj.defaults);
+    var params = getParams({...pobj.defaults,...{surname:'thackray'}});
 
     var state = useTableState(GET_FTMView,params,'ftmviewsearch');
 

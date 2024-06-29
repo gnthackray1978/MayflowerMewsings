@@ -1,15 +1,15 @@
 import axios from "axios";
-
+import {settings} from "../../shared/common.js";
 
 const client = axios.create({
-    baseURL: "http://localhost:5001" 
+    baseURL: settings.apiBaseUrl
   });
 
 export const callDeleteAction =(complete, path, id)=>{
   
   //var data = JSON.stringify(parseInt(id));
 
-  axios.delete('http://localhost:5001/'+ path+ '/' + id,  
+  axios.delete(settings.apiBaseUrl + path+ '/' + id,  
       {headers: {
         'Content-Type': 'application/json'
       }}).then(function (response) {
@@ -32,7 +32,7 @@ export const callPutAction =(complete, path, id)=>{
   
   var data = JSON.stringify(parseInt(id));
 
-  axios.put('http://localhost:5001/'+ path, data, {
+  axios.put(settings.apiBaseUrl + path, data, {
       headers: {
         'Content-Type': 'application/json'
       }
@@ -60,7 +60,7 @@ export const callPostAction =(complete, path, data, contentType)=>{
 
 
 
-  axios.post('http://localhost:5001/'+ path, data, {
+  axios.post(settings.apiBaseUrl + path, data, {
       headers: {
         'Content-Type': !contentType ? 'application/json' : contentType
       }
@@ -86,7 +86,7 @@ export const callGetAction =(complete, path)=>{
     
   //var data = JSON.stringify(parseInt(id));
 
-  axios.get('http://localhost:5001/'+ path,  {
+  axios.get(settings.apiBaseUrl + path,  {
       headers: {
         'Content-Type': 'application/json'
       }

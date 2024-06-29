@@ -1,9 +1,10 @@
 import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import {getToken} from './shared/GoogleIDS/libs/googleFuncs.jsx';
+import { settings } from './shared/common.js';
 
 const httpLink = createHttpLink({
-  uri: "http://localhost:5001/graphql/",
+  uri: settings.graphqlUrl,
 });
 
 const authLink = setContext((_, { headers }) => {

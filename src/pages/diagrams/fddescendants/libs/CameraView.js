@@ -1,4 +1,3 @@
-//GET http://127.0.0.1:1337/JSVisualizers/Diagrams/Types/Vector net::ERR_ABORTED 404 (Not Found)
 
 import {Vector} from "../types/Vector.js";
 import {Utils} from "./Utils.js";

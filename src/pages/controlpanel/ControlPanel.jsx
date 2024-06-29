@@ -8,6 +8,7 @@ import {getPlaceInfo,getPeopleInfo, selectGEDFile, deleteGEDFile} from './data.j
 import GedOperations from './GedOperations.jsx';
 import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 import MessageContainer from './signalr/MessageContainer.jsx';
+import { connect  } from "react-redux";
 
 function PlaceStats(props){    
     const theme = useTheme();
@@ -80,6 +81,8 @@ function PersonStats(props){
 
 
 function ControlPanel(props) {  
+
+    const {config} = props;
     
     const theme = useTheme();
     const classes = useStyles(theme);
@@ -117,9 +120,8 @@ function ControlPanel(props) {
 
     const start = () => {
         try {
-          const connection = new HubConnectionBuilder()
-                              //.withUrl("https://msgapiinput01.azurewebsites.net/hub/msgnotificationhub",
-                              .withUrl("http://localhost:5001/hub/msgnotificationhub",
+          const connection = new HubConnectionBuilder()                         
+                              .withUrl(config.msgnotificationhub,
                                   { withCredentials: false })
                               .configureLogging(LogLevel.Information)
                               .build();
@@ -285,4 +287,22 @@ function ControlPanel(props) {
 }
 
 
-export default ControlPanel;
+
+const mapStateToProps = state => {
+ 
+    let config = state.ids.IdServParams;
+  
+    if(window.location.origin.includes('gnthackray'))
+      config = state.ids.GNTServParams;   
+  
+    return {
+      config : config,
+    };
+  };
+  
+  const mapDispatchToProps = dispatch => {
+     
+    return {};
+  };
+  
+  export default connect(mapStateToProps, mapDispatchToProps)(ControlPanel);

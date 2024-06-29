@@ -1,9 +1,12 @@
 import { useState,useEffect } from 'react';
 import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 import MessageContainer from './MessageContainer.jsx';
+import { connect  } from "react-redux";
 
-export default function Feedback(props) {
 
+function Feedback(props) {
+
+    const {config} = props;
     const [connection, setConnection] = useState();
     const [messages, setMessages] = useState([{ msgType: 'announce', message: 'starting up'}]);
     //const [users, setUsers] = useState([]);
@@ -11,9 +14,8 @@ export default function Feedback(props) {
 
     const start = () => {
       try {
-        const connection = new HubConnectionBuilder()
-                            //.withUrl("https://msgapiinput01.azurewebsites.net/hub/msgnotificationhub",
-                            .withUrl("http://localhost:5001/hub/msgnotificationhub",
+        const connection = new HubConnectionBuilder()                           
+                            .withUrl(config.msgnotificationhub,
                                 { withCredentials: false })
                             .configureLogging(LogLevel.Information)
                             .build();
@@ -90,3 +92,23 @@ export default function Feedback(props) {
         <MessageContainer messages = {messages} clearClicked = {clearClicked}></MessageContainer>
     </div>);
 }
+
+
+const mapStateToProps = state => {
+ 
+  let config = state.ids.IdServParams;
+
+  if(window.location.origin.includes('gnthackray'))
+    config = state.ids.GNTServParams;   
+
+  return {
+    config : config,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+   
+  return {};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Feedback);
