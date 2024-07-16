@@ -42,7 +42,15 @@ export const getParams = (defaults) =>{
         if(!(isNaN(search[property]) || isNaN(parseInt(search[property]))))
             search[property] = Number(search[property]);
         
-        //console.log(property + " - " + search[property] + " " + !isNaN(search[property]));
+        if(search[property] == "false"){
+            search[property] = false;
+        }
+
+        if(search[property] == "true"){
+            search[property] = true;
+        }
+
+       // console.log(property + " - " + search[property] + " " + !isNaN(search[property]));
     
     }
 
@@ -66,6 +74,8 @@ export const setParams = (params) =>{
         returnedTarget = Object.assign(search, params);
     }
    
+    
+
     var queryString = Object.keys(returnedTarget).map(key => key + '=' + encodeURIComponent(returnedTarget[key])).join('&');
 
     newurl += queryString;

@@ -3,9 +3,12 @@ import { setContext } from '@apollo/client/link/context';
 import {getToken} from './shared/GoogleIDS/libs/googleFuncs.jsx';
 import { settings } from './shared/common.js';
 
-const httpLink = createHttpLink({
-  uri: settings.graphqlUrl,
-});
+const { GNTServParams, IdServParams } = settings;
+
+const graphqlUrl = window.location.origin.includes('gnthackray') ? GNTServParams.graphqlUrl : IdServParams.graphqlUrl;
+
+const httpLink = createHttpLink({ uri: graphqlUrl });
+
 
 const authLink = setContext((_, { headers }) => {
   // return the headers to the context so httpLink can read them

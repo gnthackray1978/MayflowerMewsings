@@ -146,18 +146,30 @@ export const pobj = {
   
 
 export const settings = { 
-  graphqlUrl : 'http://localhost:5001/graphql/',
+  
   IdServParams :{    
     msgnotificationhub: "http://localhost:5001/hub/msgnotificationhub",
     client_id :'40002111194-tidi50nrgmsk8vnqokjcvlni7g5lq6j5.apps.googleusercontent.com',
-    identityEndpoint : 'http://msgapigen01.azurewebsites.net/api/identity'
+    identityEndpoint : 'http://msgapigen01.azurewebsites.net/api/identity',
+    forumUrl : 'http://localhost:1234',
+    forumImgUrl :  'http://localhost:1234/temp.jpg',
+    apiBaseUrl : 'http://localhost:5001/',
+    graphqlUrl : 'http://localhost:5001/graphql/',
+    
   },
   GNTServParams :{     
     msgnotificationhub: "https://msgapiinput01.azurewebsites.net/hub/msgnotificationhub",
     client_id :'40002111194-tidi50nrgmsk8vnqokjcvlni7g5lq6j5.apps.googleusercontent.com',
-    identityEndpoint : 'http://msgapigen01.azurewebsites.net/api/identity'
+    identityEndpoint : 'https://msgapigen01.azurewebsites.net/api/identity',
+    forumUrl : 'https://www.gnthackray.co.uk:1234',
+    forumImgUrl :  'https://www.gnthackray.co.uk/temp.jpg',
+    apiBaseUrl : 'https://msgapigen01.azurewebsites.net/',
+    graphqlUrl : 'https://msgapigen01.azurewebsites.net/graphql/',
+    
   },
-  forumUrl : 'http://localhost:1234',
-  forumImgUrl :  'http://localhost:1234/temp.jpg',
+
   apiBaseUrl : 'http://localhost:5001/',
+  graphqlUrl : 'http://localhost:5001/graphql/',
 };
+
+//https://msgapigen01.azurewebsites.net/graphql/

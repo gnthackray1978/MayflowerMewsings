@@ -22,8 +22,8 @@ const WillTableToolbar = (props) => {
 
   const searchClick = ()=>{   
     let params = {
-      yearStart : yearStart,
-      yearEnd : yearEnd,
+      yearStart : Number(yearStart),
+      yearEnd : Number(yearEnd),
       ref : ref,
       desc : desc,
       place : place,

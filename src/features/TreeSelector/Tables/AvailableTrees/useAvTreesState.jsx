@@ -5,7 +5,7 @@ import{setParams, getParams} from '../../../Table/qryStringFuncs.jsx';
 
 export  function useAvTreesState(ReturnData,defaultParams, subSchema, rdxSetTree) {
 
-  //console.log('useAvTreesState called');
+  console.log('useAvTreesState called');
   
   let qryStrObj = getParams();
 
@@ -70,6 +70,8 @@ export  function useAvTreesState(ReturnData,defaultParams, subSchema, rdxSetTree
 
   const treeNameFilterChanged = (treeName) => {     
     
+    console.log('treeNameFilterChanged called');
+
     setFilterParams({...filterParams, ... {
       treeName : treeName,
     }});

@@ -73,7 +73,7 @@ function LincsWills() {
       limit : 25,
       offset :0,
       yearStart : 1700,
-      yearEnd : 2000,
+      yearEnd : 1800,
       ref : '',
       desc : '',
       place : '',

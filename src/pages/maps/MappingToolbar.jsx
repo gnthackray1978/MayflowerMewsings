@@ -57,7 +57,8 @@ const MappingToolbar = (props) => {
       treeName : '',
       minCM : 0,
       name : '',
-
+      isPaternal : false,
+      isMaternal : false,
     };
 
     setParams(params);
