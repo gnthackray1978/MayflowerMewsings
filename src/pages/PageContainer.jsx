@@ -1,5 +1,6 @@
 import React, { Component , useEffect} from 'react';
 import Default from './Default.jsx'; 
+import Blog from './Blog.jsx'; 
 import FTMDupes from './FTMDupes.jsx';
 import FTMPersons from './FTMPersons.jsx';
 import FTMTrees from './FTMTrees.jsx'; 
@@ -65,8 +66,9 @@ function PageContainer(props) {
           <Route  path="/fddescendants" element= {<FDDescendants/>}/>
           <Route  path="/controlpanel" element= {<ControlPanel/>}/>
 
+          <Route path="/blog" element= {<Blog/>}/>
+          <Route path="/default" element= {<Default/>}/>
           <Route path="/" element= {<Default/>}/>
-
         </Routes>
       );
 

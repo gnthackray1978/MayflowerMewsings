@@ -2,92 +2,98 @@ import * as React from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
-import GitHubIcon from '@mui/icons-material/GitHub';
-import FacebookIcon from '@mui/icons-material/Facebook';
-import TwitterIcon from '@mui/icons-material/Twitter';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import MainFeaturedPost from '../features/Blog/MainFeaturedPost.js';
+import MainPageHeader from '../features/MainPage/MainPageHeader.jsx';
 import FeaturedPost from '../features/Blog/FeaturedPost.js';
-import { gql} from '@apollo/client';
-import BlogMain from '../features/Blog/BlogMain.js';
-import Sidebar from '../features/Blog/Sidebar.js';
-import Footer from '../features/Blog/Footer.js';
-import {useTableState} from '../features/Blog/useTableState';
-import {getParams} from '../features/Table/qryStringFuncs'; 
-
-
-const sidebar = {
-  title: 'About',
-  description:
-    'George N Thackray Genealogy enthusiast and sometime programmer.',
-  social: [
-    { name: 'GitHub', icon: GitHubIcon },
-    { name: 'Twitter', icon: TwitterIcon },
-    { name: 'Facebook', icon: FacebookIcon },
-  ],
+import { settings } from '../shared/common.js';
+ 
+ 
+var mainFeaturedPost= {
+  title: 'Loading..',
+  text:
+    `# GNThackray.co.uk
+    \nThis a personal website\n belonging (obviously) \nto George N Thackray.\nIt contains mostly genealogy \nand programming related stuff.
+    \nScroll down for more info.`,
+    imageURL: settings.forumImgUrl,
+    imageDescription: 'main image description',
+    linkURL : settings.forumUrl,
+    linkDescription: 'Continue reading…',
 };
 
-const GET_BLOGS = gql`
-query blog(
-   $level: Int!
- ){
-    searchBlog(pobj : {levelId : $level}) {
-     page
-     totalRows
-     rows {
-                id
-                text
-                level
-                title
-                linkURL
-                linkDescription
-                imageURL
-                imageDescription
-                dateLastEdit            
-     }
-   }
-}
-`;
+var featuredPosts =[
+  {
+    title: 'Wills Indexs',
+    dateLastEdit: 'Nov 12',
+    text:
+      'Lincolnshire and Norfolk Wills indexs.',
+    imageURL: "https://gnthackray.co.uk/images/will.JPG",
+    link : "https://gnthackray.co.uk/wlincolnshire",
+    imageDescription: 'Image Text',
+  },
+  {
+    title: 'Tree Search',
+    dateLastEdit: 'Nov 11',
+    text:
+      'Search an index of people in uploaded trees.',
+    imageURL:"https://gnthackray.co.uk/images/listnames.JPG",
+    link : "https://gnthackray.co.uk/ftmpersons",
+    imageDescription: 'Image Text',
+  },
+  {
+    title: 'Tree Visualizers',
+    dateLastEdit: 'Nov 11',
+    text:
+      'Draw Ancestor and Descendant trees using conventional and force directed algorithms.',
+    imageURL:"https://gnthackray.co.uk/images/treediagrams.JPG",
+    link : "https://gnthackray.co.uk/ancestors",
+    imageDescription: 'Image Text',
+  },
+  {
+    title: 'Tree Mappers',
+    dateLastEdit: 'Nov 11',
+    text:
+      'Plot trees on google maps, either as a standard plot or heatmap.',
+    imageURL:"https://gnthackray.co.uk/images/heatmap.JPG",
+    link : "https://gnthackray.co.uk/maps",
+    imageDescription: 'Image Text',    
+  },
+  {
+    title: 'Dupe Finder',
+    dateLastEdit: 'Nov 11',
+    text:
+      'Find duplicates in uploaded trees.',
+    imageURL:"https://gnthackray.co.uk/images/duplicates.JPG",
+    link : "https://gnthackray.co.uk/ftmdupes",
+    imageDescription: 'Image Text',    
+  },
+
+];
+
 
 
 function Default(props) {
     
     const {className,classes} = props;
-  
-    var defaultValues = {
-      sortColumn : 'level',
-      sortOrder : 'asc',
-      limit : 0,
-      offset :0, 
-      level : 0
-    };
-
-    var params = getParams(defaultValues);
-    
-    var state = useTableState(GET_BLOGS,params,'searchBlog');
+    const myVideo = "https://gnthackray.co.uk/images/treelights.mov";
 
     return (
         <div>     
             <CssBaseline />
-            <Container maxWidth="lg">
+            <Container  style = {{"position": "absolute",
+                                               "top": "0",
+                                               "maxWidth": "100%",
+            }}>
               
               <main>
-                <MainFeaturedPost post={state.mainFeaturedPost} />
+                <MainPageHeader post={mainFeaturedPost} />
+              
                 <Grid container spacing={4}>
-                  {state.featuredPosts.map((post) => (
+                  {featuredPosts.map((post) => (
                     <FeaturedPost key={post.title} post={post} />
                   ))}
                 </Grid>
-                <Grid container spacing={5} sx={{ mt: 3 }}>
-                  <BlogMain title="From the firehose" posts={state.posts} />
-                  <Sidebar
-                    title={sidebar.title}
-                    description={sidebar.description}
-                    archives={state.months}
-                    social={sidebar.social}
-                  />
-                </Grid>
+               
               </main>
             </Container>          
         </div>
