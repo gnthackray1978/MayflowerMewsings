@@ -6,7 +6,7 @@ import Card from '@mui/material/Card';
 import CardActionArea from '@mui/material/CardActionArea';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-import Markdown from './Markdown';
+import Markdown from '../Markdown';
 import Link from '@mui/material/Link';
 
 const makeDate =(dateString) => {
@@ -16,6 +16,7 @@ const makeDate =(dateString) => {
 
 function FeaturedPost(props) {
   const { post } = props;
+  console.log(post.imageURL);
 
   return (
     <Grid item xs={12} md={6}>     
@@ -25,14 +26,7 @@ function FeaturedPost(props) {
               {post.text.length <= 200 ? post.text : post.text.substring(0, 200)}
             </Markdown>
             <Typography variant="subtitle1" color="primary">           
-              <Link display="block" variant="body1" href='#' key={post.title} onClick ={(e)=>{
-                  e.preventDefault();
-                  e.stopPropagation(); 
-                  let element = document.querySelector('[data-id="'+post.title+'"]');
-                  
-                  if(element)
-                    element.scrollIntoView();  
-                }}>
+              <Link display="block" variant="body1" href={post.link} key={post.title} >
                 Continue reading...
               </Link>
             </Typography>
