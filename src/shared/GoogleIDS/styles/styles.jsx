@@ -33,7 +33,8 @@ export const styles = makeStyles((theme) =>
           },
           hide: { display: 'none' },
           googleContainer: {
-            marginTop: '1px'
+            marginTop: '1px',
+            zIndex: 1000,
           },
         
         }

@@ -22,22 +22,43 @@ function Persons() {
      $birthLocation : String!,
      $fatherChristianName : String!,
      $fatherSurname : String!,
-     $motherChristianName : String!
+     $motherChristianName : String!,
+     $motherSurname : String!,
+     $deathLocation : String!,
+     $deathCounty : String!,
+     $source : String!,
+     $location : String!
+      $birthCounty : String!,
+       $occupation : String!,
+       $spouseName : String!,
+       $spouseSurname : String!, 
+       $fatherOccupation : String!,
    ){    
       personsearch( pobj : {
-                     limit : $limit,
-                     offset : $offset,
-                     sortColumn: $sortColumn,
-                     sortOrder : $sortOrder,
-                     yearStart : $yearStart,
-                     yearEnd: $yearEnd,
-                     firstName :$firstName,
-                     surname : $surname,
-                     birthLocation : $birthLocation,
-                     fatherChristianName : $fatherChristianName,
-                     fatherSurname :$fatherSurname,
-                     motherChristianName : $motherChristianName
-                          }
+                              limit : $limit,
+                              offset : $offset,
+                              sortColumn: $sortColumn,
+                              sortOrder : $sortOrder,
+                              yearStart : $yearStart,
+                              yearEnd: $yearEnd,
+                              firstName :$firstName,
+                              surname : $surname,
+                              birthLocation : $birthLocation,
+                              fatherChristianName : $fatherChristianName,
+                              fatherSurname :$fatherSurname,
+                              motherChristianName : $motherChristianName
+                              motherSurname : $motherSurname,
+                              deathLocation : $deathLocation,
+                              deathCounty : $deathCounty,
+                              source : $source,
+                              location : $location,
+                              birthCounty : $birthCounty,
+                              occupation : $occupation,
+                              spouseName : $spouseName,
+                              spouseSurname : $spouseSurname,
+                              fatherOccupation : $fatherOccupation
+                              
+                            }
                     ) {
        page
        totalRows
@@ -67,21 +88,17 @@ function Persons() {
   `;
 
     const headCells = [
-          { id: 'estBirthYearInt', numeric: false, disablePadding: true, label: 'Birth Year' },
-          { id: 'deathInt', numeric: false, disablePadding: true, label: 'Death Year' },
-        { id: 'christianName', numeric: false, disablePadding: true, label: 'Name' },
-
-
+      { id: 'estBirthYearInt', numeric: false, disablePadding: true, label: 'Birth Year' },
+      { id: 'deathInt', numeric: false, disablePadding: true, label: 'Death Year' },
+      { id: 'christianName', numeric: false, disablePadding: true, label: 'Name' },
       { id: 'surname', numeric: false, disablePadding: true, label: 'Surname' },
       { id: 'birthLocation', numeric: false, disablePadding: true, label: 'Birth Loc.' },
       { id: 'birthCounty', numeric: false, disablePadding: true, label: 'Birth County' },
       { id: 'deathLocation', numeric: false, disablePadding: true, label: 'Death Loc.' },
       { id: 'deathCounty', numeric: false, disablePadding: true, label: 'Death County' },
       { id: 'fatherChristianName', numeric: false, disablePadding: true, label: 'Father Name' },
-
       { id: 'motherChristianName', numeric: false, disablePadding: true, label: 'Mother Name' },
-        { id: 'motherSurname', numeric: false, disablePadding: true, label: 'Mother Surname' },
-
+      { id: 'motherSurname', numeric: false, disablePadding: true, label: 'Mother Surname' },
       { id: 'occupation', numeric: false, disablePadding: true, label: 'Occ' },
       { id: 'spouseName', numeric: false, disablePadding: true, label: 'Spouse Name' },
       { id: 'spouseSurname', numeric: false, disablePadding: true, label: 'Surname' },
@@ -100,7 +117,18 @@ function Persons() {
       birthLocation : '',
       fatherChristianName :'',
       fatherSurname : '',
-      motherChristianName : ''
+      motherChristianName : '',
+      motherSurname : '',
+      deathLocation : '',
+      deathCounty : '',
+      source : '',
+      location : '',
+      birthCounty : '',
+      occupation : '',
+      spouseName : '',
+      spouseSurname : '', 
+      fatherOccupation : '',
+
     };
 
     var params = getParams(defaultValues);
