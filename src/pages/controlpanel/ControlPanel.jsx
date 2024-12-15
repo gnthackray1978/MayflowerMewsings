@@ -82,8 +82,22 @@ function PersonStats(props){
 
 function ControlPanel(props) {  
 
-    const {config} = props;
-    
+
+    let emptyParams = {    
+        msgnotificationhub: "Not Set",
+        client_id :"Not Set",
+        identityEndpoint : "Not Set",
+        forumUrl :"Not Set",
+        forumImgUrl :  "Not Set",
+        apiBaseUrl : "Not Set",
+        graphqlUrl : "Not Set",
+        
+      };
+
+
+    const config = props?.config ?? emptyParams;
+  
+
     const theme = useTheme();
     const classes = useStyles(theme);
     //const [timeStamp,setTimeStamp] = React.useState(Date.now());
@@ -246,7 +260,7 @@ function ControlPanel(props) {
     }
     
     useEffect(() => {
-        
+        console.log('pre connect to hub ');
         if(!connection && settingsState?.messages.length === 1) {
             console.log('connect to hub');
             start();
@@ -259,8 +273,7 @@ function ControlPanel(props) {
               <Grid container spacing={2}>
                 <Grid xs={6}>                   
                     <div className={classes.sectionHeader}>Uploaded GED  Files</div>
-                    <GEDTable timeStamp = {settingsState?.timeStamp} 
-                        selectGEDClick ={selectGEDClick} deleteGEDClick={deleteGEDClick} ></GEDTable>   
+                    <GEDTable timeStamp = {settingsState?.timeStamp}   selectGEDClick ={selectGEDClick} deleteGEDClick={deleteGEDClick} ></GEDTable>   
                 </Grid> 
 
                 <Grid xs={3}>

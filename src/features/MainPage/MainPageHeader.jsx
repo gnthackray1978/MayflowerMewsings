@@ -54,21 +54,21 @@ function MainPageHeader(props) {
                            // "top": "0",
                            // "left": "0",
                             }}>
-                <ReactPlayer
-                    url={myVideo}                  
-                    playing
-                    width='100%'
-                    playsinline = {true}
+              
+
+              <video
+                    src={myVideo}
+                    poster={poster}
                     height='100%'
-                    controls = {false}
-                    volume = {0}
-                    loop = {true}
-                    muted = {true}
-                    autoPlay = {true}
-                    style ={{
-                       
-                    }}
+                    width='100%'
+                    
+                    autoPlay
+                    muted
+                    playsInline
+                    loop
+                    playbackRate = '-0.5'
                 />
+
             </div>
                 
                

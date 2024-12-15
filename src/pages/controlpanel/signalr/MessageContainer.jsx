@@ -1,4 +1,4 @@
-import { useEffect, useRef ,useState} from 'react';
+import React, { useEffect, useRef ,useState} from 'react';
 import Checkbox from '@mui/material/Checkbox';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -26,23 +26,23 @@ const MessageContainer = ({ messages,clearClicked }) => {
 
     let filterMessages =[];
 
-    for(let m of messages){
-        if(m.msgType === 'announce' && announcementsVisible){
-            filterMessages.push(m.message);
-        }
-        if(m.msgType === 'refresh' && refreshsVisible){
-            filterMessages.push(m.message);
-        }
-        if(m.msgType === 'crud' && operationsVisible){
-            filterMessages.push(m.message);
-        }
-        if(m.msgType === 'error' ){
-            filterMessages.push(m.message);
+    if(messages){
+        for(let m of messages){
+            if(m.msgType === 'announce' && announcementsVisible){
+                filterMessages.push(m.message);
+            }
+            if(m.msgType === 'refresh' && refreshsVisible){
+                filterMessages.push(m.message);
+            }
+            if(m.msgType === 'crud' && operationsVisible){
+                filterMessages.push(m.message);
+            }
+            if(m.msgType === 'error' ){
+                filterMessages.push(m.message);
+            }
         }
     }
-
-
-    // ref={messageRef}
+      // ref={messageRef}
     return <div className='message-container' >
      
         <FormGroup aria-label="position" row >      
