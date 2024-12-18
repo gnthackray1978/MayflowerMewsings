@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import TrsTable from './TrsTable.jsx'
-import TrsTableToolbar from './TrsTableToolbar.jsx'
+import TrsTable from './trsTable.jsx'
+import TrsTableToolbar from './trsTableToolbar.jsx'
 import TableWrapper from '../../../../features/Table/TableWrapper.jsx'
 import {gql} from '@apollo/client';
 import {useTableState} from '../../../../features/Table/useTable';
