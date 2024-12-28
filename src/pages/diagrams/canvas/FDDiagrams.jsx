@@ -11,7 +11,10 @@ function FDDiagrams(props) {
     let graph = {
         channel,
         layoutList,
-        renderer
+        renderer,
+        IsValid :function () {
+          return true;
+      }
     };
 
     const draw = (ctx, graph) => { 

@@ -82,12 +82,14 @@ function Ancestors(props) {
     title : 'Ancestor View'
   };
 
-  console.log('api returned: ' + state.errors);
+  console.log('api returned: ' + state.errors + ' ' + state.loading);
 
-  if(!state.loading)
+  //if(!state.loading)
+  //  setTitle(state.data?.title ?? 'Ancestor View');
+
+  useEffect(() => {
     setTitle(state.data?.title ?? 'Ancestor View');
-
-
+  }, [state.loading]);
 
 
   let data = transformData(state.data, populateAncestryObjects);

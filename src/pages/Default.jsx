@@ -12,8 +12,7 @@ import { settings } from '../shared/common.js';
 var mainFeaturedPost= {
   title: 'Loading..',
   text:
-    `# GNThackray.co.uk
-    \nThis a personal website\n belonging (obviously) \nto George N Thackray.\nIt contains mostly genealogy \nand programming related stuff.
+    `# GNThackray.co.uk   
     \nScroll down for more info.`,
     imageURL: settings.forumImgUrl,
     imageDescription: 'main image description',
@@ -75,26 +74,34 @@ var featuredPosts =[
 function Default(props) {
     
     const {className,classes} = props;
-    const myVideo = "https://gnthackray.co.uk/images/treelights.mov";
-
+  
     return (
         <div>     
             <CssBaseline />
             <Container  style = {{"position": "absolute",
                                                "top": "0",
+                                              "left": "0",                                               
                                                "maxWidth": "100%",
+                                               "backgroundColor": "black",
+                                                                                              
             }}>
               
-              <main>
-                <MainPageHeader post={mainFeaturedPost} />
+                <div style={{"position": "absolute",
+                             "top": "0",
+                             "left": "0",
+                             "maxWidth": "99.9%",
+                }}>
+                  <MainPageHeader post={mainFeaturedPost} />
+                
+                  <Grid container spacing={4} sx={{"padding": "15px",
+                                                  "backgroundColor": "black",
+                  }}>
+                    {featuredPosts.map((post) => (
+                      <FeaturedPost key={post.title} post={post} />
+                    ))}
+                  </Grid>
+                </div>
               
-                <Grid container spacing={4}>
-                  {featuredPosts.map((post) => (
-                    <FeaturedPost key={post.title} post={post} />
-                  ))}
-                </Grid>
-               
-              </main>
             </Container>          
         </div>
     );

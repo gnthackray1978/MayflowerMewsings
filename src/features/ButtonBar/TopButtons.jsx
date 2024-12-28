@@ -79,17 +79,22 @@ function TopButtons(props) {
 
     const showDiagramControls = selection.appId === 2;
     const showControlPanelControls = selection.appId === 11;
-
-    if (selection.title == 'Descendants') {        
-        selection.title = 'Descendant Diagram for ' + title;
-    }
     
-    if (selection.title == 'Ancestors') {        
-        selection.title = 'Ancestor Diagram for ' + title;
+    if(title == 'No Data' || title == ''){
+      selection.title = 'Select Tree';
     }
-    
-    if (selection.title == 'FDDescendants') {
-        selection.title = 'Force Directed Diagram for ' + title;
+    else{     
+      if (selection.title == 'Descendants') {        
+          selection.title = 'Descendant Diagram for ' + title;
+      }
+      
+      if (selection.title == 'Ancestors') {        
+          selection.title = 'Ancestor Diagram for ' + title;
+      }
+      
+      if (selection.title == 'FDDescendants') {
+          selection.title = 'Force Directed Diagram for ' + title;
+      }    
     }
 
     //console.log('top buttons: ', selection);

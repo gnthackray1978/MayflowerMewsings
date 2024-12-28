@@ -7,7 +7,7 @@ import DiagramWrapper from '../DiagramWrapper.jsx'
 import {gql} from '@apollo/client';
 
 import {useMapState} from '../useMap';
-import {getParams} from '../queryParams';
+import {getParams,csvToFirstNumber} from '../../../features/Table/qryStringFuncs.jsx';
 
 import {transformData, populateDescendantObjects} from '../drawinglib/graphDataFuncs.jsx';
 import {VisControlsUI} from "../fddescendants/libs/VisControlsUI.js";
@@ -58,64 +58,69 @@ function makeData(data, schema, subSchema){
 function FDDescendants(props) {
  
   console.log('FDDescendants');
-  const {selectedTreeData,selectedTreePersonData} = props;
+  const {selectedTreePerson, setTitle} = props;
 
-
+  let params2 = getParams({persons : selectedTreePerson});
+ 
+  let persons = csvToFirstNumber(params2.persons);
 
   const GET_FTMView = gql`
-  query Diagram(      
-    $personId : Int!,
-    $origin : String!
-  ){
-    diagram{
-      descendantsearch(
-                personId : $personId,
-                origin : $origin
-          ) {
-      generationsCount
-      maxGenerationLength
-      totalRows
-      rows {        
-        id
-        generationIdx
-        index
-        christianName
-        surname
-        childCount
-        childIdxLst
-        childLst
-        descendantCount
-        fatherId
-        fatherIdx        
-        isDisplayed
-        isFamilyEnd
-        isFamilyStart
-        isHtmlLink
-        isParentalLink
-        motherId
-        motherIdx
-        personId
-        relationType
-        spouseIdxLst
-        spouseIdLst
-        birthLocation
-        christianName
-        surname
-        dOB  
-      }
-    }
-    }
-  }
-  `;
-
+     query Diagram(      
+       $personId : String!,
+       $origin : String!
+     ){      
+         descendantsearch( pobj : {
+                             personId : $personId,
+                             origin : $origin
+                           }
+             ) {
+         generationsCount
+         maxGenerationLength
+         totalRows
+         title
+         error
+         rows {        
+           id
+           generationIdx
+           index
+           christianName
+           surname
+           childCount
+           childIdxLst
+           childLst
+           descendantCount
+           fatherId
+           fatherIdx        
+           isDisplayed
+           isFamilyEnd
+           isFamilyStart
+           isHtmlLink
+           isParentalLink
+           motherId
+           motherIdx
+           personId
+           relationType
+           spouseIdxLst
+           spouseIdLst
+           birthLocation
+           christianName
+           surname
+           dob  
+         }
+       
+       }
+     }
+     `;
   
-  var params = getParams();
+  //var params = getParams();
 
-  console.log(params.origin + ' ' + params.personId);
+  //console.log(params.origin + ' ' + params.personId);
 
-  var state = useMapState(GET_FTMView,{
-    personId : selectedTreePersonData,     
-    origin : selectedTreeData
+  var state = useMapState(GET_FTMView,'descendantsearch',{
+    personId : persons,     
+    origin : ''
+    // originally this was written to use tree id, changed to use
+    // origindescription because we now can have multiple trees.
   });
 
   state = {
@@ -124,8 +129,8 @@ function FDDescendants(props) {
     title : 'Map View'
   };
 
-  let data = transformData(state.data,'diagram','descendantsearch', populateDescendantObjects);
-
+  let data = transformData(state.data,populateDescendantObjects);
+ 
 
   let Body = ()=>{return(<div>loading</div>)};
 
@@ -163,7 +168,7 @@ function FDDescendants(props) {
 const mapStateToProps = state => {
   return { 
 
-    selectedTreePersonData : state.ux.selectedTreePersonData.personId != 0 ? state.ux.selectedTreePersonData.personId :3217,
+    selectedTreePersonData : state.ux.selectedTreePersonData?.personId ?? 0 != 0 ? state.ux.selectedTreePersonData.personId :3217,
     selectedTreeData : state.ux.selectedTreeData != '' ? state.ux.selectedTreeData : '_34_Kennington'
   };
 };

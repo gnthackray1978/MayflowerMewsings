@@ -1,18 +1,37 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import Paper from '@mui/material/Paper';
-import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
-import Link from '@mui/material/Link';
+import Grid from '@mui/material/Grid'
 import Box from '@mui/material/Box';
 import Markdown from '../Markdown';
-import ReactPlayer from 'react-player'
+import { Canvas } from '../../pages/diagrams/canvas/Canvas';
 //import './mainpage.css'
+import {LightsHandler} from './Lights.js';
 
 function MainPageHeader(props) {
-  const { post } = props;
-  const myVideo = "https://gnthackray.co.uk/images/treelights.mov";
-  const poster = "https://gnthackray.co.uk/images/poster.JPG"
+  const { post } = props;  
+  const poster = "https://gnthackray.co.uk/images/backgrounds/3.jpeg"
+
+
+
+  const graph = new LightsHandler();
+
+  const draw = (ctx, graph) => { 
+    // ctx.beginPath();
+    // ctx.arc(95, 50, 40, 0, 2 * Math.PI);
+    // ctx.fillStyle = "red";
+    // ctx.fill();
+    // ctx.lineWidth = 4;
+    // ctx.strokeStyle = "blue";
+    // ctx.stroke();
+      let canvas = document.getElementById('canvas');
+    // let start;
+    // var ctx;
+      let image = document.getElementById("treesImg");
+
+      graph.render(ctx,canvas,image);
+
+  }
 
   return (
     <Paper
@@ -26,7 +45,7 @@ function MainPageHeader(props) {
     >
       
       <Grid container>
-        <Grid item>
+        <Grid item sx ={{"width": "100%"}}>
           <Box
             sx={{
               position: 'relative',
@@ -34,44 +53,31 @@ function MainPageHeader(props) {
             //  pr: { md: 0 },
             }}
           >
-            <Box
-              sx={{
-                "position": "absolute",
-                "top": "-1",
-                "right": "-1",
-                "width": "95",
-                "height": "70px",
-                "background-color": "white",
-                /* opacity: 0.5; */
-                "border-radius": "1px 1px 1px 25px"
-              }}
-            ></Box>
-
-            <div  style = {{
-                            "width": "100%",
-                            "height": "auto",
-                            // "position": "absolute",
-                           // "top": "0",
-                           // "left": "0",
-                            }}>
-              
-
-              <video
-                    src={myVideo}
-                    poster={poster}
-                    height='100%'
-                    width='100%'
-                    
-                    autoPlay
-                    muted
-                    playsInline
-                    loop
-                    playbackRate = '-0.5'
-                />
-
+            <div id ="container">
+              <Box
+                sx={{
+                  "position": "absolute",
+                  "top": "-1",
+                  "right": "-1",
+                  "width": "95",
+                  "height": "70px",
+                  "background-color": "white",
+                  /* opacity: 0.5; */
+                  "border-radius": "1px 1px 1px 25px",
+                  "zIndex": "100"
+                }}
+              ></Box>
+              <img id = "treesImg" src={poster} height={window.innerHeight} width='100' />
+              <Canvas id = "canvas" graph ={graph} draw={draw} style ={
+                {
+                  top:"0px", 
+                  left : "0px", 
+                  position : "absolute", 
+                  height:"100%", 
+                  width: "100%"
+                }                
+                }></Canvas>
             </div>
-                
-               
 
             <Markdown style ={{
                 "position": "absolute",
