@@ -11,7 +11,7 @@ import {getParams,csvToFirstNumber} from '../../../features/Table/qryStringFuncs
 
 import {transformData, populateDescendantObjects} from '../drawinglib/graphDataFuncs.jsx';
 import {VisControlsUI} from "../fddescendants/libs/VisControlsUI.js";
-import {DataHandler} from "./libs/DataHandler.js";
+import {DataSource} from "./libs/DataSource.js";
 import { connect } from "react-redux";
 import {LayoutSettings} from "../fddescendants/libs/LayoutSettings.js";
 import {ForceDirect} from "../fddescendants/libs/ForceDirect.js";
@@ -141,15 +141,42 @@ function FDDescendants(props) {
   
       var diagUI = new VisControlsUI(channel, settings);
      
-      var dataHandler = new DataHandler(data.newRows);
+      var dataSource = new DataSource(data.newRows);
       
-      let _forceDirect = new ForceDirect(channel, settings, dataHandler);
+      let forceDirect = new ForceDirect(channel, settings, dataSource);
+
+     // let _channel = forceDirect.channel;
+      //but ForceDirect
+      //force direct originally contained the rendering handler.
+      //It was initialized like this.
+      //new RenderingHandler(that.channel, layoutList, new RenderLib(graph, ctx));
+  
+  
+      let graph = new Graph(_channel);
+  
+      let renderer = new RenderLib(graph);
+  
+      var drawing = new Drawing(_channel, graph,  forceDirect.settings, forceDirect.dataSource);
+  
+      drawing.Init();
+      
+
+      
+      const drawingContainer = {
+        graph : graph,
+        drawing : drawing,
+        renderer : renderer,
+        settings : settings,
+        dataSource : dataSource,
+        forceDirect : forceDirect
+      }
+
 
       diagUI.InitEvents();
 
         Body = ()=>{ return(<div>
           <DiagramToolbar  graph ={_forceDirect} state ={state}/>
-          <FDDescendantsBody  graph ={_forceDirect} />
+          <FDDescendantsBody  drawingContainer ={drawingContainer} />
       </div>)};
   }
 

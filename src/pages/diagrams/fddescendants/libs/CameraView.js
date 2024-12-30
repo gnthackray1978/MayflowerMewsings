@@ -1,4 +1,5 @@
 
+import { settings } from "shared/common.js";
 import {Vector} from "../types/Vector.js";
 import {Utils} from "./Utils.js";
 
@@ -290,13 +291,19 @@ CameraView.prototype = {
 
     },
 
-    onscreenNodes: function (maxnumber) {
+    onscreenNodes: function (settings) {
 
+        let maxnumber = settings.sublayoutNodeThreshold;
+        let sublayoutZoom = settings.sublayoutZoom;
         var that = this;
         var countonscreen = 0;
         var onscreenNodes = [];
         var offscreenNodes = [];
         var maxNodes = false;
+
+        if (this.zoompercentage <= sublayoutZoom) {
+            return onscreenNodes;
+        }
 
 
         //console.log('debug');

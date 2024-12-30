@@ -1,5 +1,5 @@
 
-export function DataHandler(generationsArray) {
+export function DataSource(generationsArray) {
 
     this.TopYear=0;
 
@@ -12,7 +12,34 @@ export function DataHandler(generationsArray) {
 
 }
 
-DataHandler.prototype = {
+DataSource.prototype = {
+
+
+    _createDOB: function(genIdx,personIdx){
+        var _dob = 0;
+
+        try
+        {
+            _dob = this.Generations[genIdx][personIdx].RecordLink.DOB;
+
+            if(_dob == 0)//try estimate dob if there is a father
+            {
+                var tpFIDX = this.Generations[genIdx][personIdx].FatherIdx;
+
+                if(genIdx > 0 && tpFIDX){
+                    if(this.Generations[genIdx-1][tpFIDX].RecordLink.DOB>0){
+                        _dob = this.Generations[genIdx-1][tpFIDX].RecordLink.DOB + 18;
+                    }
+                }
+            }
+        }
+        catch(e)
+        {
+            console.log(e);
+        }
+
+        return _dob;
+    },
 
     DescendantCount: function (genidx, personidx) {
 

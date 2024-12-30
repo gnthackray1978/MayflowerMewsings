@@ -22,12 +22,12 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 
-import {LayoutList} from "./LayoutList.js";
+import {Drawing} from "./Drawing.js";
 import {Graph} from "./Graph.js";
 import {RenderLib} from "./RenderLib.js";
 import {RenderingHandler} from "./RenderingHandler.js";
 //test
-export function ForceDirect(channel,settings, dataHandler) {
+export function ForceDirect(channel,settings, dataSource) {
 
     this.channel = channel;
 
@@ -35,7 +35,7 @@ export function ForceDirect(channel,settings, dataHandler) {
 
    // this.renderingHandler = null;
 
-    this.dataHandler = dataHandler;
+    this.dataSource = dataSource;
 
     this.yearTimer=null;
 
@@ -76,8 +76,8 @@ ForceDirect.prototype = {
 
     kill: function() {
 
-        if(this.dataHandler){
-            this.dataHandler.generations =[]; 
+        if(this.dataSource){
+            this.dataSource.generations =[]; 
         }
 
         this.dataHandler = undefined;
@@ -107,7 +107,7 @@ ForceDirect.prototype = {
 
         var graph = new Graph(that.channel);
 
-        var layoutList = new LayoutList(that.channel, graph, ctx, that.settings, that.dataHandler);
+        var layoutList = new Drawing(that.channel, graph, ctx, that.settings, that.dataSource);
 
         layoutList.Init();
 
