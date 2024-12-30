@@ -15,6 +15,10 @@ import {DataSource} from "./libs/DataSource.js";
 import { connect } from "react-redux";
 import {LayoutSettings} from "../fddescendants/libs/LayoutSettings.js";
 import {ForceDirect} from "../fddescendants/libs/ForceDirect.js";
+import {Graph} from "../fddescendants/libs/Graph.js";
+import {Drawing} from "../fddescendants/libs/Drawing.js";
+import {RenderLib } from '../fddescendants/libs/RenderLib.js';
+
 import mitt from 'mitt';
 
 function makeData(data, schema, subSchema){
@@ -152,15 +156,13 @@ function FDDescendants(props) {
       //new RenderingHandler(that.channel, layoutList, new RenderLib(graph, ctx));
   
   
-      let graph = new Graph(_channel);
+      let graph = new Graph(channel);
   
       let renderer = new RenderLib(graph);
   
-      var drawing = new Drawing(_channel, graph,  forceDirect.settings, forceDirect.dataSource);
+      var drawing = new Drawing(channel, graph, settings, dataSource);
   
       drawing.Init();
-      
-
       
       const drawingContainer = {
         graph : graph,
@@ -168,14 +170,17 @@ function FDDescendants(props) {
         renderer : renderer,
         settings : settings,
         dataSource : dataSource,
-        forceDirect : forceDirect
+        forceDirect : forceDirect,
+        energyCount : -9999,
+        IsValid : ()=>{return true;}
       }
 
-
+      //movement not implemented in fd trees so diagram toolbar 
+      //will not work.
       diagUI.InitEvents();
 
         Body = ()=>{ return(<div>
-          <DiagramToolbar  graph ={_forceDirect} state ={state}/>
+          <DiagramToolbar  graph ={drawingContainer} state ={state}/>
           <FDDescendantsBody  drawingContainer ={drawingContainer} />
       </div>)};
   }

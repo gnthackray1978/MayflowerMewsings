@@ -3,7 +3,7 @@ import FDDiagrams from '../canvas/FDDiagrams.jsx'
 
 function FDDescendantsBody(props) {
 
-    const { drawingContainer, ancestorConfig} = props;
+    const { drawingContainer} = props;
 
     return ( 
         <div> 

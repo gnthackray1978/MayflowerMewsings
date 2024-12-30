@@ -1,5 +1,5 @@
 
-import { settings } from "shared/common.js";
+//import { settings } from "shared/common.js";
 import {Vector} from "../types/Vector.js";
 import {Utils} from "./Utils.js";
 
@@ -190,9 +190,9 @@ CameraView.prototype = {
         var new_area = this.graph_width * this.graph_height;
         this.zoompercentage = (new_area - old_area) / old_area * 100;
 
-        $('#map_zoom').html(Math.round(this.zoompercentage));
-        $('#map_X').html(Math.round(this.centrePoint));
-        $('#map_Y').html(Math.round(this.centreVerticalPoint));
+     //   $('#map_zoom').html(Math.round(this.zoompercentage));
+    //    $('#map_X').html(Math.round(this.centrePoint));
+     //   $('#map_Y').html(Math.round(this.centreVerticalPoint));
     },
 
     zoomCurrentBB: function (targetBB, amount) {

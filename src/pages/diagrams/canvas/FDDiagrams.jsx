@@ -37,17 +37,31 @@ function FDDiagrams(props) {
 
     const draw = (ctx, drawingContainer) => { 
     
-      if(drawingContainer.drawing){
+      let layouts = drawingContainer.drawing.layouts;
+      let drawing = drawingContainer.drawing;
+      let renderer = drawingContainer.renderer;
+      let channel = drawingContainer.drawing.channel;
+
+      // stop simulation when energy of the system goes below a threshold
+      // starts with -9999, so it will always run the first time
+      if(drawingContainer.energyCount > -9999 && energyCount < 0.01){
+        return;
+      }
+
+      if(drawingContainer.energyCount == -9999)
+        drawingContainer.energyCount = 0;
+
+      if(drawing){
           
-        drawingContainer.drawing.layouts.UpdateActiveLayouts();
+        drawing.UpdateActiveLayouts();
 
-        var energyCount = 0;
+        //drawingContainer.energyCount = 0;
 
-        renderer.clear(ctx,drawingContainer.drawing.layouts.TopLayout()._cameraView);
+        renderer.clear(ctx,drawing.TopLayout()._cameraView);
 
-        _channel.emit( "nodecount", { value: that.layouts.TopLayout()._cameraView.countOnscreenNodes() } );
+        channel.emit( "nodecount", { value: drawing.TopLayout()._cameraView.countOnscreenNodes() } );
 
-        drawing.layouts.forEach(function(layout,idx) {
+        layouts.forEach(function(layout,idx) {
 
             layout.applyCoulombsLaw();
             layout.applyHookesLaw();
@@ -55,37 +69,31 @@ function FDDiagrams(props) {
             layout.updateVelocity(0.03);
             layout.updatePosition(0.03);
 
-
             var map = layout._cameraView;
 
             // render
             layout.eachEdge(function(edge, spring) {
-              drawingContainer.renderer.drawEdges(ctx,map, edge, spring.point1.p, spring.point2.p);
+              renderer.drawEdges(ctx,map, edge, spring.point1.p, spring.point2.p);
             });
 
             layout.eachNode(function(node, point) {
-              drawingContainer.renderer.drawNodes(ctx,layout.layout, map, node, point.p);
+              renderer.drawNodes(ctx,layout.layout, map, node, point.p);
             });
 
-            energyCount += layout.totalEnergy();
+            drawingContainer.energyCount += layout.totalEnergy();
 
             idx++;
         });
 
-        _channel.emit( "energy",  {value: energyCount.toFixed(2) });
-
-
-        // stop simulation when energy of the system goes below a threshold
-        if (energyCount < 0.01) {
-          
-        }  
+        channel.emit( "energy",  {value: drawingContainer.energyCount.toFixed(2) });
+             
       } 
     }
  
 
     return (
         <div>          
-         {graph && <Canvas graph ={drawingContainer.graph} draw={draw} style ={{height:"420", width: "1163"}}></Canvas>}
+         {drawingContainer && <Canvas graph ={drawingContainer} draw={draw} style ={{height:"420", width: "1163"}}></Canvas>}
         </div>
     );
 
