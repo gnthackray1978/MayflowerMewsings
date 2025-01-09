@@ -36,7 +36,12 @@ export function Graph(channel) {
 }
 
 Graph.prototype = {
-
+    nodeCount: function () {
+        return this.nodes.length;
+    },
+    edgeCount: function () {
+        return this.edges.length;
+    },
     addNode: function (node) {
         if (typeof (this.nodeSet[node.id]) === 'undefined') {
             this.nodes.push(node);

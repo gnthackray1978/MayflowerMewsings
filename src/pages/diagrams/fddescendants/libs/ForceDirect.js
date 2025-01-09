@@ -102,9 +102,6 @@ ForceDirect.prototype = {
 
         var ctx = canvas.getContext("2d");
 
-
-        
-
         var graph = new Graph(that.channel);
 
         var layoutList = new Drawing(that.channel, graph, ctx, that.settings, that.dataSource);

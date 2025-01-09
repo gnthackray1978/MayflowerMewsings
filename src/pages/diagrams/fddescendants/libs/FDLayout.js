@@ -4,9 +4,9 @@ import {Node} from "../types/Node.js";
 import {Point} from "../types/Point.js";
 import {Spring} from "../types/Spring.js";
 
-export function FDLayout(channel, graph, camera, settings, parentNode, parentLayout, firstNode) {
+export function FDLayout(channel, graph, camera, settings, parentNode, parentLayout, firstNode, dataSource) {
     this._channel = channel;
-
+    this.dataSource = dataSource;
     this.selected =   {node: new Node(-1,null), point: new Point(new Vector(0,0),0), distance: -1 };
     this.nearest = { node: new Node(-1, null), point: new Point(new Vector(0, 0), 0), distance: -1 };
     this.dragged = { node: new Node(-1, null), point: new Point(new Vector(0, 0), 0), distance: -1 };
@@ -16,6 +16,7 @@ export function FDLayout(channel, graph, camera, settings, parentNode, parentLay
     this.firstNode = firstNode;
     this._cameraView = camera;
 
+    
     this.canvasId = '#myCanvas';
     this.mouseup = true;
 
@@ -41,45 +42,99 @@ export function FDLayout(channel, graph, camera, settings, parentNode, parentLay
 
     this.selectionMass = 0;
 
-    var that = this;
-
+    this.runCount = 0;
+  
     //handle channel events
-    this._channel.on("mouseDoubleClick", function(data, envelope) {
-        console.log('mouseDoubleClick=');
-        that.resetDragListNodeMass(data.value);
-    });
-
-    this._channel.on("mouseDown", function(data, envelope) {
-
-        that.processNewSelections(data.value);
-    });
-
-    this._channel.on("mouseUp", function(data, envelope) {
-
-        that.handlermouseUp(data.value);
-
-    });
-
-    this._channel.on("buttondown", function(data, envelope) {
-
-        that.processNewSelections(data.value);
-    });
-
-    this._channel.on("buttonup", function(data, envelope) {
-
-        that.handlermouseUp(data.value);
-
-    });
-
-    this._channel.on("mouseMove", function(data, envelope) {
-        //console.log('mouseMove=');
-        that.checkForHighLights(data.value);
-    });
-
-
+    this.setupChannelEventHandlers();
 }
 
 FDLayout.prototype = {
+
+    populateGraph: function (year) {
+
+        var mygraph = this.graph;
+
+        this.dataSource.Generations.forEach( (gen) =>{
+            gen.filter((f)=>!f.IsHtmlLink && !mygraph.containsNode(f.PersonId)//
+                     && (f.RecordLink.DOB < year && f.RecordLink.DOB != 0)
+                    ).forEach( (person) =>{
+                        if (!person.nodeLink) {
+                            person.nodeLink = mygraph.newNode({ label: "description to be added",
+                                                  RecordLink: person.RecordLink,
+                                                  RecordId : person.PersonId,
+                                                  type: 'normal' });
+                        }
+                        
+                        let fatherEdge = this.dataSource.FatherEdgeByPerson(person);
+
+                        if(fatherEdge.IsValid){
+                        //    console.log('father edge is valid');
+                            mygraph.newEdge(fatherEdge.FatherNode, fatherEdge.ChildNode, { type: 'person' });
+                        }
+                        else
+                        {
+                            console.log('father edge is not valid: ' + person.RecordLink.FirstName + ' ' + person.RecordLink.LastName);
+                        }
+                });
+            }
+        );
+
+
+        this.dataSource.Generations.forEach((gen, genIdx) => {
+            gen.filter(f => !f.IsHtmlLink && f.nodeLink !== undefined).forEach((p, personIdx) => {
+                p.nodeLink.data.RecordLink.currentDescendantCount = this.dataSource.DescendantCount(genIdx, personIdx);
+            });
+        });
+
+        this.runCount = 0;
+        console.log('graph size: ' + mygraph.nodeCount() + ' nodes, ' + mygraph.edgeCount() + ' edges');
+    },
+
+    hasFinished: function () {
+        if (this.graph.nodeCount() === 0) {
+            return true;
+        }
+    
+        if (Number(this.totalEnergy()) < 0.01 && this.runCount > 100) {
+            return true;
+        }
+    
+        return false;
+    },
+
+    setupChannelEventHandlers: function() {
+        this._channel.on("mouseDoubleClick", function (data, envelope) {
+            console.log('mouseDoubleClick=');
+            that.resetDragListNodeMass(data.value);
+        });
+
+        this._channel.on("mouseDown", function (data, envelope) {
+
+            that.processNewSelections(data.value);
+        });
+
+        this._channel.on("mouseUp", function (data, envelope) {
+
+            that.handlermouseUp(data.value);
+
+        });
+
+        this._channel.on("buttondown", function (data, envelope) {
+
+            that.processNewSelections(data.value);
+        });
+
+        this._channel.on("buttonup", function (data, envelope) {
+
+            that.handlermouseUp(data.value);
+
+        });
+
+        this._channel.on("mouseMove", function (data, envelope) {
+            //console.log('mouseMove=');
+            that.checkForHighLights(data.value);
+        });
+    },
     point: function (node) {
         if (typeof (this.nodePoints[node.id]) === 'undefined') {
             var mass = typeof (node.data.mass) !== 'undefined' ? node.data.mass : 1.0;
@@ -177,7 +232,7 @@ FDLayout.prototype = {
             point.applyForce(direction.multiply(this.repulsion / 50.0));
         });
     },
-    updateVelocity: function (timestep) {
+    updateVelocity: function (timestep) {        
         this.eachNode(function (node, point) {
             // Is this, along with updatePosition below, the only places that your
             // integration code exist?

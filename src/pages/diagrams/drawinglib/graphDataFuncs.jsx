@@ -23,7 +23,7 @@ export const getPersonFromId = (id, rows)=>{
   };
 
 
-  export const shapeData = (rawData)=>{
+export const shapeData = (rawData)=>{
 
     let rows = [];
     let idx =0;
@@ -40,6 +40,47 @@ export const getPersonFromId = (id, rows)=>{
     } 
     return rows;
   };
+
+const makeDOB = (data, genIdx,personIdx)=>{
+    var _dob = 0;
+
+    try
+    {
+        _dob = data[genIdx][personIdx].RecordLink.DOB;
+
+        if(_dob == 0 && genIdx >0)//try estimate dob if there is a father
+        {
+            var tpFIDX = data[genIdx][personIdx].FatherIdx;
+
+            if(tpFIDX){
+                if(data[genIdx-1][tpFIDX].RecordLink.DOB>0){
+                    _dob = data[genIdx-1][tpFIDX].RecordLink.DOB + 18;
+                }
+            }
+
+            if(_dob == 0)
+            {
+              let tpMidx = data[genIdx][personIdx].MotherIdx;
+
+              if(tpMidx){
+                  if(data[genIdx-1][tpMidx].RecordLink.DOB>0){
+                      _dob = data[genIdx-1][tpMidx].RecordLink.DOB + 18;
+                  }
+              }
+          }
+        }
+    }
+    catch(e)
+    {
+        console.log(e);
+    }
+
+    return _dob;
+}
+
+const setDOB = (data) => {
+  data.forEach(row => row.forEach(p => p.RecordLink.DOB = makeDOB(data, p.GenerationIdx, p.Index)));
+};
 
 
   export const formatData = (rows)=>{
@@ -98,7 +139,7 @@ export const getPersonFromId = (id, rows)=>{
                     BaptismDate : '',
                     BirthDate : '',
                     BirthLocation: rows[generationIdx][personIdx].birthLocation,           
-                    DOB : rows[generationIdx][personIdx].dOB,
+                    DOB : rows[generationIdx][personIdx].dob,
                     DOD: '',
                     DeathLocation : '',
                     FirstName: rows[generationIdx][personIdx].christianName,          
@@ -122,7 +163,6 @@ export const getPersonFromId = (id, rows)=>{
 
     return newRows;
   };
-
 
   export const populateAncestryObjects = (newRows)=>{
 
@@ -164,9 +204,6 @@ export const getPersonFromId = (id, rows)=>{
     return newRows;
   };
 
-
-
-  
   export const transformData = (data, populateObjectsFunc) => {
     
     var newRows = [];
@@ -177,6 +214,7 @@ export const getPersonFromId = (id, rows)=>{
     {
       let rows = shapeData(data);  
       newRows = formatData(rows);         
+      setDOB(newRows);
       newRows = populateObjectsFunc(newRows);
     }
     else{

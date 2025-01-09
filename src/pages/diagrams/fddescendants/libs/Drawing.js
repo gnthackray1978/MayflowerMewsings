@@ -26,7 +26,7 @@ Drawing.prototype ={
 
         var parentLayout = this.layout = new FDLayout(this.channel, this.graph,
             new CameraView(this.settings.colourScheme, window.innerWidth, window.innerHeight),
-            this.settings);
+            this.settings, null, null, null,this.dataSource);   
         
         //base layout.
         this.layouts.push({ layout: parentLayout, type: 'parent' });
@@ -144,71 +144,7 @@ Drawing.prototype ={
 
     },
 
-    populateGraph: function (year) {
 
-        var mygraph = this.graph;
-
-        var genIdx = 0;
-
-        while (genIdx < this.dataSource.Generations.length) {
-
-            var personIdx = 0;
-
-            while (personIdx < this.dataSource.Generations[genIdx].length) {
-
-                var currentPerson = this.dataSource.Generations[genIdx][personIdx];
-
-                if (!currentPerson.IsHtmlLink) {
-                    var descriptor = '.'; // currentPerson.DOB + ' ' + currentPerson.Name;
-
-                    // add the person to the graph if he/she was born in the current time period
-                    var _dob = this.dataSource._createDOB(genIdx,personIdx);
-
-                    //if (_dob == (year - 4) || _dob == (year - 3) || _dob == (year - 2) || _dob == (year - 1) || _dob == year) {
-
-                    if (_dob < year && _dob != 0) {
-
-                        var personId = currentPerson.PersonId;
-
-                        if (!mygraph.containsNode(personId)) {
-
-                            if (currentPerson.nodeLink == undefined ||
-                                currentPerson.nodeLink == null) {
-
-                                this.dataSource.Generations[genIdx][personIdx].nodeLink =
-                                    mygraph.newNode({ label: descriptor,
-                                                      RecordLink: currentPerson.RecordLink,
-                                                      RecordId : personId,
-                                                      type: 'normal' });
-
-                            }
-
-                            var fatherEdge = this.dataSource.FatherEdge(genIdx,personIdx);
-
-                            if(fatherEdge.IsValid)
-                                mygraph.newEdge(fatherEdge.FatherNode, fatherEdge.ChildNode, { type: 'person' });
-
-
-                        }
-                        else {
-                        //    console.log('person present');
-                        }
-                    }
-
-
-                    // count how many desendants this person has in the diagram already.
-                    if (this.dataSource.Generations[genIdx][personIdx].nodeLink != undefined)
-                        this.dataSource.Generations[genIdx][personIdx].nodeLink.data.RecordLink.currentDescendantCount =
-                         this.dataSource.DescendantCount(genIdx, personIdx);
-                }
-
-                personIdx++;
-            }
-
-            genIdx++;
-        }
-
-    },
 
     TopLayout: function(){
         return this.layouts[0].layout;

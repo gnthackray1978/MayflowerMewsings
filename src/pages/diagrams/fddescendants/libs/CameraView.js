@@ -7,15 +7,13 @@ import {Utils} from "./Utils.js";
 export function CameraView(colourScheme, startwidth, startheight) {
 
     this.layout = null;
+    this.colourScheme = colourScheme;
+
     //this.graph = graph;
 
     this.currentBB = null; // layout.getBoundingBox();
-   // this.targetBB = null;
+    // this.targetBB = null;
     this.targetBB = { bottomleft: new Vector(-2, -2), topright: new Vector(2, 2) };
-
-    this.colourScheme = colourScheme;
-
-
     // graph size
     this.original_graph_width = startwidth;
     this.original_graph_height = startheight;

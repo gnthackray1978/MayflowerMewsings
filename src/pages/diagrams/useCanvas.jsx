@@ -16,7 +16,7 @@ const useCanvas = (draw,graph, options={}) => {
 
     let animationFrameId;
 
-    const render = () => {
+    const render = (timestamp) => {
 
       if(frameCountx == 1000) xMove = -1;
       if(frameCountx == 0) xMove = 1;
@@ -31,7 +31,7 @@ const useCanvas = (draw,graph, options={}) => {
 
       if(graph.IsValid())
       {
-        draw(context,graph, frameCountx, frameCounty);
+        draw(context,graph, frameCountx, frameCounty,timestamp);
         
         animationFrameId = window.requestAnimationFrame(render);
       }

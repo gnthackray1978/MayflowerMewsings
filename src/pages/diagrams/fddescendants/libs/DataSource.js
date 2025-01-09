@@ -14,33 +14,6 @@ export function DataSource(generationsArray) {
 
 DataSource.prototype = {
 
-
-    _createDOB: function(genIdx,personIdx){
-        var _dob = 0;
-
-        try
-        {
-            _dob = this.Generations[genIdx][personIdx].RecordLink.DOB;
-
-            if(_dob == 0)//try estimate dob if there is a father
-            {
-                var tpFIDX = this.Generations[genIdx][personIdx].FatherIdx;
-
-                if(genIdx > 0 && tpFIDX){
-                    if(this.Generations[genIdx-1][tpFIDX].RecordLink.DOB>0){
-                        _dob = this.Generations[genIdx-1][tpFIDX].RecordLink.DOB + 18;
-                    }
-                }
-            }
-        }
-        catch(e)
-        {
-            console.log(e);
-        }
-
-        return _dob;
-    },
-
     DescendantCount: function (genidx, personidx) {
 
         var stack = [];
@@ -107,6 +80,37 @@ DataSource.prototype = {
 
         this.TopYear=topYear;
         this.BottomYear =botYear;
+    },
+
+    FatherEdgeByPerson: function(currentPerson){
+
+        //var currentPerson = this.Generations[genIdx][personIdx];
+        var fatherNodeLink;
+        let genIdx = currentPerson.GenerationIdx;
+
+        if(genIdx> 0 && currentPerson) {
+            fatherNodeLink = this.Generations[genIdx - 1][currentPerson.FatherIdx].nodeLink;
+        }
+
+        if(!fatherNodeLink)
+            console.log('father node link not found');
+
+        if(!currentPerson.nodeLink)
+            console.log(currentPerson.PersonId + 'current node missing nodelink');
+
+        if(genIdx <= 0)
+            console.log('no father for generation: ' + genIdx);
+
+
+        if(fatherNodeLink && currentPerson.nodeLink && genIdx > 0){
+            return {IsValid: true, FatherNode : fatherNodeLink, ChildNode : currentPerson.nodeLink};
+        }
+        else
+        {
+            return {IsValid: false};
+        }
+
+
     },
 
     FatherEdge: function(genIdx, personIdx){
