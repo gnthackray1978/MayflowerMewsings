@@ -3,28 +3,27 @@ import { connect } from "react-redux";
 import { Canvas } from './Canvas';
 
 
-//formerly called renderinghandler
+
 //comes from FDDescendants -> FDDescendantsBody
 function FDDiagrams(props) {
 
     const {drawingContainer} = props;
 
-    const draw = (ctx, drawingContainer,frameCountx, frameCounty,timestamp) => { 
+    const draw = (ctx, drawing,frameCountx, frameCounty,timestamp) => { 
     
-      let layouts = drawingContainer.drawing.layouts;
-      let drawing = drawingContainer.drawing;
-      let renderer = drawingContainer.renderer;
-      let channel = drawingContainer.drawing.channel;
+      let layouts = drawing.layouts;      
+      let renderer = drawing.renderer;
+      let channel = drawing.channel;
 
-      drawingContainer.setTime(timestamp);
+      drawing.setTime(timestamp);
 
      // console.log("timer: ",timeInSeconds);  
-      if(drawingContainer.timeInSeconds > 10){
-        console.log("year: ",drawingContainer.currentYear);
+      if(drawing.timeInSeconds > 10){
+        console.log("year: ",drawing.currentYear);
 
-        drawing.TopLayout().populateGraph(drawingContainer.currentYear);
-        drawingContainer.currentYear = drawingContainer.currentYear +5;      
-        drawingContainer.resetTimer();
+        drawing.TopLayout().populateGraph(drawing.currentYear);
+        drawing.currentYear = drawing.currentYear +5;      
+        drawing.resetTimer();
       }
     
       // stop simulation when energy of the system goes below a threshold
@@ -38,36 +37,34 @@ function FDDiagrams(props) {
           
         drawing.UpdateActiveLayouts();
 
-        renderer.clear(ctx,drawing.TopLayout()._cameraView);
+        renderer.clear(ctx,drawing.dims);
 
-        channel.emit( "nodecount", { value: drawing.TopLayout()._cameraView.countOnscreenNodes() } );
+        channel.emit( "nodecount", { value: drawing.countOnscreenNodes() } );
 
-        layouts.forEach(function(layout,idx) {
-            let _lay = layout.layout;
+        layouts.forEach(function(l,idx) {
+            let layout = l.layout;
+            let drawingDimensions = layout.drawing.dims;
 
-            _lay.applyCoulombsLaw();
-            _lay.applyHookesLaw();
-            _lay.attractToCentre();
-            _lay.updateVelocity(0.03);
-            _lay.updatePosition(0.03);
-            _lay.runCount++;
-
-
-            var map = _lay._cameraView;
-
+            layout.applyCoulombsLaw();
+            layout.applyHookesLaw();
+            layout.attractToCentre();
+            layout.updateVelocity(0.03);
+            layout.updatePosition(0.03);
+            layout.runCount++;
+            
             // render
-            _lay.eachEdge(function(edge, spring) {
-              renderer.drawEdges(ctx,map, edge, spring.point1.p, spring.point2.p);
+            layout.eachEdge(function(edge, spring) {
+              renderer.drawEdges(ctx,drawingDimensions, edge, spring.point1.p, spring.point2.p);
             });
 
-            _lay.eachNode(function(node, point) {
-              renderer.drawNodes(ctx,_lay, map, node, point.p);          
+            layout.eachNode(function(node, point) {
+              renderer.drawNodes(ctx,layout, drawingDimensions, node, point.p);          
             });
             
             idx++;
         });
 
-        channel.emit( "energy",  {value: drawingContainer.energyCount.toFixed(2) });
+        channel.emit( "energy",  {value: drawing.energyCount.toFixed(2) });
              
       } 
     }

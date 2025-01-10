@@ -74,7 +74,6 @@ VisControlsUI.prototype.InitEvents = function () {
      //   console.log('ui node highlighted event caught');
     });
 
-    //  //  $('#nodes').html(that.layouts[0].layout._cameraView.countOnscreenNodes());
 
     //
 

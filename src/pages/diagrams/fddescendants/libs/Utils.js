@@ -1,7 +1,9 @@
+import { CssBaseline } from "@mui/material";
 import {Vector} from "../types/Vector.js";
 
-export function Utils(currentBB, gwidth, hwidth) {
+export function Utils(currentBB, gwidth, hwidth, colourScheme) {
     this.currentBB = currentBB;
+    this.colourScheme = colourScheme;
     this.graph_width = gwidth;
     this.graph_height = hwidth;
 }
@@ -88,7 +90,7 @@ Utils.prototype = {
     },
 
     star: function (map, ctx, x, y, r, p, m, filled, type, state) {
-
+        let cs = this.colourScheme;
         //var radgrad = ctx.createRadialGradient(s.x + 2, s.y + 3, 1, s.x + 5, s.y + 5, 5);
 
         //radgrad.addColorStop(0, '#CCFFFF');
@@ -99,13 +101,13 @@ Utils.prototype = {
 
         switch (state) {
             case 1:
-                colour = map.colourScheme.normalMainShapeBackground;
+                colour = cs.normalMainShapeBackground;
                 break;
             case 2:
-                colour = map.colourScheme.nearestMainShapeBackground;
+                colour = cs.nearestMainShapeBackground;
                 break;
             case 3:
-                colour = map.colourScheme.selectedMainShapeBackground;
+                colour = cs.selectedMainShapeBackground;
                 break;
         }
 
@@ -141,6 +143,8 @@ Utils.prototype = {
     },
 
     drawText: function (map, ctx, x, y, text, type, state) {
+        
+        let cs = this.colourScheme;
 
         //boxWidth = node.getWidth();
         //boxHeight = node.getHeight();
@@ -156,13 +160,13 @@ Utils.prototype = {
 
         switch (state) {
             case 1:
-                ctx.fillStyle = type == 'normal' ? map.colourScheme.normalMainLabelBackground : map.colourScheme.normalInfoLabelBackground;
+                ctx.fillStyle = type == 'normal' ? cs.normalMainLabelBackground : cs.normalInfoLabelBackground;
                 break;
             case 2:
-                ctx.fillStyle = type == 'normal' ? map.colourScheme.nearestMainLabelBackground : map.colourScheme.nearestInfoLabelBackground;
+                ctx.fillStyle = type == 'normal' ? cs.nearestMainLabelBackground : cs.nearestInfoLabelBackground;
                 break;
             case 3:
-                ctx.fillStyle = type == 'normal' ? map.colourScheme.selectedMainLabelBackground : map.colourScheme.selectedInfoLabelBackground;
+                ctx.fillStyle = type == 'normal' ? cs.selectedMainLabelBackground : cs.selectedInfoLabelBackground;
                 break;
         }
 
@@ -175,13 +179,13 @@ Utils.prototype = {
 
         switch (state) {
             case 1:
-                ctx.fillStyle = type == 'normal' ? map.colourScheme.normalMainLabelColour : map.colourScheme.normalInfoLabelColour;
+                ctx.fillStyle = type == 'normal' ? cs.normalMainLabelColour : cs.normalInfoLabelColour;
                 break;
             case 2:
-                ctx.fillStyle = type == 'normal' ? map.colourScheme.selectedMainLabelColour : map.colourScheme.selectedInfoLabelColour;
+                ctx.fillStyle = type == 'normal' ? cs.selectedMainLabelColour : cs.selectedInfoLabelColour;
                 break;
             case 3:
-                ctx.fillStyle = type == 'normal' ? map.colourScheme.nearestMainLabelColour : map.colourScheme.nearestInfoLabelColour;
+                ctx.fillStyle = type == 'normal' ? cs.nearestMainLabelColour : cs.nearestInfoLabelColour;
                 break;
         }
 

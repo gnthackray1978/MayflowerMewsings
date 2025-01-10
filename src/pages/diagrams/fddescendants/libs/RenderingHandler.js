@@ -24,8 +24,7 @@ RenderingHandler.prototype = {
 
         var that = this;
 
-     //   RenderingHandler.requestAnimationFrame(function step() {
-
+   
             that.layouts.UpdateActiveLayouts();
 
             var energyCount = 0;
@@ -33,8 +32,7 @@ RenderingHandler.prototype = {
 
             that.renderer.clear(that.layouts.TopLayout()._cameraView);
 
-            that._channel.emit( "nodecount", { value: that.layouts.TopLayout()._cameraView.countOnscreenNodes() } );
-
+          
             that.layouts.layouts.forEach(function(layout,idx) {
 
                 layout.layout.applyCoulombsLaw();
@@ -71,8 +69,7 @@ RenderingHandler.prototype = {
                 }
             } else {
 
-            //    RenderingHandler.requestAnimationFrame(step);
-
+         
             }
      //   });
 

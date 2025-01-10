@@ -4,7 +4,7 @@ import {Node} from "../types/Node.js";
 import {Point} from "../types/Point.js";
 import {Spring} from "../types/Spring.js";
 
-export function FDLayout(channel, graph, camera, settings, parentNode, parentLayout, firstNode, dataSource) {
+export function FDLayout(channel, graph, drawing, settings, parentNode, parentLayout, firstNode, dataSource) {
     this._channel = channel;
     this.dataSource = dataSource;
     this.selected =   {node: new Node(-1,null), point: new Point(new Vector(0,0),0), distance: -1 };
@@ -14,9 +14,11 @@ export function FDLayout(channel, graph, camera, settings, parentNode, parentLay
     this.parentLayout = parentLayout;
 
     this.firstNode = firstNode;
-    this._cameraView = camera;
-
+    this.drawing = drawing;
+    this.drawing.layout = this; // oh dear george!
+  //  this.drawing.dims.currentBB = this.getBoundingBox(); // fix this!!!
     
+
     this.canvasId = '#myCanvas';
     this.mouseup = true;
 
@@ -27,9 +29,6 @@ export function FDLayout(channel, graph, camera, settings, parentNode, parentLay
 
     this.nodePoints = {}; // keep track of points associated with nodes
     this.edgeSprings = {}; // keep track of springs associated with edges
-
-    this._cameraView.layout = this; // oh dear george!
-    this._cameraView.currentBB = this.getBoundingBox(); // fix this!!!
 
     this.selectionChanged = null;
     this.nearestChanged = null;
@@ -85,7 +84,9 @@ FDLayout.prototype = {
                 p.nodeLink.data.RecordLink.currentDescendantCount = this.dataSource.DescendantCount(genIdx, personIdx);
             });
         });
-
+        
+        this.drawing.dims.currentBB = this.getBoundingBox(); // fix this!!!
+        
         this.runCount = 0;
         console.log('graph size: ' + mygraph.nodeCount() + ' nodes, ' + mygraph.edgeCount() + ' edges');
     },
@@ -269,7 +270,7 @@ FDLayout.prototype = {
 
             var pos = $(this.canvasId).offset();
 
-            var p = this._cameraView.currentPositionFromScreen(pos, e.evt);
+            var p = this.drawing.dims.currentPositionFromScreen(pos, e.evt);
 
             var newNearest = this.nearestPoint(p);
 
@@ -304,7 +305,7 @@ FDLayout.prototype = {
 
             var pos = $(this.canvasId).offset();
 
-            var p = this._cameraView.currentPositionFromScreen(pos, e.evt);
+            var p = this.drawing.currentPositionFromScreen(pos, e.evt);
 
             var newNearest = this.nearestPoint(p);
 
@@ -364,13 +365,13 @@ FDLayout.prototype = {
         }
 
 
-        if (e.target.id == "up") this._cameraView.moving = 'UP';
-        if (e.target.id == "dn") this._cameraView.moving = 'DOWN';
-        if (e.target.id == "we") this._cameraView.moving = 'WEST';
-        if (e.target.id == "no") this._cameraView.moving = 'NORTH';
-        if (e.target.id == "es") this._cameraView.moving = 'EAST';
-        if (e.target.id == "so") this._cameraView.moving = 'SOUTH';
-        if (e.target.id == "de") this._cameraView.moving = 'DEBUG';
+        if (e.target.id == "up") this.drawing.moving = 'UP';
+        if (e.target.id == "dn") this.drawing.moving = 'DOWN';
+        if (e.target.id == "we") this.drawing.moving = 'WEST';
+        if (e.target.id == "no") this.drawing.moving = 'NORTH';
+        if (e.target.id == "es") this.drawing.moving = 'EAST';
+        if (e.target.id == "so") this.drawing.moving = 'SOUTH';
+        if (e.target.id == "de") this.drawing.moving = 'DEBUG';
 
     },
 
@@ -396,14 +397,14 @@ FDLayout.prototype = {
 
         if (e.target.id == "myCanvas") {
 
-            this._cameraView.addToMouseQueue(1000000, 1000000);
+            this.drawing.addToMovementPath(1000000, 1000000);
             this.dragged = { node: new Node(-1, null), point: new Point(new Vector(0, 0), 0), distance: -1 };
 
 
 
             this.mouseup = true;
         } else {
-            this._cameraView.moving = '';
+            this.drawing.moving = '';
         }
 
     },
@@ -414,10 +415,10 @@ FDLayout.prototype = {
     //    console.log('mouseMove_');
 
         var pos = $(this.canvasId).offset();
-        var p = this._cameraView.currentPositionFromScreen(pos, e.evt);
+        var p = this.drawing.currentPositionFromScreen(pos, e.evt);
 
         if (!this.mouseup && this.selected.node.id !== -1 && this.dragged.node.id == -1) {
-            this._cameraView.addToMouseQueue(e.clientX, e.clientY);
+            this.drawing.addToMovementPath(e.clientX, e.clientY);
         }
 
         var newNearest = this.nearestPoint(p);

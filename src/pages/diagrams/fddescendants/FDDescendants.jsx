@@ -146,67 +146,20 @@ function FDDescendants(props) {
       var diagUI = new VisControlsUI(channel, settings);
      
       var dataSource = new DataSource(data.newRows);
-      
-      let forceDirect = new ForceDirect(channel, settings, dataSource);
-
-     // let _channel = forceDirect.channel;
-      //but ForceDirect
-      //force direct originally contained the rendering handler.
-      //It was initialized like this.
-      //new RenderingHandler(that.channel, layoutList, new RenderLib(graph, ctx));
-  
-  
+            
       let graph = new Graph(channel);
-  
-      let renderer = new RenderLib(graph);
-  
-      var drawing = new Drawing(channel, graph, settings, dataSource);
+
+      let renderer = new RenderLib(graph, settings);
+
+      var drawing = new Drawing(channel, graph, renderer, settings, dataSource);
   
       drawing.Init();
-      
-      function DrawingContainer(graph, drawing, renderer, settings, dataSource){
-        this.graph = graph;
-        this.drawing = drawing;
-        this.renderer = renderer;
-        this.settings =settings;
-        this.dataSource = dataSource;
-        this.forceDirect = forceDirect;
-
-        this.energyCount = -9999;
-        this.timeActive = 0;
-        this.timer=0;
-        this.timeInSeconds = 0;
-        this.currentYear = 1950;
-        this.IsValid = ()=>{return true;}
-        this.resetTimer = ()=>{this.timer = 0;}
-        this.setTime = (timestamp)=>{
-
-          if (this.timeActive === 0 && !isNaN(timestamp)) {
-            this.timeActive = timestamp;        
-          }
-    
-         // let timeInSeconds = 0;
-          // drawingContainer.timer = Math.floor(((drawingContainer.timeActive - drawingContainer.timer)/1000));
-          if(!isNaN(timestamp) && timestamp != this.timeActive){
-    
-              let step = timestamp - this.timeActive;
-              this.timeActive = timestamp; 
-              this.timer += Number(step);
-              this.timeInSeconds = Math.floor(this.timer/1000);
-          }
-    
-        }  
-      }
-
-      let drawingContainer = new DrawingContainer(graph, drawing, renderer, settings, dataSource);
-
-      //movement not implemented in fd trees so diagram toolbar 
-      //will not work.
+             
       diagUI.InitEvents();
 
         Body = ()=>{ return(<div>
-          <DiagramToolbar  graph ={drawingContainer} state ={state}/>
-          <FDDescendantsBody  drawingContainer ={drawingContainer} />
+          <DiagramToolbar  graph ={drawing} state ={state}/>
+          <FDDescendantsBody  drawingContainer ={drawing} />
       </div>)};
   }
 

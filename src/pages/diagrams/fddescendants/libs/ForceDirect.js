@@ -24,8 +24,8 @@ OTHER DEALINGS IN THE SOFTWARE.
 
 import {Drawing} from "./Drawing.js";
 import {Graph} from "./Graph.js";
-import {RenderLib} from "./RenderLib.js";
-import {RenderingHandler} from "./RenderingHandler.js";
+
+
 //test
 export function ForceDirect(channel,settings, dataSource) {
 
@@ -33,8 +33,7 @@ export function ForceDirect(channel,settings, dataSource) {
 
     this.settings = settings;
 
-   // this.renderingHandler = null;
-
+ 
     this.dataSource = dataSource;
 
     this.yearTimer=null;
@@ -42,12 +41,12 @@ export function ForceDirect(channel,settings, dataSource) {
     var that =this;
 
     this.channel.on("mouseDown", function(data, envelope) {
-     //   if(that.renderingHandler) // hack until i can be bothered add bus in for the events
+      // hack until i can be bothered add bus in for the events
         //    that.renderingHandler.start();
     });
 
     this.channel.on("mouseMove", function(data, envelope) {
-      //  if(that.renderingHandler) // hack until i can be bothered add bus in for the events
+     // hack until i can be bothered add bus in for the events
        //     that.renderingHandler.start();
     });
 
@@ -84,7 +83,6 @@ ForceDirect.prototype = {
 
         this.graph = null;
         this.treeLinker = null;
-        this.renderingHandler = null;
         this.layout = null;
 
 
@@ -122,10 +120,7 @@ ForceDirect.prototype = {
             if (Number(that.settings.year) > layoutList.topYear) clearInterval(that.yearTimer);
         }
 
-      //  that.renderingHandler = new RenderingHandler(that.channel, layoutList, new RenderLib(graph, ctx));
-
-       // that.renderingHandler.start();
-
+ 
         return this;
     }
 

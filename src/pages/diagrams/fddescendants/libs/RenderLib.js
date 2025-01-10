@@ -3,28 +3,30 @@ import {Utils} from "./Utils.js";
 
 export class RenderLib{
 
-  constructor(graph){
+  constructor(graph,settings){
     this.graph = graph;
+    this.settings = settings;
   
   }
   clear(ctx, cameraView) {
       ctx.clearRect(0, 0, cameraView.graph_width, cameraView.graph_height);
   }
 
-  drawEdges(ctx,map, edge, p1, p2) {
+  drawEdges(ctx,dims, edge, p1, p2) {
 
-      var _utils = new Utils(map.currentBB, map.graph_width, map.graph_height);
+      var _utils = new Utils(dims.currentBB, dims.graph_width, dims.graph_height, this.settings.colourScheme);
+      let colourScheme =  this.settings.colourScheme;
 
-      var x1 = map.mapOffset(_utils.toScreen(p1)).x;
-      var y1 = map.mapOffset(_utils.toScreen(p1)).y;
+      var x1 = dims.mapOffset(_utils.toScreen(p1)).x;
+      var y1 = dims.mapOffset(_utils.toScreen(p1)).y;
 
-      var x2 = map.mapOffset(_utils.toScreen(p2)).x;
-      var y2 = map.mapOffset(_utils.toScreen(p2)).y;
+      var x2 = dims.mapOffset(_utils.toScreen(p2)).x;
+      var y2 = dims.mapOffset(_utils.toScreen(p2)).y;
 
 
-      if (!map.validToDraw(x1, y1) && !map.validToDraw(x2, y2)) return;
+      if (!dims.validToDraw(x1, y1) && !dims.validToDraw(x2, y2)) return;
 
-      if (edge.data.type == 'data' && map.colourScheme.infoLineColour == map.colourScheme.mapbackgroundColour) {
+      if (edge.data.type == 'data' && colourScheme.infoLineColour == colourScheme.mapbackgroundColour) {
           return;
       }
 
@@ -54,8 +56,8 @@ export class RenderLib{
       var offset = normal.multiply(-((total - 1) * spacing) / 2.0 + (n * spacing));
 
 
-      var s1 = map.mapOffset(_utils.toScreen(p1).add(offset));
-      var s2 = map.mapOffset(_utils.toScreen(p2).add(offset));
+      var s1 = dims.mapOffset(_utils.toScreen(p1).add(offset));
+      var s2 = dims.mapOffset(_utils.toScreen(p2).add(offset));
 
 
       var boxWidth = edge.target.getWidth(ctx);
@@ -79,10 +81,10 @@ export class RenderLib{
 
       var stroke = '';
       if (edge.data.type == 'data') {
-          stroke = map.colourScheme.infoLineColour;
+          stroke = colourScheme.infoLineColour;
       } else {
           var averagedesc = (edge.source.data.RecordLink.currentDescendantCount + edge.target.data.RecordLink.currentDescendantCount) / 2;
-          stroke = _utils.getLevel(300, averagedesc, map.colourScheme.normalLineGradient);
+          stroke = _utils.getLevel(300, averagedesc, colourScheme.normalLineGradient);
       }
 
       ctx.strokeStyle = stroke;
@@ -114,30 +116,27 @@ export class RenderLib{
 
   }
 
-  drawNodes(ctx,layout, map, node, p) {
-      var _utils = new Utils(map.currentBB, map.graph_width, map.graph_height);
+  drawNodes(ctx,layout, dims, node, p) {
+      var _utils = new Utils(dims.currentBB, dims.graph_width, dims.graph_height, this.settings.colourScheme);
 
-      var x1 = map.mapOffset(_utils.toScreen(p)).x;
-      var y1 = map.mapOffset(_utils.toScreen(p)).y;
+      var x1 = dims.mapOffset(_utils.toScreen(p)).x;
+      var y1 = dims.mapOffset(_utils.toScreen(p)).y;
 
-      if (!map.validToDraw(x1, y1)) return;
+      if (!dims.validToDraw(x1, y1)) return;
 
-      var s = map.mapOffset(_utils.toScreen(p));
+      var s = dims.mapOffset(_utils.toScreen(p));
 
       var distance = 0;
 
-      if (map.layout.parentNode != undefined && map.layout.parentLayout != undefined) {
-          // get parent location
-          var _tp = new Utils(map.layout.parentLayout._cameraView.currentBB,
-              map.layout.parentLayout._cameraView.graph_width, map.layout.parentLayout._cameraView.graph_height);
-
-          var pV = map.layout.parentLayout.nodePoints[map.layout.parentNode.id];
-          pV = map.layout.parentLayout._cameraView.mapOffset(_tp.toScreen(pV.p));
-
-          //  s.distance(pV)
-          distance = s.distance(pV);
-      }
-
+      if (layout.parentNode && layout.parentLayout) {
+        const parentDims = layout.parentLayout.drawing.dims;
+        const utils = new Utils(parentDims.currentBB, parentDims.graph_width, parentDims.graph_height);
+    
+        let parentNodePoint = layout.parentLayout.nodePoints[layout.parentNode.id];
+        parentNodePoint = parentDims.mapOffset(utils.toScreen(parentNodePoint.p));
+    
+        distance = s.distance(parentNodePoint);
+    }
 
       ctx.save();
       //2 = nearest
@@ -146,32 +145,32 @@ export class RenderLib{
 
       if (node.data.type != undefined && node.data.type == 'infonode') {
           if (node.data.label != '' && distance < 150) {
-              _utils.drawText(map, ctx, s.x, s.y + 20, node.data.label, node.data.type, selectionId);
-              _utils.star(map, ctx, s.x, s.y, 5, 5, 0.4, false, node.data.type, selectionId);
+              _utils.drawText(dims, ctx, s.x, s.y + 20, node.data.label, node.data.type, selectionId);
+              _utils.star(dims, ctx, s.x, s.y, 5, 5, 0.4, false, node.data.type, selectionId);
           }
 
       } else {
 
-          if (map.layout.nodePoints[node.id].m==1)
-              _utils.star(map, ctx, s.x, s.y, 12, 5, 0.4, false, node.data.type, selectionId);
+          if (layout.nodePoints[node.id].m==1)
+              _utils.star(dims, ctx, s.x, s.y, 12, 5, 0.4, false, node.data.type, selectionId);
           else
-              _utils.star(map, ctx, s.x, s.y, 12, 3, 0.4, false, node.data.type, selectionId);
+              _utils.star(dims, ctx, s.x, s.y, 12, 3, 0.4, false, node.data.type, selectionId);
 
 
           if (node.data.RecordLink != undefined) {
               var name = node.data.RecordLink.Name;
-              var m = map.layout.nodePoints[node.id].m;
+              var m = layout.nodePoints[node.id].m;
 
               if (node.data.RecordLink.DescendentCount > 10 && _utils.validDisplayPeriod(node.data.RecordLink.DOB, this.year, 20)) {
-                  _utils.drawText(map, ctx, s.x, s.y, name + ' ' + node.data.RecordLink.currentDescendantCount, node.data.type, selectionId);
+                  _utils.drawText(dims, ctx, s.x, s.y, name + ' ' + node.data.RecordLink.currentDescendantCount, node.data.type, selectionId);
               }
 
               if (selectionId == 3) {
-                  _utils.drawText(map, ctx, s.x, s.y, name + ' ' + m , node.data.type, selectionId);
+                  _utils.drawText(dims, ctx, s.x, s.y, name + ' ' + m , node.data.type, selectionId);
               }
 
               if (selectionId == 2) {
-                  _utils.drawText(map, ctx, s.x, s.y, name + ' ' + m, node.data.type, selectionId);
+                  _utils.drawText(dims, ctx, s.x, s.y, name + ' ' + m, node.data.type, selectionId);
 
                   var bstring = node.data.RecordLink.DOB + ' ' + node.data.RecordLink.BirthLocation;
 
@@ -180,7 +179,7 @@ export class RenderLib{
                   else
                       bstring = 'Born: ' + bstring;
 
-                  _utils.drawText(map, ctx, s.x, s.y + 20, bstring, node.data.type, selectionId);
+                  _utils.drawText(dims, ctx, s.x, s.y + 20, bstring, node.data.type, selectionId);
 
 
                   var dstring = node.data.RecordLink.DOD + ' ' + node.data.RecordLink.DeathLocation;
@@ -190,12 +189,12 @@ export class RenderLib{
                   else
                       dstring = 'Death: ' + dstring;
 
-                  _utils.drawText(map, ctx, s.x, s.y + 40, dstring, node.data.type, selectionId);
+                  _utils.drawText(dims, ctx, s.x, s.y + 40, dstring, node.data.type, selectionId);
                   //that.layout.nodePoints[node.id].m
 
                   //Occupation
                   if (node.data.RecordLink.Occupation != '')
-                      _utils.drawText(map, ctx, s.x, s.y + 60, node.data.RecordLink.Occupation, node.data.type, selectionId);
+                      _utils.drawText(dims, ctx, s.x, s.y + 60, node.data.RecordLink.Occupation, node.data.type, selectionId);
 
 
                  // _utils.drawText(map, that.ctx, s.x, s.y + 40, 'mass : ' + that.layout.nodePoints[node.id].m, node.data.type, selectionId);
