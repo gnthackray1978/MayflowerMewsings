@@ -1,5 +1,7 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
+import Typography from '@mui/material/Typography';
+import Link from '@mui/material/Link';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid'
 import Box from '@mui/material/Box';
@@ -9,28 +11,17 @@ import { Canvas } from '../../pages/diagrams/canvas/Canvas';
 import {LightsHandler} from './Lights.js';
 
 function MainPageHeader(props) {
-  const { post } = props;  
-  const poster = "https://gnthackray.co.uk/images/backgrounds/3.jpeg"
+  const { post ,featuredPosts} = props;  
+  const poster = "https://gnthackray.co.uk/images/backgrounds/large.jpg"
 
 
 
   const graph = new LightsHandler();
 
   const draw = (ctx, graph) => { 
-    // ctx.beginPath();
-    // ctx.arc(95, 50, 40, 0, 2 * Math.PI);
-    // ctx.fillStyle = "red";
-    // ctx.fill();
-    // ctx.lineWidth = 4;
-    // ctx.strokeStyle = "blue";
-    // ctx.stroke();
-      let canvas = document.getElementById('canvas');
-    // let start;
-    // var ctx;
+      let canvas = document.getElementById('canvas');    
       let image = document.getElementById("treesImg");
-
       graph.render(ctx,canvas,image);
-
   }
 
   return (
@@ -67,7 +58,7 @@ function MainPageHeader(props) {
                   "zIndex": "100"
                 }}
               ></Box>
-              <img id = "treesImg" src={poster} height={window.innerHeight} width='100' />
+              <img id = "treesImg" src={poster} width={"100%"} />
               <Canvas id = "canvas" graph ={graph} draw={draw} style ={
                 {
                   top:"0px", 
@@ -77,7 +68,10 @@ function MainPageHeader(props) {
                   width: "100%"
                 }                
                 }></Canvas>
+                
+ 
             </div>
+        
 
             <Markdown style ={{
                 "position": "absolute",
@@ -89,8 +83,36 @@ function MainPageHeader(props) {
             }} className="markdown" key={post.text.substring(0, 40)}>
                 {post.text}
             </Markdown>
+
+          
           </Box>
         </Grid>
+
+        <div style ={{
+                "position": "absolute",
+                "top": "600",
+                "left": "0",
+                "width": "95%",
+                "marginLeft": "25px",
+                "marginTop": "25px",
+            }}>
+              <Grid container>
+                {featuredPosts.map((post) => (
+                  <Grid item xs={12} md={6}>   
+                    <div style ={{"marginLeft": "25px",  "marginTop": "25px"}} >
+                        <Markdown className="markdown" key={post.text.substring(0, 40)}>
+                          {post.text.length <= 200 ? post.text : post.text.substring(0, 200)}
+                        </Markdown>
+                        <Typography variant="subtitle1" color="primary">           
+                          <Link display="block" variant="body1" href={post.link} key={post.title} >
+                            Continue reading...
+                          </Link>
+                        </Typography>
+                    </div>                     
+                  </Grid>                          
+              ))}
+              </Grid>
+            </div>
       </Grid>
     </Paper>
   );

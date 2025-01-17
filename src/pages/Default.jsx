@@ -85,23 +85,13 @@ function Default(props) {
                                                "backgroundColor": "black",
                                                                                               
             }}>
-              
                 <div style={{"position": "absolute",
                              "top": "0",
                              "left": "0",
                              "maxWidth": "99.9%",
                 }}>
-                  <MainPageHeader post={mainFeaturedPost} />
-                
-                  <Grid container spacing={4} sx={{"padding": "15px",
-                                                  "backgroundColor": "black",
-                  }}>
-                    {featuredPosts.map((post) => (
-                      <FeaturedPost key={post.title} post={post} />
-                    ))}
-                  </Grid>
+                  <MainPageHeader post={mainFeaturedPost} featuredPosts={featuredPosts}/>
                 </div>
-              
             </Container>          
         </div>
     );
