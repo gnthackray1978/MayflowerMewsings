@@ -4,6 +4,7 @@
 // const image = document.getElementById("treesImg");
 // ctx = canvas.getContext('2d');
 
+
 class Light {
     constructor (container) {
        
@@ -76,8 +77,8 @@ export class LightsHandler {
         this.LIGHT_XSPEED_RANGE = [-0.2, 0.2];
         this.LIGHT_YSPEED_RANGE = [-0.1, 0.1];
         this.LIGHT_SIZE_RANGE = [3, 6];
-        this.LIGHT_LIFESPAN_RANGE = [1000, 2500];    
-        this.lights = [];
+        this.LIGHT_LIFESPAN_RANGE = [1000, 2500];          
+        this.lights =[];
     }
     
     IsValid () {
@@ -102,7 +103,9 @@ export class LightsHandler {
 
         let widthHack = (window.innerWidth - container.clientWidth)/2;
 
-        this.ctx.drawImage(this.image,0-widthHack,0,window.innerWidth, window.innerHeight);
+        let heightHack = (window.innerWidth / 100)*115;
+       // console.log('widthHack: ' + widthHack + ' heightHack: ' + heightHack);
+        this.ctx.drawImage(this.image,0-widthHack,0,window.innerWidth, heightHack);
         this.ctx.fill();
         
     }
