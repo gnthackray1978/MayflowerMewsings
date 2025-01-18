@@ -72,7 +72,7 @@ FDLayout.prototype = {
                         }
                         else
                         {
-                            console.log('father edge is not valid: ' + person.RecordLink.FirstName + ' ' + person.RecordLink.LastName);
+                     //       console.log('father edge is not valid: ' + person.RecordLink.FirstName + ' ' + person.RecordLink.LastName);
                         }
                 });
             }
@@ -84,11 +84,11 @@ FDLayout.prototype = {
                 p.nodeLink.data.RecordLink.currentDescendantCount = this.dataSource.DescendantCount(genIdx, personIdx);
             });
         });
-        
+
         this.drawing.dims.currentBB = this.getBoundingBox(); // fix this!!!
         
         this.runCount = 0;
-        console.log('graph size: ' + mygraph.nodeCount() + ' nodes, ' + mygraph.edgeCount() + ' edges');
+     //   console.log('graph size: ' + mygraph.nodeCount() + ' nodes, ' + mygraph.edgeCount() + ' edges');
     },
 
     hasFinished: function () {

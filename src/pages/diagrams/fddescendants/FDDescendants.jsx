@@ -18,6 +18,7 @@ import {ForceDirect} from "../fddescendants/libs/ForceDirect.js";
 import {Graph} from "../fddescendants/libs/Graph.js";
 import {Drawing} from "../fddescendants/libs/Drawing.js";
 import {RenderLib } from '../fddescendants/libs/RenderLib.js';
+import {setTitle} from "../../../features/uxActions.jsx";
 
 import mitt from 'mitt';
 
@@ -61,7 +62,7 @@ function makeData(data, schema, subSchema){
 
 function FDDescendants(props) {
  
-  console.log('FDDescendants');
+
   const {selectedTreePerson, setTitle} = props;
 
   let params2 = getParams({persons : selectedTreePerson});
@@ -127,15 +128,12 @@ function FDDescendants(props) {
     // origindescription because we now can have multiple trees.
   });
 
-  state = {
-    ... state,
-   
-    title : 'Map View'
-  };
+  useEffect(() => {
+    setTitle(state.data?.title ?? 'Descendant View');
+  }, [state.loading]);
 
   let data = transformData(state.data,populateDescendantObjects);
  
-
   let Body = ()=>{return(<div>loading</div>)};
 
   if(data.newRows && data.newRows.length >0){
@@ -184,7 +182,9 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return { };
+  return {    
+      setTitle: (title) => dispatch(setTitle(title))
+     };
 };
 
 
