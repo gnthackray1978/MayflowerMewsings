@@ -137,46 +137,37 @@ FDLayout.prototype = {
         });
     },
     point: function (node) {
-        if (typeof (this.nodePoints[node.id]) === 'undefined') {
-            var mass = typeof (node.data.mass) !== 'undefined' ? node.data.mass : 1.0;
+
+        if (!this.nodePoints[node.id]) {
+            console.log('make new point');
+            const mass = node.data.mass || 1.0;
             this.nodePoints[node.id] = new Point(Vector.random(), mass);
         }
-
+        
         return this.nodePoints[node.id];
     },
     spring: function (edge) {
-        if (typeof (this.edgeSprings[edge.id]) === 'undefined') {
-            var length = typeof (edge.data.length) !== 'undefined' ? edge.data.length : 1.0;
-
-            var existingSpring = false;
-
-            var from = this.graph.getEdges(edge.source, edge.target);
-            from.forEach(function (e) {
-                if (existingSpring === false && typeof (this.edgeSprings[e.id]) !== 'undefined') {
-                    existingSpring = this.edgeSprings[e.id];
-                }
-            }, this);
-
-            if (existingSpring !== false) {
+        if (!this.edgeSprings[edge.id]) {
+            const length = edge.data.length ? edge.data.length : 1.0;
+        
+            const findExistingSpring = (edges) => {
+                return edges.find(e => this.edgeSprings[e.id]) || false;
+            };
+        
+            let existingSpring = findExistingSpring(this.graph.getEdges(edge.source, edge.target));
+            if (!existingSpring) {
+                existingSpring = findExistingSpring(this.graph.getEdges(edge.target, edge.source));
+            }
+        
+            if (existingSpring) {
                 return new Spring(existingSpring.point1, existingSpring.point2, 0.0, 0.0);
             }
-
-            var to = this.graph.getEdges(edge.target, edge.source);
-            from.forEach(function (e) {
-                if (existingSpring === false && typeof (this.edgeSprings[e.id]) !== 'undefined') {
-                    existingSpring = this.edgeSprings[e.id];
-                }
-            }, this);
-
-            if (existingSpring !== false) {
-                return new Spring(existingSpring.point2, existingSpring.point1, 0.0, 0.0);
-            }
-
+        
             this.edgeSprings[edge.id] = new Spring(
-            this.point(edge.source), this.point(edge.target), length, this.stiffness
+                this.point(edge.source), this.point(edge.target), length, this.stiffness
             );
         }
-
+        
         return this.edgeSprings[edge.id];
     },
     // callback should accept two arguments: Node, Point
@@ -516,7 +507,7 @@ FDLayout.prototype = {
     getBoundingBox : function () {
         var bottomleft = new Vector(-2, -2);
         var topright = new Vector(2, 2);
-
+     // console.log('getBoundingBox');
         this.eachNode(function (n, point) {
             if (point.p.x < bottomleft.x) {
                 bottomleft.x = point.p.x;
