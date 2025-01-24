@@ -47,118 +47,53 @@ const DiagramToolbar = (props) => {
 
   return (
     <div >      
-      <Dialog disableEnforceFocus
-              style={{ pointerEvents: 'none' }}
-              PaperProps={{ style: { pointerEvents: 'auto', width : '115px', height:'190px' } }}
-              open={showDiagramControls}
-              PaperComponent={PaperComponent}
-              aria-labelledby="draggable-dialog-title"
-              BackdropProps={{style: {opacity: '0'}}} >
-        <DialogTitle style={{ cursor: 'move', padding :0 }} id="draggable-dialog-title">
-          <Button autoFocus onClick={handleClose}  style={{ marginLeft :40 }}>
-            Close
-          </Button>
+      <Dialog
+        disableEnforceFocus
+        style={{ pointerEvents: 'none' }}
+        PaperProps={{ style: { pointerEvents: 'auto', width: '115px', height: '190px' } }}
+        open={showDiagramControls}
+        PaperComponent={PaperComponent}
+        aria-labelledby="draggable-dialog-title"
+        BackdropProps={{ style: { opacity: '0' } }}
+    >
+        <DialogTitle style={{ cursor: 'move', padding: 0 }} id="draggable-dialog-title">
+            <Button autoFocus onClick={handleClose} style={{ marginLeft: 40 }}>
+                Close
+            </Button>
         </DialogTitle>
         <DialogContent>
-         
-           <IconButton
-             color="inherit"
-             onMouseDown={e => {
-               graph.movementy = -1;
-               e.stopPropagation();
-             }
-             }
-             onMouseUp={e => {
-               graph.movementy = 0;
-               e.stopPropagation();
-             }
-             }
-             style={{ position :'absolute', left : '32px', top : '35px' }}
-             aria-label="Menu"
-             onClick= {()=>{}}
-             size="large"><ArrowUpward/>
-           </IconButton>
-         
-
+          {[
+            { icon: <ArrowUpward />, action: () => graph.SetMovementY(-1), reset: () => graph.SetMovementY(0), style: { left: '32px', top: '35px' } },
+            { icon: <ArrowBack />, action: () => graph.SetMovementX(-1), reset: () => graph.SetMovementX(0), style: { left: '0px', top: '65px' } },
+            { icon: <ArrowForward />, action: () => graph.SetMovementX(1), reset: () => graph.SetMovementX(0), style: { left: '65px', top: '65px' } },
+            { icon: <ArrowDownward />, action: () => graph.SetMovementY(1), reset: () => graph.SetMovementY(0), style: { left: '32px', top: '100px' } },
+            { icon: <AddCircleOutline />, action: () => graph.ZoomIn(1), reset: () => graph.ZoomIn(0), style: { left: '34px', top: '135px' } },
+            { icon: <RemoveCircleOutline />, action: () => graph.ZoomOut(-1), reset: () => graph.ZoomOut(0), style: { left: '65px', top: '135px' } },
+          ].map((button, index) => (
           <IconButton
+            key={index}
             color="inherit"
-            onMouseDown={e => {
-              graph.movementx = -1 ;
-              e.stopPropagation();
-            }
-            }
-            onMouseUp={e => {
-              graph.movementx = 0;
-              e.stopPropagation();
-            }
-            }
-            style={{ position :'absolute', left : '0px', top : '65px' }}
+            onMouseDown={
+              e => {
+                button.action();
+                e.stopPropagation();
+              }}
+            onMouseUp={              
+                e => {
+                button.reset();
+                e.stopPropagation();
+              }}               
+            style={{ position: 'absolute', ...button.style }}
             aria-label="Menu"
-            onClick= {()=>{}}
-            size="large"><ArrowBack/>
+            size="large"
+            >
+            {button.icon}
           </IconButton>
-      
-          <IconButton
-            color="inherit"
-            onMouseDown={e => {
-              graph.movementx = 1 ;
-              e.stopPropagation();
-            }
-            }
-            onMouseUp={e => {
-              graph.movementx = 0;
-              e.stopPropagation();
-            }
-            }
-            style={{ position :'absolute', left : '65px', top : '65px' }}
-            aria-label="Menu"
-            onClick= {()=>{}}
-            size="large"><ArrowForward/></IconButton>
-          
-          <IconButton
-            color="inherit"
-            onMouseDown={e => {
-             graph.movementy = 1;
-             e.stopPropagation();
-           }
-           }
-            onMouseUp={e => {
-              graph.movementy = 0;
-              e.stopPropagation();
-            }
-            }
-            style={{ position :'absolute', left : '32px', top : '100px' }}
-            aria-label="Menu"
-            onClick= {()=>{}}
-            size="large"><ArrowDownward/></IconButton>
-      
-          <IconButton
-            color="inherit"
-            onMouseDown={e => {
-                graph.ZoomIn();
-                e.stopPropagation();
-              }
-              }
-            style={{ position :'absolute', left : '34px', top : '135px' }}
-            aria-label="Menu"
-            onClick= {()=>{}}
-            size="large"><AddCircleOutline/></IconButton>
-          
-          <IconButton
-            color="inherit"
-            onMouseDown={e => {
-                graph.ZoomOut();
-                e.stopPropagation();
-              }
-              }
-            style={{ position :'absolute', left : '65px', top : '135px' }}
-            aria-label="Menu"
-            onClick= {()=>{}}
-            size="large"><RemoveCircleOutline/></IconButton>
-
+          ))}
         </DialogContent>
+    </Dialog>
        
-      </Dialog>
+      
     </div>
   );
 };

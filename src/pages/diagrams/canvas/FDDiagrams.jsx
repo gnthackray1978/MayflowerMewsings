@@ -17,9 +17,12 @@ function FDDiagrams(props) {
 
       drawing.setTime(timestamp);
 
-     // console.log("timer: ",timeInSeconds);  
-      if(drawing.timeInSeconds > 10){
-     //   console.log("year: ",drawing.currentYear);
+   //   console.log("timer: ",drawing.timeInSeconds);  
+   
+      if(drawing.startYear == drawing.currentYear ||
+         drawing.timeInSeconds > 10){
+
+  //      console.log("year: ",drawing.currentYear);
 
         drawing.TopLayout().populateGraph(drawing.currentYear);
         drawing.currentYear = drawing.currentYear +5;      
@@ -28,7 +31,7 @@ function FDDiagrams(props) {
     
       // stop simulation when energy of the system goes below a threshold
       // change so that it handles all layouts including sublayouts.
-      if(drawing.TopLayout().hasFinished()){
+      if(!drawing.DrawRequired()){
       //  console.log("finished");
         return;
       }

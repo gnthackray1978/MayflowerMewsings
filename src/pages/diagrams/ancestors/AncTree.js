@@ -191,18 +191,19 @@ export function AncTree() {
     this.selectedPersonX = 0;
     this.selectedPersonY = 0;
     this.treeUI;
-
-
-
-    
-
-
-      this.movementx =0;
-      this.movementy =0;
+    this.movementx =0;
+    this.movementy =0;
 }
 
 
 AncTree.prototype = {
+
+    SetMovementX: function (x) {
+        this.movementx = x;
+    },
+    SetMovementY: function (y) {    
+        this.movementy = y;
+    },
 
     CreateWithDefaultValues: function (personId, data) {
          

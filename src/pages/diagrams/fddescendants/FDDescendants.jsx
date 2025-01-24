@@ -175,9 +175,7 @@ function FDDescendants(props) {
 
 const mapStateToProps = state => {
   return { 
-
-    selectedTreePersonData : state.ux.selectedTreePersonData?.personId ?? 0 != 0 ? state.ux.selectedTreePersonData.personId :3217,
-    selectedTreeData : state.ux.selectedTreeData != '' ? state.ux.selectedTreeData : '_34_Kennington'
+    selectedTreePerson : state.ux.selectedTreePerson
   };
 };
 

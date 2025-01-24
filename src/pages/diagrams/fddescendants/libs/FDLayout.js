@@ -172,29 +172,28 @@ FDLayout.prototype = {
     },
     // callback should accept two arguments: Node, Point
     eachNode: function (callback) {
-        var t = this;
-        this.graph.nodes.forEach(function (n) {
-            callback.call(t, n, t.point(n));
+        this.graph.nodes.forEach((n) => {
+            callback(n, this.point(n));
         });
     },
     // callback should accept two arguments: Edge, Spring
     eachEdge: function (callback) {
         var t = this;
-        this.graph.edges.forEach(function (e) {
+        this.graph.edges.forEach( (e) =>{
             callback.call(t, e, t.spring(e));
         });
     },
     // callback should accept one argument: Spring
     eachSpring: function (callback) {
         var t = this;
-        this.graph.edges.forEach(function (e) {
+        this.graph.edges.forEach( (e) =>{
             callback.call(t, t.spring(e));
         });
     },
     // Physics stuff
     applyCoulombsLaw: function () {
-        this.eachNode(function (n1, point1) {
-            this.eachNode(function (n2, point2) {
+        this.eachNode( (n1, point1) =>{
+            this.eachNode( (n2, point2)=> {
                 if (point1 !== point2) {
                     var d = point1.p.subtract(point2.p);
                     var distance = d.magnitude() + 0.1; // avoid massive forces at small distances (and divide by zero)
@@ -208,7 +207,7 @@ FDLayout.prototype = {
         });
     },
     applyHookesLaw: function () {
-        this.eachSpring(function (spring) {
+        this.eachSpring( (spring) => {
             var d = spring.point2.p.subtract(spring.point1.p); // the direction of the spring
             var displacement = spring.length - d.magnitude();
             var direction = d.normalise();
@@ -219,13 +218,13 @@ FDLayout.prototype = {
         });
     },
     attractToCentre: function () {
-        this.eachNode(function (node, point) {
+        this.eachNode( (node, point) =>{
             var direction = point.p.multiply(-1.0);
             point.applyForce(direction.multiply(this.repulsion / 50.0));
         });
     },
     updateVelocity: function (timestep) {        
-        this.eachNode(function (node, point) {
+        this.eachNode( (node, point) =>{
             // Is this, along with updatePosition below, the only places that your
             // integration code exist?
             point.v = point.v.add(point.a.multiply(timestep)).multiply(this.damping);
@@ -233,7 +232,7 @@ FDLayout.prototype = {
         });
     },
     updatePosition: function (timestep) {
-        this.eachNode(function (node, point) {
+        this.eachNode( (node, point) =>{
             // Same question as above; along with updateVelocity, is this all of
             // your integration code?
             point.p = point.p.add(point.v.multiply(timestep));
@@ -242,7 +241,7 @@ FDLayout.prototype = {
     // Calculate the total kinetic energy of the system
     totalEnergy: function (timestep) {
         var energy = 0.0;
-        this.eachNode(function (node, point) {
+        this.eachNode( (node, point) =>{
             var speed = point.v.magnitude();
             energy += 0.5 * point.m * speed * speed;
         });
@@ -356,13 +355,13 @@ FDLayout.prototype = {
         }
 
 
-        if (e.target.id == "up") this.drawing.moving = 'UP';
-        if (e.target.id == "dn") this.drawing.moving = 'DOWN';
-        if (e.target.id == "we") this.drawing.moving = 'WEST';
-        if (e.target.id == "no") this.drawing.moving = 'NORTH';
-        if (e.target.id == "es") this.drawing.moving = 'EAST';
-        if (e.target.id == "so") this.drawing.moving = 'SOUTH';
-        if (e.target.id == "de") this.drawing.moving = 'DEBUG';
+        // if (e.target.id == "up") this.drawing.moving = 'UP';
+        // if (e.target.id == "dn") this.drawing.moving = 'DOWN';
+        // if (e.target.id == "we") this.drawing.moving = 'WEST';
+        // if (e.target.id == "no") this.drawing.moving = 'NORTH';
+        // if (e.target.id == "es") this.drawing.moving = 'EAST';
+        // if (e.target.id == "so") this.drawing.moving = 'SOUTH';
+        // if (e.target.id == "de") this.drawing.moving = 'DEBUG';
 
     },
 
@@ -507,20 +506,12 @@ FDLayout.prototype = {
     getBoundingBox : function () {
         var bottomleft = new Vector(-2, -2);
         var topright = new Vector(2, 2);
-     // console.log('getBoundingBox');
-        this.eachNode(function (n, point) {
-            if (point.p.x < bottomleft.x) {
-                bottomleft.x = point.p.x;
-            }
-            if (point.p.y < bottomleft.y) {
-                bottomleft.y = point.p.y;
-            }
-            if (point.p.x > topright.x) {
-                topright.x = point.p.x;
-            }
-            if (point.p.y > topright.y) {
-                topright.y = point.p.y;
-            }
+
+        this.graph.nodes.map((n) => this.point(n)).forEach((point) => {
+            bottomleft.x = Math.min(bottomleft.x, point.p.x);
+            bottomleft.y = Math.min(bottomleft.y, point.p.y);
+            topright.x = Math.max(topright.x, point.p.x);
+            topright.y = Math.max(topright.y, point.p.y);
         });
 
         var padding = topright.subtract(bottomleft).multiply(0.07); // ~5% padding

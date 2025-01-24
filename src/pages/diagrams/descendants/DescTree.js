@@ -71,21 +71,13 @@ export function DescTree() {
 
     this.bt_buttonLinks = [];
     this.bt_links = [];
-
-  //  this.inLink = false;
-
     this.generations = [];
-  //  this.familiesPerGeneration = [];
     this.familyEdges = [];
     this.marriageEdges = [];
 
     this.centrePoint = 750.0;
     this.centreVerticalPoint = 0.0;
     this.zoomLevel = 0.0;
-    // this.centrePointXOffset = 0.0;
-    // this.centrePointYOffset = 0.0;
-
-
 
     this.original_distanceBetweenBoxs = 0.0;
     this.original_distanceBetweenGens = 0.0;
@@ -108,16 +100,6 @@ export function DescTree() {
     this.halfBoxHeight = 0.0;
     this.boxWidth = 0.0;
     this.boxHeight = 0.0;
-
-
-
-
-
-//    this.initial_mouse_x = 0; //int
-//    this.initial_mouse_y = 0; //int
-
-  //  this.xFromCentre = 0.0;
-  //  this.yFromCentre = 0.0;
 
     this._graphBoundary = new GraphBoundary();
 
@@ -149,11 +131,18 @@ export function DescTree() {
     this.movementx =0;
     this.movementy =0;
 
-  //  this.BaseSetZoom = this.SetZoom;
+ 
 }
 
 
 DescTree.prototype = {
+
+    SetMovementX: function (x) {
+        this.movementx = x;
+    },
+    SetMovementY: function (y) {    
+        this.movementy = y;
+    },
 
     CreateWithDefaultValues: function (personId, data) {
          

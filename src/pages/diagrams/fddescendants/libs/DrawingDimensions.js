@@ -50,7 +50,9 @@ export class DrawingDimensions {
         this.infoDisplayed = [];
 
 
-        this.moving = '';
+        this.movementx = 0;
+        this.movementy = 0;
+        this.zoomVelocity = 0;
     }
  
     SetCentrePoint(param_x, param_y) {
@@ -135,38 +137,42 @@ export class DrawingDimensions {
     }
 
 
-    UpdatePosition (_dir) {
+    UpdateLocation () {
 
         let increment = 2;
 
-        if (_dir == 'SOUTH') {
-            console.log('south');
+        if (this.movementy == -1) {    
+            
             this.centreVerticalPoint -= increment;
+            console.log('movementy:'+ this.centreVerticalPoint);        
         }
-        if (_dir == 'NORTH') {
+        if (this.movementy == 1) {
             this.centreVerticalPoint += increment;
+            console.log('movementy:'+ this.centreVerticalPoint);        
         }
-        if (_dir == 'EAST') {
+        if (this.movementx == -1) {
             this.centrePoint += increment;
+            console.log('movementx:'+ this.centrePoint);        
         }
-        if (_dir == 'WEST') {
-
+        if (this.movementx == 1) {
             this.centrePoint -= increment;
+            console.log('movementx:'+ this.centrePoint);
         }
-        if (_dir == 'UP' || _dir == 'DOWN') {
+
+        if (this.zoomVelocity!==0) {
 
             this.mouse_x = this.bt_screenWidth / 2;
             this.mouse_y = this.bt_screenHeight / 2;
 
             this.GetPercDistances();
 
-            this.mouseXPercLocat = this.dims.percX1;
-            this.mouseYPercLocat = this.dims.percY1;
+            this.mouseXPercLocat = this.percX1;
+            this.mouseYPercLocat = this.percY1;
 
             // zero the centre point
             this.SetCentrePoint(1000000, 1000000);
 
-            if (_dir == 'UP') {
+            if (this.zoomVelocity >0) {
                 this.graph_width += 50;
                 this.graph_height += 50;
             } else {

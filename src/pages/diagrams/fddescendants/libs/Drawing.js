@@ -3,6 +3,15 @@ import {FDLayout} from "./FDLayout.js";
 import {CameraView} from "./CameraView.js";
 import {Graph} from "./Graph.js";
 import {DrawingDimensions} from "./DrawingDimensions.js";
+import { Zoom } from "@mui/material";
+
+// we have a drawing that contains a graph, data source, renderer and control channel
+//graph.ZoomOut();
+//graph.ZoomIn();
+//graph.movementx = 1;
+//graph.movementx = 0;
+//graph.movementy = 1;
+//graph.movementy = 0;
 
 export function Drawing(channel, graph, renderer, settings, dataSource){
     this.graph = graph;    
@@ -18,6 +27,7 @@ export function Drawing(channel, graph, renderer, settings, dataSource){
     this.timer=0;
     this.timeInSeconds = 0;
     this.currentYear = 1950;      
+    this.startYear = 1950;
     this.topYear= this.dataSource.TopYear;
     this.bottomYear =this.dataSource.BottomYear;
     this.currentYear =this.dataSource.BottomYear;
@@ -60,7 +70,21 @@ Drawing.prototype ={
         this.layouts.push({ layout: parentLayout, type: 'parent' });
         this.currentYear = 1950;  
     },
-
+    SetMovementX: function (x) {
+        //console.log('movement x: ' + x);
+        this.dims.movementx = x;
+    },
+    SetMovementY: function (y) {    
+        this.dims.movementy = y;
+    },
+    // done like this to make compatible with other diagrams.
+    // needs changing in the future.
+    ZoomOut: function (z) {
+        this.dims.zoomVelocity = z;
+    },
+    ZoomIn: function (z) {
+        this.dims.zoomVelocity = z;
+    },
     
     AddLayout : function(parentLayout, entry){
         // adds a node to a parent layout
@@ -162,15 +186,25 @@ Drawing.prototype ={
             }
         }
 
-        that.layouts.forEach(function(layout, index, ar) {
-            // if (layout.layout.graph.eventListeners.length == 0)
-            //     layout.layout.graph.addGraphListener(that);
-            that.adjustPosition(layout.layout);
-            //layout.layout._cameraView.adjustPosition();
+        that.layouts.forEach(function(layout, index, ar) {            
+            that.adjustPosition(layout.layout);            
         });
 
 
 
+    },
+
+    DrawRequired : function(){  
+
+        if(this.dims.zoomVelocity!==0 || this.dims.movementx!==0 || this.dims.movementy!==0){
+            return true;
+        }
+
+        if(this.TopLayout().hasFinished()){         
+            return false;
+        }
+
+        return true;
     },
 
     TopLayout: function(){
@@ -182,10 +216,8 @@ Drawing.prototype ={
     },
    
     adjustPosition: function (layout) {
-
-
-
         if (layout.parentNode == undefined) {
+           // console.log('adjusting position undefined parent');
             this.dims.targetBB = layout.getBoundingBox();
 
             // current gets 20% closer to target every iteration
@@ -196,9 +228,11 @@ Drawing.prototype ={
                 this.dims.SetCentrePoint(_point[0], _point[1]);
             }
 
-            this.dims.UpdatePosition(this.dims.moving);
+            this.dims.UpdateLocation();
         }
         else {
+          //  console.log('adjusting position undefined parent');
+
             if (layout.parentNode && layout.firstNode) {
                 let firstNodePoint = layout.nodePoints[layout.firstNode.id].p;
 
