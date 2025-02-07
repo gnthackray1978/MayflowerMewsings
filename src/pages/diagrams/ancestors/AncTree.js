@@ -1,9 +1,13 @@
 
-import {getDescendants,getParentGeneration, CreateChildPositionFromParent} from '../drawinglib/graphDiagFuncs.jsx';
+import { AncestorGraph } from './AncestorGraph.js';
 
+var stackSize =0;
 
 export function Layout(){
 
+    //really this is graph state and needs to be in the graph class
+
+    //layout class needs to contain methods that alter the state
     this.initial_layout_state = {
         distanceBetweenBoxs : 0.0,
         distanceBetweenGens : 0.0,
@@ -63,48 +67,26 @@ Layout.prototype = {
 
     },
 
-    changeGenScale:function (nodes, genidx, personIdx, percentageLess ) {
+    changeGenScale:function (nodes, node, percentageLess ) {
 
-                
-            var adjustedBoxHeight = this.boxHeight;
-            var adjustedDistanceApart = 0.0;
-            var adjustedBoxWidth = this.boxWidth;
+        const genidx = node.GenerationIdx;
+        const personIdx = node.Index;
+        let adjustedBoxHeight = this.boxHeight;
+        let adjustedDistanceApart = 0.0;
+        let adjustedBoxWidth = this.boxWidth;
 
-            var childIdx = nodes[genidx][personIdx].ChildIdx;
+        const childIdx = nodes[genidx][personIdx].ChildIdx;
 
-            if (genidx > 0) {
-                adjustedBoxHeight = this.boxHeight - ((this.boxHeight / 100) * percentageLess);
-                var childBoxWidth = (nodes[genidx - 1][childIdx].X2 - nodes[genidx - 1][childIdx].X1);
-                adjustedDistanceApart = this.distanceBetweenBoxs - ((this.distanceBetweenBoxs / 100) * percentageLess);
-                adjustedBoxWidth = childBoxWidth - ((childBoxWidth / 100) * percentageLess);               
-            } 
+        if (genidx > 0) {
+            adjustedBoxHeight = this.boxHeight * (1 - percentageLess / 100);
+            const childBoxWidth = nodes[genidx - 1][childIdx].X2 - nodes[genidx - 1][childIdx].X1;
+            adjustedDistanceApart = this.distanceBetweenBoxs * (1 - percentageLess / 100);
+            adjustedBoxWidth = childBoxWidth * (1 - percentageLess / 100);
+        }
 
-
-
-            if (this.adjustedDistances.length > genidx) {
-                this.adjustedDistances[genidx] = adjustedDistanceApart;
-            }
-            else {
-                this.adjustedDistances[this.adjustedDistances.length] = adjustedDistanceApart;
-            }
-
-            if (this.adjustedBoxWidths.length > genidx) {
-                this.adjustedBoxWidths[genidx] = adjustedBoxWidth;
-            }
-            else {
-                this.adjustedBoxWidths.push(adjustedBoxWidth);
-            }
-
-
-            if (this.adjustedBoxHeights.length > genidx) {
-                this.adjustedBoxHeights[genidx] = adjustedBoxHeight;
-            }
-            else {
-                this.adjustedBoxHeights.push(adjustedBoxHeight);
-            }
-           
-        
-
+        this.adjustedDistances[genidx] = adjustedDistanceApart;
+        this.adjustedBoxWidths[genidx] = adjustedBoxWidth;
+        this.adjustedBoxHeights[genidx] = adjustedBoxHeight;
     },
 
     init: function(dist_bet_box,
@@ -139,8 +121,6 @@ Layout.prototype = {
     }
 }
 
-
-
 export function AncTree() {
     console.log('anctree constructed');
     this._qryString = '';
@@ -152,7 +132,7 @@ export function AncTree() {
     this.bt_links = [];
 
     this.generations = [];
-    this.familySpanLines = [];
+    this.edges = [];
     this.childlessMarriages = [];
 
     this.centrePoint = 750.0;
@@ -193,6 +173,7 @@ export function AncTree() {
     this.treeUI;
     this.movementx =0;
     this.movementy =0;
+    this.ancGraph = new AncestorGraph([]);
 }
 
 
@@ -225,7 +206,7 @@ AncTree.prototype = {
       //    var _zoomLevel = 100;
       //    var _xpos = 750.0;
       //    var _ypos = 100.0;
-      
+      this.ancGraph = new AncestorGraph(data);
       this.generations = data;
  
       this.SetCentrePoint(0, 0);
@@ -274,26 +255,27 @@ AncTree.prototype = {
                             top_span); 
     },
 
+    //created
     _GetTreePerson: function (graph, personId) {
 
 
-    var _genidx = 0;
-    var _personIdx = 0;
+        var _genidx = 0;
+        var _personIdx = 0;
 
-    while (_genidx < graph.length) {
-    _personIdx = 0;
+        while (_genidx < graph.length) {
+            _personIdx = 0;
 
-    while (_personIdx < graph[_genidx].length) {
+            while (_personIdx < graph[_genidx].length) {
 
-    if (graph[_genidx][_personIdx].PersonId == personId) {
-    return graph[_genidx][_personIdx];
-    }
-    _personIdx++;
-    }
-    _genidx++;
-    }
+                if (graph[_genidx][_personIdx].PersonId == personId) {
+                    return graph[_genidx][_personIdx];
+                }
+                _personIdx++;
+            }
+        _genidx++;
+        }
 
-    return null;
+        return null;
     },
 
     SetVisibility: function (parent, isDisplay) {
@@ -441,26 +423,7 @@ AncTree.prototype = {
         }
 
     },
-    GetChildDisplayStatus: function (person) {
-
-        var isDisplayed = true;
-
-        if (this.generations.length > person.GenerationIdx) {
-            var _genidx = 0;
-            while (_genidx < this.generations[person.GenerationIdx].length) {
-
-                if (this.generations[person.GenerationIdx][_genidx].PersonId == person.ChildLst[0]) {
-                    var _person = this.generations[person.GenerationIdx][_genidx];
-                    isDisplayed = _person.IsDisplayed;
-                    break;
-                }
-
-                _genidx++;
-            }
-        }
-
-        return isDisplayed;
-    },
+  
 
 // move this up to the derived classes
 
@@ -593,40 +556,7 @@ AncTree.prototype = {
 
         return _retVal;
     },
-    CalcAreaLevel: function (area) {
-        var _returnVal = 0;
-
-        if (area > 0 && area < 1000) {
-            _returnVal = 1;
-        }
-        else if (area >= 1000 && area < 2500) {
-            _returnVal = 2;
-        }
-        else if (area >= 2500 && area <= 5000) {
-            _returnVal = 3;
-        }
-        else if (area > 5000 && area <= 10000) {
-            _returnVal = 4;
-        }
-        else if (area > 10000 && area <= 15000) {
-            _returnVal = 5;
-        }
-        else if (area > 15000 && area <= 20000) {
-            _returnVal = 6;
-        }
-        else if (area > 20000) {
-            _returnVal = 7;
-        }
-
-        return _returnVal;
-    },
-    CalcTPZoom: function (genidx, personIdx) {
-        var _tp = this.generations[genidx][personIdx];
-
-        var _boxarea = (_tp.X2 - _tp.X1) * (_tp.Y2 - _tp.Y1);
-
-        _tp.zoom = this.CalcAreaLevel(_boxarea);
-    },
+   
     RelocateToSelectedPerson: function () {
 
 
@@ -797,37 +727,20 @@ AncTree.prototype = {
                 console.log(err);
             }
 
-
-           var _genidx = 0;
-           var _personIdx = 0;
-
-
-          // var treeUI = new TreeUI(this.bt_screenWidth, this.bt_screenHeight, this.layout.boxWidth, this.layout.boxHeight,1,null);
-     //      this.treeUI.UpdateUI(this.bt_screenWidth, this.bt_screenHeight, this.layout.boxWidth, this.layout.boxHeight);
-
             try
             {
 
+                this.bt_links = [];
 
-               this.bt_links = [];
-
-               while (_genidx < this.generations.length) {
-                   _personIdx = 0;
-
-                   while (_personIdx < this.generations[_genidx].length) {
-
-                       var _person = this.generations[_genidx][_personIdx];
-
-                       var personLink = this.treeUI.DrawPerson(_person,
-                            this.bt_screenWidth, this.bt_screenHeight, this.sourceId, this.zoomPercentage);
-
-                       if(personLink !== null)
-                        this.bt_links.push(personLink);
-
-                       _personIdx++;
-                   }
-                   _genidx++;
-               }
+                this.generations.forEach((generation, genidx) => {
+                    generation.forEach(person => {
+                        const personLink = this.treeUI.DrawPerson(person, this.bt_screenWidth, this.bt_screenHeight, this.sourceId, this.zoomPercentage);
+                
+                        if (personLink !== null) {
+                            this.bt_links.push(personLink);
+                        }
+                    });
+                });
 
             }
             catch (err) {
@@ -835,26 +748,13 @@ AncTree.prototype = {
                 console.log(err);
             }
 
-
-
-
             try
             {
-               var _fslOuter = 0;
-               var _fslInner = 0;
-               //   var _pointIdx = 0;
-
-
-               while (_fslOuter < this.familySpanLines.length) {
-                   _fslInner = 0;
-                   while (_fslInner < this.familySpanLines[_fslOuter].length) {
-                       this.treeUI.DrawLine(this.bt_screenWidth, this.bt_screenHeight, this.familySpanLines[_fslOuter][_fslInner]);
-                       _fslInner++;
-                   } // end familySpanLines[_fslOuter].length
-
-                   _fslOuter++;
-               } // end this.familySpanLines.length
-
+                this.edges.forEach(edgeGroup => {
+                    edgeGroup.forEach(edge => {
+                        this.treeUI.DrawLine(this.bt_screenWidth, this.bt_screenHeight, edge);
+                    });
+                });
             }
             catch (err) {
                 console.log('Error Drawing Lines');
@@ -867,9 +767,11 @@ AncTree.prototype = {
 
        },
 
+
+
     ComputeLocations :function () {
        // dump(this.generations);
-        var genidx = 0;
+       // var genidx = 0;
         this.drawingX2 = 0.0;
         this.drawingX1 = 0.0;
        
@@ -887,27 +789,9 @@ AncTree.prototype = {
         this.generations[0][0].Y2 = _y + this.layout.boxHeight;
 
 
-        var idx = 0;
-        var pidx = 0;
+        this.edges = this.generations.map(g => g.map(() => []));
 
-        this.familySpanLines = [];
-
-        while (idx < this.generations.length) {
-            this.familySpanLines.push([]);
-            pidx = 0;
-            while (pidx < this.generations[idx].length) {
-                this.familySpanLines[idx].push([]);
-
-                pidx++;
-            }
-
-            idx++;
-        }
-
-
-
-
-        genidx = 0;
+        let genidx = 0;
         while (genidx < this.generations.length) {
 
 
@@ -919,144 +803,64 @@ AncTree.prototype = {
 
             while (personIdx < this.generations[genidx].length) {
 
-                this.layout.changeGenScale(this.generations,genidx,personIdx,percentageLess);
+                let currentNode = this.generations[genidx][personIdx];
 
-                let r = this.GetNewX(this.generations,genidx,
-                    personIdx,this.layout.adjustedDistances[genidx],
-                    this.layout.adjustedBoxWidths[genidx]); // fills newxs
-
-                var overlap = 0.0;
-                var requiredSpace = 0.0;
-                if (personIdx > 0) {
-
-                    if (this.generations[genidx][personIdx - 1].X2 > r.x1) {
-                        overlap = this.generations[genidx][personIdx - 1].X2 - r.x1;
-                        overlap += this.layout.adjustedDistances[genidx];
-                    }
-
-                    var newChildidx = this.generations[genidx][personIdx].ChildIdx;
-                    var oldChildidx = this.generations[genidx][personIdx - 1].ChildIdx;
-                    var countPersonSpaces = newChildidx - oldChildidx;
-
-                    if (countPersonSpaces > 1) {
-
-                        countPersonSpaces--;
-                        //needed space
-                        requiredSpace = (countPersonSpaces * this.layout.adjustedBoxWidths[genidx - 1]) + ((countPersonSpaces + 1) * (this.layout.adjustedDistances[genidx - 1] + 5));
-
-                        var spaceSoFarCreated = (this.generations[genidx - 1][newChildidx].X1 - this.generations[genidx - 1][oldChildidx].X2) + overlap;
-
-                        // we dont have enough space!
-                        if (requiredSpace > spaceSoFarCreated) {
-                            // increase the overlap so enough space if provided
-                            overlap += (requiredSpace - spaceSoFarCreated);
-                        }
-                        else if (overlap === 0) {
-                            overlap = (requiredSpace - spaceSoFarCreated);
-                        }
-
-                    }
-
-                }
-
-
-
-
-                if (overlap > 0) {
-
-                    //console.log('overlaped: ' + this.generations[genidx][personIdx].RecordLink.Name);
-
-                    let moveList =  getDescendants(this.generations, personIdx - 1, genidx);
-
-                     
-                    var listIdx = 0;
-                     
-                    while (listIdx < moveList.length) {
-                        var _treePerson = moveList[listIdx];
-                        var tpPersonIdx = _treePerson.Index;
-
-                        while (tpPersonIdx >= 0) {
-
-                            //      Debug.WriteLine("moving: " + this.generations[_treePerson.generation][tpPersonIdx].name);
-                            //console.log("moving: " + _treePerson.Name + " " + _treePerson.X1 + " " + _treePerson.X2);
-
-                            var _movePerson = this.generations[_treePerson.GenerationIdx][tpPersonIdx];
-
-                            var _prevPerson = null;
-                            var _nextPerson = null;
-
-
-                            if (tpPersonIdx > 0)
-                                _prevPerson = this.generations[_treePerson.GenerationIdx][tpPersonIdx - 1];
-
-                            if ((tpPersonIdx + 1) < this.generations[_treePerson.GenerationIdx].length)
-                                _nextPerson = this.generations[_treePerson.GenerationIdx][tpPersonIdx + 1];
-
-                            
-                            let xRange = {
-                                x1 : 0.0,
-                                x2 : 0.0
-                            };
-
-
-                            if ((_movePerson.FatherIdx == -1 && _movePerson.MotherIdx == -1) || (_movePerson.GenerationIdx == genidx)) {
-                                if (_movePerson.GenerationIdx == genidx) {
-                                    xRange.x1 = _movePerson.X1 - overlap;
-                                    xRange.x2 = _movePerson.X2 - overlap;
-                                }
-                                else {
-
-                                    var parentlessPersonStartX = _movePerson.X1 - overlap; // GetX1ForParentlessPerson(_movePerson.generation, _movePerson.index);
-
-                                    if (parentlessPersonStartX === 0.0) {
-                                        parentlessPersonStartX = 15;
-                                        xRange.x2 = _nextPerson.X1 - parentlessPersonStartX;
-                                        xRange.x1 = xRange.x2 - this.layout.adjustedBoxWidths[_nextPerson.GenerationIdx];
-                                    }
-                                    else {
-                                        xRange.x1 = parentlessPersonStartX;
-                                        xRange.x2 = xRange.x1 + this.layout.adjustedBoxWidths[_nextPerson.GenerationIdx];
-                                    }
-                                }
-
-                            }
-                            else {
-                                this.layout.setBoxWidth(_movePerson);
-                                let parentGeneration = getParentGeneration(this.generations,_movePerson);
-                                xRange = CreateChildPositionFromParent(parentGeneration, _movePerson, this.layout.boxWidth); 
-                            }
-
-              
-
-                            _movePerson.X1 = xRange.x1; // -adjustedDistanceApart;
-                            _movePerson.X2 = xRange.x2; // -adjustedDistanceApart;
-
-                            tpPersonIdx--;
-                        } //end while (tpPersonIdx >= 0)
-
-                        listIdx++;
-                    } 
-
-
-
-
-                }
-
-           
-
+                this.layout.changeGenScale(this.generations,currentNode,percentageLess);
                 
-                this.generations[genidx][personIdx].X1 = r.x1; // _x - adjustedBoxWidth;
-                this.generations[genidx][personIdx].X2 = r.x2; // _x + adjustedBoxWidth;
+                let xEdge = this.GetNewX(this.generations,currentNode,this.layout.adjustedDistances[genidx],
+                    this.layout.adjustedBoxWidths[genidx]); // fills newxs
+                
+                const spacing = this.ancGraph.LastGenerationSpacing(currentNode);
 
+                let overlap = spacing.previousX2 > xEdge.x1 ? 
+                              spacing.previousX2 - xEdge.x1 + this.layout.adjustedDistances[genidx] : 0.0;
+                         
+                if (overlap > 0 || spacing.spacing> 0) {
+                    const requiredSpace = (spacing.nodeCount * this.layout.adjustedBoxWidths[genidx - 1]) +
+                                            ((spacing.nodeCount + 1) * (this.layout.adjustedDistances[genidx - 1] + 5));
+                
+                    // Increase the overlap if we don't have enough space
+                    if (requiredSpace > (spacing.spacing + overlap) || overlap === 0) {
+                        overlap += (requiredSpace - (spacing.spacing + overlap));
+                    }
 
-              
+                }
 
+                if (overlap > 0) {                                      
+                    this.ancGraph.forEachPrevNodeDescendant(currentNode,(n) => {                                              
+                        let xRange = { x1: 0.0, x2: 0.0 };
+                
+                        if ((!n.parentsKnown) || (n.node.GenerationIdx === genidx)) {
+                            if (n.node.GenerationIdx === genidx) {
+                                xRange.x1 = n.node.X1 - overlap;
+                                xRange.x2 = n.node.X2 - overlap;
+                            } else {
+                                let parentlessPersonStartX = n.node.X1 - overlap;
+                
+                                if (parentlessPersonStartX === 0.0) {
+                                    parentlessPersonStartX = 15;
+                                    xRange.x2 = n.next.X1 - parentlessPersonStartX;
+                                    xRange.x1 = xRange.x2 - this.layout.adjustedBoxWidths[n.next.GenerationIdx];
+                                } else {
+                                    xRange.x1 = parentlessPersonStartX;
+                                    xRange.x2 = xRange.x1 + this.layout.adjustedBoxWidths[n.next.GenerationIdx];
+                                }
+                            }
+                        } else {
+                            this.layout.setBoxWidth(n.node);                            
+                            xRange = this.ancGraph.createXAxisFromParents(n.node, this.layout.boxWidth);
+                        }
+                
+                        n.update(xRange);                        
+                    });
+                }
 
-                this.generations[genidx][personIdx].Y1 = _y;
-                this.generations[genidx][personIdx].Y2 = _y + this.layout.adjustedBoxHeights[genidx];
-
-
-                this.CalcTPZoom(genidx, personIdx);
+                currentNode.X1 = xEdge.x1; // _x - adjustedBoxWidth;
+                currentNode.X2 = xEdge.x2; // _x + adjustedBoxWidth;
+                currentNode.Y1 = _y;
+                currentNode.Y2 = _y + this.layout.adjustedBoxHeights[genidx];
+                
+                this.ancGraph.SetZoomLevel(currentNode);
 
                 personIdx++;
             }
@@ -1066,40 +870,20 @@ AncTree.prototype = {
             genidx++;
 
         }
-
-
    
         this.layout.setBoxWidth(this.generations[0][0]);
 
-
-        let parentGeneration = getParentGeneration(this.generations,this.generations[0][0]);
-
-        let result = CreateChildPositionFromParent(parentGeneration, this.generations[0][0], this.layout.boxWidth);
+        let result = this.ancGraph.createXAxisFromParents(this.generations[0][0], this.layout.boxWidth);
 
         this.generations[0][0].X1 = result.x1;
         this.generations[0][0].X2 = result.x2;
 
         this.generations[0][0].IsDisplayed =true;
 
-        genidx = 0;
-
-        this.drawingX1 = this.generations[0][0].X1;
-        this.drawingX2 = this.generations[0][0].X2;
-
-        while (genidx < this.generations.length) {
-            if (this.drawingX1 > this.generations[genidx][0].X1)
-                this.drawingX1 = this.generations[genidx][0].X1;
-
-            if (this.drawingX2 < this.generations[genidx][this.generations[genidx].length - 1].X2)
-                this.drawingX2 = this.generations[genidx][this.generations[genidx].length - 1].X2;
-
-            genidx++;
-        }
-
-        // top of the screen
+        //make new 'bounding box' for the tree
+        this.drawingX1 = Math.min(...this.generations.map(generation => generation[0].X1));
+        this.drawingX2 = Math.max(...this.generations.map(generation => generation[generation.length - 1].X2));
         this.drawingY1 = this.generations[this.generations.length - 1][0].Y2;
-
-        //bottom of the screen
         this.drawingY2 = this.generations[0][0].Y1;
 
         this.drawingHeight = this.generations[0][0].Y1 - this.generations[this.generations.length - 1][0].Y2;
@@ -1110,9 +894,10 @@ AncTree.prototype = {
 
 
 
-        this.CreateConnectionLines();
+        this.CreateEdges();
 
-
+        //stackSize++;
+           //  debugger;
     },       //end compute locations
 
     //run when generation is loaded
@@ -1122,162 +907,88 @@ AncTree.prototype = {
 
     },
 
-    CreateConnectionLines : function () {
+    CreateEdges : function () {
 
-        // this.FamilySpanLines = new List<List<List<TreePoint>>>();
-
-        var middleGeneration = 0.0;
-        var middleXChild = 0.0;
-        var middleParent = 0.0;
-        var middleTopChild = 0.0;
-        var bottomParent = 0.0;
-
-        var parentHeight = 0.0;
-        var distanceBetweenGens = 0.0;
-
-
-        var genidx = 0;
-        while (genidx < this.generations.length) {
-
-            var personIdx = 0;
-
-            if (genidx + 1 >= this.familySpanLines.length) {
-                genidx++;
-                continue;
+        this.generations.forEach((generation, genidx) => {
+            if (genidx + 1 >= this.edges.length) {
+                return;
             }
-
-
-            while (personIdx < this.generations[genidx].length) {
-                var _family0 = this.familySpanLines[genidx][personIdx];
-
-                _family0 = [];
-                           
-                if (this.generations.length <= (genidx + 1) 
-                    || this.generations[genidx][personIdx].Parents.length == 0) {
-                        this.familySpanLines[genidx][personIdx] = _family0;
-                        personIdx++;
-                    continue;
+        
+            generation.forEach((node, personIdx) => {
+                
+        
+                if (node.Parents.length === 0) {
+                    this.edges[genidx][personIdx] = [];
+                    return;
                 }
+        
+                const middleTopChild = node.Y1;
+                const parentHeight = this.ancGraph.NextGenerationHeight(genidx);
+                const bottomParent = node.Parents[0].Y1 + parentHeight;
+                const distanceBetweenGens = this.ancGraph.DistanceToNextGeneration(genidx);
+                const middleXChild = (node.X1 + node.X2) / 2;
+                const middleGeneration = node.Y1 - (distanceBetweenGens / 2) + 10;
+               
+                const _family0 = [
+                    [middleXChild, middleTopChild],
+                    [middleXChild, middleGeneration]
+                ];
+        
+                node.Parents.forEach(parent => {
+                    const middleParent = (parent.X1 + parent.X2) / 2;
+                    const parentPosition = (this.drawingHeight > 200 || this.generations.length === 2) ? bottomParent : middleGeneration - 4;
+        
+                    _family0.push(
+                        [middleParent, middleGeneration],
+                        [middleParent, parentPosition],
+                        [middleParent, middleGeneration],
+                        [middleXChild, middleGeneration]
+                    );
+                });
+        
+                this.edges[genidx][personIdx] = _family0;
+            });
+        });
 
 
-                // top middle of child
-                middleTopChild = this.generations[genidx][personIdx].Y1;// + 10
 
-                parentHeight = (this.generations[genidx + 1][0].Y2 - this.generations[genidx + 1][0].Y1);
-                bottomParent = this.generations[genidx + 1][0].Y1 + parentHeight;// + 10
-                distanceBetweenGens = (this.generations[genidx][personIdx].Y1 - this.generations[genidx + 1][0].Y2);
+    }, //this.CreateEdges
 
+    GetNewX:function (nodes,node, distanceApart, boxWidth) {
+       
+        const personIdx = node.Index;
+        const genidx = node.GenerationIdx;
 
-                middleXChild = (this.generations[genidx][personIdx].X1 + this.generations[genidx][personIdx].X2) / 2;
-                middleGeneration = this.generations[genidx][personIdx].Y1 - (distanceBetweenGens / 2) + 10;
-                // move to top and middle of child
-                
-                _family0[_family0.length] = new Array(middleXChild, middleTopChild);
-
-                // move to middle of generations about child
-                
-                _family0[_family0.length] = new Array(middleXChild, middleGeneration);
-
-                for(var parent of this.generations[genidx][personIdx].Parents){
-                    middleParent = (parent.X1 + parent.X2) / 2;
-                
-                    _family0[_family0.length] = new Array(middleParent, middleGeneration);
-
-                    if (this.drawingHeight > 200 || this.generations.length == 2) {
-                        // move to bottom of parent
-                
-                        _family0[_family0.length] = new Array(middleParent, bottomParent);
-                    }
-                    else {
-                
-                        _family0[_family0.length] = new Array(middleParent, middleGeneration - 4);
-                    }
-                    // move to middle generation under parent
-                
-                    _family0[_family0.length] = new Array(middleParent, middleGeneration);
-                    // move to middle of child
-                
-                    _family0[_family0.length] = new Array(middleXChild, middleGeneration);
-                    // move to top and middle of child
-                
-                    //_family0[_family0.length] = new Array(middleXChild, middleTopChild-10);
-                }
-
-                this.familySpanLines[genidx][personIdx] = _family0;
-
-                personIdx++;
-            }
-
-            genidx++;
+        if (genidx == 0) {
+            return {
+                x1: this.centrePoint,
+                x2: this.centrePoint + boxWidth
+            };
         }
 
-
-
-    }, //this.CreateConnectionLines
-
-   
-
+        const childIdx = nodes[genidx][personIdx].ChildIdx;                
+        const childNode = nodes[genidx - 1][childIdx];
+        const childBoxWidth = childNode.X2 - childNode.X1;
+        const childCentrePoint = childNode.X1 + (childBoxWidth / 2);
     
+        const isFirstParent = nodes[genidx][personIdx + 1]?.ChildIdx === childIdx;
+        const isLastParent = nodes[genidx][personIdx - 1]?.ChildIdx === childIdx;
+        const isSingleParent = !isFirstParent && !isLastParent;
+    
+        let x1 = 0.0;
 
-
-    GetNewX:function (nodes, genidx, personIdx,distanceApart, boxWidth) {
-
-            var result = {
-                x1 : 0.0,
-                x2 : 0.0
-            };
-      
-            var childIdx = nodes[genidx][personIdx].ChildIdx;
-
-            if (genidx > 0) {
-
-                var childBoxWidth = (nodes[genidx - 1][childIdx].X2 - nodes[genidx - 1][childIdx].X1);
-                var childCentrePoint = nodes[genidx - 1][childIdx].X1 + (childBoxWidth / 2);
-         
-                var isFirstParent = false;
-                var isLastParent = false;
-                var isSingleParent = false;
-                
+        if (isFirstParent) {
+            x1 = childCentrePoint - (distanceApart / 2) - boxWidth;
+        } else if (isLastParent) {
+            x1 = childCentrePoint + (distanceApart / 2);
+        } else if (isSingleParent) {
+            x1 = childCentrePoint - (distanceApart / 2) - (boxWidth / 2);
+        }
               
-                //trying to determine which of the parents we are refering to
-                // because if its the first then x value will be lower than it would be for 2nd
-                if (nodes[genidx].length > personIdx + 1) {
-                    if (nodes[genidx][personIdx + 1].ChildIdx == nodes[genidx][personIdx].ChildIdx) {
-                        isFirstParent = true;
-                    }
-                }
-
-                if (personIdx > 0) {
-                    if (nodes[genidx][personIdx].ChildIdx == nodes[genidx][personIdx - 1].ChildIdx) {
-                        isLastParent = true;
-                    }
-                }
-
-                if (!isFirstParent && !isLastParent) {
-                    isSingleParent = true;
-                }
-
-                if (isFirstParent) {
-                    result.x1 = childCentrePoint - (distanceApart / 2) - boxWidth;
-                }
-
-                if (isLastParent) {
-                    result.x1 = childCentrePoint + (distanceApart / 2);                                       
-                }
-
-                if (isSingleParent) {
-                    result.x1 = childCentrePoint - (boxWidth / 2);
-                }
-
-            }
-            else {
-
-                result.x1 = this.centrePoint;
-            }
-
-            result.x2 = result.x1 + boxWidth;
- 
-            return result;
+        return {
+            x1: x1,
+            x2: x1 + boxWidth
+        };
     }
 
     

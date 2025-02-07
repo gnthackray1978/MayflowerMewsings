@@ -14,21 +14,21 @@ Array.prototype.ContainsPerson = function (value) {
   
   };
   
-  Array.prototype.SortByGenIdx = function()
-  {
-    for(var i=0;i<this.length;i++)
-    {
-      for(var j=i+1;j<this.length;j++)
-      {
-        if(Number(this[i].GenerationIdx) < Number(this[j].GenerationIdx))
-        {
-          var tempValue = this[j];
-          this[j] = this[i];
-          this[i] = tempValue;
-        }
-      }
-    }
-  };
+//   Array.prototype.SortByGenIdx = function()
+//   {
+//     for(var i=0;i<this.length;i++)
+//     {
+//       for(var j=i+1;j<this.length;j++)
+//       {
+//         if(Number(this[i].GenerationIdx) < Number(this[j].GenerationIdx))
+//         {
+//           var tempValue = this[j];
+//           this[j] = this[i];
+//           this[i] = tempValue;
+//         }
+//       }
+//     }
+//   };
   
   Array.prototype.RemoveDupes = function () {
   
@@ -257,36 +257,37 @@ export const CreateArray = (shape) => {
 
 }
 
-export const getDescendants =  (nodes, person, startGen) =>{
 
-    let moveList = [];
-    var moveGenIdx = startGen;
+// export const getDescendants =  (nodes, person, startGen) =>{
+
+//     let moveList = [];
+//     var moveGenIdx = startGen;
 
 
-    while (moveGenIdx > 0)
-    {
+//     while (moveGenIdx > 0)
+//     {
 
-        if (!moveList.ContainsPerson(nodes[moveGenIdx][person]))
-        {
-            moveList.push(nodes[moveGenIdx][person]);
-        }
+//         if (!moveList.ContainsPerson(nodes[moveGenIdx][person]))
+//         {
+//             moveList.push(nodes[moveGenIdx][person]);
+//         }
 
-        person = nodes[moveGenIdx][person].ChildIdx;
+//         person = nodes[moveGenIdx][person].ChildIdx;
 
-        moveGenIdx--;
-    }
+//         moveGenIdx--;
+//     }
 
-    moveList.SortByGenIdx();
+//     moveList.SortByGenIdx();
 
-    // for(let p of moveList){
+//     // for(let p of moveList){
 
-    //     if(p.RecordLink.Name.includes('Shepherd')){
-    //         console.log('shepfound');
-    //     }
-    // }
+//     //     if(p.RecordLink.Name.includes('Shepherd')){
+//     //         console.log('shepfound');
+//     //     }
+//     // }
 
-    return moveList;
-};
+//     return moveList;
+// };
 
 export const dump =  (nodes) =>{
 
@@ -305,56 +306,48 @@ export const dump =  (nodes) =>{
  
 
 
-export const getParentGeneration = (nodes, movePerson)=>{
+// export const getParentGeneration = (nodes, movePerson)=>{
 
-    let requiredGeneration = movePerson.GenerationIdx + 1;
+//     let requiredGeneration = movePerson.GenerationIdx + 1;
 
 
-    if(nodes.length > requiredGeneration)
-        return nodes[requiredGeneration];
+//     if(nodes.length > requiredGeneration)
+//         return nodes[requiredGeneration];
     
-    return;
-};
+//     return;
+// };
 
 export const CreateChildPositionFromParent = (parentGeneration, movePerson, boxWidth) => {
 
-    let result = {
-        x1 : 0.0,
-        x2 : 0.0
+    const result = { x1: 0.0, x2: 0.0 };
+    
+    if (!parentGeneration) return result;
+    
+    const getParentCenterX = (parentIdx) => {
+        const parent = parentGeneration[parentIdx];
+        return (parent.X1 + parent.X2) / 2;
     };
-
-    if(!parentGeneration)
-        return result;
-
-    if (movePerson.FatherIdx == -1)
-    {
-        result.x1 = ((parentGeneration[movePerson.MotherIdx].X1 + parentGeneration[movePerson.MotherIdx].X2) / 2) - (boxWidth / 2);
+    
+    if (movePerson.FatherIdx === -1) {
+        const centerX = getParentCenterX(movePerson.MotherIdx);
+        result.x1 = centerX - (boxWidth / 2);
         result.x2 = result.x1 + boxWidth;
-    }
-
-    if (movePerson.MotherIdx == -1)
-    {
-        result.x1 = ((parentGeneration[movePerson.FatherIdx].X1 + parentGeneration[movePerson.FatherIdx].X2) / 2) - (boxWidth / 2);
+    } else if (movePerson.MotherIdx === -1) {
+        const centerX = getParentCenterX(movePerson.FatherIdx);
+        result.x1 = centerX - (boxWidth / 2);
         result.x2 = result.x1 + boxWidth;
-    }
-
-    var parentX1 = 0.0;
-    var parentX2 = 0.0;
-
-    if (movePerson.FatherIdx != -1 && movePerson.MotherIdx != -1)
-    {
-        parentX2 = parentGeneration[movePerson.MotherIdx].X2;
-        parentX1 = parentGeneration[movePerson.FatherIdx].X1;
-
-        if (movePerson.FatherIdx > movePerson.MotherIdx)
-        {
-            parentX2 = parentGeneration[movePerson.FatherIdx].X2;
-            parentX1 = parentGeneration[movePerson.MotherIdx].X1;
-        }
-
+    } else {
+        const fatherX1 = parentGeneration[movePerson.FatherIdx].X1;
+        const motherX2 = parentGeneration[movePerson.MotherIdx].X2;
+        const fatherX2 = parentGeneration[movePerson.FatherIdx].X2;
+        const motherX1 = parentGeneration[movePerson.MotherIdx].X1;
+    
+        const parentX1 = Math.min(fatherX1, motherX1);
+        const parentX2 = Math.max(fatherX2, motherX2);
+    
         result.x1 = ((parentX2 + parentX1) / 2) - ((movePerson.X2 - movePerson.X1) / 2);
         result.x2 = result.x1 + (movePerson.X2 - movePerson.X1);
     }
-
+    
     return result;
 };

@@ -75,7 +75,8 @@ function FDDiagrams(props) {
 
     return (
         <div>          
-         {drawingContainer && <Canvas graph ={drawingContainer} draw={draw} style ={{height:"420", width: "1163"}}></Canvas>}
+         {drawingContainer && <Canvas graph ={drawingContainer} draw={draw}
+          style ={{height:"100%", width: "100%", position: "absolute", top :"0", left :"0"}}></Canvas>}
         </div>
     );
 

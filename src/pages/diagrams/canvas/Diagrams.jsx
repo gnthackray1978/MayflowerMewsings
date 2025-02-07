@@ -27,7 +27,7 @@ function Diagrams(props) {
     return (
         <div>          
          {graph && <Canvas 
-            graph ={graph} draw={draw} style ={{height:"420", width: "1163"}}></Canvas>}
+            graph ={graph} draw={draw} style ={{height:"100%", width: "100%", position: "absolute", top :"0", left :"0"}}></Canvas>}
         </div>
     );
 
