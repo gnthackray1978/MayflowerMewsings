@@ -1,24 +1,22 @@
+import { Layout } from './Layout.js';
+
 // this should be the drawing object
 // which is made up of a layout
 // and a graph
 export class AncestorGraph {
     constructor(data) {
-        this.generations = data;
+        this.nodes = data;
 
         //this.familySpanLines = [];
         //this.childlessMarriages = [];
     }
 
+    // Refactored for efficiency using for-of and Array.find
     GetTreePerson(personId) {
-
-        for (let gidx = 0; gidx < this.generations.length; gidx++) {
-            for (let pidx = 0; pidx < this.generations[gidx].length; pidx++) {
-                if (this.generations[gidx][pidx].PersonId === personId) {
-                    return this.generationsgraph[gidx][pidx];
-                }
-            }
+        for (const generation of this.nodes) {
+            const found = generation.find(item => item.PersonId === personId);
+            if (found) return found;
         }
-
         return null;
     }
 
@@ -26,12 +24,12 @@ export class AncestorGraph {
 
         var isDisplayed = true;
 
-        if (this.generations.length > person.GenerationIdx) {
+        if (this.nodes.length > person.GenerationIdx) {
             var _genidx = 0;
-            while (_genidx < this.generations[person.GenerationIdx].length) {
+            while (_genidx < this.nodes[person.GenerationIdx].length) {
 
-                if (this.generations[person.GenerationIdx][_genidx].PersonId == person.ChildLst[0]) {
-                    var _person = this.generations[person.GenerationIdx][_genidx];
+                if (this.nodes[person.GenerationIdx][_genidx].PersonId == person.ChildLst[0]) {
+                    var _person = this.nodes[person.GenerationIdx][_genidx];
                     isDisplayed = _person.IsDisplayed;
                     break;
                 }
@@ -45,17 +43,17 @@ export class AncestorGraph {
     }
 
     GetPerson(gen, idx) {
-        return this.generations[gen][idx];
+        return this.nodes[gen][idx];
     }
 
     DistanceToNextGeneration(genidx) {
-        //return this.generations[genidx][personIdx].X2 - this.generations[genidx][personIdx].X1;
-        //(this.generations[genidx][personIdx].Y1 - this.generations[genidx + 1][0].Y2);
-        return this.generations[genidx][0].Y1 - this.generations[genidx + 1][0].Y2;
+        //return this.nodes[genidx][personIdx].X2 - this.nodes[genidx][personIdx].X1;
+        //(this.nodes[genidx][personIdx].Y1 - this.nodes[genidx + 1][0].Y2);
+        return this.nodes[genidx][0].Y1 - this.nodes[genidx + 1][0].Y2;
     }
 
     NextGenerationHeight(genidx) {
-        return (this.generations[genidx + 1][0].Y2 - this.generations[genidx + 1][0].Y1);
+        return (this.nodes[genidx + 1][0].Y2 - this.nodes[genidx + 1][0].Y1);
     }
     LastGenerationSpacing(node) {
 
@@ -66,22 +64,22 @@ export class AncestorGraph {
             return { nodeCount: 0 }; // leave undefined spacing and previousX2 becase there is no previous node
         }
 
-        const previousNode = this.generations[genidx][personIdx - 1];
+        const previousNode = this.nodes[genidx][personIdx - 1];
         const newChildIdx = node.ChildIdx;
         const oldChildIdx = previousNode.ChildIdx;
         const nodeCount = newChildIdx - oldChildIdx - 1;
-        const spacing = this.generations[genidx - 1][newChildIdx].X1 - this.generations[genidx - 1][oldChildIdx].X2;
+        const spacing = this.nodes[genidx - 1][newChildIdx].X1 - this.nodes[genidx - 1][oldChildIdx].X2;
 
-        return { nodeCount, spacing, previousX2: this.generations[genidx][personIdx - 1].X2 };
+        return { nodeCount, spacing, previousX2: this.nodes[genidx][personIdx - 1].X2 };
     }
     PrecedingNodes(searchNode) {
-        return this.generations[searchNode.GenerationIdx]
+        return this.nodes[searchNode.GenerationIdx]
             .slice(0, searchNode.Index + 1)
             .reverse()
             .map((node, i) => ({
                 node,
                 parentsKnown: !(node.FatherIdx === -1 && node.MotherIdx === -1),
-                next: this.generations[searchNode.GenerationIdx][i + 1] || null,
+                next: this.nodes[searchNode.GenerationIdx][i + 1] || null,
                 update: (range) => {
                     node.X1 = range.x1;
                     node.X2 = range.x2;
@@ -96,7 +94,7 @@ export class AncestorGraph {
 
         while (moveGenIdx > 0) {
 
-            const node = this.generations[moveGenIdx][person];
+            const node = this.nodes[moveGenIdx][person];
 
             if (!moveList.some(p => p.PersonId === node.PersonId)) {
                 moveList.push(node);
@@ -130,8 +128,8 @@ export class AncestorGraph {
 
         let requiredGeneration = movePerson.GenerationIdx + 1;
 
-        if(this.generations.length > requiredGeneration)
-            return this.generations[requiredGeneration];
+        if(this.nodes.length > requiredGeneration)
+            return this.nodes[requiredGeneration];
         
         return;
     };

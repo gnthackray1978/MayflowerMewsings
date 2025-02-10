@@ -12,14 +12,16 @@ function Diagrams(props) {
 
     const draw = (ctx, graph) => { 
     
-      if(graph){
+      if(graph && graph.IsValid()) {
       
         graph.centrePoint += graph.movementx ;
         graph.centreVerticalPoint += graph.movementy ;
 
-        graph.treeUI = new TreeUI(ctx,ancestorConfig, true, ()=>{});
+        let ui = new TreeUI(ctx,ancestorConfig, true, ()=>{});
      
-        graph.DrawTreeInner();
+        graph.RefreshLayout();
+
+        graph.Draw(ui);
       } 
     }
  
