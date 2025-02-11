@@ -100,17 +100,17 @@ AncTree.prototype = {
     },
 
     SetInitialValues: function (zoomPerc,
-        dist_bet_box,
-        dist_bet_gen,
-        box_wid,
-        box_hig,
-        dist_bet_fam,
-        low_stalk_hi,
-        mid_span,
-        top_span,
-        screen_width,
-        screen_height
-        ) {
+                                dist_bet_box,
+                                dist_bet_gen,
+                                box_wid,
+                                box_hig,
+                                dist_bet_fam,
+                                low_stalk_hi,
+                                mid_span,
+                                top_span,
+                                screen_width,
+                                screen_height
+                                ) {
 
         this.centrePoint = 750.0;
         this.centreVerticalPoint = 0.0;
@@ -175,26 +175,17 @@ AncTree.prototype = {
 
         console.log('setzoomstart: ' + this.mouseXPercLocat + ' ' + this.mouseYPercLocat);
     },
+
     GetPercDistances: function () {
-        const percentageFactor = {
-            x: 0.0,
-            y: 0.0
-        };
-        
         const drawingWidth = this.drawingX2 - this.drawingX1;
         const drawingHeight = this.drawingY2 - this.drawingY1;
-        
-        if (drawingWidth !== 0 && drawingHeight !== 0) {
-            const _distanceFromX1 = this.drawingX1 > 0 ? this.mouse_x - this.drawingX1 : Math.abs(this.drawingX1) + this.mouse_x;
-            const _onePercentDistanceX = drawingWidth / 100;
-            percentageFactor.x = _distanceFromX1 / _onePercentDistanceX;
-        
-            const _distanceFromY1 = this.drawingY1 > 0 ? this.mouse_y - this.drawingY1 : Math.abs(this.drawingY1) + this.mouse_y;
-            const _onePercentDistanceY = drawingHeight / 100;
-            percentageFactor.y = _distanceFromY1 / _onePercentDistanceY;
-        }
-        
-        return percentageFactor;
+        if (drawingWidth === 0 || drawingHeight === 0) return { x: 0, y: 0 };
+        const dx = this.mouse_x - this.drawingX1;
+        const dy = this.mouse_y - this.drawingY1;
+        return {
+            x: dx / (drawingWidth / 100),
+            y: dy / (drawingHeight / 100)
+        };
     },
 
     SetMouse: function (x, y, mousestate) {
