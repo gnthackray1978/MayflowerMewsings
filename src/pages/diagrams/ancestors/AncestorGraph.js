@@ -11,13 +11,29 @@ export class AncestorGraph {
         //this.childlessMarriages = [];
     }
 
-    // Refactored for efficiency using for-of and Array.find
+    // Moved _GetTreePerson logic here as GetTreePerson
     GetTreePerson(personId) {
         for (const generation of this.nodes) {
             const found = generation.find(item => item.PersonId === personId);
             if (found) return found;
         }
         return null;
+    }
+
+    // New SetVisibility method moved from AncTree
+    SetVisibility(parent, isDisplay) {
+        let personStack = [...parent.Children];
+
+        while (personStack.length > 0) {
+            const currentTP = personStack.pop();
+            currentTP.IsDisplayed = isDisplay;
+        
+            currentTP.Spouses.forEach(spouse => {
+                spouse.IsDisplayed = isDisplay;
+            });
+        
+            personStack.push(...currentTP.Children);
+        }
     }
 
     GetChildDisplayStatus(person) {

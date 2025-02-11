@@ -37,9 +37,9 @@ export function AncTree() {
     this.drawingY1 = 0.0;
     this.drawingY2 = 0.0;
 
-    this.drawingCentre = 0.0;
-    this.drawingWidth = 0.0;
-    this.drawingHeight = 0.0;
+   // this.drawingCentre = 0.0;
+   // this.drawingWidth = 0.0;
+   // this.drawingHeight = 0.0;
 
     this.mouseXPercLocat = 0.0;
     this.mouseYPercLocat = 0.0;
@@ -137,41 +137,6 @@ AncTree.prototype = {
                             top_span); 
     },
 
-    //created
-    _GetTreePerson: function (graph, personId) {
-        // Refactored for efficiency
-        for (const generation of graph) {
-            const found = generation.find(item => item.PersonId === personId);
-            if (found) return found;
-        }
-        return null;
-    },
-
-    SetVisibility: function (parent, isDisplay) {
-
-        var personStack = [];
-
-        parent.Children.forEach((child)=>{
-            personStack.push(child);
-        });
-
-        var currentTP = parent;
-        while (personStack.length > 0) {
-            currentTP = personStack.pop();
-            currentTP.IsDisplayed = isDisplay;
-
-            currentTP.Spouses.forEach((spouse)=>{
-                spouse.IsDisplayed = isDisplay;
-            });
-
-            currentTP.Children.forEach((child)=>{
-                personStack.push(child);
-            });
-
-        }
-
-    },
-
     SetZoom: function (percentage) {
 
 
@@ -181,18 +146,16 @@ AncTree.prototype = {
         this.SetMouse(x, y);
 
  
-        this.GetPercDistances();
-        this.mouseXPercLocat = this.percX1;
-        this.mouseYPercLocat = this.percY1;
+        const result123 = this.GetPercDistances();
+        this.mouseXPercLocat = result123.x;
+        this.mouseYPercLocat = result123.y;
         
-
-
         if (percentage !== 0.0) {
         
             console.log('centre vertical point1: ' + this.centreVerticalPoint + ' centre point: ' + this.centrePoint);
 
-            var _percLocal_x = 0.0;
-            var _percLocal_y = 0.0;
+            var _percLocal_x = result123.x;
+            var _percLocal_y = result123.y;
 
             //zoom drawing components
             this.zoomPercentage += percentage;
@@ -202,14 +165,16 @@ AncTree.prototype = {
 
             this.RefreshLayout();
 
-            this.GetPercDistances();
-            _percLocal_x = this.percX1;
-            _percLocal_y = this.percY1;
+            const result333 = this.GetPercDistances();
+            _percLocal_x = result333.x;
+            _percLocal_y = result333.y;
 
+            let drawingHeight = this.drawingY2 - this.drawingY1;            
+            let drawingWidth = this.drawingX2 - this.drawingX1;
 
-            this.centreVerticalPoint += (this.drawingHeight / 100) * (_percLocal_y - this.mouseYPercLocat);
+            this.centreVerticalPoint += (drawingHeight / 100) * (_percLocal_y - this.mouseYPercLocat);
 
-            this.centrePoint += (this.drawingWidth / 100) * (_percLocal_x - this.mouseXPercLocat);
+            this.centrePoint += (drawingWidth / 100) * (_percLocal_x - this.mouseXPercLocat);
 
             console.log('centre vertical point2: ' + this.centreVerticalPoint + ' centre point: ' + this.centrePoint);
 
@@ -222,50 +187,32 @@ AncTree.prototype = {
 
     },
     SetZoomStart: function () {
-        this.GetPercDistances();
-        this.mouseXPercLocat = this.percX1;
-        this.mouseYPercLocat = this.percY1;
+        let result = this.GetPercDistances();
+        this.mouseXPercLocat = result.x;
+        this.mouseYPercLocat = result.y;
 
         console.log('setzoomstart: ' + this.mouseXPercLocat + ' ' + this.mouseYPercLocat);
     },
     GetPercDistances: function () {
-
-
-        var _distanceFromX1 = 0.0;
-        var _distanceFromY1 = 0.0;
-        var _onePercentDistance = 0.0;
-
-        this.percX1 = 0.0;
-        this.percY1 = 0.0;
-
-
-        this.drawingWidth = this.drawingX2 - this.drawingX1;
-        this.drawingHeight = this.drawingY2 - this.drawingY1;
-
-        if (this.drawingWidth !== 0 && this.drawingHeight !== 0) {
-            if (this.drawingX1 > 0) {
-                _distanceFromX1 = this.mouse_x - this.drawingX1; //;
-            }
-            else {
-                _distanceFromX1 = Math.abs(this.drawingX1) + this.mouse_x;
-            }
-
-            _onePercentDistance = this.drawingWidth / 100;
-            this.percX1 = _distanceFromX1 / _onePercentDistance;
-
-            if (this.drawingY1 > 0) {
-                _distanceFromY1 = this.mouse_y - this.drawingY1; // ;
-            }
-            else {
-                _distanceFromY1 = Math.abs(this.drawingY1) + this.mouse_y;
-            }
-
-            _onePercentDistance = this.drawingHeight / 100;
-
-            this.percY1 = _distanceFromY1 / _onePercentDistance;
-
+        const percentageFactor = {
+            x: 0.0,
+            y: 0.0
+        };
+        
+        const drawingWidth = this.drawingX2 - this.drawingX1;
+        const drawingHeight = this.drawingY2 - this.drawingY1;
+        
+        if (drawingWidth !== 0 && drawingHeight !== 0) {
+            const _distanceFromX1 = this.drawingX1 > 0 ? this.mouse_x - this.drawingX1 : Math.abs(this.drawingX1) + this.mouse_x;
+            const _onePercentDistanceX = drawingWidth / 100;
+            percentageFactor.x = _distanceFromX1 / _onePercentDistanceX;
+        
+            const _distanceFromY1 = this.drawingY1 > 0 ? this.mouse_y - this.drawingY1 : Math.abs(this.drawingY1) + this.mouse_y;
+            const _onePercentDistanceY = drawingHeight / 100;
+            percentageFactor.y = _distanceFromY1 / _onePercentDistanceY;
         }
-
+        
+        return percentageFactor;
     },
 
     SetMouse: function (x, y, mousestate) {
@@ -302,20 +249,12 @@ AncTree.prototype = {
 
         if (mouseLink !== null) {
 
-            var selectedPerson = this._GetTreePerson(this.nodes,mouseLink.action);
-
-            //     var zoomReq = this.zoomPercentage; //-100
-            //   var xpos = selectedPerson.X1;
-            //   var ypos = selectedPerson.Y1;
-
+            var selectedPerson = this.ancGraph.GetTreePerson(mouseLink.action);
 
             this.selectedPersonId = selectedPerson.PersonId;
             this.selectedPersonX = selectedPerson.X1;
             this.selectedPersonY = selectedPerson.Y1;
 
-            //var queryStr = '?sid=' + '00000000-0000-0000-0000-000000000000' + '&id=' + selectedPerson.PersonId;
-            //queryStr += '&xpos=' + xpos + '&ypos=' + ypos + '&zoom=' + zoomReq;
-            //this._qryString = queryStr;
             this.bt_refreshData = true;
         }
         else {
@@ -327,18 +266,11 @@ AncTree.prototype = {
 
                 var parts = buttonLink.action.split(',');
 
-                var clickedPerson = this._GetTreePerson(this.nodes, parts[0]);
+                var clickedPerson = this.ancGraph.GetTreePerson(parts[0]);
 
-                var isVis = true;
+                var isVis = parts[1] === 'false' ? true : false;
 
-                if (parts[1] == 'false') {
-                    isVis = true;
-                }
-                else {
-                    isVis = false;
-                }
-
-                this.SetVisibility(clickedPerson, isVis);
+                this.ancGraph.SetVisibility(clickedPerson, isVis);
 
 
             }
@@ -435,7 +367,7 @@ AncTree.prototype = {
 
         let distanceToMoveX = 0.0;
         let distanceToMoveY = 0.0;
-        const _temp = this._GetTreePerson(this.nodes, personId);
+        const _temp = this.ancGraph.GetTreePerson(personId);
 
         if (_temp !== null) {
             const currentPersonLocationX = (_temp.X1 + _temp.X2) / 2;
@@ -589,24 +521,15 @@ AncTree.prototype = {
         this.nodes[0][0].X2 = result.x2;
         this.nodes[0][0].IsDisplayed = true;
 
-        this.drawingX1 = Math.min(...this.nodes.map(generation => generation[0].X1));
-        this.drawingX2 = Math.max(...this.nodes.map(generation => generation[generation.length - 1].X2));
+        this.drawingX1 = Math.min(...this.nodes.map(node => node[0].X1));
+        this.drawingX2 = Math.max(...this.nodes.map(node => node[node.length - 1].X2));
         this.drawingY1 = this.nodes[this.nodes.length - 1][0].Y2;
         this.drawingY2 = this.nodes[0][0].Y1;
-        this.drawingHeight = this.nodes[0][0].Y1 - this.nodes[this.nodes.length - 1][0].Y2;
-        this.drawingCentre = (this.drawingX2 - this.drawingX1) / 2;
-        this.drawingWidth = this.drawingX2 - this.drawingX1;
+   
+        //this.drawingCentre = (this.drawingX2 - this.drawingX1) / 2;
+       
 
         this.CreateEdges();
-    },
-
-    //end compute locations
-
-    //run when generation is loaded
-    //run when visibility changed
-    UpdateGenerationState: function () {
-
-
     },
 
     CreateEdges : function () {
@@ -630,7 +553,7 @@ AncTree.prototype = {
                 const distanceBetweenGens = this.ancGraph.DistanceToNextGeneration(genidx);
                 const middleXChild = (node.X1 + node.X2) / 2;
                 const middleGeneration = node.Y1 - (distanceBetweenGens / 2) + 10;
-               
+                const drawingHeight = this.drawingY2 - this.drawingY1;
                 const _family0 = [
                     [middleXChild, middleTopChild],
                     [middleXChild, middleGeneration]
@@ -638,7 +561,7 @@ AncTree.prototype = {
         
                 node.Parents.forEach(parent => {
                     const middleParent = (parent.X1 + parent.X2) / 2;
-                    const parentPosition = (this.drawingHeight > 200 || this.nodes.length === 2) ? bottomParent : middleGeneration - 4;
+                    const parentPosition = (drawingHeight > 200 || this.nodes.length === 2) ? bottomParent : middleGeneration - 4;
         
                     _family0.push(
                         [middleParent, middleGeneration],
@@ -654,10 +577,7 @@ AncTree.prototype = {
 
 
 
-    }, //this.CreateEdges
-
-
-
+    }, //this.CreateEdges    
     
     GetNewX:function (nodes,node, distanceApart, boxWidth) {
        
