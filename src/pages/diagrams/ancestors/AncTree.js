@@ -137,55 +137,37 @@ AncTree.prototype = {
                             top_span); 
     },
 
-    SetZoom: function (percentage) {
-
-
-        var x = this.bt_screenWidth / 2;
-        var y = this.bt_screenHeight / 2;
-
+    SetZoom: function (delta) {
+        const x = this.bt_screenWidth / 2;
+        const y = this.bt_screenHeight / 2;
         this.SetMouse(x, y);
-
- 
-        const result123 = this.GetPercDistances();
-        this.mouseXPercLocat = result123.x;
-        this.mouseYPercLocat = result123.y;
         
-        if (percentage !== 0.0) {
+        // Capture percentage factors before zoom
+        const before = this.GetPercDistances();
         
-            console.log('centre vertical point1: ' + this.centreVerticalPoint + ' centre point: ' + this.centrePoint);
-
-            var _percLocal_x = result123.x;
-            var _percLocal_y = result123.y;
-
-            //zoom drawing components
-            this.zoomPercentage += percentage;
-            this.zoomLevel += percentage;
-
+        if (delta !== 0.0) {
+          //  console.log('centre vertical point1: ' + this.centreVerticalPoint + ' centre point: ' + this.centrePoint);
+            
+            // Update zoom values and refresh layout once
+            this.zoomPercentage += delta;
+            this.zoomLevel += delta;
             this.layout.zoomLayoutProps(this.zoomPercentage);
-
             this.RefreshLayout();
-
-            const result333 = this.GetPercDistances();
-            _percLocal_x = result333.x;
-            _percLocal_y = result333.y;
-
-            let drawingHeight = this.drawingY2 - this.drawingY1;            
-            let drawingWidth = this.drawingX2 - this.drawingX1;
-
-            this.centreVerticalPoint += (drawingHeight / 100) * (_percLocal_y - this.mouseYPercLocat);
-
-            this.centrePoint += (drawingWidth / 100) * (_percLocal_x - this.mouseXPercLocat);
-
+            
+            // Capture percentage factors after zoom
+            const after = this.GetPercDistances();
+            const drawingHeight = this.drawingY2 - this.drawingY1;
+            const drawingWidth = this.drawingX2 - this.drawingX1;
+            
+            // Adjust center positions based on the delta in percentages
+            this.centreVerticalPoint += (drawingHeight / 100) * (after.y - before.y);
+            this.centrePoint += (drawingWidth / 100) * (after.x - before.x);
+            
             console.log('centre vertical point2: ' + this.centreVerticalPoint + ' centre point: ' + this.centrePoint);
-
             this.RefreshLayout();
-        } //end percentage ==0.0)
-
-
-
-      //  this.DrawTree();
-
+        }
     },
+
     SetZoomStart: function () {
         let result = this.GetPercDistances();
         this.mouseXPercLocat = result.x;
