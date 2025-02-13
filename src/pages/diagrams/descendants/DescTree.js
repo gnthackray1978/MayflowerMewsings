@@ -2,8 +2,6 @@
 import {MiddleParents, createFamilyCountArray, GetPrev, GetFirst, GetParentXs, CreateArray} from '../drawinglib/graphDiagFuncs.jsx';
 
 
-import ThreeDRotationSharp from "@mui/icons-material/ThreeDRotationSharp";
-
 
 export function GraphBoundary(){
 
