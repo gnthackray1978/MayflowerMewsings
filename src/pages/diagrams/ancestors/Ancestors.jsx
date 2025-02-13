@@ -2,7 +2,7 @@ import  React, { useState, useEffect }  from 'react';
 
 import AncestorsBody from './AncestorsBody.jsx';
 import DiagramToolbar from '../DiagramToolbar.jsx';
-import {AncTree} from './AncTree';
+import { AncestorDrawing } from './AncestorDrawing';
 import DiagramWrapper from '../DiagramWrapper.jsx'
 import {transformData, populateAncestryObjects} from '../drawinglib/graphDataFuncs.jsx'
 import {gql} from '@apollo/client';
@@ -94,7 +94,7 @@ function Ancestors(props) {
 
   let data = transformData(state.data, populateAncestryObjects);
  
-  const graph = new AncTree();
+  const graph = new AncestorDrawing();
 
   graph.CreateWithDefaultValues(Number(persons),data.newRows);
 

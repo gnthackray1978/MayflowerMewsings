@@ -4,7 +4,7 @@ import { Layout } from './Layout.js';
 var stackSize =0;
 
 
-export function AncTree() {
+export function AncestorDrawing() {  // renamed from AncTree
     console.log('anctree constructed');
     this._qryString = '';
     this.bt_refreshData =false;
@@ -59,7 +59,7 @@ export function AncTree() {
 }
 
 
-AncTree.prototype = {
+AncestorDrawing.prototype = {  // renamed from AncTree.prototype
 
     SetMovementX: function (x) {
         this.movementx = x;
