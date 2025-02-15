@@ -8,28 +8,39 @@ import { Canvas } from './Canvas';
 
 function Diagrams(props) {
 
-    const { graph, ancestorConfig} = props;
+    const { drawing, ancestorConfig} = props;
 
-    const draw = (ctx, graph) => { 
+    const draw = (ctx, drawing) => { 
     
-      if(graph && graph.IsValid()) {
+      if(drawing && drawing.IsValid()) {
       
-        graph.centrePoint += graph.movementx ;
-        graph.centreVerticalPoint += graph.movementy ;
+        drawing.centrePoint += drawing.movementx ;
+        drawing.centreVerticalPoint += drawing.movementy ;
 
         let ui = new TreeUI(ctx,ancestorConfig, true, ()=>{});
      
-        graph.RefreshLayout();
+        drawing.RefreshLayout();
 
-        graph.Draw(ui);
+        drawing.Draw(ui);
       } 
     }
  
 
     return (
         <div>          
-         {graph && <Canvas 
-            graph ={graph} draw={draw} style ={{height:"100%", width: "100%", position: "absolute", top :"0", left :"0"}}></Canvas>}
+         {drawing && <Canvas onClick={(e)=>{          
+            drawing.PerformClick(e.clientX, e.clientY);
+         }}
+            onDrag={(e)=>{console.log('on drag')}}
+            onMouseMove={(e)=>{
+                drawing.SetMouse(e.clientX, e.clientY,e, (validLink,mousestate)=>{
+                  document.body.style.cursor = validLink ? 'pointer' : (mousestate ? 'move' : 'default');
+                });                
+              }
+            }
+        //    onMouseDown={(e)=>{console.log('on mouse down')}}
+            onMouseUp={(e)=>{console.log('on mouse up')}}
+            drawing ={drawing} draw={draw} style ={{height:"100%", width: "100%", position: "absolute", top :"0", left :"0"}}></Canvas>}
         </div>
     );
 

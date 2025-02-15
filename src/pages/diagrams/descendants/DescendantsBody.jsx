@@ -9,7 +9,7 @@ function DescendantsBody(props) {
     
     return ( 
         <div> 
-            <Diagrams graph = {graph}/>
+            <Diagrams drawing = {graph}/>
         </div>
     );
 

@@ -64,21 +64,8 @@ Array.prototype.RemoveInvalid = function(selection) {
     return filteredArray;
 };
 
-Array.prototype.LinkContainingPoint = function (mx,my) {
-
-    for (var i = 0; i < this.length; i++) {
-
-        if ((this[i].x1 <= mx && this[i].x2 >= mx)
-        && (this[i].y1 <= my && this[i].y2 >= my))
-        {
-            return this[i];
-        }
-    }
-
-
-
-    return null;
-
+Array.prototype.LinkContainingPoint = function (mx, my) {
+    return this.find(l => l.x1 <= mx && l.x2 >= mx && l.y1 <= my && l.y2 >= my);
 };
 
 

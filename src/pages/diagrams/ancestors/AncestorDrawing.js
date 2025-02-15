@@ -163,7 +163,7 @@ AncestorDrawing.prototype = {  // renamed from AncTree.prototype
             this.centreVerticalPoint += (drawingHeight / 100) * (after.y - before.y);
             this.centrePoint += (drawingWidth / 100) * (after.x - before.x);
             
-            console.log('centre vertical point2: ' + this.centreVerticalPoint + ' centre point: ' + this.centrePoint);
+            //console.log('centre vertical point2: ' + this.centreVerticalPoint + ' centre point: ' + this.centrePoint);
             this.RefreshLayout();
         }
     },
@@ -188,29 +188,17 @@ AncestorDrawing.prototype = {  // renamed from AncTree.prototype
         };
     },
 
-    SetMouse: function (x, y, mousestate) {
+    SetMouse: function (x, y, mousestate, update) {
         //    console.log('mouse set: ' + x + ' , ' + y);
         this.mouse_x = x;
         this.mouse_y = y;
+ 
+        const mouseLink = this.bt_links.LinkContainingPoint(this.mouse_x, this.mouse_y);
 
-        if (mousestate == undefined) mousestate = false;
+        const buttonLink = this.bt_buttonLinks.LinkContainingPoint(this.mouse_x, this.mouse_y);
 
-        var mouseLink = this.bt_links.LinkContainingPoint(this.mouse_x, this.mouse_y);
-
-        var buttonLink = this.bt_buttonLinks.LinkContainingPoint(this.mouse_x, this.mouse_y);
-
-
-        if (mouseLink !== null || buttonLink !== null) {
-            document.body.style.cursor = 'pointer';
-            //   console.log(mouseLink.action);
-        }
-        else {
-            if (mousestate == false)
-                document.body.style.cursor = 'default';
-            else
-                document.body.style.cursor = 'move';
-        }
-
+        if(update)
+            update((mouseLink || buttonLink));
     },
   
 
@@ -218,10 +206,11 @@ AncestorDrawing.prototype = {  // renamed from AncTree.prototype
 
     PerformClick: function (x, y) {
 
+        console.log('perform click: ' + x + ' , ' + y);
+
         var mouseLink = this.bt_links.LinkContainingPoint(x, y);
 
-        if (mouseLink !== null) {
-
+        if (mouseLink) {
             var selectedPerson = this.ancGraph.GetTreePerson(mouseLink.action);
 
             this.selectedPersonId = selectedPerson.PersonId;
@@ -233,9 +222,8 @@ AncestorDrawing.prototype = {  // renamed from AncTree.prototype
         else {
 
             var buttonLink = this.bt_buttonLinks.LinkContainingPoint(x, y);
-
-
-            if (buttonLink !== null) {
+            
+            if (buttonLink) {
 
                 var parts = buttonLink.action.split(',');
 

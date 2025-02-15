@@ -5,9 +5,9 @@ import { postdraw } from './postdraw';
 
 export function Canvas(props) {
 
-  const { draw, graph, options, ...rest } = props;
+  const { draw, drawing, options, ...rest } = props;
 
-  const canvasRef = useCanvas(draw, graph, { predraw, postdraw });
+  const canvasRef = useCanvas(draw, drawing, { predraw, postdraw });
 
   return <canvas ref={canvasRef} {...rest} />;
 }

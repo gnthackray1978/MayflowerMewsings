@@ -312,7 +312,7 @@ DescTree.prototype = {
 
             this.halfBoxHeight = this.boxHeight / 2;
 
-            this.ComputeLocations();
+            this.RefreshLayout();
 
             let percentages = this._graphBoundary.GetPercDistances(this.mouse);
  
@@ -326,12 +326,12 @@ DescTree.prototype = {
 
             //console.log('centre vertical point2: ' + this.centreVerticalPoint + ' centre point: ' + this.centrePoint);
 
-            this.ComputeLocations();
+            this.RefreshLayout();
         } //end percentage ==0.0)
 
 
 
-        this.DrawTreeInner();
+       // this.Draw();
 
     },
      
@@ -547,7 +547,7 @@ DescTree.prototype = {
         var _xpos = this.selectedPersonX;
         var _ypos = this.selectedPersonY;
 
-        this.ComputeLocations();
+        this.RefreshLayout();
 
 
         var distanceToMove = 0.0;
@@ -612,7 +612,7 @@ DescTree.prototype = {
                 this.centreVerticalPoint -= distanceToMove;
             }
 
-            this.ComputeLocations();
+            this.RefreshLayout();
 
             if (_ypos === 0) {
                 y = 0 - this.bt_screenHeight / 2;
@@ -637,7 +637,7 @@ DescTree.prototype = {
 
             //console.log('setzoomstart: ' + this.mouseXPercLocat + ' ' + this.mouseYPercLocat);
 
-            this.DrawTree();
+            //this.DrawTree();
         }
     },
 
@@ -683,133 +683,42 @@ DescTree.prototype = {
         return this.generations.length>0;
     },
 
-    DrawTree: function () {
-     //  requestAnimationFrame($.proxy(this.DrawTreeInner, this) );
-    },
+  
+    Draw: function (ui) {
 
-    DrawTreeInner: function () {
+        ui.ClearScreen();
 
+        this.RefreshLayout();
 
-
-           //    var canvas = document.getElementById("myCanvas");
-        //    var context = canvas.getContext("2d");
-        //    canvas.width = window.innerWidth;
-        //    canvas.height = window.innerHeight;
-
-        this.treeUI.ClearScreen();
-
-        this.ComputeLocations();
-
-        //var topLeftCornerX = 188;
-        //var topLeftCornerY = 50;
-        //var width = 200;
-        //var height = 100;
-
-
-
-        var _genidx = 0;
-        var _personIdx = 0;
-        //this.generations.length
-
-        // try {
-        //     this.treeUI.UpdateUI(this.bt_screenWidth, this.bt_screenHeight, this.boxWidth, this.boxHeight);
-        // } catch(e) {
-        //     //console.log('error UpdateUI ' + e);
-        // }
-
-
-
-
-
+      
         this.bt_links = [];
         this.bt_buttonLinks = [];
-
-        //      $("#body").remove(".tree_Links");
-
-        //html('<span>Downloading Descendant Tree</span>');
-
-
-        // try {
-
-            while (_genidx < this.generations.length) {
-                _personIdx = 0;
-
-                while (_personIdx < this.generations[_genidx].length) {
-
-                    var _person = this.generations[_genidx][_personIdx];
-
-                    var personLink = this.treeUI.DrawPerson(_person,this.bt_screenWidth, this.bt_screenHeight, this.sourceId, this.zoomPercentage);
-
-                    if (personLink !== null)
-                        this.bt_links.push(personLink);
-
-                    if (_person.GenerationIdx != 0) {
-                        var buttonLink = this.treeUI.DrawButton(this.bt_screenWidth, this.bt_screenHeight, _person, this.GetChildDisplayStatus(_person));
-
-                        if (buttonLink !== null)
-                            this.bt_buttonLinks.push(buttonLink);
-                    }
-
-                    _personIdx++;
+        
+        this.generations.forEach((generation, genidx) => {
+            generation.forEach(person => {
+                const personLink = ui.DrawPerson(person, this.bt_screenWidth, this.bt_screenHeight, this.sourceId, this.zoomPercentage);
+                if (personLink) this.bt_links.push(personLink);
+        
+                if (person.GenerationIdx !== 0) {
+                    const buttonLink = ui.DrawButton(this.bt_screenWidth, this.bt_screenHeight, person, this.GetChildDisplayStatus(person));
+                    if (buttonLink) this.bt_buttonLinks.push(buttonLink);
                 }
-                _genidx++;
-            }
+            });
+        });
 
-        //
-        // } catch (e) {
-        //     //console.log('error drawing person or button: idx ' + _genidx + ' ' + _personIdx);
-        // }
+       this.familyEdges.forEach(familyEdgeGroup => {
+            familyEdgeGroup.forEach(edge => {
+                ui.DrawLine(this.bt_screenWidth, this.bt_screenHeight, edge);
+            });
+        });
 
-
-
-
-
-
-        var _fslOuter = 0;
-        var _fslInner = 0;
-        //   var _pointIdx = 0;
-
-
-        try {
-            while (_fslOuter < this.familyEdges.length) {
-                _fslInner = 0;
-                while (_fslInner < this.familyEdges[_fslOuter].length) {
-
-                    //if (_fslOuter == 7 && _fslInner == 15) {
-                    this.treeUI.DrawLine(this.bt_screenWidth, this.bt_screenHeight,this.familyEdges[_fslOuter][_fslInner]);
-                    // }
-                    _fslInner++;
-
-
-                } // end familyEdges[_fslOuter].length
-
-                _fslOuter++;
-            } // end this.familyEdges.length
-
-
-        } catch (e) {
-            //console.log('error drawing familyEdges: familyEdges idx ' + _fslOuter + ' ' + _fslInner);
-        }
-
-
-
-        _fslOuter = 0;
-
-        try {
-            while (_fslOuter < this.marriageEdges.length) {
-
-                this.treeUI.DrawLine(this.bt_screenWidth, this.bt_screenHeight,this.marriageEdges[_fslOuter]);
-
-                _fslOuter++;
-            }
-        } catch (e) {
-            //console.log('error drawing childless marriages: marriage idx ' + _fslOuter);
-        }
-
-
+        this.marriageEdges.forEach(edge => {
+            ui.DrawLine(this.bt_screenWidth, this.bt_screenHeight, edge);
+        });
+        
     },
 
-    ComputeLocations: function () {
+    RefreshLayout: function () {
 
         if (this.generations.length === 0) {
             return;
