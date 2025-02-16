@@ -1,20 +1,88 @@
-
 import {MiddleParents, createFamilyCountArray, GetPrev, GetFirst, GetParentXs, CreateArray} from '../drawinglib/graphDiagFuncs.jsx';
+import { DescendantGraph } from './DescendantGraph.js'; // new import
 
+export function DescTree() {
+    //console.log('tree created');
 
-
-export function GraphBoundary(){
+    this.descGraph = new DescendantGraph();
 
     this.X1 = 0.0;
     this.X2 = 0.0;
     this.Y1 = 0.0;
     this.Y2 = 0.0;
 
+    this._qryString = '';
+    this.bt_refreshData =false;
+    this.bt_screenHeight = 0.0;
+    this.bt_screenWidth = 0.0;
+
+    this.bt_buttonLinks = [];
+    this.bt_links = [];
+    //this.generations = [];
+    this.familyEdges = [];
+    this.marriageEdges = [];
+
+    this.centrePoint = 750.0;
+    this.centreVerticalPoint = 0.0;
+    this.zoomLevel = 0.0;
+
+    this.original_distanceBetweenBoxs = 0.0;
+    this.original_distanceBetweenGens = 0.0;
+    this.original_boxWidth = 0.0;
+    this.original_boxHeight = 0.0;
+    this.original_distancesbetfam = 0.0;
+    this.original_lowerStalkHeight = 0.0;
+
+    this.original_middleSpan = 40.0;
+    this.original_topSpan = 20.0;
+
+    this.distancesbetfam = 0.0;
+    this.lowerSpan = 0.0;
+    this.middleSpan = 0.0;
+    this.topSpan = 0.0;
+    this.distanceBetweenBoxs = 0.0;
+    this.distanceBetweenGens = 0.0;
+    
+    this.halfBox = 0.0;
+    this.halfBoxHeight = 0.0;
+    this.boxWidth = 0.0;
+    this.boxHeight = 0.0;
+
+    //this._graphBoundary = new GraphBoundary();
+
+    this.mouse = {
+        x: 0,
+        y: 0
+    };
+
+
+    this.mouseXPercLocat = 0.0;
+    this.mouseYPercLocat = 0.0;
+    this.zoomPercentage = 0.0;
+
+    this.zoomAmount = 8; //int
+
+
+    this.sourceId = null;
+
+
+    this.selectedPersonId = '';
+    this.selectedPersonX = 0;
+    this.selectedPersonY = 0;
+    this.treeUI;
+    this.startx1 = 0.0;
+    //this.endx2 = 0.0;
+
+    // this.percX1 = 0.0;
+    // this.percY1 = 0.0;
+    this.movementx =0;
+    this.movementy =0;
+
+ 
 }
-GraphBoundary.prototype = {
 
 
-
+DescTree.prototype = {
     GetPercDistances: function (mousePoint) {
         let _distanceFromX1 = 0.0;
         let _distanceFromY1 = 0.0;
@@ -54,86 +122,7 @@ GraphBoundary.prototype = {
             percX1,
             percY1
         };
-    }
-}
-
-
-export function DescTree() {
-    //console.log('tree created');
-
-
-    this._qryString = '';
-    this.bt_refreshData =false;
-    this.bt_screenHeight = 0.0;
-    this.bt_screenWidth = 0.0;
-
-    this.bt_buttonLinks = [];
-    this.bt_links = [];
-    this.generations = [];
-    this.familyEdges = [];
-    this.marriageEdges = [];
-
-    this.centrePoint = 750.0;
-    this.centreVerticalPoint = 0.0;
-    this.zoomLevel = 0.0;
-
-    this.original_distanceBetweenBoxs = 0.0;
-    this.original_distanceBetweenGens = 0.0;
-    this.original_boxWidth = 0.0;
-    this.original_boxHeight = 0.0;
-    this.original_distancesbetfam = 0.0;
-    this.original_lowerStalkHeight = 0.0;
-
-    this.original_middleSpan = 40.0;
-    this.original_topSpan = 20.0;
-
-    this.distancesbetfam = 0.0;
-    this.lowerSpan = 0.0;
-    this.middleSpan = 0.0;
-    this.topSpan = 0.0;
-    this.distanceBetweenBoxs = 0.0;
-    this.distanceBetweenGens = 0.0;
-    
-    this.halfBox = 0.0;
-    this.halfBoxHeight = 0.0;
-    this.boxWidth = 0.0;
-    this.boxHeight = 0.0;
-
-    this._graphBoundary = new GraphBoundary();
-
-    this.mouse = {
-        x: 0,
-        y: 0
-    };
-
-
-    this.mouseXPercLocat = 0.0;
-    this.mouseYPercLocat = 0.0;
-    this.zoomPercentage = 0.0;
-
-    this.zoomAmount = 8; //int
-
-
-    this.sourceId = null;
-
-
-    this.selectedPersonId = '';
-    this.selectedPersonX = 0;
-    this.selectedPersonY = 0;
-    this.treeUI;
-    this.startx1 = 0.0;
-    //this.endx2 = 0.0;
-
-    // this.percX1 = 0.0;
-    // this.percY1 = 0.0;
-    this.movementx =0;
-    this.movementy =0;
-
- 
-}
-
-
-DescTree.prototype = {
+    },
 
     SetMovementX: function (x) {
         this.movementx = x;
@@ -156,7 +145,9 @@ DescTree.prototype = {
         this.SetInitialValues(Number(_zoomLevel), 30.0, 170.0, 70.0, 
                         70.0, 100.0, 20.0, 40.0, 20.0, screen.width, screen.height);
 
-        this.generations = data;
+        this.descGraph = new DescendantGraph(data);
+
+        this.descGraph.nodes = data;
         this.UpdateGenerationState();
         this.SetCentrePoint(0, 0);
         this.RelocateToSelectedPerson();
@@ -219,53 +210,6 @@ DescTree.prototype = {
 
             },
 
-    _GetTreePerson: function (graph, personId) {
-
-
-        var _genidx = 0;
-        var _personIdx = 0;
-
-        while (_genidx < graph.length) {
-            _personIdx = 0;
-
-            while (_personIdx < graph[_genidx].length) {
-
-                if (graph[_genidx][_personIdx].PersonId == personId) {
-                    return graph[_genidx][_personIdx];
-                }
-                _personIdx++;
-            }
-            _genidx++;
-        }
-
-        return null;
-    },
-
-    SetVisibility: function (parent, isDisplay) {
-
-        var personStack = [];
-
-        parent.Children.forEach((child)=>{
-            personStack.push(child);
-        });
-
-        var currentTP = parent;
-        while (personStack.length > 0) {
-            currentTP = personStack.pop();
-            currentTP.IsDisplayed = isDisplay;
-
-            currentTP.Spouses.forEach((spouse)=>{
-                spouse.IsDisplayed = isDisplay;
-            });
-
-            currentTP.Children.forEach((child)=>{
-                personStack.push(child);
-            });
-
-        }
-
-    },
- 
     SetZoom: function (percentage) {
 
         // var workingtp = this.original_lowerStalkHeight / 100;
@@ -287,7 +231,7 @@ DescTree.prototype = {
 
  
 
-        let percentages = this._graphBoundary.GetPercDistances(this.mouse);
+        let percentages = this.GetPercDistances(this.mouse);
 
         this.mouseXPercLocat = percentages.percX1;
         this.mouseYPercLocat = percentages.percY1;
@@ -314,10 +258,10 @@ DescTree.prototype = {
 
             this.RefreshLayout();
 
-            let percentages = this._graphBoundary.GetPercDistances(this.mouse);
+            let percentages = this.GetPercDistances(this.mouse);
  
-             let drawingHeight = this._graphBoundary.Y2 - this._graphBoundary.Y1;
-             let drawingWidth = this._graphBoundary.X2 - this._graphBoundary.X1;
+             let drawingHeight = this.Y2 - this.Y1;
+             let drawingWidth = this.X2 - this.X1;
 
 
             this.centreVerticalPoint += (drawingHeight / 100) * (percentages.percY1 - this.mouseYPercLocat);
@@ -371,12 +315,12 @@ DescTree.prototype = {
 
         var isDisplayed = true;
 
-        if (this.generations.length > person.GenerationIdx) {
+        if (this.descGraph.nodes.length > person.GenerationIdx) {
             var _genidx = 0;
-            while (_genidx < this.generations[person.GenerationIdx].length) {
+            while (_genidx < this.descGraph.nodes[person.GenerationIdx].length) {
 
-                if (this.generations[person.GenerationIdx][_genidx].PersonId == person.ChildLst[0]) {
-                    var _person = this.generations[person.GenerationIdx][_genidx];
+                if (this.descGraph.nodes[person.GenerationIdx][_genidx].PersonId == person.ChildLst[0]) {
+                    var _person = this.descGraph.nodes[person.GenerationIdx][_genidx];
                     isDisplayed = _person.IsDisplayed;
                     break;
                 }
@@ -396,7 +340,7 @@ DescTree.prototype = {
 
         if (mouseLink !== null) {
 
-            var selectedPerson = this._GetTreePerson(this.generations,mouseLink.action);
+            var selectedPerson = this.descGraph.getTreePerson(mouseLink.action);
     
             this.selectedPersonId = selectedPerson.PersonId;
             this.selectedPersonX = selectedPerson.X1;
@@ -412,7 +356,7 @@ DescTree.prototype = {
 
                 var parts = buttonLink.action.split(',');
 
-                var clickedPerson = this._GetTreePerson(this.generations, parts[0]);
+                var clickedPerson = this.descGraph.getTreePerson(parts[0]);
 
                 var isVis = true;
 
@@ -423,7 +367,7 @@ DescTree.prototype = {
                 isVis = false;
                 }
 
-                this.SetVisibility(clickedPerson, isVis); 
+                this.descGraph.SetVisibility(clickedPerson, isVis); 
             } 
         } 
     },
@@ -533,7 +477,7 @@ DescTree.prototype = {
     },
 
     SetNodeZoomLevel: function (node) {
-     //   var node = this.generations[genidx][personIdx];
+     //   var node = this.descGraph.nodes[genidx][personIdx];
 
         var nodeArea = (node.X2 - node.X1) * (node.Y2 - node.Y1);
 
@@ -552,14 +496,14 @@ DescTree.prototype = {
 
         var distanceToMove = 0.0;
         var currentPersonLocation = 0;
-        var _temp = this._GetTreePerson(this.generations, personId);
+        var _temp = this.descGraph.getTreePerson(personId);
 
         var x = 0.0;
         var y = 0.0;
 
         if (_temp !== null) {
             if (_xpos === 0.0) {
-                currentPersonLocation = (this.generations[0][0].X1 + this.generations[0][0].X2) / 2;
+                currentPersonLocation = (this.descGraph.nodes[0][0].X1 + this.descGraph.nodes[0][0].X2) / 2;
                 var requiredLocation = this.bt_screenWidth / 2;
                 distanceToMove = requiredLocation - currentPersonLocation;
 
@@ -585,7 +529,7 @@ DescTree.prototype = {
             }
 
             if (_ypos === 0.0) {
-                var _currentPersonLocation = (this.generations[0][0].Y1 + this.generations[0][0].Y2) / 2;
+                var _currentPersonLocation = (this.descGraph.nodes[0][0].Y1 + this.descGraph.nodes[0][0].Y2) / 2;
                 var _requiredLocation = this.boxHeight;
                 var _distanceToMove = _requiredLocation - _currentPersonLocation;
                 this.centreVerticalPoint -= _distanceToMove;
@@ -630,7 +574,7 @@ DescTree.prototype = {
 
             this.SetMouse(x, y);
  
-            let percentages = this._graphBoundary.GetPercDistances(this.mouse);
+            let percentages = this.GetPercDistances(this.mouse);
 
             this.mouseXPercLocat = percentages.percX1;
             this.mouseYPercLocat = percentages.percY1;
@@ -647,7 +591,7 @@ DescTree.prototype = {
 
         var idx = 0;
 
-        while (this.generations.length > idx) { 
+        while (this.descGraph.nodes.length > idx) { 
             var cid = 0;
             var cife = 0;
             var cipl = 0;
@@ -656,19 +600,19 @@ DescTree.prototype = {
 
             var personidx = 0;
 
-            while (this.generations[idx].length > personidx) {
+            while (this.descGraph.nodes[idx].length > personidx) {
 
-            if (this.generations[idx][personidx].RecordLink.Name == "Jane Thackray") {
+            if (this.descGraph.nodes[idx][personidx].RecordLink.Name == "Jane Thackray") {
                 //console.log("Jane Thackray X1 Y2");
-                //console.log(this.generations[idx][personidx].X1);
-                //console.log(this.generations[idx][personidx].Y1);
+                //console.log(this.descGraph.nodes[idx][personidx].X1);
+                //console.log(this.descGraph.nodes[idx][personidx].Y1);
 
             }
 
-            if (this.generations[idx][personidx].RecordLink.Name == "William Talbot") {
+            if (this.descGraph.nodes[idx][personidx].RecordLink.Name == "William Talbot") {
                 //console.log("William Talbot X1 Y2");
-                //console.log(this.generations[idx][personidx].X1);
-                //console.log(this.generations[idx][personidx].Y1);
+                //console.log(this.descGraph.nodes[idx][personidx].X1);
+                //console.log(this.descGraph.nodes[idx][personidx].Y1);
             }
 
             personidx++;
@@ -680,7 +624,7 @@ DescTree.prototype = {
     },
 
     IsValid :function () {
-        return this.generations.length>0;
+        return this.descGraph.nodes.length>0;
     },
 
   
@@ -694,7 +638,7 @@ DescTree.prototype = {
         this.bt_links = [];
         this.bt_buttonLinks = [];
         
-        this.generations.forEach((generation, genidx) => {
+        this.descGraph.nodes.forEach((generation, genidx) => {
             generation.forEach(person => {
                 const personLink = ui.DrawPerson(person, this.bt_screenWidth, this.bt_screenHeight, this.sourceId, this.zoomPercentage);
                 if (personLink) this.bt_links.push(personLink);
@@ -706,7 +650,7 @@ DescTree.prototype = {
             });
         });
 
-       this.familyEdges.forEach(familyEdgeGroup => {
+        this.familyEdges.forEach(familyEdgeGroup => {
             familyEdgeGroup.forEach(edge => {
                 ui.DrawLine(this.bt_screenWidth, this.bt_screenHeight, edge);
             });
@@ -720,7 +664,7 @@ DescTree.prototype = {
 
     RefreshLayout: function () {
 
-        if (this.generations.length === 0) {
+        if (this.descGraph.nodes.length === 0) {
             return;
         }
 
@@ -730,18 +674,18 @@ DescTree.prototype = {
 
         this.marriageEdges = [];
 
-        this._graphBoundary.X2 = 0.0;
+        this.X2 = 0.0;
 
 
         _genIdx = 0;
 
         var lastPersonY2 = 0.0;
 
-        this.familyEdges = CreateArray(this.generations);
+        this.familyEdges = this.descGraph.nodes.map(g =>Array.from({ length: g.VisibleFamilyCount }, () => [])); // CreateArray(this.descGraph.nodes);
         
-        this.generations.filter(f=>f.GenerationVisible).forEach((genArray, _genIdx) => {
+        this.descGraph.nodes.filter(f=>f.GenerationVisible).forEach((genArray, _genIdx) => {
             
-            let prevGenArray = _genIdx > 0 ? this.generations[_genIdx - 1] : null;
+            let prevGenArray = _genIdx > 0 ? this.descGraph.nodes[_genIdx - 1] : null;
         
             _displayGenCount++;
 
@@ -908,12 +852,12 @@ DescTree.prototype = {
             
         });
 
-        if (this.generations.length > 0) {
-            this._graphBoundary.Y1 = this.generations[0][0].Y1;
+        if (this.descGraph.nodes.length > 0) {
+            this.Y1 = this.descGraph.nodes[0][0].Y1;
         }
 
-        if (this.generations[_displayGenCount - 1].length > 0) {
-            this._graphBoundary.Y2 = lastPersonY2;
+        if (this.descGraph.nodes[_displayGenCount - 1].length > 0) {
+            this.Y2 = lastPersonY2;
         }
    
 
@@ -944,7 +888,7 @@ DescTree.prototype = {
         // visible family count
         // visible person count
         // generation displayed
-        while (genIdx < this.generations.length) {
+        while (genIdx < this.descGraph.nodes.length) {
             this.familyEdges.push([]);
 
             personIdx = 0;
@@ -957,17 +901,17 @@ DescTree.prototype = {
             lastFamilyIdx = 0;
             _familyIdx = -1;
 
-            while (personIdx < this.generations[genIdx].length) {
-                if (this.generations[genIdx][personIdx].IsDisplayed) {
+            while (personIdx < this.descGraph.nodes[genIdx].length) {
+                if (this.descGraph.nodes[genIdx][personIdx].IsDisplayed) {
 
-                    if (this.generations[genIdx][personIdx].IsFamilyStart) {
+                    if (this.descGraph.nodes[genIdx][personIdx].IsFamilyStart) {
                         _familyIdx++; 
                         ////console.log('added:' + genIdx + ' ' + personIdx);
                         
                         this.familyEdges[genIdx].push([]);
                     }
 
-                    if (this.generations[genIdx][personIdx].IsFamilyStart) {
+                    if (this.descGraph.nodes[genIdx][personIdx].IsFamilyStart) {
                         familyCount++;
                     }
 
@@ -977,7 +921,7 @@ DescTree.prototype = {
 
                     lastVisibleIdx = personIdx;
 
-                    if (this.generations[genIdx][personIdx].ChildLst.length > 0) {
+                    if (this.descGraph.nodes[genIdx][personIdx].ChildLst.length > 0) {
 
                         lastFamilyIdx = personIdx;
 
@@ -990,28 +934,28 @@ DescTree.prototype = {
 
                     let _isDoubleSpouseEnd = false;
           
-                    if (this.generations[genIdx][personIdx].IsHtmlLink) {
+                    if (this.descGraph.nodes[genIdx][personIdx].IsHtmlLink) {
           
-                        if ((this.generations[genIdx][personIdx].length > personIdx + 1) 
-                              && this.generations[genIdx][personIdx + 1].IsHtmlLink) {
+                        if ((this.descGraph.nodes[genIdx][personIdx].length > personIdx + 1) 
+                              && this.descGraph.nodes[genIdx][personIdx + 1].IsHtmlLink) {
                             _isDoubleSpouseEnd = true; 
                         }
           
                     }
                     
-                    this.generations[genIdx][personIdx].DoubleSpouseEnd = _isDoubleSpouseEnd;
-                    this.generations[genIdx][personIdx].FamilyIdx = _familyIdx;
+                    this.descGraph.nodes[genIdx][personIdx].DoubleSpouseEnd = _isDoubleSpouseEnd;
+                    this.descGraph.nodes[genIdx][personIdx].FamilyIdx = _familyIdx;
                 }
                 personIdx++;
             }
 
-            this.generations[genIdx].VisibleFamilyCount = familyCount;
-            this.generations[genIdx].VisiblePersonCount = personCount;
-            this.generations[genIdx].GenerationVisible = isDisplayed;
-            this.generations[genIdx].FirstVisibleIdx = firstVisibleIdx;
-            this.generations[genIdx].LastVisibleIdx = lastVisibleIdx;
-            this.generations[genIdx].FirstFamilyIdx = firstFamilyIdx;
-            this.generations[genIdx].LastFamilyIdx = lastFamilyIdx;
+            this.descGraph.nodes[genIdx].VisibleFamilyCount = familyCount;
+            this.descGraph.nodes[genIdx].VisiblePersonCount = personCount;
+            this.descGraph.nodes[genIdx].GenerationVisible = isDisplayed;
+            this.descGraph.nodes[genIdx].FirstVisibleIdx = firstVisibleIdx;
+            this.descGraph.nodes[genIdx].LastVisibleIdx = lastVisibleIdx;
+            this.descGraph.nodes[genIdx].FirstFamilyIdx = firstFamilyIdx;
+            this.descGraph.nodes[genIdx].LastFamilyIdx = lastFamilyIdx;
 
 
             genIdx++;
@@ -1036,27 +980,27 @@ DescTree.prototype = {
 
 
             if (genidx === 0) {
-                this._graphBoundary.X1 = currentRowX1;
-                currentRowX1 = this.centrePoint - (((this.generations[genidx].length * this.boxWidth) + ((this.generations[genidx].length - 1) * this.distanceBetweenBoxs)) / 2);
+                this.X1 = currentRowX1;
+                currentRowX1 = this.centrePoint - (((this.descGraph.nodes[genidx].length * this.boxWidth) + ((this.descGraph.nodes[genidx].length - 1) * this.distanceBetweenBoxs)) / 2);
             }
             else {
-                prevGenX1 = this.generations[genidx - 1][this.generations[genidx - 1].FirstFamilyIdx].X1;
-                prevGenX2 = this.generations[genidx - 1][this.generations[genidx - 1].LastFamilyIdx].X1 + this.boxWidth;
+                prevGenX1 = this.descGraph.nodes[genidx - 1][this.descGraph.nodes[genidx - 1].FirstFamilyIdx].X1;
+                prevGenX2 = this.descGraph.nodes[genidx - 1][this.descGraph.nodes[genidx - 1].LastFamilyIdx].X1 + this.boxWidth;
 
                 currentRowX1 = prevGenX1 + (this.boxWidth / 2);
                 var endx2 = prevGenX2 - (this.boxWidth / 2);
 
                 var _prevGenLen = endx2 - currentRowX1;
 
-                var _curGenLen = (this.generations[genidx].VisiblePersonCount * (this.boxWidth + this.distanceBetweenBoxs)) - (this.distanceBetweenBoxs * this.generations[genidx].VisibleFamilyCount);
+                var _curGenLen = (this.descGraph.nodes[genidx].VisiblePersonCount * (this.boxWidth + this.distanceBetweenBoxs)) - (this.distanceBetweenBoxs * this.descGraph.nodes[genidx].VisibleFamilyCount);
                 if (_prevGenLen > _curGenLen) {
-                    this.distancesbetfam = (_prevGenLen - _curGenLen) / this.generations[genidx].VisibleFamilyCount;
+                    this.distancesbetfam = (_prevGenLen - _curGenLen) / this.descGraph.nodes[genidx].VisibleFamilyCount;
                 }
                 else {
                     this.distancesbetfam = (this.original_distancesbetfam / 100) * this.zoomPercentage;
                 }
                 //add in the distances between the families
-                _curGenLen = _curGenLen + (this.distancesbetfam * (this.generations[genidx].VisibleFamilyCount - 1));
+                _curGenLen = _curGenLen + (this.distancesbetfam * (this.descGraph.nodes[genidx].VisibleFamilyCount - 1));
                 // middle of the families of the previous generation
                 var _desiredMidPoint = ((endx2 - currentRowX1) / 2) + currentRowX1;
                 // set new start point by subtracting half the total space required for the generation
@@ -1067,8 +1011,8 @@ DescTree.prototype = {
         } catch (e) {
             //console.log('SetScheduleVars: ' + genidx + ' exception: ' + e);
 
-            if (this.generations.length > genidx - 1) {
-                //console.log('SetScheduleVars ffidx: ' + this.generations[genidx - 1].FirstFamilyIdx + ' lfidx: ' + this.generations[genidx - 1].LastFamilyIdx);
+            if (this.descGraph.nodes.length > genidx - 1) {
+                //console.log('SetScheduleVars ffidx: ' + this.descGraph.nodes[genidx - 1].FirstFamilyIdx + ' lfidx: ' + this.descGraph.nodes[genidx - 1].LastFamilyIdx);
             }
         }
 

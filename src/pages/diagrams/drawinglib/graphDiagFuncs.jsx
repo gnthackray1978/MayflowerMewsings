@@ -236,24 +236,12 @@ export const GetParentXs = (fatherX1, motherX1,halfBoxWidth) => {
 
 }
 
+
 export const CreateArray = (shape) => {
 
-    var newArray = [];
-    let genIdx=0;
-    for(var generation  of shape){
-        newArray.push([]);
-        let idx =0;
-        
-        while(idx < generation.VisibleFamilyCount){
-            newArray[genIdx].push([]);
-            idx++;
-        }
-
-        genIdx++;
-        
-    }
-    
-    return newArray;
+    //const newArray = shape.map(g =>Array.from({ length: g.VisibleFamilyCount }, () => []));
+            
+    return shape.map(g =>Array.from({ length: g.VisibleFamilyCount }, () => []));
 
 }
 
