@@ -967,54 +967,41 @@ DescTree.prototype = {
 
 
     SetScheduleVars: function (genidx, currentRowX1) {
-      //  var idx = 0;
+      
         var prevGenX1 = 0.0;
         var prevGenX2 = 0.0;
-      //  var innercount = 0;
-
-        //var currentRowX1 = 0;
-      //  var tp = currentRowX1;
-
-        try {
 
 
 
-            if (genidx === 0) {
-                this.X1 = currentRowX1;
-                currentRowX1 = this.centrePoint - (((this.descGraph.nodes[genidx].length * this.boxWidth) + ((this.descGraph.nodes[genidx].length - 1) * this.distanceBetweenBoxs)) / 2);
+        if (genidx === 0) {
+            this.X1 = currentRowX1;
+            currentRowX1 = this.centrePoint - (((this.descGraph.nodes[genidx].length * this.boxWidth) + ((this.descGraph.nodes[genidx].length - 1) * this.distanceBetweenBoxs)) / 2);
+        }
+        else {
+            prevGenX1 = this.descGraph.nodes[genidx - 1][this.descGraph.nodes[genidx - 1].FirstFamilyIdx].X1;
+            prevGenX2 = this.descGraph.nodes[genidx - 1][this.descGraph.nodes[genidx - 1].LastFamilyIdx].X1 + this.boxWidth;
+
+            currentRowX1 = prevGenX1 + (this.boxWidth / 2);
+            var endx2 = prevGenX2 - (this.boxWidth / 2);
+
+            var _prevGenLen = endx2 - currentRowX1;
+
+            var _curGenLen = (this.descGraph.nodes[genidx].VisiblePersonCount * (this.boxWidth + this.distanceBetweenBoxs)) - (this.distanceBetweenBoxs * this.descGraph.nodes[genidx].VisibleFamilyCount);
+            if (_prevGenLen > _curGenLen) {
+                this.distancesbetfam = (_prevGenLen - _curGenLen) / this.descGraph.nodes[genidx].VisibleFamilyCount;
             }
             else {
-                prevGenX1 = this.descGraph.nodes[genidx - 1][this.descGraph.nodes[genidx - 1].FirstFamilyIdx].X1;
-                prevGenX2 = this.descGraph.nodes[genidx - 1][this.descGraph.nodes[genidx - 1].LastFamilyIdx].X1 + this.boxWidth;
-
-                currentRowX1 = prevGenX1 + (this.boxWidth / 2);
-                var endx2 = prevGenX2 - (this.boxWidth / 2);
-
-                var _prevGenLen = endx2 - currentRowX1;
-
-                var _curGenLen = (this.descGraph.nodes[genidx].VisiblePersonCount * (this.boxWidth + this.distanceBetweenBoxs)) - (this.distanceBetweenBoxs * this.descGraph.nodes[genidx].VisibleFamilyCount);
-                if (_prevGenLen > _curGenLen) {
-                    this.distancesbetfam = (_prevGenLen - _curGenLen) / this.descGraph.nodes[genidx].VisibleFamilyCount;
-                }
-                else {
-                    this.distancesbetfam = (this.original_distancesbetfam / 100) * this.zoomPercentage;
-                }
-                //add in the distances between the families
-                _curGenLen = _curGenLen + (this.distancesbetfam * (this.descGraph.nodes[genidx].VisibleFamilyCount - 1));
-                // middle of the families of the previous generation
-                var _desiredMidPoint = ((endx2 - currentRowX1) / 2) + currentRowX1;
-                // set new start point by subtracting half the total space required for the generation
-                currentRowX1 = _desiredMidPoint - (_curGenLen / 2);
-
+                this.distancesbetfam = (this.original_distancesbetfam / 100) * this.zoomPercentage;
             }
+            //add in the distances between the families
+            _curGenLen = _curGenLen + (this.distancesbetfam * (this.descGraph.nodes[genidx].VisibleFamilyCount - 1));
+            // middle of the families of the previous generation
+            var _desiredMidPoint = ((endx2 - currentRowX1) / 2) + currentRowX1;
+            // set new start point by subtracting half the total space required for the generation
+            currentRowX1 = _desiredMidPoint - (_curGenLen / 2);
 
-        } catch (e) {
-            //console.log('SetScheduleVars: ' + genidx + ' exception: ' + e);
-
-            if (this.descGraph.nodes.length > genidx - 1) {
-                //console.log('SetScheduleVars ffidx: ' + this.descGraph.nodes[genidx - 1].FirstFamilyIdx + ' lfidx: ' + this.descGraph.nodes[genidx - 1].LastFamilyIdx);
-            }
         }
+
 
       //  //console.log('SetScheduleVars:' + (currentRowX1-tp) + ' ' + tp + ' ' + currentRowX1);
         return currentRowX1;
