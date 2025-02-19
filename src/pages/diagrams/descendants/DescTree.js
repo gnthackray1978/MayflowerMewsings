@@ -966,6 +966,53 @@ DescTree.prototype = {
     },
 
 
+    SetScheduleVars2: function (genidx, currentRowX1, x1,distancesbetfam,distanceBetweenBoxs,
+        original_distancesbetfam,centrePoint,boxwidth,zoomPercentage) {
+      
+        let result = {
+            x1: x1,
+            distancesbetfam: distancesbetfam
+        };
+        var prevGenX1 = 0.0;
+        var prevGenX2 = 0.0;
+
+
+
+        if (genidx === 0) {
+            result.X1 = currentRowX1;
+            currentRowX1 = centrePoint - (((this.descGraph.nodes[genidx].length * boxwidth) + ((this.descGraph.nodes[genidx].length - 1) * distanceBetweenBoxs)) / 2);
+        }
+        else {
+            prevGenX1 = this.descGraph.nodes[genidx - 1][this.descGraph.nodes[genidx - 1].FirstFamilyIdx].X1;
+            prevGenX2 = this.descGraph.nodes[genidx - 1][this.descGraph.nodes[genidx - 1].LastFamilyIdx].X1 + boxwidth;
+
+            currentRowX1 = prevGenX1 + (boxwidth / 2);
+            var endx2 = prevGenX2 - (boxwidth / 2);
+
+            var _prevGenLen = endx2 - currentRowX1;
+
+            var _curGenLen = (this.descGraph.nodes[genidx].VisiblePersonCount * (boxwidth + distanceBetweenBoxs)) - (distanceBetweenBoxs * this.descGraph.nodes[genidx].VisibleFamilyCount);
+            if (_prevGenLen > _curGenLen) {
+                result.distancesbetfam = (_prevGenLen - _curGenLen) / this.descGraph.nodes[genidx].VisibleFamilyCount;
+            }
+            else {
+                result.distancesbetfam = (original_distancesbetfam / 100) * zoomPercentage;
+            }
+            //add in the distances between the families
+            _curGenLen = _curGenLen + (distancesbetfam * (this.descGraph.nodes[genidx].VisibleFamilyCount - 1));
+            // middle of the families of the previous generation
+            var _desiredMidPoint = ((endx2 - currentRowX1) / 2) + currentRowX1;
+            // set new start point by subtracting half the total space required for the generation
+            currentRowX1 = _desiredMidPoint - (_curGenLen / 2);
+
+        }
+
+
+      //  //console.log('SetScheduleVars:' + (currentRowX1-tp) + ' ' + tp + ' ' + currentRowX1);
+        return currentRowX1;
+
+    },
+
     SetScheduleVars: function (genidx, currentRowX1) {
       
         var prevGenX1 = 0.0;
