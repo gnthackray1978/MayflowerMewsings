@@ -26,16 +26,6 @@ export function DescTree() {
     this.centreVerticalPoint = 0.0;
     this.zoomLevel = 0.0;
 
-    this.original_distanceBetweenBoxs = 0.0;
-    this.original_distanceBetweenGens = 0.0;
-    this.original_boxWidth = 0.0;
-    this.original_boxHeight = 0.0;
-    this.original_distancesbetfam = 0.0;
-    this.original_lowerStalkHeight = 0.0;
-
-    this.original_middleSpan = 40.0;
-    this.original_topSpan = 20.0;
-
     this.distancesbetfam = 0.0;
     this.lowerSpan = 0.0;
     this.middleSpan = 0.0;
@@ -181,29 +171,29 @@ DescTree.prototype = {
 
             this.zoomPercentage = zoomPerc;
 
-            this.original_distanceBetweenBoxs = dist_bet_box;
-            this.original_distanceBetweenGens = dist_bet_gen;
-            this.original_boxWidth = box_wid;
-            this.original_boxHeight = box_hig;
-            this.original_distancesbetfam = dist_bet_fam;
-            this.original_lowerStalkHeight = low_stalk_hi;
-            this.original_middleSpan = mid_span;
-            this.original_topSpan = top_span;
+            this.descGraph.original_distanceBetweenBoxs = dist_bet_box;
+            this.descGraph.original_distanceBetweenGens = dist_bet_gen;
+            this.descGraph.original_boxWidth = box_wid;
+            this.descGraph.original_boxHeight = box_hig;
+            this.descGraph.original_distancesbetfam = dist_bet_fam;
+            this.descGraph.original_lowerStalkHeight = low_stalk_hi;
+            this.descGraph.original_middleSpan = mid_span;
+            this.descGraph.original_topSpan = top_span;
 
 
-            this.distanceBetweenBoxs = this.original_distanceBetweenBoxs;
-            this.distanceBetweenGens = this.original_distanceBetweenGens;
-            this.boxWidth = this.original_boxWidth;
-            this.boxHeight = this.original_boxHeight;
-            this.distancesbetfam = this.original_distancesbetfam;
+            this.distanceBetweenBoxs = this.descGraph.original_distanceBetweenBoxs;
+            this.distanceBetweenGens = this.descGraph.original_distanceBetweenGens;
+            this.boxWidth = this.descGraph.original_boxWidth;
+            this.boxHeight = this.descGraph.original_boxHeight;
+            this.distancesbetfam = this.descGraph.original_distancesbetfam;
             this.halfBox = this.boxWidth / 2;
             this.halfBoxHeight = this.boxHeight / 2;
 
-            this.lowerSpan = this.original_lowerStalkHeight;
+            this.lowerSpan = this.descGraph.original_lowerStalkHeight;
 
-            this.middleSpan = this.original_middleSpan;
+            this.middleSpan = this.descGraph.original_middleSpan;
 
-            this.topSpan = this.original_topSpan;
+            this.topSpan = this.descGraph.original_topSpan;
 
 
 
@@ -243,15 +233,15 @@ DescTree.prototype = {
             //zoom drawing components
             this.zoomPercentage += percentage;
             this.zoomLevel += percentage;
-            _workingtp = this.original_distanceBetweenBoxs / 100;
+            _workingtp = this.descGraph.original_distanceBetweenBoxs / 100;
             this.distanceBetweenBoxs = _workingtp * this.zoomPercentage;
-            _workingtp = this.original_boxWidth / 100;
+            _workingtp = this.descGraph.original_boxWidth / 100;
             this.boxWidth = _workingtp * this.zoomPercentage;
             this.halfBox = this.boxWidth / 2;
-            _workingtp = this.original_distancesbetfam / 100;
-            _workingtp = this.original_distanceBetweenGens / 100;
+            _workingtp = this.descGraph.original_distancesbetfam / 100;
+            _workingtp = this.descGraph.original_distanceBetweenGens / 100;
             this.distanceBetweenGens = _workingtp * this.zoomPercentage;
-            _workingtp = this.original_boxHeight / 100;
+            _workingtp = this.descGraph.original_boxHeight / 100;
             this.boxHeight = _workingtp * this.zoomPercentage;
 
             this.halfBoxHeight = this.boxHeight / 2;
@@ -1038,7 +1028,7 @@ DescTree.prototype = {
                 this.distancesbetfam = (_prevGenLen - _curGenLen) / this.descGraph.nodes[genidx].VisibleFamilyCount;
             }
             else {
-                this.distancesbetfam = (this.original_distancesbetfam / 100) * this.zoomPercentage;
+                this.distancesbetfam = (this.descGraph.original_distancesbetfam / 100) * this.zoomPercentage;
             }
             //add in the distances between the families
             _curGenLen = _curGenLen + (this.distancesbetfam * (this.descGraph.nodes[genidx].VisibleFamilyCount - 1));
