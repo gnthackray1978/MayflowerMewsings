@@ -8,7 +8,7 @@ import {gql} from '@apollo/client';
 import { connect } from "react-redux";
 import {getParams,csvToFirstNumber} from '../../../features/Table/qryStringFuncs.jsx';
 import {useMapState} from '../useMap';
-import {DescTree} from './DescTree';
+import {DescendantDrawing} from './DescendantDrawing';
 import {setTitle} from "../../../features/uxActions.jsx";
 
 function Descendants(props) {
@@ -91,7 +91,7 @@ function Descendants(props) {
 
     let data = transformData(state.data,populateDescendantObjects);
 
-    const graph = new DescTree();
+    const graph = new DescendantDrawing();
   
     graph.CreateWithDefaultValues(Number(persons),data.newRows);
 

@@ -1,7 +1,7 @@
 import {MiddleParents, createFamilyCountArray, GetPrev, GetFirst, GetParentXs, CreateArray} from '../drawinglib/graphDiagFuncs.jsx';
 import { DescendantGraph } from './DescendantGraph.js'; // new import
 
-export function DescTree() {
+export function DescendantDrawing() {
     //console.log('tree created');
 
     this.descGraph = new DescendantGraph();
@@ -72,7 +72,7 @@ export function DescTree() {
 }
 
 
-DescTree.prototype = {
+DescendantDrawing.prototype = {
     GetPercDistances: function (mousePoint) {
         let _distanceFromX1 = 0.0;
         let _distanceFromY1 = 0.0;
@@ -857,7 +857,7 @@ DescTree.prototype = {
     //run when visibility changed
     UpdateGenerationState: function () {
 
-        ////console.log('DescTree.UpdateGenerationState');
+        ////console.log('DescendantDrawing.UpdateGenerationState');
 
         var familyCount = 0;
         var personCount = 0;
