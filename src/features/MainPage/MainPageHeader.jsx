@@ -59,7 +59,7 @@ function MainPageHeader(props) {
                 }}
               ></Box>
               <img id = "treesImg" src={poster} width={"100%"} />
-              <Canvas id = "canvas" graph ={graph} draw={draw} style ={
+              <Canvas id = "canvas" drawing ={graph} draw={draw} style ={
                 {
                   top:"0px", 
                   left : "0px", 
