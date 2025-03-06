@@ -1,15 +1,17 @@
 import {MiddleParents, createFamilyCountArray, GetPrev, GetFirst, GetParentXs, CreateArray} from '../drawinglib/graphDiagFuncs.jsx';
 import { DescendantGraph } from './DescendantGraph.js'; // new import
 
+
+
 export function DescendantDrawing() {
     //console.log('tree created');
 
     this.descGraph = new DescendantGraph();
 
-    this.X1 = 0.0;
-    this.X2 = 0.0;
-    this.Y1 = 0.0;
-    this.Y2 = 0.0;
+    this.drawingX1 = 0.0;
+    this.drawingX2 = 0.0;
+    this.drawingY1 = 0.0;
+    this.drawingY2 = 0.0;
 
     this._qryString = '';
     this.bt_refreshData =false;
@@ -82,25 +84,25 @@ DescendantDrawing.prototype = {
         let percY1 = 0.0;
 
 
-        let drawingWidth = this.X2 - this.X1;
-        let drawingHeight = this.Y2 - this.Y1;
+        let drawingWidth = this.drawingX2 - this.drawingX1;
+        let drawingHeight = this.drawingY2 - this.drawingY1;
 
         if (drawingWidth !== 0 && drawingHeight !== 0) {
-            if (this.X1 > 0) {
-                _distanceFromX1 = mousePoint.x - this.X1; //;
+            if (this.drawingX1 > 0) {
+                _distanceFromX1 = mousePoint.x - this.drawingX1; //;
             }
             else {
-                 _distanceFromX1 = Math.abs(this.X1) + mousePoint.x;
+                 _distanceFromX1 = Math.abs(this.drawingX1) + mousePoint.x;
             }
 
             _onePercentDistance = drawingWidth / 100;
             percX1 = _distanceFromX1 / _onePercentDistance;
 
-            if (this.Y1 > 0) {
-                _distanceFromY1 = mousePoint.y - this.Y1; // ;
+            if (this.drawingY1 > 0) {
+                _distanceFromY1 = mousePoint.y - this.drawingY1; // ;
             }
             else {
-                _distanceFromY1 = Math.abs(this.Y1) + mousePoint.y;
+                _distanceFromY1 = Math.abs(this.drawingY1) + mousePoint.y;
             }
 
             _onePercentDistance = drawingHeight / 100;
@@ -250,8 +252,8 @@ DescendantDrawing.prototype = {
 
             let percentages = this.GetPercDistances(this.mouse);
  
-             let drawingHeight = this.Y2 - this.Y1;
-             let drawingWidth = this.X2 - this.X1;
+             let drawingHeight = this.drawingY2 - this.drawingY1;
+             let drawingWidth = this.drawingX2 - this.drawingX1;
 
 
             this.centreVerticalPoint += (drawingHeight / 100) * (percentages.percY1 - this.mouseYPercLocat);
