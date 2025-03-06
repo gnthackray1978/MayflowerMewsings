@@ -614,7 +614,7 @@ DescendantDrawing.prototype = {
     },
 
     IsValid :function () {
-        return this.descGraph.nodes.length>0;
+        return this.descGraph.nodes?.length>0;
     },
 
   
