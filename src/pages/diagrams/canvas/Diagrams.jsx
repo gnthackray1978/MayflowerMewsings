@@ -33,7 +33,7 @@ function Diagrams(props) {
          }}
             onDrag={(e)=>{console.log('on drag')}}
             onMouseMove={(e)=>{
-                drawing.SetMouse(e.clientX, e.clientY,e, (validLink,mousestate)=>{
+                drawing.drawing.SetMouse(e.clientX, e.clientY,e, (validLink,mousestate)=>{
                   document.body.style.cursor = validLink ? 'pointer' : (mousestate ? 'move' : 'default');
                 });                
               }

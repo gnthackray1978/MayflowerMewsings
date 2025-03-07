@@ -1,4 +1,4 @@
-import { Layout } from './Layout.js';
+import { AncestorLayout } from './AncestorLayout.js';
 
 // this should be the drawing object
 // which is made up of a layout

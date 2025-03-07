@@ -1,18 +1,17 @@
 import { AncestorGraph } from './AncestorGraph.js';
-import { Layout } from './Layout.js';
+import { AncestorLayout } from './AncestorLayout.js';
+import {Drawing} from '../Drawing.js'; // new import
 
 var stackSize =0;
 
 
 export function AncestorDrawing() {  // renamed from AncTree
     console.log('anctree constructed');
-    this._qryString = '';
-    this.bt_refreshData =false;
-    this.bt_screenHeight = 0.0;
-    this.bt_screenWidth = 0.0;
+    this.ancGraph = new AncestorGraph([]);
+    this.drawing = new Drawing();
+    this.layout = new AncestorLayout();
 
-    this.bt_buttonLinks = [];
-    this.bt_links = [];
+    this._qryString = '';
 
     this.nodes = [];
     this.edges = [];
@@ -24,23 +23,7 @@ export function AncestorDrawing() {  // renamed from AncTree
     this.centrePointXOffset = 0.0;
     this.centrePointYOffset = 0.0;
 
-
-
-    this.layout = new Layout();
- 
     this.zoomPercentage = 0.0;
-    this.mouse_x = 0; //int
-    this.mouse_y = 0; //int
-
-    this.drawingX1 = 0.0;
-    this.drawingX2 = 0.0;
-    this.drawingY1 = 0.0;
-    this.drawingY2 = 0.0;
-
-   // this.drawingCentre = 0.0;
-   // this.drawingWidth = 0.0;
-   // this.drawingHeight = 0.0;
-
     this.mouseXPercLocat = 0.0;
     this.mouseYPercLocat = 0.0;
 
@@ -55,7 +38,7 @@ export function AncestorDrawing() {  // renamed from AncTree
     this.selectedPersonY = 0;    
     this.movementx =0;
     this.movementy =0;
-    this.ancGraph = new AncestorGraph([]);
+    
 }
 
 
@@ -95,7 +78,7 @@ AncestorDrawing.prototype = {  // renamed from AncTree.prototype
     
       this.RelocateToSelectedPerson();
     
-      this.bt_refreshData = false;
+      this.drawing.bt_refreshData = false;
 
     },
 
@@ -117,13 +100,13 @@ AncestorDrawing.prototype = {  // renamed from AncTree.prototype
         this.zoomLevel = 0.0;
         this.centrePointXOffset = 0.0;
         this.centrePointYOffset = 0.0;
-        this.mouse_x = 0; //int
-        this.mouse_y = 0; //int
+        //this.mouse_x = 0; //int
+        //this.mouse_y = 0; //int
         this.mouseXPercLocat = 0.0;
         this.mouseYPercLocat = 0.0;
 
-        this.bt_screenHeight = screen_height;
-        this.bt_screenWidth = screen_width;
+        this.drawing.bt_screenHeight = screen_height;
+        this.drawing.bt_screenWidth = screen_width;
 
         this.zoomPercentage = zoomPerc;
 
@@ -138,12 +121,12 @@ AncestorDrawing.prototype = {  // renamed from AncTree.prototype
     },
 
     SetZoom: function (delta) {
-        const x = this.bt_screenWidth / 2;
-        const y = this.bt_screenHeight / 2;
-        this.SetMouse(x, y);
+        const x = this.drawing.bt_screenWidth / 2;
+        const y = this.drawing.bt_screenHeight / 2;
+        this.drawing.SetMouse(x, y);
         
         // Capture percentage factors before zoom
-        const before = this.GetPercDistances();
+        const before = this.drawing.GetPercDistances2();
         
         if (delta !== 0.0) {
           //  console.log('centre vertical point1: ' + this.centreVerticalPoint + ' centre point: ' + this.centrePoint);
@@ -155,9 +138,9 @@ AncestorDrawing.prototype = {  // renamed from AncTree.prototype
             this.RefreshLayout();
             
             // Capture percentage factors after zoom
-            const after = this.GetPercDistances();
-            const drawingHeight = this.drawingY2 - this.drawingY1;
-            const drawingWidth = this.drawingX2 - this.drawingX1;
+            const after = this.drawing.GetPercDistances2();
+            const drawingHeight = this.drawing.drawingY2 - this.drawing.drawingY1;
+            const drawingWidth = this.drawing.drawingX2 - this.drawing.drawingX1;
             
             // Adjust center positions based on the delta in percentages
             this.centreVerticalPoint += (drawingHeight / 100) * (after.y - before.y);
@@ -169,46 +152,18 @@ AncestorDrawing.prototype = {  // renamed from AncTree.prototype
     },
 
     SetZoomStart: function () {
-        let result = this.GetPercDistances();
+        let result = this.drawing.GetPercDistances2();
         this.mouseXPercLocat = result.x;
         this.mouseYPercLocat = result.y;
 
         console.log('setzoomstart: ' + this.mouseXPercLocat + ' ' + this.mouseYPercLocat);
     },
 
-    GetPercDistances: function () {
-        const drawingWidth = this.drawingX2 - this.drawingX1;
-        const drawingHeight = this.drawingY2 - this.drawingY1;
-        if (drawingWidth === 0 || drawingHeight === 0) return { x: 0, y: 0 };
-        const dx = this.mouse_x - this.drawingX1;
-        const dy = this.mouse_y - this.drawingY1;
-        return {
-            x: dx / (drawingWidth / 100),
-            y: dy / (drawingHeight / 100)
-        };
-    },
-
-    SetMouse: function (x, y, mousestate, update) {
-        //    console.log('mouse set: ' + x + ' , ' + y);
-        this.mouse_x = x;
-        this.mouse_y = y;
- 
-        const mouseLink = this.bt_links.LinkContainingPoint(this.mouse_x, this.mouse_y);
-
-        const buttonLink = this.bt_buttonLinks.LinkContainingPoint(this.mouse_x, this.mouse_y);
-
-        if(update)
-            update((mouseLink || buttonLink));
-    },
-  
-
-// move this up to the derived classes
-
     PerformClick: function (x, y) {
 
         console.log('perform click: ' + x + ' , ' + y);
 
-        var mouseLink = this.bt_links.LinkContainingPoint(x, y);
+        var mouseLink = this.drawing.bt_links.LinkContainingPoint(x, y);
 
         if (mouseLink) {
             var selectedPerson = this.ancGraph.GetTreePerson(mouseLink.action);
@@ -217,11 +172,11 @@ AncestorDrawing.prototype = {  // renamed from AncTree.prototype
             this.selectedPersonX = selectedPerson.X1;
             this.selectedPersonY = selectedPerson.Y1;
 
-            this.bt_refreshData = true;
+            this.drawing.bt_refreshData = true;
         }
         else {
 
-            var buttonLink = this.bt_buttonLinks.LinkContainingPoint(x, y);
+            var buttonLink = this.drawing.bt_buttonLinks.LinkContainingPoint(x, y);
             
             if (buttonLink) {
 
@@ -291,33 +246,7 @@ AncestorDrawing.prototype = {  // renamed from AncTree.prototype
        this.SetZoom(this.zoomAmount - (this.zoomAmount * 2));
       
     },
-    CalcZoomLevel: function (zoomPercentage) {
-        var _retVal = 0;
-
-        if (zoomPercentage > 0 && zoomPercentage < 40) {
-            _retVal = 1;
-        }
-        else if (zoomPercentage >= 40 && zoomPercentage < 60) {
-            _retVal = 2;
-        }
-        else if (zoomPercentage >= 60 && zoomPercentage <= 150) {
-            _retVal = 3;
-        }
-        else if (zoomPercentage > 150 && zoomPercentage <= 200) {
-            _retVal = 4;
-        }
-        else if (zoomPercentage > 200 && zoomPercentage <= 250) {
-            _retVal = 5;
-        }
-        else if (zoomPercentage > 250 && zoomPercentage <= 300) {
-            _retVal = 6;
-        }
-        else if (zoomPercentage > 300) {
-            _retVal = 7;
-        }
-
-        return _retVal;
-    },
+    
    
     RelocateToSelectedPerson: function () {
         const personId = this.selectedPersonId;
@@ -335,7 +264,7 @@ AncestorDrawing.prototype = {  // renamed from AncTree.prototype
             const currentPersonLocationY = (_temp.Y1 + _temp.Y2) / 2;
 
             if (_xpos === 0.0) {
-                const requiredLocationX = this.bt_screenWidth / 2;
+                const requiredLocationX = this.drawing.bt_screenWidth / 2;
                 distanceToMoveX = requiredLocationX - currentPersonLocationX;
             } else {
                 distanceToMoveX = _xpos - currentPersonLocationX;
@@ -352,11 +281,11 @@ AncestorDrawing.prototype = {  // renamed from AncTree.prototype
             this.centreVerticalPoint -= distanceToMoveY;
 
             this.RefreshLayout();
+            
+            const x = _xpos === 0 ? this.drawing.bt_screenWidth / 2 : currentPersonLocationX;
+            const y = _ypos === 0 ? 0 - this.drawing.bt_screenHeight / 2 : currentPersonLocationY;
 
-            const x = _xpos === 0 ? this.bt_screenWidth / 2 : currentPersonLocationX;
-            const y = _ypos === 0 ? 0 - this.bt_screenHeight / 2 : currentPersonLocationY;
-
-            this.SetMouse(x, y);
+            this.drawing.SetMouse(x, y);
             this.SetZoomStart();
             this.RefreshLayout();
             //this.Draw();
@@ -384,7 +313,7 @@ AncestorDrawing.prototype = {  // renamed from AncTree.prototype
 
         this.nodes.forEach((generation, genidx) => {
             generation.forEach(node => {
-                const personLink = ui.DrawPerson(node, this.bt_screenWidth, this.bt_screenHeight, this.sourceId, this.zoomPercentage);
+                const personLink = ui.DrawPerson(node, this.drawing.bt_screenWidth, this.drawing.bt_screenHeight, this.sourceId, this.zoomPercentage);
         
                 if (personLink !== null) {
                     this.bt_links.push(personLink);
@@ -395,7 +324,7 @@ AncestorDrawing.prototype = {  // renamed from AncTree.prototype
 
         this.edges.forEach(edgeGroup => {
             edgeGroup.forEach(edge => {
-                ui.DrawLine(this.bt_screenWidth, this.bt_screenHeight, edge);
+                ui.DrawLine(this.drawing.bt_screenWidth, this.drawing.bt_screenHeight, edge);
             });
         });
 
@@ -405,8 +334,8 @@ AncestorDrawing.prototype = {  // renamed from AncTree.prototype
 
 
     RefreshLayout: function () {
-        this.drawingX2 = 0.0;
-        this.drawingX1 = 0.0;
+        this.drawing.drawingX2 = 0.0;
+        this.drawing.drawingX1 = 0.0;
         let _y = this.centreVerticalPoint;
         let percentageLess = 0.0;
 
@@ -482,10 +411,10 @@ AncestorDrawing.prototype = {  // renamed from AncTree.prototype
         this.nodes[0][0].X2 = result.x2;
         this.nodes[0][0].IsDisplayed = true;
 
-        this.drawingX1 = Math.min(...this.nodes.map(node => node[0].X1));
-        this.drawingX2 = Math.max(...this.nodes.map(node => node[node.length - 1].X2));
-        this.drawingY1 = this.nodes[this.nodes.length - 1][0].Y2;
-        this.drawingY2 = this.nodes[0][0].Y1;
+        this.drawing.drawingX1 = Math.min(...this.nodes.map(node => node[0].X1));
+        this.drawing.drawingX2 = Math.max(...this.nodes.map(node => node[node.length - 1].X2));
+        this.drawing.drawingY1 = this.nodes[this.nodes.length - 1][0].Y2;
+        this.drawing.drawingY2 = this.nodes[0][0].Y1;
    
         //this.drawingCentre = (this.drawingX2 - this.drawingX1) / 2;
        
@@ -514,7 +443,7 @@ AncestorDrawing.prototype = {  // renamed from AncTree.prototype
                 const distanceBetweenGens = this.ancGraph.DistanceToNextGeneration(genidx);
                 const middleXChild = (node.X1 + node.X2) / 2;
                 const middleGeneration = node.Y1 - (distanceBetweenGens / 2) + 10;
-                const drawingHeight = this.drawingY2 - this.drawingY1;
+                const drawingHeight = this.drawing.drawingY2 - this.drawing.drawingY1;
                 const _family0 = [
                     [middleXChild, middleTopChild],
                     [middleXChild, middleGeneration]

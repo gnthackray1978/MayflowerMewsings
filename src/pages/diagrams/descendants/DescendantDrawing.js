@@ -1,25 +1,26 @@
 import {MiddleParents, createFamilyCountArray, GetPrev, GetFirst, GetParentXs, CreateArray} from '../drawinglib/graphDiagFuncs.jsx';
 import { DescendantGraph } from './DescendantGraph.js'; // new import
-
-
+import {Drawing} from '../Drawing.js'; // new import
+import { DescendantLayout } from './DescendantLayout.js';
 
 export function DescendantDrawing() {
     //console.log('tree created');
 
     this.descGraph = new DescendantGraph();
+    this.drawing = new Drawing();
+    this.layout = new DescendantLayout();
 
-    this.drawingX1 = 0.0;
-    this.drawingX2 = 0.0;
-    this.drawingY1 = 0.0;
-    this.drawingY2 = 0.0;
+    // this.drawingX1 = 0.0;
+    // this.drawingX2 = 0.0;
+    // this.drawingY1 = 0.0;
+    // this.drawingY2 = 0.0;
 
     this._qryString = '';
     this.bt_refreshData =false;
-    this.bt_screenHeight = 0.0;
-    this.bt_screenWidth = 0.0;
+    //this.bt_screenHeight = 0.0;
+    //this.bt_screenWidth = 0.0;
 
-    this.bt_buttonLinks = [];
-    this.bt_links = [];
+
     //this.generations = [];
     this.familyEdges = [];
     this.marriageEdges = [];
@@ -28,24 +29,24 @@ export function DescendantDrawing() {
     this.centreVerticalPoint = 0.0;
     this.zoomLevel = 0.0;
 
-    this.distancesbetfam = 0.0;
-    this.lowerSpan = 0.0;
-    this.middleSpan = 0.0;
-    this.topSpan = 0.0;
-    this.distanceBetweenBoxs = 0.0;
-    this.distanceBetweenGens = 0.0;
+    this.layout.distancesbetfam = 0.0;
+    this.layout.lowerSpan = 0.0;
+    this.layout.middleSpan = 0.0;
+    this.layout.topSpan = 0.0;
+    this.layout.distanceBetweenBoxs = 0.0;
+    this.layout.distanceBetweenGens = 0.0;
     
-    this.halfBox = 0.0;
-    this.halfBoxHeight = 0.0;
-    this.boxWidth = 0.0;
-    this.boxHeight = 0.0;
+    this.layout.halfBox = 0.0;
+    this.layout.halfBoxHeight = 0.0;
+    this.layout.boxWidth = 0.0;
+    this.layout.boxHeight = 0.0;
 
     //this._graphBoundary = new GraphBoundary();
 
-    this.mouse = {
-        x: 0,
-        y: 0
-    };
+    // this.mouse = {
+    //     x: 0,
+    //     y: 0
+    // };
 
 
     this.mouseXPercLocat = 0.0;
@@ -75,47 +76,7 @@ export function DescendantDrawing() {
 
 
 DescendantDrawing.prototype = {
-    GetPercDistances: function (mousePoint) {
-        let _distanceFromX1 = 0.0;
-        let _distanceFromY1 = 0.0;
-        let _onePercentDistance = 0.0;
-
-        let percX1 = 0.0;
-        let percY1 = 0.0;
-
-
-        let drawingWidth = this.drawingX2 - this.drawingX1;
-        let drawingHeight = this.drawingY2 - this.drawingY1;
-
-        if (drawingWidth !== 0 && drawingHeight !== 0) {
-            if (this.drawingX1 > 0) {
-                _distanceFromX1 = mousePoint.x - this.drawingX1; //;
-            }
-            else {
-                 _distanceFromX1 = Math.abs(this.drawingX1) + mousePoint.x;
-            }
-
-            _onePercentDistance = drawingWidth / 100;
-            percX1 = _distanceFromX1 / _onePercentDistance;
-
-            if (this.drawingY1 > 0) {
-                _distanceFromY1 = mousePoint.y - this.drawingY1; // ;
-            }
-            else {
-                _distanceFromY1 = Math.abs(this.drawingY1) + mousePoint.y;
-            }
-
-            _onePercentDistance = drawingHeight / 100;
-            percY1 = _distanceFromY1 / _onePercentDistance;
-
-        }
-
-        return {
-            percX1,
-            percY1
-        };
-    },
-
+   
     SetMovementX: function (x) {
         this.movementx = x;
     },
@@ -129,6 +90,9 @@ DescendantDrawing.prototype = {
             //console.log('no data to set up ancestor tree');
             return;
           }
+        
+        this.descGraph = new DescendantGraph(data);
+        this.layout = new DescendantLayout();
 
         var _zoomLevel = 100;
         this.selectedPersonId = personId;
@@ -137,14 +101,14 @@ DescendantDrawing.prototype = {
         this.SetInitialValues(Number(_zoomLevel), 30.0, 170.0, 70.0, 
                         70.0, 100.0, 20.0, 40.0, 20.0, screen.width, screen.height);
 
-        this.descGraph = new DescendantGraph(data);
+        
 
         this.descGraph.nodes = data;
         this.UpdateGenerationState();
         this.SetCentrePoint(0, 0);
         this.RelocateToSelectedPerson();
         this.bt_refreshData = false;
-      },
+    },
 
     SetInitialValues: function (zoomPerc,
         dist_bet_box,
@@ -164,144 +128,102 @@ DescendantDrawing.prototype = {
             this.zoomLevel = 0.0;
             // this.centrePointXOffset = 0.0;
             // this.centrePointYOffset = 0.0;
-            this.mouse ={x:0,y:0};
+           // this.mouse ={x:0,y:0};
             this.mouseXPercLocat = 0.0;
             this.mouseYPercLocat = 0.0;
 
-            this.bt_screenHeight = screen_height;
-            this.bt_screenWidth = screen_width;
+            this.drawing.bt_screenHeight = screen_height;
+            this.drawing.bt_screenWidth = screen_width;
 
             this.zoomPercentage = zoomPerc;
 
-            this.descGraph.original_distanceBetweenBoxs = dist_bet_box;
-            this.descGraph.original_distanceBetweenGens = dist_bet_gen;
-            this.descGraph.original_boxWidth = box_wid;
-            this.descGraph.original_boxHeight = box_hig;
-            this.descGraph.original_distancesbetfam = dist_bet_fam;
-            this.descGraph.original_lowerStalkHeight = low_stalk_hi;
-            this.descGraph.original_middleSpan = mid_span;
-            this.descGraph.original_topSpan = top_span;
+            this.layout.init(dist_bet_box,
+                dist_bet_gen,
+                box_wid,
+                box_hig,
+                dist_bet_fam,
+                low_stalk_hi,
+                mid_span,
+                top_span); 
+
+            // this.descGraph.original_distanceBetweenBoxs = dist_bet_box;
+            // this.descGraph.original_distanceBetweenGens = dist_bet_gen;
+            // this.descGraph.original_boxWidth = box_wid;
+            // this.descGraph.original_boxHeight = box_hig;
+            // this.descGraph.original_distancesbetfam = dist_bet_fam;
+            // this.descGraph.original_lowerSpan = low_stalk_hi;
+            // this.descGraph.original_middleSpan = mid_span;
+            // this.descGraph.original_topSpan = top_span;
 
 
-            this.distanceBetweenBoxs = this.descGraph.original_distanceBetweenBoxs;
-            this.distanceBetweenGens = this.descGraph.original_distanceBetweenGens;
-            this.boxWidth = this.descGraph.original_boxWidth;
-            this.boxHeight = this.descGraph.original_boxHeight;
-            this.distancesbetfam = this.descGraph.original_distancesbetfam;
-            this.halfBox = this.boxWidth / 2;
-            this.halfBoxHeight = this.boxHeight / 2;
+            // this.layout.distanceBetweenBoxs = this.descGraph.original_distanceBetweenBoxs;
+            // this.layout.distanceBetweenGens = this.descGraph.original_distanceBetweenGens;
+            // this.layout.boxWidth = this.descGraph.original_boxWidth;
+            // this.layout.boxHeight = this.descGraph.original_boxHeight;
+            // this.distancesbetfam = this.descGraph.original_distancesbetfam;
+            // this.halfBox = this.layout.boxWidth / 2;
+            // this.layout.halfBoxHeight = this.layout.boxHeight / 2;
 
-            this.lowerSpan = this.descGraph.original_lowerStalkHeight;
+            // this.layout.lowerSpan = this.descGraph.original_lowerSpan;
 
-            this.middleSpan = this.descGraph.original_middleSpan;
+            // this.layout.middleSpan = this.descGraph.original_middleSpan;
 
-            this.topSpan = this.descGraph.original_topSpan;
-
-
+            // this.layout.topSpan = this.descGraph.original_topSpan;
 
 
-            },
-
-    SetZoom: function (percentage) {
-
-        // var workingtp = this.original_lowerStalkHeight / 100;
-
-        // this.lowerSpan = workingtp * this.zoomPercentage; // (int)original_lowerStalkHeight;
-
-        // workingtp = this.original_middleSpan / 100;
-
-        // this.middleSpan = workingtp * this.zoomPercentage; //(int)original_middleSpan;
-
-        // workingtp = this.original_topSpan / 100;
-
-        // this.topSpan = workingtp * this.zoomPercentage; //(int)original_topSpan;
-
-        var x = this.bt_screenWidth / 2;
-        var y = this.bt_screenHeight / 2;
-
-        this.SetMouse(x, y);
-
- 
-
-        let percentages = this.GetPercDistances(this.mouse);
-
-        this.mouseXPercLocat = percentages.percX1;
-        this.mouseYPercLocat = percentages.percY1;
         
 
-        if (percentage !== 0.0) {
-            var _workingtp = 0.0; 
+    },
+
+    SetZoom: function (delta) {
+
+        const x = this.drawing.bt_screenWidth / 2;
+        const y = this.drawing.bt_screenHeight / 2;
+
+        this.drawing.SetMouse(x, y);
+ 
+        const before = this.drawing.GetPercDistances2();
+
+        if (delta !== 0.0) {
+            //let _workingtp = 0.0; 
             //console.log('centre vertical point1: ' + this.centreVerticalPoint + ' centre point: ' + this.centrePoint);
             //zoom drawing components
-            this.zoomPercentage += percentage;
-            this.zoomLevel += percentage;
-            _workingtp = this.descGraph.original_distanceBetweenBoxs / 100;
-            this.distanceBetweenBoxs = _workingtp * this.zoomPercentage;
-            _workingtp = this.descGraph.original_boxWidth / 100;
-            this.boxWidth = _workingtp * this.zoomPercentage;
-            this.halfBox = this.boxWidth / 2;
-            _workingtp = this.descGraph.original_distancesbetfam / 100;
-            _workingtp = this.descGraph.original_distanceBetweenGens / 100;
-            this.distanceBetweenGens = _workingtp * this.zoomPercentage;
-            _workingtp = this.descGraph.original_boxHeight / 100;
-            this.boxHeight = _workingtp * this.zoomPercentage;
+            this.zoomPercentage += delta;
+            this.zoomLevel += delta;
+            // _workingtp = this.descGraph.original_distanceBetweenBoxs / 100;
+            // this.layout.distanceBetweenBoxs = _workingtp * this.zoomPercentage;
+            // _workingtp = this.descGraph.original_boxWidth / 100;
+            // this.layout.boxWidth = _workingtp * this.zoomPercentage;
+            // this.layout.halfBox = this.layout.boxWidth / 2;
+            // _workingtp = this.descGraph.original_distancesbetfam / 100;
+            // _workingtp = this.descGraph.original_distanceBetweenGens / 100;
+            // this.layout.distanceBetweenGens = _workingtp * this.zoomPercentage;
+            // _workingtp = this.descGraph.original_boxHeight / 100;
+            // this.layout.boxHeight = _workingtp * this.zoomPercentage;
 
-            this.halfBoxHeight = this.boxHeight / 2;
+            // this.layout.halfBoxHeight = this.layout.boxHeight / 2;
+
+            this.layout.zoomLayoutProps(this.zoomPercentage);
 
             this.RefreshLayout();
 
-            let percentages = this.GetPercDistances(this.mouse);
+            const after = this.drawing.GetPercDistances2();
  
-             let drawingHeight = this.drawingY2 - this.drawingY1;
-             let drawingWidth = this.drawingX2 - this.drawingX1;
+            let drawingHeight = this.drawing.drawingY2 - this.drawing.drawingY1;
+            let drawingWidth = this.drawing.drawingX2 - this.drawing.drawingX1;
 
 
-            this.centreVerticalPoint += (drawingHeight / 100) * (percentages.percY1 - this.mouseYPercLocat);
+            this.centreVerticalPoint += (drawingHeight / 100) * (after.y - before.y);
 
-            this.centrePoint += (drawingWidth / 100) * (percentages.percX1 - this.mouseXPercLocat);
+            this.centrePoint += (drawingWidth / 100) * (after.x - before.x);
 
             //console.log('centre vertical point2: ' + this.centreVerticalPoint + ' centre point: ' + this.centrePoint);
 
             this.RefreshLayout();
         } //end percentage ==0.0)
-
-
-
-       // this.Draw();
-
     },
      
     
-    SetMouse: function (x, y, mousestate) {
-        //    //console.log('mouse set: ' + x + ' , ' + y);
-       
-
-        this.mouse = {
-            x:  x,
-            y: y
-        };
-
-
-
-        if (mousestate == undefined) mousestate = false;
-
-        var mouseLink = this.bt_links.LinkContainingPoint(this.mouse.x, this.mouse.y);
-
-        var buttonLink = this.bt_buttonLinks.LinkContainingPoint(this.mouse.x, this.mouse.y);
-
-
-        if (mouseLink !== null || buttonLink !== null) {
-            document.body.style.cursor = 'pointer';
-            //   //console.log(mouseLink.action);
-        }
-        else {
-            if (mousestate == false)
-                document.body.style.cursor = 'default';
-            else
-                document.body.style.cursor = 'move';
-        }
-
-    },
 
     GetChildDisplayStatus: function (person) {
 
@@ -328,7 +250,7 @@ DescendantDrawing.prototype = {
 
     PerformClick: function (x, y) {
 
-        var mouseLink = this.bt_links.LinkContainingPoint(x, y);
+        var mouseLink = this.drawing.bt_links.LinkContainingPoint(x, y);
 
         if (mouseLink !== null) {
 
@@ -338,11 +260,11 @@ DescendantDrawing.prototype = {
             this.selectedPersonX = selectedPerson.X1;
             this.selectedPersonY = selectedPerson.Y1;
     
-            this.bt_refreshData = true;
+            this.drawing.bt_refreshData = true;
         }
         else {
 
-            var buttonLink = this.bt_buttonLinks.LinkContainingPoint(x, y); 
+            var buttonLink = this.drawing.bt_buttonLinks.LinkContainingPoint(x, y); 
 
             if (buttonLink !== null) {
 
@@ -353,10 +275,10 @@ DescendantDrawing.prototype = {
                 var isVis = true;
 
                 if (parts[1] == 'false') {
-                isVis = true;
+                    isVis = true;
                 }
                 else {
-                isVis = false;
+                    isVis = false;
                 }
 
                 this.descGraph.SetVisibility(clickedPerson, isVis); 
@@ -412,68 +334,15 @@ DescendantDrawing.prototype = {
         this.SetZoom(this.zoomAmount - (this.zoomAmount * 2));
         //  SetZoom(zoomAmount - (zoomAmount * 2));
     },
-    CalcZoomLevel: function (zoomPercentage) {
-        var _retVal = 0;
+  
 
-        if (zoomPercentage > 0 && zoomPercentage < 40) {
-            _retVal = 1;
-        }
-        else if (zoomPercentage >= 40 && zoomPercentage < 60) {
-            _retVal = 2;
-        }
-        else if (zoomPercentage >= 60 && zoomPercentage <= 150) {
-            _retVal = 3;
-        }
-        else if (zoomPercentage > 150 && zoomPercentage <= 200) {
-            _retVal = 4;
-        }
-        else if (zoomPercentage > 200 && zoomPercentage <= 250) {
-            _retVal = 5;
-        }
-        else if (zoomPercentage > 250 && zoomPercentage <= 300) {
-            _retVal = 6;
-        }
-        else if (zoomPercentage > 300) {
-            retVal = 7;
-        }
-
-        return _retVal;
-    },
-
-    CalcAreaLevel: function (area) {
-        var _returnVal = 0;
-
-        if (area > 0 && area < 1000) {
-            _returnVal = 1;
-        }
-        else if (area >= 1000 && area < 2500) {
-            _returnVal = 2;
-        }
-        else if (area >= 2500 && area <= 5000) {
-            _returnVal = 3;
-        }
-        else if (area > 5000 && area <= 10000) {
-            _returnVal = 4;
-        }
-        else if (area > 10000 && area <= 15000) {
-            _returnVal = 5;
-        }
-        else if (area > 15000 && area <= 20000) {
-            _returnVal = 6;
-        }
-        else if (area > 20000) {
-            _returnVal = 7;
-        }
-
-        return _returnVal;
-    },
 
     SetNodeZoomLevel: function (node) {
      //   var node = this.descGraph.nodes[genidx][personIdx];
 
         var nodeArea = (node.X2 - node.X1) * (node.Y2 - node.Y1);
 
-        node.zoom = this.CalcAreaLevel(nodeArea);
+        node.zoom = this.drawing.CalcAreaLevel(nodeArea);
     },
 
     RelocateToSelectedPerson: function () {
@@ -496,7 +365,7 @@ DescendantDrawing.prototype = {
         if (_temp !== null) {
             if (_xpos === 0.0) {
                 currentPersonLocation = (this.descGraph.nodes[0][0].X1 + this.descGraph.nodes[0][0].X2) / 2;
-                var requiredLocation = this.bt_screenWidth / 2;
+                var requiredLocation = this.drawing.bt_screenWidth / 2;
                 distanceToMove = requiredLocation - currentPersonLocation;
 
                 this.centrePoint += distanceToMove;
@@ -508,11 +377,11 @@ DescendantDrawing.prototype = {
                     distanceToMove = _xpos - currentPersonLocation;
                 }
 
-                if (currentPersonLocation > this.bt_screenWidth) {
-                    distanceToMove = 0.0 - ((this.bt_screenWidth - _xpos) + (_xpos - this.bt_screenWidth));
+                if (currentPersonLocation > this.drawing.bt_screenWidth) {
+                    distanceToMove = 0.0 - ((this.drawing.bt_screenWidth - _xpos) + (_xpos - this.drawing.bt_screenWidth));
                 }
 
-                if (currentPersonLocation >= 0 && currentPersonLocation <= this.bt_screenWidth) {   //100 - 750
+                if (currentPersonLocation >= 0 && currentPersonLocation <= this.drawing.bt_screenWidth) {   //100 - 750
                     distanceToMove = _xpos - currentPersonLocation;
                     // 800 - 100
                 }
@@ -522,7 +391,7 @@ DescendantDrawing.prototype = {
 
             if (_ypos === 0.0) {
                 var _currentPersonLocation = (this.descGraph.nodes[0][0].Y1 + this.descGraph.nodes[0][0].Y2) / 2;
-                var _requiredLocation = this.boxHeight;
+                var _requiredLocation = this.layout.boxHeight;
                 var _distanceToMove = _requiredLocation - _currentPersonLocation;
                 this.centreVerticalPoint -= _distanceToMove;
             }
@@ -534,10 +403,10 @@ DescendantDrawing.prototype = {
                 else {
                     currentPersonLocation = _temp.Y1;
 
-                    if (currentPersonLocation > this.bt_screenHeight) {
+                    if (currentPersonLocation > this.drawing.bt_screenHeight) {
                         distanceToMove = currentPersonLocation - _ypos;
                     }
-                    if (currentPersonLocation >= 0 && currentPersonLocation <= this.bt_screenHeight) {
+                    if (currentPersonLocation >= 0 && currentPersonLocation <= this.drawing.bt_screenHeight) {
                         distanceToMove = currentPersonLocation - _ypos;
                     }
                     if (currentPersonLocation < 0) {
@@ -551,25 +420,25 @@ DescendantDrawing.prototype = {
             this.RefreshLayout();
 
             if (_ypos === 0) {
-                y = 0 - this.bt_screenHeight / 2;
+                y = 0 - this.drawing.bt_screenHeight / 2;
             }
             else {
                 y = (_temp.Y2 + _temp.Y1) / 2;
             }
 
             if (_xpos === 0) {
-                x = this.bt_screenWidth / 2;
+                x = this.drawing.bt_screenWidth / 2;
             }
             else {
                 x = (_temp.X2 + _temp.X1) / 2;
             }
 
-            this.SetMouse(x, y);
+            this.drawing.SetMouse(x, y);
  
-            let percentages = this.GetPercDistances(this.mouse);
+            let percentages = this.drawing.GetPercDistances2();
 
-            this.mouseXPercLocat = percentages.percX1;
-            this.mouseYPercLocat = percentages.percY1;
+            this.mouseXPercLocat = percentages.x;
+            this.mouseYPercLocat = percentages.y;
 
             //console.log('setzoomstart: ' + this.mouseXPercLocat + ' ' + this.mouseYPercLocat);
 
@@ -632,11 +501,11 @@ DescendantDrawing.prototype = {
         
         this.descGraph.nodes.forEach((generation, genidx) => {
             generation.forEach(person => {
-                const personLink = ui.DrawPerson(person, this.bt_screenWidth, this.bt_screenHeight, this.sourceId, this.zoomPercentage);
+                const personLink = ui.DrawPerson(person, this.drawing.bt_screenWidth, this.drawing.bt_screenHeight, this.sourceId, this.zoomPercentage);
                 if (personLink) this.bt_links.push(personLink);
         
                 if (person.GenerationIdx !== 0) {
-                    const buttonLink = ui.DrawButton(this.bt_screenWidth, this.bt_screenHeight, person, this.GetChildDisplayStatus(person));
+                    const buttonLink = ui.DrawButton(this.drawing.bt_screenWidth, this.drawing.bt_screenHeight, person, this.GetChildDisplayStatus(person));
                     if (buttonLink) this.bt_buttonLinks.push(buttonLink);
                 }
             });
@@ -644,12 +513,12 @@ DescendantDrawing.prototype = {
 
         this.familyEdges.forEach(familyEdgeGroup => {
             familyEdgeGroup.forEach(edge => {
-                ui.DrawLine(this.bt_screenWidth, this.bt_screenHeight, edge);
+                ui.DrawLine(this.drawing.bt_screenWidth, this.drawing.bt_screenHeight, edge);
             });
         });
 
         this.marriageEdges.forEach(edge => {
-            ui.DrawLine(this.bt_screenWidth, this.bt_screenHeight, edge);
+            ui.DrawLine(this.drawing.bt_screenWidth, this.drawing.bt_screenHeight, edge);
         });
         
     },
@@ -685,7 +554,7 @@ DescendantDrawing.prototype = {
 
             this.fillGenXs(genArray);
 
-            var _current_gen_upper_y = (_genIdx * this.boxHeight) + (_genIdx * this.distanceBetweenGens) + this.centreVerticalPoint;
+            var _current_gen_upper_y = (_genIdx * this.layout.boxHeight) + (_genIdx * this.layout.distanceBetweenGens) + this.centreVerticalPoint;
 
             var _famIdx = 0;
 
@@ -697,7 +566,7 @@ DescendantDrawing.prototype = {
             genArray.filter(f=>f.IsDisplayed).forEach((genPerson, _personIdx) => {
 
                 
-                genPerson.X2 = genPerson.X1 + this.boxWidth;
+                genPerson.X2 = genPerson.X1 + this.layout.boxWidth;
 
                 var _isSpouse = genPerson.IsHtmlLink;
 
@@ -710,10 +579,10 @@ DescendantDrawing.prototype = {
                 
                     if (Math.abs(spouseIdx - _personIdx) <= 2 && genArray[spouseIdx].ChildCount === 0) {
                         var marriagePoints = [
-                            [(genPerson.X1 + this.halfBox), (_current_gen_upper_y + this.boxHeight)],
-                            [(genPerson.X1 + this.halfBox), (_current_gen_upper_y + this.boxHeight + this.topSpan)],
-                            [(tp + this.halfBox), (_current_gen_upper_y + this.boxHeight + this.topSpan)],
-                            [(tp + this.halfBox), (_current_gen_upper_y + this.boxHeight)]
+                            [(genPerson.X1 + this.layout.halfBox), (_current_gen_upper_y + this.layout.boxHeight)],
+                            [(genPerson.X1 + this.layout.halfBox), (_current_gen_upper_y + this.layout.boxHeight + this.layout.topSpan)],
+                            [(tp + this.layout.halfBox), (_current_gen_upper_y + this.layout.boxHeight + this.layout.topSpan)],
+                            [(tp + this.layout.halfBox), (_current_gen_upper_y + this.layout.boxHeight)]
                         ];
                 
                         this.marriageEdges.push(marriagePoints);
@@ -727,14 +596,14 @@ DescendantDrawing.prototype = {
                     }
                     _parent_gen_lower_y = prevGenArray[genPerson.FatherIdx].Y2;
                 }
-                var _firstRow = _current_gen_upper_y - this.lowerSpan;
-                var _secondRow = _parent_gen_lower_y + this.middleSpan; // changed with increment later on - need to calculate the maximum and minimum this increment will be
-                var _thirdRow = _parent_gen_lower_y + this.middleSpan;
-                var _fourthRow = _parent_gen_lower_y + this.topSpan;
+                var _firstRow = _current_gen_upper_y - this.layout.lowerSpan;
+                var _secondRow = _parent_gen_lower_y + this.layout.middleSpan; // changed with increment later on - need to calculate the maximum and minimum this increment will be
+                var _thirdRow = _parent_gen_lower_y + this.layout.middleSpan;
+                var _fourthRow = _parent_gen_lower_y + this.layout.topSpan;
 
                 if ((!(genPerson.IsFamilyEnd && _isSpouse)) && _genIdx > 0 && !genPerson.DoubleSpouseEnd) {
                     var _family = this.familyEdges[_genIdx][genPerson.FamilyIdx];
-                    var point = [(genPerson.X1 + this.halfBox), _firstRow];
+                    var point = [(genPerson.X1 + this.layout.halfBox), _firstRow];
                 
                    
                     
@@ -743,7 +612,7 @@ DescendantDrawing.prototype = {
                 
                     if (!_isSpouse) {                        
                         //bottom of edge that comes out from the top of the node
-                        _family.push([(genPerson.X1 + this.halfBox), _current_gen_upper_y]);
+                        _family.push([(genPerson.X1 + this.layout.halfBox), _current_gen_upper_y]);
                     }
                     
                     //move the 'cursor' to the top the created edge.   
@@ -767,10 +636,10 @@ DescendantDrawing.prototype = {
                     }
 
 
-                    let parentXs = GetParentXs(genPerson.Father?.X1 ?? 0, genPerson.Mother?.X1 ?? 0, this.halfBox);
+                    let parentXs = GetParentXs(genPerson.Father?.X1 ?? 0, genPerson.Mother?.X1 ?? 0, this.layout.halfBox);
 
-                    let incSize = (this.distanceBetweenGens - this.middleSpan - this.lowerSpan) / familydirectionCounts[_famIdx];
-                    let _increment_temp = (_famIdx === 0 && genPerson.X1 > _middleParents) ? this.distanceBetweenGens - this.middleSpan - this.lowerSpan : 0.0;
+                    let incSize = (this.layout.distanceBetweenGens - this.layout.middleSpan - this.layout.lowerSpan) / familydirectionCounts[_famIdx];
+                    let _increment_temp = (_famIdx === 0 && genPerson.X1 > _middleParents) ? this.layout.distanceBetweenGens - this.layout.middleSpan - this.layout.lowerSpan : 0.0;
                     
                     let _thirdStorkX = genPerson.X1 > _middleParents ? Math.max(genPerson.X1, Math.min(_nextParentLink, genPerson.X2)) : Math.min(genPerson.X1, Math.max(_prevParentLink, genPerson.X1));
                     
@@ -785,8 +654,8 @@ DescendantDrawing.prototype = {
                     
                     if (genPerson.IsFamilyStart) {
                         let _nextFamilyStart = genArray.Count > 1 ? genArray[_personIdx + 1].X1 : genArray[_personIdx].X2;
-                        let _sizeToAdd = genPerson.IsFamilyEnd ? this.halfBox : this.boxWidth;
-                    
+                        let _sizeToAdd = genPerson.IsFamilyEnd ? this.layout.halfBox : this.layout.boxWidth;
+                    //debugger;
                         if (_middleParents < _nextFamilyStart && _middleParents > genArray[_personIdx].X1) {
                             _secondStorkX = _middleParents;
                             _thirdStorkX = _middleParents;
@@ -808,23 +677,23 @@ DescendantDrawing.prototype = {
                     //endregion
                     const points = [
                         [_secondStorkX, _firstRow],
-                        [_secondStorkX, _secondRow],
-                        [_thirdStorkX, _secondRow],
-                        [_thirdStorkX, _thirdRow],
-                        [_middleParents, _thirdRow],
-                        [_middleParents, _fourthRow],
-                        [parentXs.firstPX, _fourthRow],
-                        [parentXs.firstPX, _parent_gen_lower_y],
-                        [parentXs.firstPX, _fourthRow],
-                        [parentXs.secondPX, _fourthRow],
-                        [parentXs.secondPX, _parent_gen_lower_y],
-                        [parentXs.secondPX, _fourthRow],
-                        [_middleParents, _fourthRow],
-                        [_middleParents, _thirdRow],
-                        [_thirdStorkX, _thirdRow],
-                        [_thirdStorkX, _secondRow],
-                        [_secondStorkX, _secondRow],
-                        [_secondStorkX, _firstRow]
+                       [_secondStorkX, _secondRow],
+                       [_thirdStorkX, _secondRow],
+                       [_thirdStorkX, _thirdRow],
+                       [_middleParents, _thirdRow],
+                       [_middleParents, _fourthRow],
+                       [parentXs.firstPX, _fourthRow],
+                       [parentXs.firstPX, _parent_gen_lower_y],
+                       [parentXs.firstPX, _fourthRow],
+                       [parentXs.secondPX, _fourthRow],
+                       [parentXs.secondPX, _parent_gen_lower_y],
+                       [parentXs.secondPX, _fourthRow],
+                      [_middleParents, _fourthRow],
+                       [_middleParents, _thirdRow],
+                       [_thirdStorkX, _thirdRow],
+                       [_thirdStorkX, _secondRow],
+                       [_secondStorkX, _secondRow],
+                       [_secondStorkX, _firstRow]
                         ];
                         
                         points.forEach(point => this.familyEdges[_genIdx][genPerson.FamilyIdx].push(new Array(...point)));
@@ -833,7 +702,7 @@ DescendantDrawing.prototype = {
                 } //end (genPerson.IsParentalLink && _genIdx > 0)
 
                 genPerson.Y1 = _current_gen_upper_y;
-                genPerson.Y2 = _current_gen_upper_y + this.boxHeight;
+                genPerson.Y2 = _current_gen_upper_y + this.layout.boxHeight;
 
                 lastPersonY2 = genPerson.Y2;
 
@@ -844,15 +713,21 @@ DescendantDrawing.prototype = {
             
         });
 
-        if (this.descGraph.nodes.length > 0) {
-            this.Y1 = this.descGraph.nodes[0][0].Y1;
-        }
+        // if (this.descGraph.nodes.length > 0) {
+        //     this.Y1 = this.descGraph.nodes[0][0].Y1;
+        // }
 
-        if (this.descGraph.nodes[_displayGenCount - 1].length > 0) {
-            this.Y2 = lastPersonY2;
-        }
+        // if (this.descGraph.nodes[_displayGenCount - 1].length > 0) {
+        //     this.Y2 = lastPersonY2;
+        // }
    
-
+        // may have broken something here when nodes are made visible/invisible
+        if (this.descGraph.nodes.length > 0) {
+            this.drawing.drawingX1 = Math.min(...this.descGraph.nodes.map(node => node[0].X1));
+            this.drawing.drawingX2 = Math.max(...this.descGraph.nodes.map(node => node[node.length - 1].X2));
+            this.drawing.drawingY1 = this.descGraph.nodes[this.descGraph.nodes.length - 1][0].Y2;
+            this.drawing.drawingY2 = this.descGraph.nodes[0][0].Y1;
+        }
     },
 
     //run when generation is loaded
@@ -957,54 +832,6 @@ DescendantDrawing.prototype = {
 
     },
 
-
-    SetScheduleVars2: function (genidx, currentRowX1, x1,distancesbetfam,distanceBetweenBoxs,
-        original_distancesbetfam,centrePoint,boxwidth,zoomPercentage) {
-      
-        let result = {
-            x1: x1,
-            distancesbetfam: distancesbetfam
-        };
-        var prevGenX1 = 0.0;
-        var prevGenX2 = 0.0;
-
-
-
-        if (genidx === 0) {
-            result.X1 = currentRowX1;
-            currentRowX1 = centrePoint - (((this.descGraph.nodes[genidx].length * boxwidth) + ((this.descGraph.nodes[genidx].length - 1) * distanceBetweenBoxs)) / 2);
-        }
-        else {
-            prevGenX1 = this.descGraph.nodes[genidx - 1][this.descGraph.nodes[genidx - 1].FirstFamilyIdx].X1;
-            prevGenX2 = this.descGraph.nodes[genidx - 1][this.descGraph.nodes[genidx - 1].LastFamilyIdx].X1 + boxwidth;
-
-            currentRowX1 = prevGenX1 + (boxwidth / 2);
-            var endx2 = prevGenX2 - (boxwidth / 2);
-
-            var _prevGenLen = endx2 - currentRowX1;
-
-            var _curGenLen = (this.descGraph.nodes[genidx].VisiblePersonCount * (boxwidth + distanceBetweenBoxs)) - (distanceBetweenBoxs * this.descGraph.nodes[genidx].VisibleFamilyCount);
-            if (_prevGenLen > _curGenLen) {
-                result.distancesbetfam = (_prevGenLen - _curGenLen) / this.descGraph.nodes[genidx].VisibleFamilyCount;
-            }
-            else {
-                result.distancesbetfam = (original_distancesbetfam / 100) * zoomPercentage;
-            }
-            //add in the distances between the families
-            _curGenLen = _curGenLen + (distancesbetfam * (this.descGraph.nodes[genidx].VisibleFamilyCount - 1));
-            // middle of the families of the previous generation
-            var _desiredMidPoint = ((endx2 - currentRowX1) / 2) + currentRowX1;
-            // set new start point by subtracting half the total space required for the generation
-            currentRowX1 = _desiredMidPoint - (_curGenLen / 2);
-
-        }
-
-
-      //  //console.log('SetScheduleVars:' + (currentRowX1-tp) + ' ' + tp + ' ' + currentRowX1);
-        return currentRowX1;
-
-    },
-
     SetScheduleVars: function (genidx, currentRowX1) {
       
         var prevGenX1 = 0.0;
@@ -1014,26 +841,26 @@ DescendantDrawing.prototype = {
 
         if (genidx === 0) {
             this.X1 = currentRowX1;
-            currentRowX1 = this.centrePoint - (((this.descGraph.nodes[genidx].length * this.boxWidth) + ((this.descGraph.nodes[genidx].length - 1) * this.distanceBetweenBoxs)) / 2);
+            currentRowX1 = this.centrePoint - (((this.descGraph.nodes[genidx].length * this.layout.boxWidth) + ((this.descGraph.nodes[genidx].length - 1) * this.layout.distanceBetweenBoxs)) / 2);
         }
         else {
             prevGenX1 = this.descGraph.nodes[genidx - 1][this.descGraph.nodes[genidx - 1].FirstFamilyIdx].X1;
-            prevGenX2 = this.descGraph.nodes[genidx - 1][this.descGraph.nodes[genidx - 1].LastFamilyIdx].X1 + this.boxWidth;
+            prevGenX2 = this.descGraph.nodes[genidx - 1][this.descGraph.nodes[genidx - 1].LastFamilyIdx].X1 + this.layout.boxWidth;
 
-            currentRowX1 = prevGenX1 + (this.boxWidth / 2);
-            var endx2 = prevGenX2 - (this.boxWidth / 2);
+            currentRowX1 = prevGenX1 + (this.layout.boxWidth / 2);
+            var endx2 = prevGenX2 - (this.layout.boxWidth / 2);
 
             var _prevGenLen = endx2 - currentRowX1;
 
-            var _curGenLen = (this.descGraph.nodes[genidx].VisiblePersonCount * (this.boxWidth + this.distanceBetweenBoxs)) - (this.distanceBetweenBoxs * this.descGraph.nodes[genidx].VisibleFamilyCount);
+            var _curGenLen = (this.descGraph.nodes[genidx].VisiblePersonCount * (this.layout.boxWidth + this.layout.distanceBetweenBoxs)) - (this.layout.distanceBetweenBoxs * this.descGraph.nodes[genidx].VisibleFamilyCount);
             if (_prevGenLen > _curGenLen) {
-                this.distancesbetfam = (_prevGenLen - _curGenLen) / this.descGraph.nodes[genidx].VisibleFamilyCount;
+                this.layout.distancesbetfam = (_prevGenLen - _curGenLen) / this.descGraph.nodes[genidx].VisibleFamilyCount;
             }
             else {
-                this.distancesbetfam = (this.descGraph.original_distancesbetfam / 100) * this.zoomPercentage;
+                this.layout.distancesbetfam = (this.layout.initial_layout_state.distancesbetfam / 100) * this.zoomPercentage;
             }
             //add in the distances between the families
-            _curGenLen = _curGenLen + (this.distancesbetfam * (this.descGraph.nodes[genidx].VisibleFamilyCount - 1));
+            _curGenLen = _curGenLen + (this.layout.distancesbetfam * (this.descGraph.nodes[genidx].VisibleFamilyCount - 1));
             // middle of the families of the previous generation
             var _desiredMidPoint = ((endx2 - currentRowX1) / 2) + currentRowX1;
             // set new start point by subtracting half the total space required for the generation
@@ -1055,9 +882,9 @@ DescendantDrawing.prototype = {
             if (idx === 0) {
                 node.X1 = this.startx1;                
             } else {
-                node.X1 = prevPerson.X1 + this.boxWidth + (node.IsFamilyStart ? this.distancesbetfam : this.distanceBetweenBoxs);
+                node.X1 = prevPerson.X1 + this.layout.boxWidth + (node.IsFamilyStart ? this.layout.distancesbetfam : this.layout.distanceBetweenBoxs);
             }
-            node.X2 = node.X1 + this.boxWidth;
+            node.X2 = node.X1 + this.layout.boxWidth;
 
             prevPerson = node;              
         });

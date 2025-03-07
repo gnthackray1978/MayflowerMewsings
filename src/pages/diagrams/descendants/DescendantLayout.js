@@ -1,4 +1,13 @@
-export class Layout {
+// this.descGraph.original_distanceBetweenBoxs = dist_bet_box;
+// this.descGraph.original_distanceBetweenGens = dist_bet_gen;
+// this.descGraph.original_boxWidth = box_wid;
+// this.descGraph.original_boxHeight = box_hig;
+// this.descGraph.original_distancesbetfam = dist_bet_fam;
+// this.descGraph.original_lowerStalkHeight = low_stalk_hi;
+// this.descGraph.original_middleSpan = mid_span;
+// this.descGraph.original_topSpan = top_span;
+
+export class DescendantLayout {
     constructor() {
         this.initial_layout_state = {
             distanceBetweenBoxs: 0.0,
@@ -6,7 +15,7 @@ export class Layout {
             boxWidth: 0.0,
             boxHeight: 0.0,
             distancesbetfam: 0.0,
-            lowerSpan: 0.0,
+            lowerStalkHeight: 0.0,
             middleSpan: 40.0,
             topSpan: 20.0
         };
@@ -21,7 +30,7 @@ export class Layout {
         this.boxHeight = 0.0;
         this.halfBox = 0.0;
         this.halfBoxHeight = 0.0;
-        this.lowerSpan = 0.0;
+        this.lowerStalkHeight = 0.0;
         this.middleSpan = 0.0;
         this.topSpan = 0.0;
     }
@@ -35,16 +44,25 @@ export class Layout {
     }
 
     zoomLayoutProps(zoomPercentage) {
-        let _workingtp = 0.0;
-        _workingtp = this.initial_layout_state.distanceBetweenBoxs / 100;
-        this.distanceBetweenBoxs = _workingtp * zoomPercentage;
+         let _workingtp = 0.0; 
+     
+         _workingtp = this.initial_layout_state.distanceBetweenBoxs / 100;
+         this.distanceBetweenBoxs = _workingtp * zoomPercentage;
+
         _workingtp = this.initial_layout_state.boxWidth / 100;
         this.boxWidth = _workingtp * zoomPercentage;
         this.halfBox = this.boxWidth / 2;
+
+        //_workingtp = this.descGraph.original_distancesbetfam / 100;
         _workingtp = this.initial_layout_state.distancesbetfam / 100;
+        this.distancesbetfam = _workingtp * zoomPercentage;
+
         _workingtp = this.initial_layout_state.distanceBetweenGens / 100;
-        this.distanceBetweenGens = _workingtp * zoomPercentage;
+
+        this.distanceBetweenGens = _workingtp * zoomPercentage; 
+
         _workingtp = this.initial_layout_state.boxHeight / 100;
+
         this.boxHeight = _workingtp * zoomPercentage;
 
         this.halfBoxHeight = this.boxHeight / 2;
