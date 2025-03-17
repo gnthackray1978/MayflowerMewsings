@@ -286,73 +286,69 @@ FDLayout.prototype = {
     },
 
     //formerly mousedown
-    processNewSelections: function (e) {
-
+    processNewSelections: function (p) {        
         console.log('mouseDown_');
 
-        if (e.target.id == "myCanvas") {
-            this.mouseup = false;
+        this.mouseup = false;
 
-            var pos = $(this.canvasId).offset();
+       // var p = this.drawing.currentPositionFromScreen(p);
 
-            var p = this.drawing.currentPositionFromScreen(pos, e.evt);
+        var newNearest = this.nearestPoint(p);
 
-            var newNearest = this.nearestPoint(p);
+        if (newNearest.node != null) {
 
-            if (newNearest.node != null) {
+            if (newNearest.node.id != this.selected.node.id) {
+                this.selected.point.m = 1;
+                this.resetMasses();
 
-                if (newNearest.node.id != this.selected.node.id) {
-                    this.selected.point.m = 1;
-                    this.resetMasses();
+                this.selected = newNearest;
 
-                    this.selected = newNearest;
+                console.log('selected changed: ' + this.selected);
 
-                    console.log('selected changed: ' + this.selected);
-
-                    this.notifySelection(this.selected);
-                }
-
-                if (newNearest.node.id != this.nearest.node.id) {
-                    this.nearest = newNearest;
-                    this.notifyHighLight(this.nearest);
-                }
-
-                if (newNearest.node.id != this.dragged.node.id) {
-                    this.dragged = newNearest;
-                }
+                this.notifySelection(this.selected);
             }
 
-            if (this.selected.node !== null) {
-            //    this.selectionMass = this.dragged.point.m;
+            if (newNearest.node.id != this.nearest.node.id) {
+                this.nearest = newNearest;
+                this.notifyHighLight(this.nearest);
+            }
+
+            if (newNearest.node.id != this.dragged.node.id) {
+                this.dragged = newNearest;
+            }
+        }
+
+        if (this.selected.node !== null) {
+        //    this.selectionMass = this.dragged.point.m;
 
 
 
-                if (this.dragged.node.id != -1) {
+            if (this.dragged.node.id != -1) {
 
-                    var idx = 0;
-                    var found = false;
-                    while (idx < this.dragList.length) {
-                        if (this.dragList[idx] != null &&
-                            this.dragList[idx].id == newNearest.node.id) {
-                            found = true;
-                        }
-                        idx++;
+                var idx = 0;
+                var found = false;
+                while (idx < this.dragList.length) {
+                    if (this.dragList[idx] != null &&
+                        this.dragList[idx].id == newNearest.node.id) {
+                        found = true;
                     }
-
-                    if (!found) {
-                        this.dragList.push({ id: this.dragged.node.id, m: this.dragged.point.m });
-                        this.dragged.point.m = 10000;
-                    }
-
-
+                    idx++;
                 }
 
-
+                if (!found) {
+                    this.dragList.push({ id: this.dragged.node.id, m: this.dragged.point.m });
+                    this.dragged.point.m = 10000;
+                }
 
 
             }
+
+
+
 
         }
+
+        
 
 
         // if (e.target.id == "up") this.drawing.moving = 'UP';
@@ -385,7 +381,7 @@ FDLayout.prototype = {
 
         console.log('mouseUp_');
 
-        if (e.target.id == "myCanvas") {
+       // if (e.target.id == "myCanvas") {
 
             this.drawing.addToMovementPath(1000000, 1000000);
             this.dragged = { node: new Node(-1, null), point: new Point(new Vector(0, 0), 0), distance: -1 };
@@ -393,22 +389,22 @@ FDLayout.prototype = {
 
 
             this.mouseup = true;
-        } else {
-            this.drawing.moving = '';
-        }
+      //  } else {
+      //      this.drawing.moving = '';
+      //  }
 
     },
 
     //formerly mousemove
-    checkForHighLights: function (e) {
+    checkForHighLights: function (p) {
 
     //    console.log('mouseMove_');
 
-        var pos = $(this.canvasId).offset();
-        var p = this.drawing.currentPositionFromScreen(pos, e.evt);
+    //    var pos = $(this.canvasId).offset();
+    //    var p = this.drawing.currentPositionFromScreen(pos, e.evt);
 
         if (!this.mouseup && this.selected.node.id !== -1 && this.dragged.node.id == -1) {
-            this.drawing.addToMovementPath(e.clientX, e.clientY);
+            this.drawing.addToMovementPath(p.clientX, p.clientY);
         }
 
         var newNearest = this.nearestPoint(p);

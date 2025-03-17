@@ -4,6 +4,7 @@ import {CameraView} from "./CameraView.js";
 import {Graph} from "./Graph.js";
 import {DrawingDimensions} from "./DrawingDimensions.js";
 import { Zoom } from "@mui/material";
+import {getOffset} from '../../drawinglib/graphDataFuncs';
 
 // we have a drawing that contains a graph, data source, renderer and control channel
 //graph.ZoomOut();
@@ -342,7 +343,26 @@ Drawing.prototype ={
         });
 
         return countonscreen;
-    }
+    },
 
+    mouseDown : function(e){
+                
+        const p = this.dims.currentPositionFromScreen(e);
+     
+        this.TopLayout().processNewSelections(p);
+    },
+
+    mouseUp : function(){
+        
+        this.TopLayout().handlermouseUp();
+    },
+
+    drag: function(e){
+        let p = this.dims.currentPositionFromScreen(e);
+
+        p.clientX = e.clientX;
+        p.clientY = e.clientY;
+        this.TopLayout().checkForHighLights(p);
+    }
 };
  

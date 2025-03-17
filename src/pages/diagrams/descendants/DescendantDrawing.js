@@ -10,18 +10,9 @@ export function DescendantDrawing() {
     this.drawing = new Drawing();
     this.layout = new DescendantLayout();
 
-    // this.drawingX1 = 0.0;
-    // this.drawingX2 = 0.0;
-    // this.drawingY1 = 0.0;
-    // this.drawingY2 = 0.0;
-
     this._qryString = '';
     this.bt_refreshData =false;
-    //this.bt_screenHeight = 0.0;
-    //this.bt_screenWidth = 0.0;
-
-
-    //this.generations = [];
+   
     this.familyEdges = [];
     this.marriageEdges = [];
 
@@ -40,14 +31,6 @@ export function DescendantDrawing() {
     this.layout.halfBoxHeight = 0.0;
     this.layout.boxWidth = 0.0;
     this.layout.boxHeight = 0.0;
-
-    //this._graphBoundary = new GraphBoundary();
-
-    // this.mouse = {
-    //     x: 0,
-    //     y: 0
-    // };
-
 
     this.mouseXPercLocat = 0.0;
     this.mouseYPercLocat = 0.0;
@@ -111,24 +94,22 @@ DescendantDrawing.prototype = {
     },
 
     SetInitialValues: function (zoomPerc,
-        dist_bet_box,
-        dist_bet_gen,
-        box_wid,
-        box_hig,
-        dist_bet_fam,
-        low_stalk_hi,
-        mid_span,
-        top_span,
-        screen_width,
-        screen_height
-        ) {
+                                dist_bet_box,
+                                dist_bet_gen,
+                                box_wid,
+                                box_hig,
+                                dist_bet_fam,
+                                low_stalk_hi,
+                                mid_span,
+                                top_span,
+                                screen_width,
+                                screen_height
+                ) {
 
             this.centrePoint = 750.0;
             this.centreVerticalPoint = 0.0;
             this.zoomLevel = 0.0;
-            // this.centrePointXOffset = 0.0;
-            // this.centrePointYOffset = 0.0;
-           // this.mouse ={x:0,y:0};
+
             this.mouseXPercLocat = 0.0;
             this.mouseYPercLocat = 0.0;
 
@@ -146,33 +127,6 @@ DescendantDrawing.prototype = {
                 mid_span,
                 top_span); 
 
-            // this.descGraph.original_distanceBetweenBoxs = dist_bet_box;
-            // this.descGraph.original_distanceBetweenGens = dist_bet_gen;
-            // this.descGraph.original_boxWidth = box_wid;
-            // this.descGraph.original_boxHeight = box_hig;
-            // this.descGraph.original_distancesbetfam = dist_bet_fam;
-            // this.descGraph.original_lowerSpan = low_stalk_hi;
-            // this.descGraph.original_middleSpan = mid_span;
-            // this.descGraph.original_topSpan = top_span;
-
-
-            // this.layout.distanceBetweenBoxs = this.descGraph.original_distanceBetweenBoxs;
-            // this.layout.distanceBetweenGens = this.descGraph.original_distanceBetweenGens;
-            // this.layout.boxWidth = this.descGraph.original_boxWidth;
-            // this.layout.boxHeight = this.descGraph.original_boxHeight;
-            // this.distancesbetfam = this.descGraph.original_distancesbetfam;
-            // this.halfBox = this.layout.boxWidth / 2;
-            // this.layout.halfBoxHeight = this.layout.boxHeight / 2;
-
-            // this.layout.lowerSpan = this.descGraph.original_lowerSpan;
-
-            // this.layout.middleSpan = this.descGraph.original_middleSpan;
-
-            // this.layout.topSpan = this.descGraph.original_topSpan;
-
-
-        
-
     },
 
     SetZoom: function (delta) {
@@ -185,24 +139,10 @@ DescendantDrawing.prototype = {
         const before = this.drawing.GetPercDistances2();
 
         if (delta !== 0.0) {
-            //let _workingtp = 0.0; 
-            //console.log('centre vertical point1: ' + this.centreVerticalPoint + ' centre point: ' + this.centrePoint);
-            //zoom drawing components
+        
             this.zoomPercentage += delta;
             this.zoomLevel += delta;
-            // _workingtp = this.descGraph.original_distanceBetweenBoxs / 100;
-            // this.layout.distanceBetweenBoxs = _workingtp * this.zoomPercentage;
-            // _workingtp = this.descGraph.original_boxWidth / 100;
-            // this.layout.boxWidth = _workingtp * this.zoomPercentage;
-            // this.layout.halfBox = this.layout.boxWidth / 2;
-            // _workingtp = this.descGraph.original_distancesbetfam / 100;
-            // _workingtp = this.descGraph.original_distanceBetweenGens / 100;
-            // this.layout.distanceBetweenGens = _workingtp * this.zoomPercentage;
-            // _workingtp = this.descGraph.original_boxHeight / 100;
-            // this.layout.boxHeight = _workingtp * this.zoomPercentage;
-
-            // this.layout.halfBoxHeight = this.layout.boxHeight / 2;
-
+           
             this.layout.zoomLayoutProps(this.zoomPercentage);
 
             this.RefreshLayout();
@@ -217,8 +157,7 @@ DescendantDrawing.prototype = {
 
             this.centrePoint += (drawingWidth / 100) * (after.x - before.x);
 
-            //console.log('centre vertical point2: ' + this.centreVerticalPoint + ' centre point: ' + this.centrePoint);
-
+           
             this.RefreshLayout();
         } //end percentage ==0.0)
     },

@@ -1,7 +1,7 @@
 import React, { useRef, useEffect , useState} from 'react'
 import { connect } from "react-redux";
 import { Canvas } from './Canvas';
-
+import {getOffset} from '../drawinglib/graphDataFuncs';       
 
 
 //comes from FDDescendants -> FDDescendantsBody
@@ -73,9 +73,58 @@ function FDDiagrams(props) {
     }
  
 
+
     return (
         <div>          
          {drawingContainer && <Canvas drawing ={drawingContainer} draw={draw}
+         onMouseDown={(e)=>{
+            console.log('on mouse down: ' + e.pageX + ' ' + e.pageY + ' '+e.target.localName  );
+            
+            if(e.target.localName == 'canvas'){
+              let pos = getOffset(e.target);
+
+              const tp = {
+                  top: pos.top,
+                  left: pos.left,
+                  pageX : e.pageX,
+                  pageY : e.pageY,
+                  x: e.clientX,
+                  y: e.clientY
+              }
+
+              drawingContainer.mouseDown(tp);
+            }
+          }}
+          onMouseUp={(e)=>{
+            console.log('on mouse up: ' + e.pageX + ' ' + e.pageY);
+            if(e.target.localName == 'canvas'){
+              drawingContainer.mouseUp();
+            }
+          }}
+         onMouseMove={(e)=>{
+          console.log('on move')
+
+          if(e.target.localName == 'canvas'){
+            let pos = getOffset(e.target);
+
+            const tp = {
+                top: pos.top,
+                left: pos.left,
+                pageX : e.pageX,
+                pageY : e.pageY,
+                x: e.clientX,
+                y: e.clientY,
+                clientX: e.clientX,
+                clientY: e.clientY
+            }
+
+            drawingContainer.drag(tp);
+          }
+         }
+        
+        }
+          
+
           style ={{height:"100%", width: "100%", position: "absolute", top :"0", left :"0"}}></Canvas>}
         </div>
     );

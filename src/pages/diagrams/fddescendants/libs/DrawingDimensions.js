@@ -130,9 +130,9 @@ export class DrawingDimensions {
         this.mouseYPercLocat = this.percY1;
     }
 
-    currentPositionFromScreen (pos, e) {
+    currentPositionFromScreen (pos) {
         let utils = new Utils(this.currentBB, this.graph_width, this.graph_height);
-        let p = utils.fromScreen({ x: (e.pageX - this.centrePoint) - pos.left, y: (e.pageY - this.centreVerticalPoint) - pos.top });
+        let p = utils.fromScreen({ x: (pos.pageX - this.centrePoint) - pos.left, y: (pos.pageY - this.centreVerticalPoint) - pos.top });
         return p;
     }
 
@@ -208,7 +208,7 @@ export class DrawingDimensions {
 
     addToMouseQueue (x, y) {
         let _point = new Array(x, y);
-        this.mouseQueue[this.dims.mouseQueue.length] = _point;
+        this.mouseQueue[this.mouseQueue.length] = _point;
     }
 
     validToDraw(x1, y1, margin) {
