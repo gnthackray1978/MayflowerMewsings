@@ -52,9 +52,9 @@ function MainPageHeader(props) {
                   "right": "-1",
                   "width": "95",
                   "height": "70px",
-                  "background-color": "white",
+                  "backgroundColor": "white",
                   /* opacity: 0.5; */
-                  "border-radius": "1px 1px 1px 25px",
+                  "borderRadius": "1px 1px 1px 25px",
                   "zIndex": "100"
                 }}
               ></Box>
@@ -98,13 +98,13 @@ function MainPageHeader(props) {
             }}>
               <Grid container>
                 {featuredPosts.map((post) => (
-                  <Grid item xs={12} md={6}>   
+                  <Grid item xs={12} md={6} key={post.title}>   
                     <div style ={{"marginLeft": "25px",  "marginTop": "25px"}} >
-                        <Markdown className="markdown" key={post.text.substring(0, 40)}>
+                        <Markdown className="markdown" key={post.title + '-md'}>
                           {post.text.length <= 200 ? post.text : post.text.substring(0, 200)}
                         </Markdown>
                         <Typography variant="subtitle1" color="primary">           
-                          <Link display="block" variant="body1" href={post.link} key={post.title} >
+                          <Link display="block" variant="body1" href={post.link} key={post.title + '-link'} >
                             Continue reading...
                           </Link>
                         </Typography>
@@ -131,6 +131,17 @@ MainPageHeader.propTypes = {
 
     title: PropTypes.string.isRequired,
   }).isRequired,
+
+  featuredPosts: PropTypes.arrayOf(
+    PropTypes.shape({
+      title: PropTypes.string.isRequired,
+      dateLastEdit: PropTypes.string.isRequired,
+      text: PropTypes.string.isRequired,
+      imageURL: PropTypes.string.isRequired,
+      link: PropTypes.string.isRequired,
+      imageDescription: PropTypes.string.isRequired,
+    })
+  ).isRequired,
 };
 
 export default MainPageHeader;

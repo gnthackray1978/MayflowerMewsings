@@ -78,6 +78,18 @@ export class DrawingDimensions {
             }
         }
     }
+    
+    GetPercDistances2() {
+        const drawingWidth = this.drawingX2 - this.drawingX1;
+        const drawingHeight = this.drawingY2 - this.drawingY1;
+        if (drawingWidth === 0 || drawingHeight === 0) return { x: 0, y: 0 };
+        const dx = this.mouse_x - this.drawingX1;
+        const dy = this.mouse_y - this.drawingY1;
+        return {
+            x: dx / (drawingWidth / 100),
+            y: dy / (drawingHeight / 100)
+        };
+    }
 
     GetPercDistances() {
 
@@ -136,7 +148,10 @@ export class DrawingDimensions {
         return p;
     }
 
-
+    /**
+     * Adjusts centreverticalpoint and centrepoint based on movementx and movementy
+     * 
+     */
     UpdateLocation () {
 
         let increment = 2;

@@ -14,9 +14,9 @@ var mainFeaturedPost= {
   text:
     `# GNThackray.co.uk   
     \nScroll down for more info.`,
-    imageURL: settings.forumImgUrl,
+    imageURL: settings.forumImgUrl ?? '',
     imageDescription: 'main image description',
-    linkURL : settings.forumUrl,
+    linkURL : settings.forumUrl ?? '',
     linkDescription: 'Continue reading…',
 };
 

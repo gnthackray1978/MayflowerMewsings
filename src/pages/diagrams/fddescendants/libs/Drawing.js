@@ -159,6 +159,7 @@ Drawing.prototype ={
 
     },
 
+    /// update the layout
     UpdateActiveLayouts : function(){
 
         var that = this;
