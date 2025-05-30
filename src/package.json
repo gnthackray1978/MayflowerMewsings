@@ -32,7 +32,7 @@
     "axios": "^1.6.7",
     "babel-preset-react-app": "^3.1.0",
     "gapi-script": "^1.0.1",
-    "google-map-react": "^2.1.10",
+    "google-map-react": "^2.2.25",
     "graphql": "^16.2.0",
     "graphql-tag": "^2.11.0",
     "history": "^4.10.1",
