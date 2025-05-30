@@ -34,7 +34,7 @@ and stored in redux
 
 function getPageName(pagePath, funcList){
 
- // console.log('get page name ');
+  console.log('get page name -tb '+ pagePath + ' funcList length: ' + funcList.length);
 
   var path = pagePath.replace('/','');
 
@@ -151,7 +151,7 @@ function TopButtons(props) {
 
 
 
-          <Button color="inherit"  className={classes.grow}>
+          <Button id = "titleButton" color="inherit"  className={classes.grow}>
               <Typography variant="h6" color="inherit"  className ={classes.tolowerBtn}>
                   {selection.title}
               </Typography>

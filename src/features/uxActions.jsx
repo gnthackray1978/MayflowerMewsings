@@ -6,8 +6,8 @@ import { METADATALOADED, APPLICATIONSELECTED,
   ADDCACHETREEPERSON,  
   CONTROLPANELTOOLSDIALOGCLOSED,
   CONTROLPANELTOOLSDIALOGOPEN,
-  DISPLAYDIAGRAMCONTROLS,HIDEDIAGRAMCONTROLS, TOGGLEDIAGRAMCONTROLS, NEWLOCATIONS, SETTITLE} from './actionTypes.jsx';
- 
+  DISPLAYDIAGRAMCONTROLS,HIDEDIAGRAMCONTROLS, TOGGLEDIAGRAMCONTROLS, NEWLOCATIONS, SETTITLE, INDEXSTATE} from './actionTypes.jsx';
+
 
   
   export const setTitle = (state) =>{
@@ -100,20 +100,7 @@ export const addTreeToCache = (state) =>{
       }    
 };
 
-export const setTree = (state) =>{
-  // console.log('setTree action');
-  return async (dispatch, getState)  => {
-    var tp = getState();
-    if(tp.ux.selectedTree == state)
-      state = '';
 
-    dispatch({
-      type: TREESELECTED,
-      payload : state
-    });
-  }
-  
-};
 
 export const setPerson = (state) =>{
   // console.log('setTree action');
@@ -168,6 +155,30 @@ export const applicationSelected = (state) =>{
          payload : state
        });
     }
+};
+
+export const setIndexState = (data) =>{  
+  return async (dispatch, getState)  => {
+       dispatch({
+         type: INDEXSTATE,
+         payload : data
+       });
+    }
+};
+
+export const setTree = (state) =>{
+  // console.log('setTree action');
+  return async (dispatch, getState)  => {
+    var tp = getState();
+    if(tp.ux.selectedTree == state)
+      state = '';
+
+    dispatch({
+      type: TREESELECTED,
+      payload : state
+    });
+  }
+  
 };
 
 export const siteDialogOpen = () =>{

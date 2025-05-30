@@ -8,7 +8,7 @@ import TreeSelectionDrawer from './features/SideDrawer/TreeSelectionDrawer.jsx';
 import { errorFormatter } from '../src/shared/common';
 import PageContainer from './pages/PageContainer.jsx';
 import {gql, useQuery } from '@apollo/client';
-import {metaDataLoaded,applicationSelected,setTree} from "./features/uxActions.jsx";
+import {metaDataLoaded,applicationSelected,setTree,setIndexState} from "./features/uxActions.jsx";
 import {getParams} from './features/Table/qryStringFuncs';
 import ControlPanelDrawer from './features/SideDrawer/ControlPanelDrawer.jsx';
  
@@ -42,7 +42,7 @@ query Query($appId:Int!) {
 
 function getPageName(pagePath, funcList){
 
-   //console.log('get page name ');
+   console.log('get page name idx :' + pagePath + ' funcList length: ' + funcList.length);
 
    var path = pagePath.replace('/','');
 
@@ -50,11 +50,14 @@ function getPageName(pagePath, funcList){
 
    let appId =1;
    let pageId =0;
+   let pageTitle = 'Default';
 
    while(idx < funcList.length){
      if(funcList[idx].pageName == path){
        appId = funcList[idx].applicationId;
        pageId = funcList[idx].id;
+       pageTitle = '';//funcList[idx].pageTitle;
+       break;
      }
      idx++;
    }
@@ -63,7 +66,8 @@ function getPageName(pagePath, funcList){
 
    return {
      pageId,
-     appId
+     appId,
+     pageTitle
    };
 }
 
@@ -82,7 +86,8 @@ function useTableState(qry, tokenExpiresAt) {
         funcs :data.searchSiteFunction.rows,
         error : data.searchSite.error + data.searchSiteFunction.error,
         pageId : selection.pageId,
-        appId : selection.appId
+        appId : selection.appId,
+        title: selection.pageTitle
       };
 
       return stateObj;
@@ -140,20 +145,33 @@ function Index(props) {
 
     const {metaDataLoaded,applicationSelected,tokenExpiresAt,setTree} = props;
     
-    //console.log('Index: ' + tokenExpiresAt);
+    console.log('Index: ' + tokenExpiresAt);
     
     
 
     let state = useTableState(GETQL_Meta,tokenExpiresAt);    
 
     useEffect(() => { 
-        if(state.stateObj)          
-          applicationSelected(state.stateObj.appId); 
-          
-          let params = getParams();
-          if(params && params.origin && params.originDescription){
-            setTree({origin : params.origin, originDescription: params.originDescription});
-          }
+        let payload = {     
+          selectedTree :undefined,              
+          appId : undefined,
+          title: undefined 
+        };
+      
+        if(state.stateObj){
+          payload.appId = state.stateObj.appId;//applicationSelected(state.stateObj.appId); 
+          payload.title = state.stateObj.title;
+        }
+
+        let params = getParams();
+        if(params && params.origin && params.originDescription){          
+          payload.selectedTree = {
+            originDescription : params.originDescription,
+            origin : params.origin,
+          };
+        }
+
+        setIndexState(payload);
     });
 
 
@@ -161,7 +179,8 @@ function Index(props) {
       loading : state.loading,
       fnRefetch : state.refetch,
       siteCount : state.stateObj.sites.length,
-      sites : state.stateObj.funcs
+      sites : state.stateObj.funcs,
+    //  title : state.stateObj.title
     }
  
 
@@ -200,8 +219,8 @@ const mapDispatchToProps = dispatch => {
   return {
     applicationSelected: (selectedApp) => dispatch(applicationSelected(selectedApp)),
     metaDataLoaded: (data) => dispatch(metaDataLoaded(data)),
-    setTree: (data) => dispatch(setTree(data))
-
+    setTree: (data) => dispatch(setTree(data)),
+    setIndexState: (data) => dispatch(setIndexState(data))
   };
 };
 
