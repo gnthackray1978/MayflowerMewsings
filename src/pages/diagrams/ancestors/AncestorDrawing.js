@@ -385,8 +385,8 @@ AncestorDrawing.prototype = {  // renamed from AncTree.prototype
                                     xRange.x2 = n.next.X1 - parentlessPersonStartX;
                                     xRange.x1 = xRange.x2 - this.layout.adjustedBoxWidths[n.next.GenerationIdx];
                                 } else {
-                                    xRange.x1 = parentlessPersonStartX;
-                                    xRange.x2 = xRange.x1 + this.layout.adjustedBoxWidths[n.next.GenerationIdx];
+                                    xRange.x1 = parentlessPersonStartX;                                                                           
+                                    xRange.x2 = xRange.x1 + this.layout.adjustedBoxWidths[n.next?.GenerationIdx ?? n.node.GenerationIdx];                                    
                                 }
                             }
                         } else {
