@@ -25,8 +25,7 @@ export default function DiagramWrapper(props) {
 
   return (
     <div className={classes.root}>
-        {children.length > 1 && children[0]}
-
+        {children.length > 1 && children[0]}        
         {displayComponent()}
 
     </div>
