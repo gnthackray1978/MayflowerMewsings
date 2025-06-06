@@ -23,8 +23,9 @@ import Paper from '@mui/material/Paper';
 import Draggable from 'react-draggable';
 
 function PaperComponent(props) {
+
   return (
-    <Draggable
+    <Draggable 
       handle="#draggable-dialog-title"
       cancel={'[class*="MuiDialogContent-root"]'}
     >
@@ -32,7 +33,6 @@ function PaperComponent(props) {
     </Draggable>
   );
 }
-
 
 const DiagramToolbar = (props) => {
  
@@ -98,9 +98,6 @@ const DiagramToolbar = (props) => {
   );
 };
 
-
-
- 
 const mapStateToProps = state => {
   return { 
     selectedTreeData : state.ux.selectedTreeData,
