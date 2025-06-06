@@ -2,6 +2,7 @@ import  React, { useState, useEffect }  from 'react';
 
 import DescendantsBody from './DescendantsBody.jsx';
 import DiagramToolbar from '../DiagramToolbar.jsx';
+import GraphControlsDialog from '../GraphControlsDialog.jsx';
 import DiagramWrapper from '../DiagramWrapper.jsx'
 import {transformData, populateDescendantObjects} from '../drawinglib/graphDataFuncs.jsx';
 import {gql} from '@apollo/client';
@@ -98,7 +99,7 @@ function Descendants(props) {
     return ( 
         <div>
           <DiagramWrapper state = {state} >
-              <DiagramToolbar  graph ={graph} state ={state}/>
+              <GraphControlsDialog graph ={graph} state ={state} id = "draggable"></GraphControlsDialog>
               <DescendantsBody  graph ={graph} />
           </DiagramWrapper>
         </div>

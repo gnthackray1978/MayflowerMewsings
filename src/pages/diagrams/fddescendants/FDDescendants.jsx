@@ -2,6 +2,7 @@ import  React, { useState, useEffect }  from 'react';
 
 import FDDescendantsBody from './FDDescendantsBody.jsx';
 import DiagramToolbar from '../DiagramToolbar.jsx';
+import GraphControlsDialog from '../GraphControlsDialog.jsx';
 
 import DiagramWrapper from '../DiagramWrapper.jsx'
 import {gql} from '@apollo/client';
@@ -156,7 +157,7 @@ function FDDescendants(props) {
       diagUI.InitEvents();
 
         Body = ()=>{ return(<div>
-          <DiagramToolbar  graph ={drawing} state ={state}/>
+          <GraphControlsDialog graph ={drawing} state ={state} id = "draggable"></GraphControlsDialog>
           <FDDescendantsBody  drawingContainer ={drawing} />
       </div>)};
   }

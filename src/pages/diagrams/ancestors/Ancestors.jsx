@@ -2,6 +2,7 @@ import  React, { useState, useEffect }  from 'react';
 
 import AncestorsBody from './AncestorsBody.jsx';
 import DiagramToolbar from '../DiagramToolbar.jsx';
+import GraphControlsDialog from '../GraphControlsDialog.jsx';
 import { AncestorDrawing } from './AncestorDrawing';
 import DiagramWrapper from '../DiagramWrapper.jsx'
 import {transformData, populateAncestryObjects} from '../drawinglib/graphDataFuncs.jsx'
@@ -100,9 +101,9 @@ function Ancestors(props) {
 
   return ( 
       <div>
-        <DiagramWrapper state = {state} >
-          <DiagramToolbar graph ={graph} state ={state}/>
-          <AncestorsBody graph ={graph} />
+        <DiagramWrapper state = {state} >                    
+          <GraphControlsDialog graph ={graph} state ={state} id = "draggable"></GraphControlsDialog>
+          <AncestorsBody graph ={graph} id = "abody"/>
         </DiagramWrapper>
       </div>
   );
