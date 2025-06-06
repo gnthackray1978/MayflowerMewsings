@@ -49,9 +49,10 @@ export default (state = {
   error: undefined
 }, action) => {
 
-
+//console.log('uxReducer: Action received - Type:', action.type);
   switch (action.type) {
     case INDEXSTATE:  {
+         // console.log('uxReducer: INDEXSTATE case entered, action:', action);
         const { payload } = action;
         // Assuming action.title is a distinct field on the action object itself,
         // as per the original logic's `action.title` access.

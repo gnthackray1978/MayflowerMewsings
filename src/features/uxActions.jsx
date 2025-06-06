@@ -158,11 +158,13 @@ export const applicationSelected = (state) =>{
 };
 
 export const setIndexState = (data) =>{  
+  //console.log('setIndexState action'+ data);
+
   return async (dispatch, getState)  => {
-       dispatch({
-         type: INDEXSTATE,
-         payload : data
-       });
+  //    console.log('uxActions.jsx: setIndexState action creator invoked, data:', data);
+      dispatch({ type: INDEXSTATE, payload: data });
+   //   console.log('uxActions.jsx: INDEXSTATE action dispatched');
+
     }
 };
 
