@@ -17,7 +17,13 @@ const parseLocations = (rawLocations) => {
     birthLat: r.birthLat,
     birthLong: r.birthLong,
     show: r.show,
-    locationData: { trees: r.trees, ftmPersonSummary: r.ftmPersonSummary }
+    locationData: { 
+      trees: r.trees, 
+      ftmPersonSummary: r.ftmPersonSummary ,
+      locationName: r.locationName,
+      id: r.id
+    },
+    
   })) : [];
 
 } 
@@ -86,7 +92,7 @@ function MapPerson() {
       
     let tp = parseLocations(state.rows);
        
-    console.log('MapPerson' );
+    //console.log('MapPerson' );
     return (
         //rows treeColours
         <div>
