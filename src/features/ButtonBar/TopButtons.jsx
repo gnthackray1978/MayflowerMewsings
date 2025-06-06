@@ -34,7 +34,7 @@ and stored in redux
 
 function getPageName(pagePath, funcList){
 
-  console.log('get page name -tb '+ pagePath + ' funcList length: ' + funcList.length);
+  //console.log('get page name -tb '+ pagePath + ' funcList length: ' + funcList.length);
 
   var path = pagePath.replace('/','');
 
@@ -80,6 +80,8 @@ function TopButtons(props) {
     const showDiagramControls = selection.appId === 2;
     const showControlPanelControls = selection.appId === 11;
     
+    //console.log('top buttons: ', title);
+
     if(title == 'No Data' || title == ''){
       selection.title = 'Select Tree';
     }
