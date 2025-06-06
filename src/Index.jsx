@@ -42,7 +42,7 @@ query Query($appId:Int!) {
 
 function getPageName(pagePath, funcList){
 
-   console.log('get page name idx :' + pagePath + ' funcList length: ' + funcList.length);
+//   console.log('get page name idx :' + pagePath + ' funcList length: ' + funcList.length);
 
    var path = pagePath.replace('/','');
 
@@ -56,7 +56,7 @@ function getPageName(pagePath, funcList){
      if(funcList[idx].pageName == path){
        appId = funcList[idx].applicationId;
        pageId = funcList[idx].id;
-       pageTitle = '';//funcList[idx].pageTitle;
+       pageTitle = funcList[idx].pageTitle;
        break;
      }
      idx++;
@@ -143,12 +143,10 @@ function useTableState(qry, tokenExpiresAt) {
 
 function Index(props) {
 
-    const {metaDataLoaded,applicationSelected,tokenExpiresAt,setTree} = props;
+    const {metaDataLoaded,applicationSelected,tokenExpiresAt,setTree,setIndexState} = props;
     
-    console.log('Index: ' + tokenExpiresAt);
-    
-    
-
+    //console.log('Index: ' + tokenExpiresAt);
+        
     let state = useTableState(GETQL_Meta,tokenExpiresAt);    
 
     useEffect(() => { 
@@ -171,8 +169,10 @@ function Index(props) {
           };
         }
 
-        setIndexState(payload);
+      setIndexState(payload);    
     });
+
+
 
 
     let metaSubset ={
@@ -181,6 +181,7 @@ function Index(props) {
       siteCount : state.stateObj.sites.length,
       sites : state.stateObj.funcs,
     //  title : state.stateObj.title
+      title : state.stateObj.title ?? '',
     }
  
 
