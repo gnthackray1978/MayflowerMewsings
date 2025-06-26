@@ -17,7 +17,7 @@
   "dependencies": {
     "@apollo/client": "^3.8.10",
     "@emotion/react": "^11.11.3",
-    "@emotion/styled": "^11.11.0",
+    "@emotion/styled": "^11.11.0",    
     "@material-ui/core": "^4.12.3",
     "@material-ui/icons": "^4.11.2",
     "@mdx-js/react": "^2.2.1",
@@ -50,13 +50,15 @@
     "react-is": "^16.13.1",
     "react-player": "^2.16.0",
     "react-redux": "^7.1.1",
+    "react-rnd": "^10.5.2",
     "react-router": "6.21.3",
     "react-router-dom": "6.22.0",
     "redux": "^4.2.1",
     "redux-api-middleware": "^3.2.1",
     "redux-thunk": "^2.3.0",
     "shared": "^0.2.0",
-    "video-react": "^0.16.0"
+    "video-react": "^0.16.0",    
+    "react-scripts": "4.0.1"
   },
   "postcss": {
     "modules": false,
