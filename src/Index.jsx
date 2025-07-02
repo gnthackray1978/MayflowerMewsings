@@ -42,7 +42,7 @@ query Query($appId:Int!) {
 
 function getPageName(pagePath, funcList){
 
-//   console.log('get page name idx :' + pagePath + ' funcList length: ' + funcList.length);
+   //  console.log('get page name idx :' + pagePath + ' funcList length: ' + funcList.length);
 
    var path = pagePath.replace('/','');
 
@@ -119,7 +119,7 @@ function useTableState(qry, tokenExpiresAt) {
   const  { loading, networkStatus,error, data, refetch } = useQuery(qry, {
     variables: filterParams,
      notifyOnNetworkStatusChange: true,
-     fetchPolicy:"no-cache"  
+     fetchPolicy: 'no-cache'
   });
 
   var stateObj = makeData(data);
@@ -127,15 +127,13 @@ function useTableState(qry, tokenExpiresAt) {
   let errors = errorFormatter(loading,error, stateObj.error, networkStatus);
   
   if(errors.length>0){
-    console.log(errors);
+    console.log("Errors: " + errors);
   }
 
   return {
     stateObj,
     refetch ,
     loading, networkStatus,error
-
-
   };
 }
 
@@ -187,7 +185,7 @@ function Index(props) {
 
     return (
           <div>
-            <TopButtons isData = {true} metaSubset = {metaSubset}/>
+            <TopButtons isData = {true} metaSubset = {metaSubset} refetch = {state.refetch}/>
 
             <SideDrawer stateObj = {state.stateObj}/>
             

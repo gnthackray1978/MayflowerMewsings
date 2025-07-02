@@ -70,7 +70,7 @@ function TopButtons(props) {
     const {siteDialogOpen, siteDialogClose,
        showAppListDialog, ShowFuncListDialog, funcDialogOpen , showControlPanelDialog,
        funcDialogClose, metaSubset,showTreeSelectorDialog, controlPanelDialogOpen,controlPanelDialogClose,
-       treeSelectorDialogOpen,treeSelectorDialogClose, toggleDiagramControls, title} = props;
+       treeSelectorDialogOpen,treeSelectorDialogClose, toggleDiagramControls, title, refetch} = props;
 
     const classes =  topButtonStyles(theme);
  
@@ -79,7 +79,8 @@ function TopButtons(props) {
 
     const showDiagramControls = selection.appId === 2;
     const showControlPanelControls = selection.appId === 11;
-    
+    const showAppList  =  (metaSubset.sites && metaSubset.sites.length > 1) || (metaSubset.funcs && metaSubset.funcs.length > 1);
+
     //console.log('top buttons: ', title);
 
     if(title == 'No Data' || title == ''){
@@ -173,21 +174,23 @@ function TopButtons(props) {
            </IconButton>
           }
 
-          <IconButton
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="Menu"
-            onClick={()=>{
-                 if(showAppListDialog)
-                   siteDialogClose();
-                 else
-                   siteDialogOpen();
-                 }}
-            size="large">
-              <AppsIcon />
-          </IconButton>
-          
-          <GoogleIDSConnect/>
+          { showAppList &&
+            <IconButton
+              className={classes.menuButton}
+              color="inherit"
+              aria-label="Menu"
+              onClick={()=>{
+                  if(showAppListDialog)
+                    siteDialogClose();
+                  else
+                    siteDialogOpen();
+                  }}
+              size="large">
+                <AppsIcon />
+            </IconButton>
+          }
+
+          <GoogleIDSConnect refetch={refetch}  />
 
       </Toolbar>
     );

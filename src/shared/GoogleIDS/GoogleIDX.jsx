@@ -3,13 +3,13 @@ import React, { Component, useEffect,useState } from 'react';
 import jwt_decode from 'jwt-decode';
 import { connect  } from "react-redux";
 import {PropTypes} from 'prop-types';
- 
+ import Box from '@mui/material/Box';
 import ImageButton from "./ImageButton.jsx";
 import GooglePopup from "./GooglePopup.jsx";
 import GoogleButton from "./GoogleButton.jsx"; 
-
+import { useApolloClient } from '@apollo/client';
 import {setIdsLoginScreenVisible, setTokenExpiration} from "./redux/idsActions.jsx";
-
+import {authLink,httpLink} from '../../apollo-client.js';
 import { useTheme } from '@mui/material/styles';
 
 import {styles} from "./styles/styles.jsx";
@@ -24,6 +24,19 @@ import {styles} from "./styles/styles.jsx";
 
     return (
       <div>
+         <Box id = "spacerbox"  sx={{
+              "position": "absolute",
+              "top": "-1",
+              "right": "1",
+              "width": "125px",
+              "height": "70px",
+              "backgroundColor": "white",
+              /* opacity: 0.5; */
+              "borderRadius": "1px 1px 1px 25px",
+              "zIndex": "-1"
+            }}
+          ></Box>
+
         <div><ImageButton url = {user.picture} onClick={()=>setIdsLoginScreenVisible(true)}/></div>
             
         <GooglePopup open={IdsLogInDetailsVisible} ProfileObj ={user}>
@@ -39,26 +52,35 @@ import {styles} from "./styles/styles.jsx";
  }
 
 function GoogleIDSConnect(props) {
-    const {IdsLogInDetailsVisible,setIdsLoginScreenVisible,config, setTokenExpiration} = props;
+    const {IdsLogInDetailsVisible,setIdsLoginScreenVisible,config, setTokenExpiration,refetch} = props;
     const theme = useTheme();
     const classes = styles(theme);
-
+    const client = useApolloClient();
     //console.log('GoogleIDSConnect');
     const [user, setUser] = useState(undefined);
   
 
 
     var loggedIn = (responce)=>{
-    //  console.log('Logged in');
+      console.log('Logged in');
       var userObject = jwt_decode(responce.credential);
     //  console.log(responce.credential);
   
       localStorage.setItem("token", responce.credential);
       localStorage.setItem("email", userObject.email);
       localStorage.setItem("token-expirey", userObject.exp);
+      
+      // if(client){
+      //   console.log('resetting token info');
+      //   client.setLink(authLink.concat(httpLink));
+      // }
 
       setTokenExpiration(userObject.exp);
       setUser(userObject);
+
+      //load the menus
+      refetch && refetch();
+
 
       setTimeout(() => {
         /* global google */
@@ -134,7 +156,21 @@ function GoogleIDSConnect(props) {
   
     const renderElement = ()=>{
       if(!user)
-         return <div id= "signInDiv" className = {classes.show}></div>;
+         return <div>
+                    <Box id = "spacerbox"  sx={{
+                        "position": "absolute",
+                        "top": "-1",
+                        "right": "-1",
+                        "width": "250px",
+                        "height": "70px",
+                        "backgroundColor": "white",
+                        /* opacity: 0.5; */
+                        "borderRadius": "1px 1px 1px 25px",
+                        "zIndex": "-1"
+                      }}
+                    ></Box>
+                    <div id= "signInDiv" className = {classes.show}></div>
+                </div>;
 
       return <div id= "signInDiv" className = {classes.hide}></div>;
     };

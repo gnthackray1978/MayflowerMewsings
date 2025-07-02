@@ -45,19 +45,7 @@ function MainPageHeader(props) {
             }}
           >
             <div id ="container">
-              <Box
-                sx={{
-                  "position": "absolute",
-                  "top": "-1",
-                  "right": "-1",
-                  "width": "95",
-                  "height": "70px",
-                  "backgroundColor": "white",
-                  /* opacity: 0.5; */
-                  "borderRadius": "1px 1px 1px 25px",
-                  "zIndex": "100"
-                }}
-              ></Box>
+             
               <img id = "treesImg" src={poster} width={"100%"} />
               <Canvas id = "canvas" drawing ={graph} draw={draw} style ={
                 {
