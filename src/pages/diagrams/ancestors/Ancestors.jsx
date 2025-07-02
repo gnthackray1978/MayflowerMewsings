@@ -1,7 +1,7 @@
 import  React, { useState, useEffect }  from 'react';
 
 import AncestorsBody from './AncestorsBody.jsx';
-import DiagramToolbar from '../DiagramToolbar.jsx';
+
 import GraphControlsDialog from '../GraphControlsDialog.jsx';
 import { AncestorDrawing } from './AncestorDrawing';
 import DiagramWrapper from '../DiagramWrapper.jsx'

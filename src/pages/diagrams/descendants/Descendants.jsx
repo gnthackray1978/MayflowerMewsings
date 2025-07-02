@@ -1,7 +1,6 @@
 import  React, { useState, useEffect }  from 'react';
 
 import DescendantsBody from './DescendantsBody.jsx';
-import DiagramToolbar from '../DiagramToolbar.jsx';
 import GraphControlsDialog from '../GraphControlsDialog.jsx';
 import DiagramWrapper from '../DiagramWrapper.jsx'
 import {transformData, populateDescendantObjects} from '../drawinglib/graphDataFuncs.jsx';

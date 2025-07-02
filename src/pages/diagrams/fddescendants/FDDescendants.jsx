@@ -1,7 +1,6 @@
 import  React, { useState, useEffect }  from 'react';
 
 import FDDescendantsBody from './FDDescendantsBody.jsx';
-import DiagramToolbar from '../DiagramToolbar.jsx';
 import GraphControlsDialog from '../GraphControlsDialog.jsx';
 
 import DiagramWrapper from '../DiagramWrapper.jsx'
