@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import PersonTable from './PersonTable.jsx'
 import { gql} from '@apollo/client';
 import {getParams} from '../../../../features/Table/qryStringFuncs';
 import PersonTableToolbar from './PersonTableToolbar.jsx'
 import TableWrapper from '../../../../features/Table/TableWrapper.jsx'
 import {useTableState} from '../../../../features/Table/useTable';
+import GenericTable from '../../../../features/Table/GenericTable.jsx';
 
 function Persons() {
 
@@ -90,7 +90,7 @@ function Persons() {
     const headCells = [
       { id: 'estBirthYearInt', numeric: false, disablePadding: true, label: 'Birth Year' },
       { id: 'deathInt', numeric: false, disablePadding: true, label: 'Death Year' },
-      { id: 'christianName', numeric: false, disablePadding: true, label: 'Name' },
+      { id: 'christianName', numeric: false, disablePadding: true, label: 'Name', isRowHeader: true },
       { id: 'surname', numeric: false, disablePadding: true, label: 'Surname' },
       { id: 'birthLocation', numeric: false, disablePadding: true, label: 'Birth Loc.' },
       { id: 'birthCounty', numeric: false, disablePadding: true, label: 'Birth County' },
@@ -142,7 +142,7 @@ function Persons() {
       <div>
         <TableWrapper state = {state} >
           <PersonTableToolbar state ={state}/>
-          <PersonTable state ={state}/>
+          <GenericTable state ={state}/>
         </TableWrapper>
       </div>
     );

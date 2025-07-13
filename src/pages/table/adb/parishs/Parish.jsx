@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import ParishTable from './ParishTable.jsx'
+import React from 'react';
 import { gql} from '@apollo/client';
 import {getParams} from '../../../../features/Table/qryStringFuncs';
-import ParishTableToolbar from './ParishTableToolbar.jsx'
-import TableWrapper from '../../../../features/Table/TableWrapper.jsx'
+import ParishTableToolbar from './ParishTableToolbar.jsx';
+import TableWrapper from '../../../../features/Table/TableWrapper.jsx';
 import {useTableState} from '../../../../features/Table/useTable';
+import GenericTable from '../../../../features/Table/GenericTable.jsx';
 
 function Parishs() {
 
@@ -46,7 +46,7 @@ function Parishs() {
   `;
   
     const headCells = [
-      { id: 'parishName', numeric: false, disablePadding: true, label: 'Name' },
+      { id: 'parishName', numeric: false, disablePadding: true, label: 'Name', isRowHeader: true },
       { id: 'parishRegistersDeposited', numeric: false, disablePadding: true, label: 'Deposited' },
       { id: 'parishNotes', numeric: false, disablePadding: true, label: 'Notes' },
       { id: 'parentParish', numeric: false, disablePadding: true, label: 'Parent' },
@@ -77,7 +77,7 @@ function Parishs() {
       <div>
         <TableWrapper state = {state} >
           <ParishTableToolbar state ={state}/>
-          <ParishTable state ={state}/>
+          <GenericTable state ={state}/>
         </TableWrapper>
       </div>
     );

@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import DupeTable from './DupeTable.jsx'
-import DupeTableToolbar from './DupeTableToolbar.jsx'
-import TableWrapper from '../../../../features/Table/TableWrapper.jsx'
+import React from 'react';
+import DupeTableToolbar from './DupeTableToolbar.jsx';
+import TableWrapper from '../../../../features/Table/TableWrapper.jsx';
+import GenericTable from '../../../../features/Table/GenericTable.jsx';
 import {gql} from '@apollo/client';
 import {useTableState} from '../../../../features/Table/useTable';
 import {getParams} from '../../../../features/Table/qryStringFuncs';
@@ -32,14 +32,13 @@ function Dupes() {
 
 
     const headCells = [
+      { id: 'surname', numeric: false, disablePadding: true, label: 'Surname', isRowHeader: true },
+      { id: 'firstName', numeric: false, disablePadding: true, label: 'First Name' },
+      { id: 'location', numeric: false, disablePadding: true, label: 'Location' },
       { id: 'yearStart', numeric: false, disablePadding: true, label: 'Year From' },
       { id: 'yearEnd', numeric: false, disablePadding: true, label: 'Year To' },
-      { id: 'parentage', numeric: false, disablePadding: true, label: 'Parentage' },
-      { id: 'Location', numeric: false, disablePadding: true, label: 'Location' },
-      
-      { id: 'Surname', numeric: false, disablePadding: true, label: 'Surname' }
+      { id: 'origin', numeric: false, disablePadding: true, label: 'Origin' }
     ];
-
     
     var params = getParams(pobj.defaults);
 
@@ -52,7 +51,7 @@ function Dupes() {
         <div>
           <TableWrapper state = {state} >
             <DupeTableToolbar state ={state}/>
-            <DupeTable state ={state}/>
+            <GenericTable state ={state}/>
           </TableWrapper>
         </div>
     );

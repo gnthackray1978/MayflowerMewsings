@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import TrsTable from './trsTable.jsx'
-import TrsTableToolbar from './trsTableToolbar.jsx'
-import TableWrapper from '../../../../features/Table/TableWrapper.jsx'
+import React from 'react';
+import TrsTableToolbar from './trsTableToolbar.jsx';
+import TableWrapper from '../../../../features/Table/TableWrapper.jsx';
+import GenericTable from '../../../../features/Table/GenericTable.jsx';
 import {gql} from '@apollo/client';
 import {useTableState} from '../../../../features/Table/useTable';
 import {getParams} from '../../../../features/Table/qryStringFuncs';
@@ -29,27 +29,16 @@ function Trs() {
   `;
 
     const headCells = [
-        { id: 'Name', numeric: false, disablePadding: true, label: 'Name' },
-        { id: 'PersonCount', numeric: false, disablePadding: true, label: 'Persons' },
-        { id: 'CM', numeric: false, disablePadding: true, label: 'CM' },
-        { id: 'Located', numeric: false, disablePadding: true, label: 'Located' },
-        { id: 'Counties', numeric: false, disablePadding: true, label: 'Counties' }
+        { id: 'name', numeric: false, disablePadding: true, label: 'Name', isRowHeader: true },
+        { id: 'personCount', numeric: false, disablePadding: true, label: 'Persons' },
+        { id: 'cm', numeric: false, disablePadding: true, label: 'cM' },
+        { id: 'located', numeric: false, disablePadding: true, label: 'Located' },
+        { id: 'origin', numeric: false, disablePadding: true, label: 'Origin' }
     ];
 
-    // var defaultValues = {
-    //   sortColumn : 'cM',
-    //   sortOrder : 'desc',
-    //   limit : 25,
-    //   offset :0,
-    //   treeName : '',
-    //   yearStart : 0,
-    //   yearEnd : 2000,
-    //   minCM : 0
-    // };
+    const params = getParams(pobj.defaults);
 
-    var params = getParams(pobj.defaults);
-
-    var state = useTableState(GET_Trs,params,'treerecsearch');
+    const state = useTableState(GET_Trs,params,'treerecsearch');
 
     state.headCells = headCells;
     state.title = 'Trees Over View';
@@ -58,7 +47,7 @@ function Trs() {
         <div>
           <TableWrapper state = {state} >
             <TrsTableToolbar state ={state}/>
-            <TrsTable state ={state}/>
+            <GenericTable state ={state}/>
           </TableWrapper>
         </div>
     );

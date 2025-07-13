@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import PoiTable from './PoiTable.jsx'
-import PoiTableToolbar from './PoiTableToolbar.jsx'
-import TableWrapper from '../../../../features/Table/TableWrapper.jsx'
+import React from 'react';
+import PoiTableToolbar from './PoiTableToolbar.jsx';
+import TableWrapper from '../../../../features/Table/TableWrapper.jsx';
 import {gql} from '@apollo/client';
+import GenericTable from '../../../../features/Table/GenericTable.jsx';
 import {useTableState} from '../../../../features/Table/useTable';
 import {getParams} from '../../../../features/Table/qryStringFuncs';
 import {pobj} from '../../../../shared/common.js'
@@ -35,21 +35,24 @@ function Poi() {
     `;
 
     const headCells = [
-        { id: 'ChristianName', numeric: false, disablePadding: true, label: 'Name' },
-        { id: 'Surname', numeric: false, disablePadding: true, label: 'Surname' },
-        { id: 'BirthYear', numeric: false, disablePadding: true, label: 'Birth Year' },
-        { id: 'BirthPlace', numeric: false, disablePadding: true, label: 'Location' },
-        { id: 'BirthCounty', numeric: false, disablePadding: true, label: 'County' },
-        { id: 'TestDisplayName', numeric: false, disablePadding: true, label: 'Testee' },
-        { id: 'TestAdminDisplayName', numeric: false, disablePadding: true, label: 'Admin Name' },
-        { id: 'SharedCentimorgans', numeric: false, disablePadding: true, label: 'cMs' }
+        { id: 'surname', numeric: false, disablePadding: true, label: 'Surname', isRowHeader: true },
+        { id: 'christianName', numeric: false, disablePadding: true, label: 'Name' },
+        { id: 'birthYear', numeric: false, disablePadding: true, label: 'Birth Year' },
+        { id: 'birthPlace', numeric: false, disablePadding: true, label: 'Location' },
+        { id: 'birthCounty', numeric: false, disablePadding: true, label: 'County' },
+        { id: 'testDisplayName', numeric: false, disablePadding: true, label: 'Testee' },
+        { id: 'testAdminDisplayName', numeric: false, disablePadding: true, label: 'Admin Name' },
+        { id: 'sharedCentimorgans', numeric: false, disablePadding: true, label: 'cMs' }
     ];
 
-    pobj.defaults.name = 'GNT GRT ATH';
-    pobj.defaults.yearStart = 1750;
-    pobj.defaults.yearEnd = 1775; 
+    const defaultValues = {
+        ...pobj.defaults,
+        name: 'GNT GRT ATH',
+        yearStart: 1750,
+        yearEnd: 1775
+    };
 
-    var params = getParams(pobj.defaults);
+    var params = getParams(defaultValues);
 
     var state = useTableState(GET_Poi,params,'poisearch');
 
@@ -59,7 +62,7 @@ function Poi() {
     return (
         <TableWrapper state = {state} >
           <PoiTableToolbar state ={state}/>
-          <PoiTable state ={state}/>
+          <GenericTable state ={state}/>
         </TableWrapper>
     );
 

@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
-import MarriageTable from './MarriageTable.jsx'
+import React from 'react';
 import { gql} from '@apollo/client';
 import {getParams} from '../../../../features/Table/qryStringFuncs';
-import MarriageTableToolbar from './MarriageTableToolbar.jsx'
-import TableWrapper from '../../../../features/Table/TableWrapper.jsx'
+import MarriageTableToolbar from './MarriageTableToolbar.jsx';
+import TableWrapper from '../../../../features/Table/TableWrapper.jsx';
+import GenericTable from '../../../../features/Table/GenericTable.jsx';
 import {useTableState} from '../../../../features/Table/useTable';
+
 
 
 function Marriages() {
@@ -58,23 +59,23 @@ function Marriages() {
   `;
 
     const headCells = [
+      { id: 'maleSname', numeric: false, disablePadding: true, label: 'Groom Surname', isRowHeader: true },
       { id: 'maleCname', numeric: false, disablePadding: true, label: 'Groom Name' },
-      { id: 'maleSname', numeric: false, disablePadding: true, label: 'Groom Surname' },
       { id: 'femaleCname', numeric: false, disablePadding: true, label: 'Bride Name' },
       { id: 'femaleSname', numeric: false, disablePadding: true, label: 'Bride Surname' },
       { id: 'marriageLocation', numeric: false, disablePadding: true, label: 'Loc.' },
       { id: 'yearIntVal', numeric: false, disablePadding: true, label: 'Year' },
       { id: 'marriageCounty', numeric: false, disablePadding: true, label: 'County' },
       { id: 'source', numeric: false, disablePadding: true, label: 'Src' },
-      { id: 'witness1', numeric: false, disablePadding: true, label: 'Wit' },
+      { id: 'witness1', numeric: false, disablePadding: true, label: 'Witness' },
       { id: 'femaleIsKnownWidow', numeric: false, disablePadding: true, label: 'Wid' },
       { id: 'maleIsKnownWidower', numeric: false, disablePadding: true, label: 'Widower' },
-      { id: 'isLicence', numeric: false, disablePadding: true, label: 'Lic.' },
+      { id: 'isLicence', numeric: false, disablePadding: true, label: 'Licence' },
       { id: 'totalEvents', numeric: false, disablePadding: true, label: 'Dupes' }
     ];
 
     var defaultValues = {
-      sortColumn : 'maleCname',
+      sortColumn : 'maleSname',
       sortOrder : 'asc',
       limit : 0,
       offset :0,
@@ -99,7 +100,7 @@ function Marriages() {
         <div>
           <TableWrapper state = {state} >
             <MarriageTableToolbar state ={state}/>
-            <MarriageTable state ={state}/>
+            <GenericTable state ={state}/>
           </TableWrapper>
         </div>
     );
