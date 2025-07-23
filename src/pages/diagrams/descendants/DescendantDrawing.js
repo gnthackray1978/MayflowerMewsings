@@ -2,6 +2,7 @@ import {MiddleParents, createFamilyCountArray, GetPrev, GetFirst, GetParentXs, C
 import { DescendantGraph } from './DescendantGraph.js'; // new import
 import {Drawing} from '../Drawing.js'; // new import
 import { DescendantLayout } from './DescendantLayout.js';
+import { TreeUI } from '../drawinglib/treeUI.js';
 
 export function DescendantDrawing() {
     //console.log('tree created');
@@ -428,38 +429,43 @@ DescendantDrawing.prototype = {
     },
 
   
-    Draw: function (ui) {
+    draw: function (ctx, ancestorConfig) {
+        if (this.IsValid()) {
+            this.centrePoint += this.movementx;
+            this.centreVerticalPoint += this.movementy;
 
-        ui.ClearScreen();
+            let ui = new TreeUI(ctx, ancestorConfig, true, () => { });
 
-        this.RefreshLayout();
+            this.RefreshLayout();
 
-      
-        this.bt_links = [];
-        this.bt_buttonLinks = [];
-        
-        this.descGraph.nodes.forEach((generation, genidx) => {
-            generation.forEach(person => {
-                const personLink = ui.DrawPerson(person, this.drawing.bt_screenWidth, this.drawing.bt_screenHeight, this.sourceId, this.zoomPercentage);
-                if (personLink) this.bt_links.push(personLink);
-        
-                if (person.GenerationIdx !== 0) {
-                    const buttonLink = ui.DrawButton(this.drawing.bt_screenWidth, this.drawing.bt_screenHeight, person, this.GetChildDisplayStatus(person));
-                    if (buttonLink) this.bt_buttonLinks.push(buttonLink);
-                }
+            ui.ClearScreen();
+
+
+            this.bt_links = [];
+            this.bt_buttonLinks = [];
+
+            this.descGraph.nodes.forEach((generation, genidx) => {
+                generation.forEach(person => {
+                    const personLink = ui.DrawPerson(person, this.drawing.bt_screenWidth, this.drawing.bt_screenHeight, this.sourceId, this.zoomPercentage);
+                    if (personLink) this.bt_links.push(personLink);
+
+                    if (person.GenerationIdx !== 0) {
+                        const buttonLink = ui.DrawButton(this.drawing.bt_screenWidth, this.drawing.bt_screenHeight, person, this.GetChildDisplayStatus(person));
+                        if (buttonLink) this.bt_buttonLinks.push(buttonLink);
+                    }
+                });
             });
-        });
 
-        this.familyEdges.forEach(familyEdgeGroup => {
-            familyEdgeGroup.forEach(edge => {
+            this.familyEdges.forEach(familyEdgeGroup => {
+                familyEdgeGroup.forEach(edge => {
+                    ui.DrawLine(this.drawing.bt_screenWidth, this.drawing.bt_screenHeight, edge);
+                });
+            });
+
+            this.marriageEdges.forEach(edge => {
                 ui.DrawLine(this.drawing.bt_screenWidth, this.drawing.bt_screenHeight, edge);
             });
-        });
-
-        this.marriageEdges.forEach(edge => {
-            ui.DrawLine(this.drawing.bt_screenWidth, this.drawing.bt_screenHeight, edge);
-        });
-        
+        }
     },
 
     RefreshLayout: function () {

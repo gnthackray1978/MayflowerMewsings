@@ -1,4 +1,5 @@
 
+
 import React, { useRef, useEffect , useState} from 'react'
 
 import { connect } from "react-redux";
@@ -10,19 +11,8 @@ function Diagrams(props) {
 
     const { drawing, ancestorConfig} = props;
 
-    const draw = (ctx, drawing) => { 
-    
-      if(drawing && drawing.IsValid()) {
-      
-        drawing.centrePoint += drawing.movementx ;
-        drawing.centreVerticalPoint += drawing.movementy ;
-
-        let ui = new TreeUI(ctx,ancestorConfig, true, ()=>{});
-     
-        drawing.RefreshLayout();
-
-        drawing.Draw(ui);
-      } 
+    const draw = (ctx) => { 
+        drawing.draw(ctx, ancestorConfig);
     }
  
 

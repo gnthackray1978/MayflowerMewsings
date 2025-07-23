@@ -1,6 +1,7 @@
 import { AncestorGraph } from './AncestorGraph.js';
 import { AncestorLayout } from './AncestorLayout.js';
 import {Drawing} from '../Drawing.js'; // new import
+import { TreeUI } from '../drawinglib/treeUI.js';
 
 var stackSize =0;
 
@@ -302,33 +303,36 @@ AncestorDrawing.prototype = {  // renamed from AncTree.prototype
         return this.nodes.length>0;
     },
 
-    Draw :function (ui) {
+    draw: function (ctx, ancestorConfig) {
+        if (this.IsValid()) {
+            this.centrePoint += this.movementx;
+            this.centreVerticalPoint += this.movementy;
 
-        ui.ClearScreen();
+            let ui = new TreeUI(ctx, ancestorConfig, true, () => { });
 
-       // this.RefreshLayout();
+            this.RefreshLayout();
 
+            ui.ClearScreen();
 
-        this.bt_links = [];
+            this.bt_links = [];
 
-        this.nodes.forEach((generation, genidx) => {
-            generation.forEach(node => {
-                const personLink = ui.DrawPerson(node, this.drawing.bt_screenWidth, this.drawing.bt_screenHeight, this.sourceId, this.zoomPercentage);
-        
-                if (personLink !== null) {
-                    this.bt_links.push(personLink);
-                }
+            this.nodes.forEach((generation, genidx) => {
+                generation.forEach(node => {
+                    const personLink = ui.DrawPerson(node, this.drawing.bt_screenWidth, this.drawing.bt_screenHeight, this.sourceId, this.zoomPercentage);
+
+                    if (personLink !== null) {
+                        this.bt_links.push(personLink);
+                    }
+                });
             });
-        });
 
 
-        this.edges.forEach(edgeGroup => {
-            edgeGroup.forEach(edge => {
-                ui.DrawLine(this.drawing.bt_screenWidth, this.drawing.bt_screenHeight, edge);
+            this.edges.forEach(edgeGroup => {
+                edgeGroup.forEach(edge => {
+                    ui.DrawLine(this.drawing.bt_screenWidth, this.drawing.bt_screenHeight, edge);
+                });
             });
-        });
-
-
+        }
     },
 
 

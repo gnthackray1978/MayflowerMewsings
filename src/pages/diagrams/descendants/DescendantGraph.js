@@ -1,14 +1,14 @@
 export class DescendantGraph {
     constructor(data) {
         this.nodes = data;
-        this.original_distanceBetweenBoxs = 0.0;
-        this.original_distanceBetweenGens = 0.0;
-        this.original_boxWidth = 0.0;
-        this.original_boxHeight = 0.0;
-        this.original_distancesbetfam = 0.0;
-        this.original_lowerStalkHeight = 0.0;
-        this.original_middleSpan = 40.0;
-        this.original_topSpan = 20.0;
+        // this.original_distanceBetweenBoxs = 0.0;
+        // this.original_distanceBetweenGens = 0.0;
+        // this.original_boxWidth = 0.0;
+        // this.original_boxHeight = 0.0;
+        // this.original_distancesbetfam = 0.0;
+        // this.original_lowerStalkHeight = 0.0;
+        // this.original_middleSpan = 40.0;
+        // this.original_topSpan = 20.0;
     }
     getTreePerson(personId) {
         for (let generation of this.nodes) {
