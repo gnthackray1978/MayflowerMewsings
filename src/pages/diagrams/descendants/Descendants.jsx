@@ -82,12 +82,11 @@ function Descendants(props) {
       title : 'Map View'
     };
 
-    //if(!state.loading)
-    //  setTitle(state.data.title);
-
-    if(!state.loading)
-      setTitle(state.data?.title ?? 'Descendant View');
-
+    useEffect(() => {
+        if (!state.loading) {
+            setTitle(state.data?.title ?? 'Descendant View');
+        }
+    }, [state.loading, state.data, setTitle]);
 
     let data = transformData(state.data,populateDescendantObjects);
 
