@@ -1,4 +1,4 @@
-import { AncestorGraph } from './AncestorGraph.js';
+import { FamilyGraph } from '../FamilyGraph.js';
 import { AncestorLayout } from './AncestorLayout.js';
 import {Drawing} from '../Drawing.js'; // new import
 import { TreeUI } from '../drawinglib/treeUI.js';
@@ -8,7 +8,7 @@ var stackSize =0;
 
 export function AncestorDrawing() {  // renamed from AncTree
     console.log('anctree constructed');
-    this.ancGraph = new AncestorGraph([]);
+    this.ancGraph = new FamilyGraph([]);
     this.drawing = new Drawing();
     this.layout = new AncestorLayout();
 
@@ -72,7 +72,7 @@ AncestorDrawing.prototype = {  // renamed from AncTree.prototype
       //    var _zoomLevel = 100;
       //    var _xpos = 750.0;
       //    var _ypos = 100.0;
-      this.ancGraph = new AncestorGraph(data);
+      this.ancGraph = new FamilyGraph(data);
       this.nodes = data;
  
       this.SetCentrePoint(0, 0);
@@ -167,7 +167,7 @@ AncestorDrawing.prototype = {  // renamed from AncTree.prototype
         var mouseLink = this.drawing.bt_links.LinkContainingPoint(x, y);
 
         if (mouseLink) {
-            var selectedPerson = this.ancGraph.GetTreePerson(mouseLink.action);
+            var selectedPerson = this.ancGraph.getTreePerson(mouseLink.action);
 
             this.selectedPersonId = selectedPerson.PersonId;
             this.selectedPersonX = selectedPerson.X1;
@@ -183,11 +183,11 @@ AncestorDrawing.prototype = {  // renamed from AncTree.prototype
 
                 var parts = buttonLink.action.split(',');
 
-                var clickedPerson = this.ancGraph.GetTreePerson(parts[0]);
+                var clickedPerson = this.ancGraph.getTreePerson(parts[0]);
 
                 var isVis = parts[1] === 'false' ? true : false;
 
-                this.ancGraph.SetVisibility(clickedPerson, isVis);
+                this.ancGraph.setVisibility(clickedPerson, isVis);
 
 
             }
@@ -258,7 +258,7 @@ AncestorDrawing.prototype = {  // renamed from AncTree.prototype
 
         let distanceToMoveX = 0.0;
         let distanceToMoveY = 0.0;
-        const _temp = this.ancGraph.GetTreePerson(personId);
+        const _temp = this.ancGraph.getTreePerson(personId);
 
         if (_temp !== null) {
             const currentPersonLocationX = (_temp.X1 + _temp.X2) / 2;
@@ -365,7 +365,7 @@ AncestorDrawing.prototype = {  // renamed from AncTree.prototype
                     this.layout.adjustedDistances[genidx],
                     this.layout.adjustedBoxWidths[genidx]
                 );
-                const spacing = this.ancGraph.LastGenerationSpacing(currentNode);
+                const spacing = this.ancGraph.lastGenerationSpacing(currentNode);
                 let overlap = spacing.previousX2 > xEdge.x1 ?
                               spacing.previousX2 - xEdge.x1 + this.layout.adjustedDistances[genidx] : 0.0;
                 if (overlap > 0 || spacing.spacing > 0) {
@@ -404,7 +404,7 @@ AncestorDrawing.prototype = {  // renamed from AncTree.prototype
                 currentNode.X2 = xEdge.x2;
                 currentNode.Y1 = _y;
                 currentNode.Y2 = _y + this.layout.adjustedBoxHeights[genidx];
-                this.ancGraph.SetZoomLevel(currentNode);
+                this.ancGraph.setZoomLevel(currentNode);
             });
             _y -= this.layout.distanceBetweenGens;
         });
@@ -442,9 +442,9 @@ AncestorDrawing.prototype = {  // renamed from AncTree.prototype
                 }
         
                 const middleTopChild = node.Y1;
-                const parentHeight = this.ancGraph.NextGenerationHeight(genidx);
+                const parentHeight = this.ancGraph.nextGenerationHeight(genidx);
                 const bottomParent = node.Parents[0].Y1 + parentHeight;
-                const distanceBetweenGens = this.ancGraph.DistanceToNextGeneration(genidx);
+                const distanceBetweenGens = this.ancGraph.distanceToNextGeneration(genidx);
                 const middleXChild = (node.X1 + node.X2) / 2;
                 const middleGeneration = node.Y1 - (distanceBetweenGens / 2) + 10;
                 const drawingHeight = this.drawing.drawingY2 - this.drawing.drawingY1;

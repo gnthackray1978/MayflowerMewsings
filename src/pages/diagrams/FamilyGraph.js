@@ -1,18 +1,10 @@
-import { AncestorLayout } from './AncestorLayout.js';
 
-// this should be the drawing object
-// which is made up of a layout
-// and a graph
-export class AncestorGraph {
+export class FamilyGraph {
     constructor(data) {
         this.nodes = data;
-
-        //this.familySpanLines = [];
-        //this.childlessMarriages = [];
     }
 
-    // Moved _GetTreePerson logic here as GetTreePerson
-    GetTreePerson(personId) {
+    getTreePerson(personId) {
         for (const generation of this.nodes) {
             const found = generation.find(item => item.PersonId === personId);
             if (found) return found;
@@ -20,64 +12,55 @@ export class AncestorGraph {
         return null;
     }
 
-    // New SetVisibility method moved from AncTree
-    SetVisibility(parent, isDisplay) {
+    setVisibility(parent, isDisplay) {
         let personStack = [...parent.Children];
 
         while (personStack.length > 0) {
             const currentTP = personStack.pop();
             currentTP.IsDisplayed = isDisplay;
-        
+
             currentTP.Spouses.forEach(spouse => {
                 spouse.IsDisplayed = isDisplay;
             });
-        
+
             personStack.push(...currentTP.Children);
         }
     }
 
-    GetChildDisplayStatus(person) {
-
+    getChildDisplayStatus(person) {
         var isDisplayed = true;
-
         if (this.nodes.length > person.GenerationIdx) {
             var _genidx = 0;
             while (_genidx < this.nodes[person.GenerationIdx].length) {
-
                 if (this.nodes[person.GenerationIdx][_genidx].PersonId == person.ChildLst[0]) {
                     var _person = this.nodes[person.GenerationIdx][_genidx];
                     isDisplayed = _person.IsDisplayed;
                     break;
                 }
-
                 _genidx++;
             }
         }
-
-
         return isDisplayed;
     }
 
-    GetPerson(gen, idx) {
+    getPerson(gen, idx) {
         return this.nodes[gen][idx];
     }
 
-    DistanceToNextGeneration(genidx) {
-        //return this.nodes[genidx][personIdx].X2 - this.nodes[genidx][personIdx].X1;
-        //(this.nodes[genidx][personIdx].Y1 - this.nodes[genidx + 1][0].Y2);
+    distanceToNextGeneration(genidx) {
         return this.nodes[genidx][0].Y1 - this.nodes[genidx + 1][0].Y2;
     }
 
-    NextGenerationHeight(genidx) {
+    nextGenerationHeight(genidx) {
         return (this.nodes[genidx + 1][0].Y2 - this.nodes[genidx + 1][0].Y1);
     }
-    LastGenerationSpacing(node) {
 
+    lastGenerationSpacing(node) {
         const genidx = node.GenerationIdx;
         const personIdx = node.Index;
 
         if (personIdx < 1) {
-            return { nodeCount: 0 }; // leave undefined spacing and previousX2 becase there is no previous node
+            return { nodeCount: 0 };
         }
 
         const previousNode = this.nodes[genidx][personIdx - 1];
@@ -88,7 +71,8 @@ export class AncestorGraph {
 
         return { nodeCount, spacing, previousX2: this.nodes[genidx][personIdx - 1].X2 };
     }
-    PrecedingNodes(searchNode) {
+
+    precedingNodes(searchNode) {
         return this.nodes[searchNode.GenerationIdx]
             .slice(0, searchNode.Index + 1)
             .reverse()
@@ -103,66 +87,52 @@ export class AncestorGraph {
             }));
     }
 
-    GetDescendants(person, startGen) {
-
+    getDescendants(person, startGen) {
         let moveList = [];
         let moveGenIdx = startGen;
 
         while (moveGenIdx > 0) {
-
             const node = this.nodes[moveGenIdx][person];
-
             if (!moveList.some(p => p.PersonId === node.PersonId)) {
                 moveList.push(node);
             }
-
             person = node.ChildIdx;
             moveGenIdx--;
         }
 
         moveList.sort((a, b) => b.GenerationIdx - a.GenerationIdx);
-
         return moveList;
-    };
+    }
 
     forEachPrevNodeDescendant(node, callback) {
-
         const personIdx = node.Index;
         const genidx = node.GenerationIdx;
 
-        this.GetDescendants(personIdx - 1, genidx)
-                .forEach((descendant) => {
-                    this.PrecedingNodes(descendant).forEach((n) => {
-                        callback(n);
-                    });
-        });
+        this.getDescendants(personIdx - 1, genidx)
+            .forEach((descendant) => {
+                this.precedingNodes(descendant).forEach((n) => {
+                    callback(n);
+                });
+            });
+    }
 
-    };
-
-    
-    getParentGeneration(movePerson){
-
+    getParentGeneration(movePerson) {
         let requiredGeneration = movePerson.GenerationIdx + 1;
-
-        if(this.nodes.length > requiredGeneration)
+        if (this.nodes.length > requiredGeneration)
             return this.nodes[requiredGeneration];
-        
         return;
-    };
+    }
 
     createXAxisFromParents = (node, width) => {
-
-        const parentGeneration = this.getParentGeneration(node);  
-
+        const parentGeneration = this.getParentGeneration(node);
         const result = { x1: 0.0, x2: 0.0 };
-        
         if (!parentGeneration) return result;
-        
+
         const getParentCenterX = (parentIdx) => {
             const parent = parentGeneration[parentIdx];
             return (parent.X1 + parent.X2) / 2;
         };
-        
+
         if (node.FatherIdx === -1) {
             const centerX = getParentCenterX(node.MotherIdx);
             result.x1 = centerX - (width / 2);
@@ -176,20 +146,18 @@ export class AncestorGraph {
             const motherX2 = parentGeneration[node.MotherIdx].X2;
             const fatherX2 = parentGeneration[node.FatherIdx].X2;
             const motherX1 = parentGeneration[node.MotherIdx].X1;
-        
+
             const parentX1 = Math.min(fatherX1, motherX1);
             const parentX2 = Math.max(fatherX2, motherX2);
-        
+
             result.x1 = ((parentX2 + parentX1) / 2) - ((node.X2 - node.X1) / 2);
             result.x2 = result.x1 + (node.X2 - node.X1);
         }
-        
         return result;
     };
 
-    //formerly CalcTPZoom
-    SetZoomLevel = (node)=> {                
-        const getAreaCategory = (area) => {   
+    setZoomLevel = (node) => {
+        const getAreaCategory = (area) => {
             if (area > 20000) return 7;
             if (area > 15000) return 6;
             if (area > 10000) return 5;
@@ -199,9 +167,7 @@ export class AncestorGraph {
             if (area > 0) return 1;
             return 0;
         };
-
         const nodeArea = (node.X2 - node.X1) * (node.Y2 - node.Y1);
-
         node.zoom = getAreaCategory(nodeArea);
     };
 }
