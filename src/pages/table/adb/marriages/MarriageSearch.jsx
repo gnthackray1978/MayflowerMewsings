@@ -8,7 +8,7 @@ import {useTableState} from '../../../../features/Table/useTable';
 
 
 
-function Marriages() {
+function MarriageSearch() {
 
 
   const GET_MARRIAGES = gql`
@@ -108,4 +108,4 @@ function Marriages() {
 }
 
 
-export default Marriages;
+export default MarriageSearch;

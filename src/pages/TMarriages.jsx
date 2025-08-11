@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Marriages from './table/adb/marriages/Marriage.jsx'
+import MarriageSearch from './table/adb/marriages/MarriageSearch.jsx'
 
 function TMarriages(props) {
 
@@ -7,7 +7,7 @@ function TMarriages(props) {
 
     return (
         <div>
-          <Marriages/>
+          <MarriageSearch/>
         </div>
     );
 
