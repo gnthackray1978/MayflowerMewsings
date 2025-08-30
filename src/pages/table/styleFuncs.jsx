@@ -47,9 +47,11 @@ export const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(2),
   },
   table: {
-    minWidth: 700,
-    marginLeft: '25px',
-    marginRight: '25px'
+    minWidth: 700, 
+    marginRight: '25px',        
+    marginLeft: '20px', 
+    tableLayout: 'fixed', 
+    width: '97%'
   },
   // overrides: {
   //   MuiTableCell: {

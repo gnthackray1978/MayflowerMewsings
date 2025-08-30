@@ -29,11 +29,11 @@ function Trs() {
   `;
 
     const headCells = [
-        { id: 'name', numeric: false, disablePadding: true, label: 'Name', isRowHeader: true },
-        { id: 'personCount', numeric: false, disablePadding: true, label: 'Persons' },
-        { id: 'cm', numeric: false, disablePadding: true, label: 'cM' },
-        { id: 'located', numeric: false, disablePadding: true, label: 'Located' },
-        { id: 'origin', numeric: false, disablePadding: true, label: 'Origin' }
+        { id: 'name', numeric: false, disablePadding: true, label: 'Name', isRowHeader: true, width: '15%' },
+        { id: 'personCount', numeric: false, disablePadding: true, label: 'Persons', width: '10%' },
+        { id: 'cm', numeric: false, disablePadding: true, label: 'cM', width: '10%' },
+        { id: 'located', numeric: false, disablePadding: true, label: 'Located', width: '0%' },
+        { id: 'origin', numeric: false, disablePadding: true, label: 'Origin', width: '65%' }
     ];
 
     const filterConfig = [

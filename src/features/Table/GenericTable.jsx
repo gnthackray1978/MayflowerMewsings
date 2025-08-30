@@ -30,7 +30,7 @@ export default function GenericTable(props) {
   const tableName = state.title ? state.title.toLowerCase().replace(/\s+/g, '-') : 'generic';
 
   return (
-    <TableContainer>
+    <TableContainer style={{ overflowX: 'hidden' }}>
       <Table
         className={classes.table}
         aria-labelledby="tableTitle"
@@ -76,6 +76,7 @@ export default function GenericTable(props) {
                       id={isRowHeader ? labelId : undefined}
                       scope={isRowHeader ? 'row' : undefined}
                       padding="none"
+                      style={{ width: headCell.width, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
                     >
                       {cellContent}
                     </TableCell>

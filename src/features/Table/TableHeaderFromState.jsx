@@ -32,6 +32,7 @@ import {useStyles} from '../../pages/table/styleFuncs.jsx';
             align={headCell.numeric ? 'right' : 'left'}
             padding={headCell.disablePadding ? 'none' : 'default'}
             sortDirection={orderBy === headCell.id ? order : false}
+            style={{ width: headCell.width }}
           >
             <TableSortLabel
               active={orderBy === headCell.id}
