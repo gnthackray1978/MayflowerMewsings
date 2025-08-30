@@ -37,7 +37,15 @@ export default function GenericTable(props) {
         size="small"
         aria-label={`${tableName}-table`}
       >
-        <TableHeaderFromState state={state} />
+        <TableHeaderFromState
+          state={{
+            ...state,
+            orderBy: state.sortColumn,
+            order: state.order,
+            onRequestSort: state.handleRequestSort,
+            headCells: state.headCells,
+          }}
+        />
         <TableBody>
           {state.rows.map((row, index) => {
             const key = row[rowKeyField];

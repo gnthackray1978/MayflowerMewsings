@@ -15,8 +15,16 @@ export  function useTableState(ReturnData,defaultParams, subSchema) {
 
   const handleRequestSort = (event, property) => {
     const isAsc = sortColumn === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
+    let newOrder = isAsc ? 'desc' : 'asc';
+    setOrder(newOrder);
     setSortColumn(property);
+
+    let filterObj = { ...filterParams };
+
+    filterObj.sortColumn = property;
+    filterObj.sortOrder = newOrder;
+
+    refetch(filterObj);
   };
 
   const handleSelectAllClick = (event) => {
