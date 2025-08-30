@@ -1,5 +1,5 @@
 import React from 'react';
-import TrsTableToolbar from './trsTableToolbar.jsx';
+import GenericToolbar from '../../../../features/Table/GenericToolbar.jsx';
 import TableWrapper from '../../../../features/Table/TableWrapper.jsx';
 import GenericTable from '../../../../features/Table/GenericTable.jsx';
 import {gql} from '@apollo/client';
@@ -36,17 +36,22 @@ function Trs() {
         { id: 'origin', numeric: false, disablePadding: true, label: 'Origin' }
     ];
 
+    const filterConfig = [
+      { id: 'treeName', label: 'Tree Name', initialValue: '', className: 'filter' }
+    ];
+
     const params = getParams(pobj.defaults);
 
     const state = useTableState(GET_Trs,params,'treerecsearch');
 
     state.headCells = headCells;
     state.title = 'Trees Over View';
+    state.filterConfig = filterConfig;
 
     return (
         <div>
           <TableWrapper state = {state} >
-            <TrsTableToolbar state ={state}/>
+            <GenericToolbar state ={state}/>
             <GenericTable state ={state}/>
           </TableWrapper>
         </div>

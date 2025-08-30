@@ -1,7 +1,7 @@
 import React from 'react';
 import { gql} from '@apollo/client';
 import {getParams} from '../../../../features/Table/qryStringFuncs';
-import MarriageTableToolbar from './MarriageTableToolbar.jsx';
+import GenericToolbar from '../../../../features/Table/GenericToolbar.jsx';
 import TableWrapper from '../../../../features/Table/TableWrapper.jsx';
 import GenericTable from '../../../../features/Table/GenericTable.jsx';
 import {useTableState} from '../../../../features/Table/useTable';
@@ -87,19 +87,28 @@ function MarriageSearch() {
       location :''
     };
 
+    const filterConfig = [
+      { id: 'yearStart', label: 'Year From', initialValue: '1500' },
+      { id: 'yearEnd', label: 'Year To', initialValue: '1800' },
+      { id: 'location', label: 'Location', initialValue: '' },
+      { id: 'maleSurname', label: 'Groom Surname', initialValue: '' },
+      { id: 'femaleSurname', label: 'Bride Surname', initialValue: '' }
+    ];
+
     var params = getParams(defaultValues);
    
     var state = useTableState(GET_MARRIAGES,params,'marriagesearch');
 
     state.headCells = headCells;
     state.title = 'Marriage Search';
+    state.filterConfig = filterConfig;
 
 
     return (
     
         <div>
           <TableWrapper state = {state} >
-            <MarriageTableToolbar state ={state}/>
+            <GenericToolbar state ={state}/>
             <GenericTable state ={state}/>
           </TableWrapper>
         </div>

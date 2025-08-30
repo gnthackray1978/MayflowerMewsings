@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import WillTable from './WillTable.jsx'
 import { gql} from '@apollo/client';
-import WillTableToolbar from './WillTableToolbar.jsx'
+import GenericToolbar from '../../../features/Table/GenericToolbar.jsx';
 import TableWrapper from '../../../features/Table/TableWrapper.jsx';
 import {getParams} from '../../../features/Table/qryStringFuncs';
 import {useTableState} from '../../../features/Table/useTable';
@@ -80,17 +80,27 @@ function LincsWills() {
       surname : ''
     };
 
+    const filterConfig = [
+      { id: 'yearStart', label: 'Year From', initialValue: 1700, className: 'smallFilter' },
+      { id: 'yearEnd', label: 'Year To', initialValue: 1800, className: 'smallFilter' },
+      { id: 'ref', label: 'Ref', initialValue: '', className: 'smallFilter' },
+      { id: 'desc', label: 'Desc', initialValue: '', className: 'smallFilter' },
+      { id: 'place', label: 'Place', initialValue: '', className: 'smallFilter' },
+      { id: 'surname', label: 'Surname', initialValue: '', className: 'smallFilter' }
+    ];
+
     var params = getParams(defaultValues);
 
     var state = useTableState(GET_WILLS,params,'lincssearch');
 
     state.headCells = headCells;
     state.title = 'Lincolnshire will search';
+    state.filterConfig = filterConfig;
 
     return (
         <div>
           <TableWrapper state = {state} >
-            <WillTableToolbar state ={state}/>
+            <GenericToolbar state ={state}/>
             <WillTable state ={state}/>
           </TableWrapper>
         </div>
