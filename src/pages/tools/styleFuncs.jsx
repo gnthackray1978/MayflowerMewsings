@@ -80,8 +80,8 @@ export const useStyles = makeStyles((theme) => ({
 export const useToolbarStyles = makeStyles((theme) => ({
   
   filter :{
-    maxWidth: '70px',
-    flex : '1'
+   // maxWidth: '70px',
+  //  flex : '1'
   },
   paper :{
     margin: '10px',

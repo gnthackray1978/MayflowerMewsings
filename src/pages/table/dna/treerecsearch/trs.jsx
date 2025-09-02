@@ -37,7 +37,7 @@ function Trs() {
     ];
 
     const filterConfig = [
-      { id: 'treeName', label: 'Tree Name', initialValue: '', className: 'filter' }
+      { id: 'treeName', label: 'Tree Name', initialValue: '', className: 'filter', width: '200px' }
     ];
 
     const params = getParams(pobj.defaults);

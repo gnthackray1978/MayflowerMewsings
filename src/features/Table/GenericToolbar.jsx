@@ -41,15 +41,18 @@ const GenericToolbar = (props) => {
       {filterConfig.map(filter => (
         <TextField
           key={filter.id}
-          className={classes[filter.className] || classes.filter}
+          className={classes[filter.className]}// || classes.filter}
           id={filter.id}
           label={filter.label}
           value={filterState[filter.id]}
           variant="standard"
           size="small"
+          //style={{ width: filter.width }}
+          sx = {{ width: filter.width, "& .MuiInputBase-root": {width: filter.width} }}
           onChange={(e) => handleFilterChange(filter.id, e.currentTarget.value)}
         />
       ))}
+      <div className={classes.title} />
       <TableBox boxClick={searchClick} />
     </Toolbar>
   );
