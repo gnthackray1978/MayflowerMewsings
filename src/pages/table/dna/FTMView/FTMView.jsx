@@ -1,5 +1,5 @@
 import React from 'react';
-import FTMViewTableToolbar from './FTMViewTableToolbar.jsx';
+import GenericToolbar from "../../../../features/Table/GenericToolbar.jsx";
 import TableWrapper from '../../../../features/Table/TableWrapper.jsx';
 import GenericTable from '../../../../features/Table/GenericTable.jsx';
 import {gql} from '@apollo/client';
@@ -41,17 +41,27 @@ function FTMView() {
       { id: 'origin', numeric: false, disablePadding: true, label: 'Origin' }
     ];
 
+    const filterConfig = [
+      { id: 'surname', label: 'Surname', initialValue: 'thackray' },
+      { id: 'name', label: 'First Name', initialValue: '' },
+      { id: 'location', label: 'Location', initialValue: '' },
+      { id: 'yearStart', label: 'Year Start', initialValue: 1500 },
+      { id: 'yearEnd', label: 'Year End', initialValue: 2000 },
+      { id: 'origin', label: 'Origin', initialValue: '' }
+    ];
+
     var params = getParams({...pobj.defaults,...{surname:'thackray'}});
 
     var state = useTableState(GET_FTMView,params,'ftmviewsearch');
 
     state.headCells = headCells;
     state.title = 'FTM View';
+    state.filterConfig = filterConfig;
 
     return (
         <div>
           <TableWrapper state = {state} >
-            <FTMViewTableToolbar state ={state}/>
+            <GenericToolbar state ={state}/>
             <GenericTable state ={state}/>
           </TableWrapper>
         </div>

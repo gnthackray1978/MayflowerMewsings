@@ -1,5 +1,5 @@
 import React from 'react';
-import PoiTableToolbar from './PoiTableToolbar.jsx';
+import GenericToolbar from "../../../../features/Table/GenericToolbar.jsx";
 import TableWrapper from '../../../../features/Table/TableWrapper.jsx';
 import {gql} from '@apollo/client';
 import GenericTable from '../../../../features/Table/GenericTable.jsx';
@@ -45,6 +45,16 @@ function Poi() {
         { id: 'sharedCentimorgans', numeric: false, disablePadding: true, label: 'cMs' }
     ];
 
+    const filterConfig = [
+      { id: 'surname', label: 'Surname', initialValue: '' },
+      { id: 'name', label: 'Name', initialValue: 'GNT GRT ATH' },
+      { id: 'location', label: 'Location', initialValue: '' },
+      { id: 'yearStart', label: 'Year Start', initialValue: 1750 },
+      { id: 'yearEnd', label: 'Year End', initialValue: 1775 },
+      { id: 'origin', label: 'Origin', initialValue: '' },
+      { id: 'minCM', label: 'Min cM', initialValue: 0 }
+    ];
+
     const defaultValues = {
         ...pobj.defaults,
         name: 'GNT GRT ATH',
@@ -58,10 +68,11 @@ function Poi() {
 
     state.headCells = headCells;
     state.title = 'POI';
+    state.filterConfig = filterConfig;
 
     return (
         <TableWrapper state = {state} >
-          <PoiTableToolbar state ={state}/>
+          <GenericToolbar state ={state}/>
           <GenericTable state ={state}/>
         </TableWrapper>
     );

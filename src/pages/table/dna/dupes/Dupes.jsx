@@ -1,5 +1,5 @@
 import React from 'react';
-import DupeTableToolbar from './DupeTableToolbar.jsx';
+import GenericToolbar from "../../../../features/Table/GenericToolbar.jsx";
 import TableWrapper from '../../../../features/Table/TableWrapper.jsx';
 import GenericTable from '../../../../features/Table/GenericTable.jsx';
 import {gql} from '@apollo/client';
@@ -40,17 +40,27 @@ function Dupes() {
       { id: 'origin', numeric: false, disablePadding: true, label: 'Origin' }
     ];
     
+    const filterConfig = [
+      { id: 'surname', label: 'Surname', initialValue: '' },
+      { id: 'name', label: 'First Name', initialValue: '' },
+      { id: 'location', label: 'Location', initialValue: '' },
+      { id: 'yearStart', label: 'Year Start', initialValue: 1500 },
+      { id: 'yearEnd', label: 'Year End', initialValue: 2000 },
+      { id: 'origin', label: 'Origin', initialValue: '' }
+  ];
+
     var params = getParams(pobj.defaults);
 
     var state = useTableState(GET_DUPES,params,'dupesearch');
 
     state.headCells = headCells;
     state.title = 'Dupes';
+    state.filterConfig = filterConfig;
 
     return (
         <div>
           <TableWrapper state = {state} >
-            <DupeTableToolbar state ={state}/>
+            <GenericToolbar state ={state}/>
             <GenericTable state ={state}/>
           </TableWrapper>
         </div>

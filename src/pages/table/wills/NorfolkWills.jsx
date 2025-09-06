@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import WillTable from './WillTable.jsx'
+import GenericTable from '../../../features/Table/GenericTable.jsx';
 import { gql} from '@apollo/client';
 
 
@@ -62,13 +62,13 @@ function NorfolkWills() {
   `;
 
   const headCells = [
-    { id: 'Year', numeric: false, disablePadding: true, label: 'Year' },
-    { id: 'Reference', numeric: false, disablePadding: true, label: 'Reference' },
-    { id: 'Description', numeric: false, disablePadding: true, label: 'Description' },
-    { id: 'Place', numeric: false, disablePadding: true, label: 'Place' },
-    { id: 'FirstName', numeric: false, disablePadding: true, label: 'FirstName' },
-    { id: 'Surname', numeric: false, disablePadding: true, label: 'Surname' },
-    { id: 'Typ', numeric: false, disablePadding: true, label: 'Type' }
+    { id: 'year', numeric: false, disablePadding: true, label: 'Year' },
+    { id: 'reference', numeric: false, disablePadding: true, label: 'Reference' },
+    { id: 'description', numeric: false, disablePadding: true, label: 'Description' },
+    { id: 'place', numeric: false, disablePadding: true, label: 'Place' },
+    { id: 'firstName', numeric: false, disablePadding: true, label: 'FirstName' },
+    { id: 'surname', numeric: false, disablePadding: true, label: 'Surname' },
+    { id: 'typ', numeric: false, disablePadding: true, label: 'Type' }
   ];
 
   var defaultValues = {
@@ -105,7 +105,7 @@ function NorfolkWills() {
       <div>
         <TableWrapper state = {state} >
           <GenericToolbar state ={state}/>
-          <WillTable state ={state}/>
+          <GenericTable state ={state} rowKeyField="id"/>
         </TableWrapper>
       </div>
   );

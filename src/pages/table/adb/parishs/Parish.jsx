@@ -1,7 +1,7 @@
 import React from 'react';
 import { gql} from '@apollo/client';
 import {getParams} from '../../../../features/Table/qryStringFuncs';
-import ParishTableToolbar from './ParishTableToolbar.jsx';
+import GenericToolbar from "../../../../features/Table/GenericToolbar.jsx";
 import TableWrapper from '../../../../features/Table/TableWrapper.jsx';
 import {useTableState} from '../../../../features/Table/useTable';
 import GenericTable from '../../../../features/Table/GenericTable.jsx';
@@ -57,6 +57,11 @@ function Parishs() {
       { id: 'parishY', numeric: false, disablePadding: true, label: 'Lat' }
     ];
 
+    const filterConfig = [
+      { id: 'parishName', label: 'Parish', initialValue: '' },
+      { id: 'county', label: 'County', initialValue: '' }
+    ];
+
     var defaultValues = {
       sortColumn : 'parishName',
       sortOrder : 'asc',
@@ -72,11 +77,12 @@ function Parishs() {
 
     state.headCells = headCells;
     state.title = 'Parish Search';
+    state.filterConfig = filterConfig;
 
     return (
       <div>
         <TableWrapper state = {state} >
-          <ParishTableToolbar state ={state}/>
+          <GenericToolbar state ={state}/>
           <GenericTable state ={state}/>
         </TableWrapper>
       </div>

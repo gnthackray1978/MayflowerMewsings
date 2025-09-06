@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { gql} from '@apollo/client';
 import {getParams} from '../../../../features/Table/qryStringFuncs';
-import PersonTableToolbar from './PersonTableToolbar.jsx'
+import GenericToolbar from "../../../../features/Table/GenericToolbar.jsx";
 import TableWrapper from '../../../../features/Table/TableWrapper.jsx'
 import {useTableState} from '../../../../features/Table/useTable';
 import GenericTable from '../../../../features/Table/GenericTable.jsx';
@@ -27,7 +27,7 @@ function Persons() {
      $deathLocation : String!,
      $deathCounty : String!,
      $source : String!,
-     $location : String!
+     $location : String!,
       $birthCounty : String!,
        $occupation : String!,
        $spouseName : String!,
@@ -46,7 +46,7 @@ function Persons() {
                               birthLocation : $birthLocation,
                               fatherChristianName : $fatherChristianName,
                               fatherSurname :$fatherSurname,
-                              motherChristianName : $motherChristianName
+                              motherChristianName : $motherChristianName,
                               motherSurname : $motherSurname,
                               deathLocation : $deathLocation,
                               deathCounty : $deathCounty,
@@ -105,6 +105,27 @@ function Persons() {
       { id: 'totalEvents', numeric: false, disablePadding: true, label: 'Events' }
     ];
 
+    const filterConfig = [
+      { id: 'surname', label: 'Surname', initialValue: '' },
+      { id: 'firstName', label: 'First Name', initialValue: '' },
+      { id: 'birthLocation', label: 'Birth Location', initialValue: '' },
+      { id: 'birthCounty', label: 'Birth County', initialValue: '' },
+      { id: 'yearStart', label: 'Year Start', initialValue: 1500 },
+      { id: 'yearEnd', label: 'Year End', initialValue: 1800 },
+      { id: 'fatherChristianName', label: 'Father Name', initialValue: '' },
+      { id: 'fatherSurname', label: 'Father Surname', initialValue: '' },
+      { id: 'motherChristianName', label: 'Mother Name', initialValue: '' },
+      { id: 'motherSurname', label: 'Mother Surname', initialValue: '' },
+      { id: 'deathLocation', label: 'Death Location', initialValue: '' },
+      { id: 'deathCounty', label: 'Death County', initialValue: '' },
+      { id: 'spouseName', label: 'Spouse Name', initialValue: '' },
+      { id: 'spouseSurname', label: 'Spouse Surname', initialValue: '' },
+      { id: 'occupation', label: 'Occupation', initialValue: '' },
+      { id: 'fatherOccupation', label: 'Father Occupation', initialValue: '' },
+      { id: 'source', label: 'Source', initialValue: '' },
+      { id: 'location', label: 'Location', initialValue: '' },
+  ];
+
     var defaultValues = {
       sortColumn : 'birthint',
       sortOrder : 'asc',
@@ -137,11 +158,12 @@ function Persons() {
 
     state.headCells = headCells;
     state.title = 'Person Search';
+    state.filterConfig = filterConfig;
 
     return (
       <div>
         <TableWrapper state = {state} >
-          <PersonTableToolbar state ={state}/>
+          <GenericToolbar state ={state}/>
           <GenericTable state ={state}/>
         </TableWrapper>
       </div>
