@@ -46,15 +46,15 @@ const makeDOB = (data, genIdx,personIdx)=>{
 
     try
     {
-        _dob = data[genIdx][personIdx].RecordLink.DOB;
+        _dob = Number(data[genIdx][personIdx].RecordLink.DOB) || 0;
 
         if(_dob == 0 && genIdx >0)//try estimate dob if there is a father
         {
             var tpFIDX = data[genIdx][personIdx].FatherIdx;
 
-            if(tpFIDX){
+            if(tpFIDX != null && tpFIDX >= 0){
                 if(data[genIdx-1][tpFIDX].RecordLink.DOB>0){
-                    _dob = data[genIdx-1][tpFIDX].RecordLink.DOB + 18;
+                    _dob = Number(data[genIdx-1][tpFIDX].RecordLink.DOB) + 18;
                 }
             }
 
@@ -62,9 +62,9 @@ const makeDOB = (data, genIdx,personIdx)=>{
             {
               let tpMidx = data[genIdx][personIdx].MotherIdx;
 
-              if(tpMidx){
+              if(tpMidx != null && tpMidx >= 0){
                   if(data[genIdx-1][tpMidx].RecordLink.DOB>0){
-                      _dob = data[genIdx-1][tpMidx].RecordLink.DOB + 18;
+                      _dob = Number(data[genIdx-1][tpMidx].RecordLink.DOB) + 18;
                   }
               }
           }
