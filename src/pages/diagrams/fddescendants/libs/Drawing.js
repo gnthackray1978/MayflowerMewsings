@@ -1,6 +1,6 @@
+import { SimulationTimeline } from './SimulationTimeline.js';
 import {Utils} from "./Utils.js";
 import {FDLayout} from "./FDLayout.js";
-import {CameraView} from "./CameraView.js";
 import {Graph} from "./Graph.js";
 import {DrawingDimensions} from "./DrawingDimensions.js";
 import { Zoom } from "@mui/material";
@@ -24,38 +24,12 @@ export function Drawing(channel, graph, renderer, settings, dataSource){
     //this.forceDirect = forceDirect;
 
     this.energyCount = -9999;
-    this.timeActive = 0;
-    this.timer=0;
-    this.timeInSeconds = 0;
-    this.currentYear = 1950;      
-    this.startYear = 1950;
-    this.topYear= this.dataSource.TopYear;
-    this.bottomYear =this.dataSource.BottomYear;
-    this.currentYear =this.dataSource.BottomYear;
-
     this.colourScheme = this.settings.colourScheme;
 
     this.dims = new DrawingDimensions(window.innerWidth, window.innerHeight);
 
     this.IsValid = ()=>{return true;}
-    this.resetTimer = ()=>{this.timer = 0;}
-    this.setTime = (timestamp)=>{
 
-      if (this.timeActive === 0 && !isNaN(timestamp)) {
-        this.timeActive = timestamp;        
-      }
-
-     // let timeInSeconds = 0;
-      // drawingContainer.timer = Math.floor(((drawingContainer.timeActive - drawingContainer.timer)/1000));
-      if(!isNaN(timestamp) && timestamp != this.timeActive){
-
-          let step = timestamp - this.timeActive;
-          this.timeActive = timestamp; 
-          this.timer += Number(step);
-          this.timeInSeconds = Math.floor(this.timer/1000);
-      }
-
-    }  
 }
 
 
@@ -69,7 +43,28 @@ Drawing.prototype ={
         
         //base layout.
         this.layouts.push({ layout: parentLayout, type: 'parent' });
-        this.currentYear = 1950;  
+        this.simulation = new SimulationTimeline(this.dataSource.Generations, this.selectedPersonId, this.settings);
+        this.simulation.onChange = () => this.channel.emit('simulation', this.simulation.snapshot());
+        this.RestartSimulation();
+    },
+    RestartSimulation: function () {
+        this.graph.nodes.slice().forEach(node => this.graph.removeNode(node));
+        this.graph.addedNodes = [];
+        this.dataSource.Generations.flat().forEach(p => { delete p.nodeLink; });
+        this.layouts = [this.layouts[0]];
+        this.layout = this.TopLayout();
+        this.layout.nodePoints = {};
+        this.layout.edgeSprings = {};
+        this.simulation.restart();
+        const root = this.simulation.root;
+        if (root) {
+            root.nodeLink = this.graph.newNode({label: root.RecordLink.Name,
+                RecordLink: root.RecordLink, RecordId: root.PersonId, type: 'normal'});
+        }
+        // The first frame renders the seeded root before populateGraph runs.
+        this.dims.currentBB = this.layout.getBoundingBox();
+        this.dims.targetBB = this.layout.getBoundingBox();
+        this.layout.runCount = 0;
     },
     SetMovementX: function (x) {
         //console.log('movement x: ' + x);
@@ -155,7 +150,7 @@ Drawing.prototype ={
         }
 
         return new FDLayout(this.channel,infoGraph,
-            new CameraView(this.settings.colourScheme, 200, 200), this.settings, entry, parentLayout, centreNode);
+            {dims: new DrawingDimensions(200, 200)}, this.settings, entry, parentLayout, centreNode);
 
     },
 
@@ -242,7 +237,7 @@ Drawing.prototype ={
 
                 let screenFirstNode = currentUtils.toScreen(firstNodePoint);
 
-                let parentLayoutCameraView = layout.parentLayout._cameraView;
+                let parentLayoutCameraView = layout.parentLayout.drawing.dims;
 
                 let parentUtils = new Utils(parentLayoutCameraView.currentBB, parentLayoutCameraView.graph_width, parentLayoutCameraView.graph_height);
 
@@ -251,9 +246,9 @@ Drawing.prototype ={
                 let screenParentNode = parentUtils.toScreen(parentPoint);
 
                 // add parentlayout centre points !
-                this.dims.centrePoint = parentLayoutCameraView.centrePoint + screenParentNode.x - screenFirstNode.x; // (this.graph_width / 2);
+                layout.drawing.dims.centrePoint = parentLayoutCameraView.centrePoint + screenParentNode.x - screenFirstNode.x; // (this.graph_width / 2);
 
-                this.dims.centreVerticalPoint = parentLayoutCameraView.centreVerticalPoint + screenParentNode.y - screenFirstNode.y; // (this.graph_height / 2);
+                layout.drawing.dims.centreVerticalPoint = parentLayoutCameraView.centreVerticalPoint + screenParentNode.y - screenFirstNode.y; // (this.graph_height / 2);
             }
         }
 

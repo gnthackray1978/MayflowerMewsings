@@ -15,20 +15,8 @@ function FDDiagrams(props) {
       let renderer = drawing.renderer;
       let channel = drawing.channel;
 
-      drawing.setTime(timestamp);
+      drawing.simulation.tick(timestamp, year => drawing.TopLayout().populateGraph(year));
 
-   //   console.log("timer: ",drawing.timeInSeconds);  
-   
-      if(drawing.startYear == drawing.currentYear ||
-         drawing.timeInSeconds > 10){
-
-  //      console.log("year: ",drawing.currentYear);
-
-        drawing.TopLayout().populateGraph(drawing.currentYear);
-        drawing.currentYear = drawing.currentYear +5;      
-        drawing.resetTimer();
-      }
-    
       // stop simulation when energy of the system goes below a threshold
       // change so that it handles all layouts including sublayouts.
       if(!drawing.DrawRequired()){

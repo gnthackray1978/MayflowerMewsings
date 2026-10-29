@@ -51,37 +51,26 @@ FDLayout.prototype = {
 
     populateGraph: function (year) {
 
-        var mygraph = this.graph;
-
-        this.dataSource.Generations.forEach( (gen) =>{
-            gen.filter((f)=>!f.IsHtmlLink && !mygraph.containsNode(f.PersonId)//
-                     && (f.RecordLink.DOB < year && f.RecordLink.DOB != 0)
-                    ).forEach( (person) =>{
-                        if (!person.nodeLink) {
-                            person.nodeLink = mygraph.newNode({ label: "description to be added",
-                                                  RecordLink: person.RecordLink,
-                                                  RecordId : person.PersonId,
-                                                  type: 'normal' });
-                        }
-                        
-                        let fatherEdge = this.dataSource.FatherEdgeByPerson(person);
-
-                        if(fatherEdge.IsValid){
-                        //    console.log('father edge is valid');
-                            mygraph.newEdge(fatherEdge.FatherNode, fatherEdge.ChildNode, { type: 'person' });
-                        }
-                        else
-                        {
-                     //       console.log('father edge is not valid: ' + person.RecordLink.FirstName + ' ' + person.RecordLink.LastName);
-                        }
-                });
-            }
-        );
-
-
+        const people = this.dataSource.Generations.flat().filter(p => !p.IsHtmlLink);
+        people.filter(p => !p.nodeLink && p.simulationYear <= year).forEach(person => {
+            person.nodeLink = this.graph.newNode({
+                label: person.RecordLink.Name, RecordLink: person.RecordLink,
+                RecordId: person.PersonId, type: 'normal'
+            });
+        });
+        // Both endpoints must exist; repeat this pass when new people arrive.
+        people.filter(p => p.nodeLink).forEach(person => {
+            [person.Father, person.Mother].forEach(parent => {
+                if (parent?.nodeLink && parent !== person &&
+                    !this.graph.getEdges(parent.nodeLink, person.nodeLink).length) {
+                    this.graph.newEdge(parent.nodeLink, person.nodeLink, {type: 'person'});
+                }
+            });
+        });
         this.dataSource.Generations.forEach((gen, genIdx) => {
-            gen.filter(f => !f.IsHtmlLink && f.nodeLink !== undefined).forEach((p, personIdx) => {
-                p.nodeLink.data.RecordLink.currentDescendantCount = this.dataSource.DescendantCount(genIdx, personIdx);
+            gen.forEach((p, personIdx) => {
+                if (p.nodeLink) p.nodeLink.data.RecordLink.currentDescendantCount =
+                    this.dataSource.DescendantCount(genIdx, personIdx);
             });
         });
 

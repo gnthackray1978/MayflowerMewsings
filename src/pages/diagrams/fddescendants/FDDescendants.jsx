@@ -1,4 +1,4 @@
-import  React, { useState, useEffect }  from 'react';
+import  React, { useEffect, useMemo }  from 'react';
 
 import FDDescendantsBody from './FDDescendantsBody.jsx';
 import GraphControlsDialog from '../GraphControlsDialog.jsx';
@@ -10,11 +10,9 @@ import {useMapState} from '../useMap';
 import {getParams,csvToFirstNumber} from '../../../features/Table/qryStringFuncs.jsx';
 
 import {transformData, populateDescendantObjects} from '../drawinglib/graphDataFuncs.jsx';
-import {VisControlsUI} from "../fddescendants/libs/VisControlsUI.js";
 import {DataSource} from "./libs/DataSource.js";
 import { connect } from "react-redux";
 import {LayoutSettings} from "../fddescendants/libs/LayoutSettings.js";
-import {ForceDirect} from "../fddescendants/libs/ForceDirect.js";
 import {Graph} from "../fddescendants/libs/Graph.js";
 import {Drawing} from "../fddescendants/libs/Drawing.js";
 import {RenderLib } from '../fddescendants/libs/RenderLib.js';
@@ -132,40 +130,28 @@ function FDDescendants(props) {
     setTitle(state.data?.title ?? 'Descendant View');
   }, [state.loading]);
 
-  let data = transformData(state.data,populateDescendantObjects);
- 
-  let Body = ()=>{return(<div>loading</div>)};
-
-  if(data.newRows && data.newRows.length >0){
-   
-      var channel = mitt();
-      var settings = new LayoutSettings();
-  
-      var diagUI = new VisControlsUI(channel, settings);
-     
-      var dataSource = new DataSource(data.newRows);
-            
-      let graph = new Graph(channel);
-
-      let renderer = new RenderLib(graph, settings);
-
-      var drawing = new Drawing(channel, graph, renderer, settings, dataSource);
-  
-      drawing.Init();
-             
-      diagUI.InitEvents();
-
-        Body = ()=>{ return(<div>
-          <GraphControlsDialog graph ={drawing} state ={state} id = "draggable"></GraphControlsDialog>
-          <FDDescendantsBody  drawingContainer ={drawing} />
-      </div>)};
-  }
+  const drawing = useMemo(() => {
+    const data = transformData(state.data, populateDescendantObjects);
+    if (!data.newRows?.some(gen => gen.length)) return null;
+    const channel = mitt();
+    const settings = new LayoutSettings();
+    const dataSource = new DataSource(data.newRows);
+    const graph = new Graph(channel);
+    const renderer = new RenderLib(graph, settings);
+    const result = new Drawing(channel, graph, renderer, settings, dataSource);
+    result.selectedPersonId = persons;
+    result.Init();
+    return result;
+  }, [state.data, persons]);
 
 
   return ( 
       <div>
         <DiagramWrapper state = {state} >
-          <Body/>
+          {drawing ? <>
+            <GraphControlsDialog graph={drawing} state={state} id="draggable" />
+            <FDDescendantsBody drawingContainer={drawing} />
+          </> : <div>loading</div>}
         </DiagramWrapper>
       </div>
   );

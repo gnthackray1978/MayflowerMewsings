@@ -4,7 +4,7 @@ import {Utils} from "./Utils.js";
 export class DrawingDimensions {
     constructor( startwidth, startheight) {
         
-        this.currentBB = null; // layout.getBoundingBox();
+        this.currentBB = { bottomleft: new Vector(-2, -2), topright: new Vector(2, 2) };
         // this.targetBB = null;
         this.targetBB = { bottomleft: new Vector(-2, -2), topright: new Vector(2, 2) };
         // graph size
