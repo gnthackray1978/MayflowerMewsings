@@ -1,5 +1,5 @@
 
-import React, { Component , useState} from 'react'; 
+import React from 'react';
 import { connect } from "react-redux";
 import { useTheme } from '@mui/material/styles';
 import IconButton from '@mui/material/IconButton';
@@ -40,6 +40,8 @@ const GraphControlsDialog = (props) => {
       height: 140,
     }}
 
+    minWidth={130}
+    minHeight={140}
   >
     <div style={{ left: '0px', top: '0px', position: 'absolute',backgroundColor : 'aliceblue',width:'100%', height:'35px' ,paddingLeft:'10px',paddingTop:'5px'}}>Controls</div>
 

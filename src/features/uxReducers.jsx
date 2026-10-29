@@ -1,3 +1,4 @@
+import { TOGGLESIMULATIONCONTROLS, HIDESIMULATIONCONTROLS } from './actionTypes.jsx';
 import { APPLICATIONLISTLOADED, APPLICATIONSELECTED, FUNCTIONLISTLOADED,METADATALOADED,
   FUNCTIONSELECTED,APPDIALOGOPEN,APPDIALOGCLOSED,FUNCDIALOGOPEN,FUNCDIALOGCLOSED,
    TREESELECTED ,
@@ -40,6 +41,7 @@ export default (state = {
   showTreeSelectorDialog :false,
   showControlPanelDialog :false,
   showDiagramControls : false,
+  showSimulationControls: false,
   selectedTree : '93',
   selectedTreePerson : '96',
   selectedTreeCache : [],
@@ -51,6 +53,10 @@ export default (state = {
 
 //console.log('uxReducer: Action received - Type:', action.type);
   switch (action.type) {
+    case TOGGLESIMULATIONCONTROLS:
+      return {...state, showSimulationControls: !state.showSimulationControls};
+    case HIDESIMULATIONCONTROLS:
+      return {...state, showSimulationControls: false};
     case INDEXSTATE:  {
          // console.log('uxReducer: INDEXSTATE case entered, action:', action);
         const { payload } = action;

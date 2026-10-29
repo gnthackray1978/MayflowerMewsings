@@ -1,3 +1,4 @@
+import SimulationControlsDialog from '../SimulationControlsDialog.jsx';
 import  React, { useEffect, useMemo }  from 'react';
 
 import FDDescendantsBody from './FDDescendantsBody.jsx';
@@ -150,6 +151,7 @@ function FDDescendants(props) {
         <DiagramWrapper state = {state} >
           {drawing ? <>
             <GraphControlsDialog graph={drawing} state={state} id="draggable" />
+            <SimulationControlsDialog drawing={drawing} />
             <FDDescendantsBody drawingContainer={drawing} />
           </> : <div>loading</div>}
         </DiagramWrapper>

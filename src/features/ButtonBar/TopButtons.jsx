@@ -1,3 +1,6 @@
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import {useLocation} from 'react-router-dom';
+import {toggleSimulationControls} from '../uxActions.jsx';
 import React, { Component } from 'react';
 import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
@@ -66,6 +69,7 @@ function TopButtons(props) {
   
     
     const theme = useTheme();
+    const route = useLocation();
 
     const {siteDialogOpen, siteDialogClose,
        showAppListDialog, ShowFuncListDialog, funcDialogOpen , showControlPanelDialog,
@@ -160,6 +164,13 @@ function TopButtons(props) {
               </Typography>
           </Button>
           
+          {route.pathname === '/fddescendants' && <IconButton
+            className={classes.menuButton} color="inherit" size="large"
+            aria-label="Simulation time controls" title="Simulation time controls"
+            aria-pressed={props.showSimulationControls}
+            onClick={props.toggleSimulationControls}>
+            <AccessTimeIcon />
+          </IconButton>}
           {showDiagramControls && 
            <IconButton
              className={classes.menuButton}
@@ -207,6 +218,7 @@ const mapStateToProps = state => {
  
   return {
     title : state.ux.title,
+    showSimulationControls: state.ux.showSimulationControls,
     showTreeSelectorDialog : state.ux.showTreeSelectorDialog,
     showControlPanelDialog : state.ux.showControlPanelDialog,
     ShowAppListDialog :showAppListDialog,
@@ -219,6 +231,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     
+    toggleSimulationControls: () => dispatch(toggleSimulationControls()),
     funcDialogOpen: () => dispatch(funcDialogOpen()),
     funcDialogClose: () => dispatch(funcDialogClose()),
     siteDialogOpen: () => dispatch(siteDialogOpen()),

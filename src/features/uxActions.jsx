@@ -1,3 +1,4 @@
+import { TOGGLESIMULATIONCONTROLS, HIDESIMULATIONCONTROLS } from './actionTypes.jsx';
 import { METADATALOADED, APPLICATIONSELECTED,
   FUNCTIONSELECTED, APPDIALOGOPEN ,APPDIALOGCLOSED,FUNCDIALOGOPEN,
   FUNCDIALOGCLOSED, TREESELECTED ,TREEPERSONSELECTED,DIAGRAMSELECTED,
@@ -294,3 +295,6 @@ export const hideDiagramControls = () =>{
     }
 };
 
+
+export const toggleSimulationControls = () => ({type: TOGGLESIMULATIONCONTROLS});
+export const hideSimulationControls = () => ({type: HIDESIMULATIONCONTROLS});
