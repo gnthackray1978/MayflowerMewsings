@@ -17,6 +17,34 @@ export class RenderLib{
       ctx.restore();
   }
 
+  drawPersonMarker(ctx, x, y, selectionId, radius = 12) {
+      ctx.save();
+      const selected = selectionId === 3;
+      if (selected) {
+          ctx.beginPath();
+          ctx.arc(x, y, radius + 4, 0, Math.PI * 2);
+          ctx.fillStyle = '#ffffff';
+          ctx.strokeStyle = '#087bff';
+          ctx.lineWidth = 2;
+          ctx.shadowColor = '#087bff';
+          ctx.shadowBlur = 12;
+          ctx.fill();
+          ctx.stroke();
+      }
+      ctx.shadowBlur = 0;
+      const fill = ctx.createLinearGradient(x - radius, y - radius, x + radius, y + radius);
+      fill.addColorStop(0, '#8bd34f');
+      fill.addColorStop(1, '#087d2b');
+      ctx.beginPath();
+      ctx.arc(x, y, radius, 0, Math.PI * 2);
+      ctx.fillStyle = fill;
+      ctx.fill();
+      ctx.strokeStyle = selected ? '#0786dc' : selectionId === 2 ? '#237f42' : '#103d18';
+      ctx.lineWidth = selected ? 1.5 : 2;
+      ctx.stroke();
+      ctx.restore();
+  }
+
   drawEdges(ctx,dims, edge, p1, p2) {
 
       var _utils = new Utils(dims.currentBB, dims.graph_width, dims.graph_height, this.settings.colourScheme);
@@ -151,15 +179,12 @@ export class RenderLib{
       if (node.data.type != undefined && node.data.type == 'infonode') {
           if (node.data.label != '' && distance < 150) {
               _utils.drawText(dims, ctx, s.x, s.y + 20, node.data.label, node.data.type, selectionId);
-              _utils.star(dims, ctx, s.x, s.y, 5, 5, 0.4, false, node.data.type, selectionId);
+              this.drawPersonMarker(ctx, s.x, s.y, 1, 4);
           }
 
       } else {
 
-          if (layout.nodePoints[node.id].m==1)
-              _utils.star(dims, ctx, s.x, s.y, 12, 5, 0.4, false, node.data.type, selectionId);
-          else
-              _utils.star(dims, ctx, s.x, s.y, 12, 3, 0.4, false, node.data.type, selectionId);
+          this.drawPersonMarker(ctx, s.x, s.y, selectionId);
 
 
           if (node.data.RecordLink != undefined) {

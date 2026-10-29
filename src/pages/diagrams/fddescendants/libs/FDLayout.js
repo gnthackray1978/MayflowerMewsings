@@ -423,14 +423,14 @@ FDLayout.prototype = {
                 this.selected.node != undefined &&
                 this.selected.node.data != undefined &&
                 this.selected.node.data.RecordLink != undefined) {
-                  selectedPersonId = this.selected.node.data.RecordLink.PersonId;
+                  selectedPersonId = this.selected.node.data.RecordId ?? this.selected.node.data.RecordLink.PersonId;
             }
 
             if (node.data != undefined && node.data.RecordLink != undefined) {
-                nodePersonId = node.data.RecordLink.PersonId;
+                nodePersonId = node.data.RecordId ?? node.data.RecordLink.PersonId;
             }
 
-            if (selectedPersonId == nodePersonId && node.data.type != 'infonode') {
+            if (selectedPersonId !== '' && selectedPersonId == nodePersonId && node.data.type != 'infonode') {
                 return 3;
             }
             else if (this.nearest !== null && this.nearest.node !== null && this.nearest.node.id === node.id) {
