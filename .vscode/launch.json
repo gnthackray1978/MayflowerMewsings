@@ -15,11 +15,12 @@
         },
 
         {            
-            "name": "Attach to Chrome",
-            "port": 1234,
-            "request": "attach",
             "type": "pwa-chrome",
-            "webRoot": "http://localhost:1234/"
+            "request": "attach",
+            "name": "Attach to Chrome",
+            "port": 9222,
+            "urlFilter": "http://localhost:1234/*",
+            "webRoot": "c:/Users/gntha/Documents/development/MayflowerMewsings/src/"// "${workspaceFolder}"
         },
 
         {
