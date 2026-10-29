@@ -8,8 +8,13 @@ export class RenderLib{
     this.settings = settings;
   
   }
-  clear(ctx, cameraView) {
-      ctx.clearRect(0, 0, cameraView.graph_width, cameraView.graph_height);
+  clear(ctx) {
+      // Zoom changes graph dimensions, not the canvas bitmap. Clear the entire
+      // bitmap in device pixels, then restore the display's pixel-ratio scale.
+      ctx.save();
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+      ctx.restore();
   }
 
   drawEdges(ctx,dims, edge, p1, p2) {
