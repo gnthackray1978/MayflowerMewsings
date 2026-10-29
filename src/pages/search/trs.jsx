@@ -1,11 +1,11 @@
 import React from 'react';
-import GenericToolbar from '../../../../features/Table/GenericToolbar.jsx';
-import TableWrapper from '../../../../features/Table/TableWrapper.jsx';
-import GenericTable from '../../../../features/Table/GenericTable.jsx';
+import GenericToolbar from '../../features/Table/GenericToolbar.jsx';
+import TableWrapper from '../../features/Table/TableWrapper.jsx';
+import GenericTable from '../../features/Table/GenericTable.jsx';
 import {gql} from '@apollo/client';
-import {useTableState} from '../../../../features/Table/useTable';
-import {getParams} from '../../../../features/Table/qryStringFuncs';
-import {pobj} from '../../../../shared/common.js'
+import {useTableState} from '../../features/Table/useTable';
+import {getParams} from '../../features/Table/qryStringFuncs';
+import {pobj} from '../../shared/common.js'
 
 function Trs() {
 

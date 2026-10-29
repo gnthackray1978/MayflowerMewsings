@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { gql} from '@apollo/client';
-import {getParams} from '../../../../features/Table/qryStringFuncs';
-import GenericToolbar from "../../../../features/Table/GenericToolbar.jsx";
-import TableWrapper from '../../../../features/Table/TableWrapper.jsx'
-import {useTableState} from '../../../../features/Table/useTable';
-import GenericTable from '../../../../features/Table/GenericTable.jsx';
+import {getParams} from '../../features/Table/qryStringFuncs';
+import GenericToolbar from "../../features/Table/GenericToolbar.jsx";
+import TableWrapper from '../../features/Table/TableWrapper.jsx'
+import {useTableState} from '../../features/Table/useTable';
+import GenericTable from '../../features/Table/GenericTable.jsx';
 
 function Persons() {
 

@@ -8,7 +8,7 @@ import TableRow from '@mui/material/TableRow';
 
 import Link from '@mui/material/Link';
 import { useTheme } from '@mui/material/styles';
-import {useSideBarStyles} from '../../../../pages/table/styleFuncs.jsx';
+import {useSideBarStyles} from '../../../../pages/search/styleFuncs.jsx';
 
 import TableHeaderFromState  from '../../../Table/TableHeaderFromState.jsx';
 

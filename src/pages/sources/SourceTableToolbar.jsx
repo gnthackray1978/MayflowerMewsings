@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import Toolbar from '@mui/material/Toolbar';
 import TextField from '@mui/material/TextField';
-import {useToolbarStyles} from '../table/styleFuncs.jsx';
+import {useToolbarStyles} from '../search/styleFuncs.jsx';
 import TableBox from '../../features/Table/tableBox.jsx';
 import {setParams} from '../../features/Table/qryStringFuncs';
 

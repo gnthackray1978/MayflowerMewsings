@@ -5,7 +5,7 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
 import { useTheme } from '@mui/material/styles';
-import { useStyles } from '../../pages/table/styleFuncs.jsx';
+import { useStyles } from '../../pages/search/styleFuncs.jsx';
 import TableHeaderFromState from './TableHeaderFromState.jsx';
 
 /**

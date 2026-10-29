@@ -1,7 +1,7 @@
 import React from 'react'; 
 import TablePagination from '@mui/material/TablePagination'; 
 import { useTheme } from '@mui/material/styles';
-import {useStyles} from '../../pages/table/styleFuncs.jsx';
+import {useStyles} from '../../pages/search/styleFuncs.jsx';
 import { displayLoadingScreen, displayErrors } from '../../shared/common'; 
 
 export default function TableWrapper(props) {

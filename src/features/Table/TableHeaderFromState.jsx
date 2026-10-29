@@ -4,7 +4,7 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import TableSortLabel from '@mui/material/TableSortLabel';
-import {useStyles} from '../../pages/table/styleFuncs.jsx';
+import {useStyles} from '../../pages/search/styleFuncs.jsx';
 
 
 

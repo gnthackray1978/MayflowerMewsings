@@ -6,7 +6,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
 import Link from '@mui/material/Link';
 import { connect } from "react-redux";
- import {useSideBarStyles} from '../../../../pages/table/styleFuncs.jsx';
+ import {useSideBarStyles} from '../../../../pages/search/styleFuncs.jsx';
  import {setPerson} from "../../../uxActions.jsx";
 import TableHeaderFromState  from '../../../Table/TableHeaderFromState.jsx';
 import { useTheme } from '@mui/material/styles';

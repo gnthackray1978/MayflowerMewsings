@@ -1,24 +1,18 @@
 import React, { Component , useEffect} from 'react';
 import Default from './Default.jsx'; 
 import Blog from './Blog.jsx'; 
-import FTMDupes from './FTMDupes.jsx';
-import FTMPersons from './FTMPersons.jsx';
-import FTMTrees from './FTMTrees.jsx'; 
 
-import PTombstones from './imagePages/PTombstones.jsx';
-import HuntsWills from './imagePages/HuntsWills.jsx';
-import YorksWills from './imagePages/YorksWills.jsx';
-import Deeds from './imagePages/Deeds.jsx';
-import BMDs from './imagePages/BMDs.jsx';
-import Trees from './imagePages/Trees.jsx';
-import Marriages from './imagePages/Marriages.jsx';
+import Dupes from './search/Dupes.jsx';
+import MarriageSearch from './search/MarriageSearch.jsx';
+import Persons from './search/Person.jsx';
+import FTMView from './search/FTMView.jsx';
+import Poi from './search/Poi.jsx';
+import Trs from './search/trs.jsx';
+import LincsWills from './search/LincsWills.jsx';
+import NorfolkWills from './search/NorfolkWills.jsx';
 
-import TBirths from './TBirths.jsx';
-import TMarriages from './TMarriages.jsx';
-import TSources from './TSources.jsx';
-import WLincolnshire from './WLincolnshire.jsx';  
-import WNorfolk from './WNorfolk.jsx';
-import Ancestrymatches from './Ancestrymatches.jsx';  
+import Sources from './sources/Source.jsx';
+import ImagePage from './imagePages/ImagePage.jsx';
 import MapPerson from './maps/treePersonLocations/MapPerson';
 import HeatMap from './maps/treePersonHeatMaps/HeatMap';
 import GroupPlotter from './maps/groupPlotter/GroupPlotter';
@@ -27,37 +21,36 @@ import Descendants from './diagrams/descendants/Descendants';
 import FDDescendants from './diagrams/fddescendants/FDDescendants';
 import Tools from './tools/Tools.jsx';
 import ControlPanel from './controlpanel/ControlPanel.jsx';
-
 import {Routes,Route} from "react-router-dom";
-
- 
 
 function PageContainer(props) {
  
     return (
       <Routes>
-          <Route  path="/ftmpersons" element = {<FTMPersons/>}/>
-          <Route  path="/ancestrymatches" element= {<Ancestrymatches/>}/>
-          <Route  path="/ftmtrees" element= {<FTMTrees/>}/>
-          <Route  path="/ftmdupes" element= {<FTMDupes/>}/>
+          <Route  path="/ftmpersons" element = {<FTMView/>}/>
+          <Route  path="/ancestrymatches" element= {<Poi/>}/>
+          <Route  path="/ftmtrees" element= {<Trs/>}/>
+          <Route  path="/ftmdupes" element= {<Dupes/>}/>         
+          <Route  path="/wnorfolk" element= {<NorfolkWills/>}/>
+          <Route  path="/wlincolnshire" element= {<LincsWills/>}/>
+          <Route  path="/tsources" element= {<Sources/>}/>
+          <Route  path="/tmarriages" element= {<MarriageSearch/>}/>
+          <Route  path="/tbirths" element= {<Persons/>}/>
 
-         
-          <Route  path="/wnorfolk" element= {<WNorfolk/>}/>
-          <Route  path="/wlincolnshire" element= {<WLincolnshire/>}/>
+          {/* images */}
+          <Route  path="/huntswills" element= {<ImagePage/>}/>
+          <Route  path="/ptombstones" element= {<ImagePage/>}/>
+          <Route  path="/yorkswills" element= {<ImagePage/>}/>
+          <Route  path="/bmds" element= {<ImagePage/>}/>
+          <Route  path="/deeds" element= {<ImagePage/>}/>
+          <Route  path="/marriages" element= {<ImagePage/>}/>
+          <Route  path="/trees" element= {<ImagePage/>}/>
 
-          <Route  path="/tsources" element= {<TSources/>}/>
-          <Route  path="/tmarriages" element= {<TMarriages/>}/>
-          <Route  path="/tbirths" element= {<TBirths/>}/>
 
-          <Route  path="/huntswills" element= {<HuntsWills/>}/>
-          <Route  path="/ptombstones" element= {<PTombstones/>}/>
-          <Route  path="/yorkswills" element= {<YorksWills/>}/>
-          <Route  path="/bmds" element= {<BMDs/>}/>
-          <Route  path="/deeds" element= {<Deeds/>}/>
-          <Route  path="/marriages" element= {<Marriages/>}/>
-          <Route  path="/trees" element= {<Trees/>}/>
+
           <Route  path="/tools" element= {<Tools/>}/>
           <Route  path="/maps" element= {<MapPerson/>}/>
+
           <Route  path="/heatmaps" element= {<HeatMap/>}/>
           <Route  path="/groupplotter" element= {<GroupPlotter/>}/>
 

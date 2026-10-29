@@ -1,10 +1,10 @@
 import React from 'react';
 import { gql} from '@apollo/client';
-import {getParams} from '../../../../features/Table/qryStringFuncs';
-import GenericToolbar from '../../../../features/Table/GenericToolbar.jsx';
-import TableWrapper from '../../../../features/Table/TableWrapper.jsx';
-import GenericTable from '../../../../features/Table/GenericTable.jsx';
-import {useTableState} from '../../../../features/Table/useTable';
+import {getParams} from '../../features/Table/qryStringFuncs';
+import GenericToolbar from '../../features/Table/GenericToolbar.jsx';
+import TableWrapper from '../../features/Table/TableWrapper.jsx';
+import GenericTable from '../../features/Table/GenericTable.jsx';
+import {useTableState} from '../../features/Table/useTable';
 
 
 
