@@ -42,11 +42,11 @@ export function useTableState() {
  
 
     
-     if(data && data.image.imagesearch.rows.length>0){
+     if(data && data.imagesearch && data.imagesearch.rows.length>0){
     
        let stateObj = {
-          imagesearch: data.image.imagesearch.rows,
-          imageparentsearch :data.image.imageparentsearch.rows
+          imagesearch: data.imagesearch.rows,
+          imageparentsearch :data.imageparentsearch.rows
        };
  
        return stateObj;
@@ -89,7 +89,7 @@ export function useTableState() {
    let parents = [];
    
 
-   if(!loading && data.imageparentsearch && data.imagesearch){
+   if(!loading && data && data.imageparentsearch && data.imagesearch){
      parents = data.imageparentsearch.rows;
      let tpimages = data.imagesearch.rows;
 
